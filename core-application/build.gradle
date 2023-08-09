@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group 'gohigher'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(project(":core-domain"))
+
+    implementation("org.springframework:spring-tx")
+    implementation("org.springframework:spring-context")
+}
+
+test {
+    useJUnitPlatform()
+}
