@@ -1,4 +1,4 @@
-package gohigher;
+package gohigher.recruitment;
 
 public enum ProcessType {
     TO_APPLY,

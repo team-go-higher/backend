@@ -1,4 +1,4 @@
-package gohigher;
+package gohigher.recruitment;
 
 import java.time.LocalDateTime;
 
