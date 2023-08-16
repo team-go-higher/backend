@@ -30,7 +30,7 @@ public record Recruitment(
         String requiredCapability,
         String preferredQualification,
         LocalDateTime deadLine,
-        List<NoticeProcess> processes,
+        List<RecruitmentProcess> processes,
         String url
 ) {
 }
