@@ -20,14 +20,14 @@ import lombok.NoArgsConstructor;
 @Entity
 public class RecruitmentJpaEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recruitment_detail_id")
-    private RecruitmentDetailJpaEntity recruitmentDetail;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "recruitment_detail_id")
+	private RecruitmentDetailJpaEntity recruitmentDetail;
 
-    @Enumerated(value = EnumType.STRING)
-    private RecruitmentType type;
+	@Enumerated(value = EnumType.STRING)
+	private RecruitmentType type;
 }

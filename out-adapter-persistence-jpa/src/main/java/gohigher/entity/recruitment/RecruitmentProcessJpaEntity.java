@@ -24,17 +24,17 @@ import lombok.NoArgsConstructor;
 @Entity
 public class RecruitmentProcessJpaEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recruitment_id", nullable = false)
-    private RecruitmentJpaEntity recruitment;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "recruitment_id", nullable = false)
+	private RecruitmentJpaEntity recruitment;
 
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private ProcessType type;
+	@Column(nullable = false)
+	@Enumerated(value = EnumType.STRING)
+	private ProcessType type;
 
-    private LocalDateTime schedule;
+	private LocalDateTime schedule;
 }

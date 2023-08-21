@@ -22,16 +22,16 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ApplicationJpaEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private Long userId;
+	private Long userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recruitment_id")
-    private RecruitmentJpaEntity recruitment;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "recruitment_id")
+	private RecruitmentJpaEntity recruitment;
 
-    @Enumerated(EnumType.STRING)
-    private ProcessType currentProcess;
+	@Enumerated(EnumType.STRING)
+	private ProcessType currentProcess;
 }
