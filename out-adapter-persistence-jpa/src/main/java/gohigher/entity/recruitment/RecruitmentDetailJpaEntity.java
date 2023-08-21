@@ -10,12 +10,14 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "recruitment_detail")
 @Entity
 public class RecruitmentDetailJpaEntity {
 
@@ -36,7 +38,7 @@ public class RecruitmentDetailJpaEntity {
     private String careerRequirement;
     private String requiredCapability;
     private String preferredQualification;
-    private LocalDateTime deadLine;
+    private LocalDateTime deadline;
     private String url;
     private boolean isDeleted;
 }
