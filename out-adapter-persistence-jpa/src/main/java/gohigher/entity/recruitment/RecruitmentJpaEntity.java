@@ -1,6 +1,7 @@
 package gohigher.entity.recruitment;
 
 import gohigher.recruitment.RecruitmentType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -30,5 +31,6 @@ public class RecruitmentJpaEntity {
 	private RecruitmentDetailJpaEntity recruitmentDetail;
 
 	@Enumerated(value = EnumType.STRING)
+	@Column(updatable = false)
 	private RecruitmentType type;
 }

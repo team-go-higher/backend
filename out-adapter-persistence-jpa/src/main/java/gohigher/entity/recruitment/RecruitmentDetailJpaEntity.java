@@ -3,7 +3,6 @@ package gohigher.entity.recruitment;
 import java.time.LocalDateTime;
 
 import gohigher.recruitment.EmploymentType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,7 +32,6 @@ public class RecruitmentDetailJpaEntity {
 	private String workType;
 
 	@Enumerated(value = EnumType.STRING)
-	@Column(updatable = false)
 	private EmploymentType employmentType;
 	private String careerRequirement;
 	private String requiredCapability;
