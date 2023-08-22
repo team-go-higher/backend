@@ -1,4 +1,4 @@
-package gohigher.entity.recruitment;
+package gohigher.recruitment;
 
 public enum RecruitmentType {
 	PUBLIC,

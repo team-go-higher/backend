@@ -1,5 +1,6 @@
 package gohigher.entity.recruitment;
 
+import gohigher.recruitment.RecruitmentType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
