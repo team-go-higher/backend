@@ -1,5 +1,5 @@
 package gohigher.application.port.in;
 
 public interface ApplicationUseCase {
-	void applySimply(SimpleApplicationCommand command);
+	void applySimply(Long userId, SimpleApplicationCommand command);
 }
