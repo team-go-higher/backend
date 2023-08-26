@@ -6,6 +6,7 @@ import java.util.List;
 import gohigher.common.EmploymentType;
 import gohigher.common.JobInfo;
 import gohigher.common.Process;
+import gohigher.common.ProcessType;
 
 /**
  * currentProcess   현재 프로세스
@@ -21,5 +22,11 @@ public class Application extends JobInfo {
 		super(companyName, location, contact, duty, jobDescription, workType, employmentType, careerRequirement,
 			requiredCapability, preferredQualification, deadLine, processes, url);
 		this.currentProcess = currentProcess;
+	}
+
+	public static Application simple(String companyName, String duty, ProcessType processType, LocalDateTime schedule) {
+		Process process = new Process(processType, null, schedule);
+		return new Application(companyName, null, null, duty, null, null, null, null, null, null, null,
+			List.of(process), null, process);
 	}
 }
