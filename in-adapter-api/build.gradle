@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     implementation(project(":core-application"))
+    implementation(project(":out-adapter-persistence-jpa"))
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
