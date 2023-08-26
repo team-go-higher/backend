@@ -16,7 +16,7 @@ public class ApplicationService implements ApplicationUseCase {
 
 	@Override
 	@Transactional
-	public void applySimply(SimpleApplicationCommand command) {
-		applicationPersistencePort.save(command.toDomain());
+	public void applySimply(Long userId, SimpleApplicationCommand command) {
+		applicationPersistencePort.save(userId, command.toDomain());
 	}
 }
