@@ -36,6 +36,6 @@ public class ApplicationProcessJpaEntity {
 	@Enumerated(value = EnumType.STRING)
 	private ProcessType type;
 
-	private int order;
+	private int orders;
 	private LocalDateTime schedule;
 }
