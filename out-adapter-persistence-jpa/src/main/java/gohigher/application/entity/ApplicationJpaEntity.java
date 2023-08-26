@@ -3,9 +3,19 @@ package gohigher.application.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+<<<<<<< HEAD
 import gohigher.application.Application;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
+=======
+<<<<<<< HEAD:out-adapter-persistence-jpa/src/main/java/gohigher/application/ApplicationJpaEntity.java
+import gohigher.common.EmploymentType;
+=======
+import gohigher.application.Application;
+import gohigher.common.EmploymentType;
+import gohigher.common.Process;
+>>>>>>> bf4ec36 (refactor: ApplicationJpaEntity 팩터리 메서드 추가):out-adapter-persistence-jpa/src/main/java/gohigher/application/entity/ApplicationJpaEntity.java
+>>>>>>> bc7c015 (refactor: ApplicationJpaEntity 팩터리 메서드 추가)
 import gohigher.recruitment.RecruitmentJpaEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
