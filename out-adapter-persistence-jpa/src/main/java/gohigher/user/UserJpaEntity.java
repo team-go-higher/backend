@@ -29,11 +29,7 @@ public class UserJpaEntity {
 	@Enumerated(EnumType.STRING)
 	private Provider provider;
 
-<<<<<<< HEAD
-	public UserJpaEntity(final String email, final Role role, final Provider provider) {
-=======
 	public UserJpaEntity(String email, Role role, Provider provider) {
->>>>>>> d02a314 ([FEATURE] Spring Security 적용 (#10))
 		this.email = email;
 		this.role = role;
 		this.provider = provider;
