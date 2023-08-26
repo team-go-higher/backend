@@ -12,12 +12,12 @@ import gohigher.common.Process;
  */
 public class Application extends JobInfo {
 
-	private final int currentProcess;
+	private final Process currentProcess;
 
 	public Application(String companyName, String location, String contact, String duty, String jobDescription,
 		String workType, EmploymentType employmentType, String careerRequirement, String requiredCapability,
 		String preferredQualification, LocalDateTime deadLine, List<Process> processes,
-		String url, int currentProcess) {
+		String url, Process currentProcess) {
 		super(companyName, location, contact, duty, jobDescription, workType, employmentType, careerRequirement,
 			requiredCapability, preferredQualification, deadLine, processes, url);
 		this.currentProcess = currentProcess;
