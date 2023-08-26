@@ -1,0 +1,5 @@
+spring:
+  config:
+    import:
+      - application-oauth2.yml
+      - application-db.yml
