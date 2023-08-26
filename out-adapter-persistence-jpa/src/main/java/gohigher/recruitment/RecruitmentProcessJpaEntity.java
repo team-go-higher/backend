@@ -37,4 +37,5 @@ public class RecruitmentProcessJpaEntity {
 
 	private int orders;
 	private LocalDateTime schedule;
+	private String description;
 }

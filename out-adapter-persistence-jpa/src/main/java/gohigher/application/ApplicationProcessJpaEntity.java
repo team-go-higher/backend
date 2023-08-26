@@ -38,4 +38,5 @@ public class ApplicationProcessJpaEntity {
 
 	private int orders;
 	private LocalDateTime schedule;
+	private String description;
 }
