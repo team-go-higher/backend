@@ -45,6 +45,7 @@ public class ApplicationJpaEntity {
 	private String preferredQualification;
 	private LocalDateTime deadline;
 	private String url;
+	private int currentProcess;
 
 	@OneToMany(mappedBy = "application")
 	private List<ApplicationProcessJpaEntity> processes;
