@@ -2,7 +2,7 @@ package gohigher.application;
 
 import java.time.LocalDateTime;
 
-import gohigher.recruitment.ProcessType;
+import gohigher.common.ProcessType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
