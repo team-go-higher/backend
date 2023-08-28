@@ -26,46 +26,46 @@ public class OauthUserService implements OAuth2UserService<OAuth2UserRequest, OA
 
 	private final OauthLoginInUseCase oauthLoginUseCase;
 
-	@SuppressWarnings("checkstyle:WhitespaceAround")
 	@Override
-	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+	public OAuth2User loadUser(final OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
 		OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
-
-		// 클라이언트 등록 ID(google, naver, kakao)와 사용자 이름 속성을 가져온다.
 		String providerId = extractProviderId(userRequest);
-		String attributeKey = extractAttributeKey(userRequest);
 
-		// OAuth2UserService를 사용하여 가져온 OAuth2User 정보로 OAuth2Attribute 객체를 만든다.
-		Map<String, Object> memberAttribute = getAttribute(oAuth2User, providerId, attributeKey);
-
+		Map<String, Object> memberAttribute = convertToMapAttribute(oAuth2User, providerId, userRequest);
 		String email = (String)memberAttribute.get(ATTRIBUTE_EMAIL);
 
 		User loginUser = oauthLoginUseCase.login(email, Provider.from(providerId));
+		return createOAuth2User(memberAttribute, loginUser);
+
+	}
+
+	private DefaultOAuth2User createOAuth2User(Map<String, Object> memberAttribute, User loginUser) {
 		return new DefaultOAuth2User(
 			Collections.singleton(
-				new SimpleGrantedAuthority(ROLE_PREFIX.concat(loginUser.getRole().toString()))),
-			memberAttribute, ATTRIBUTE_EMAIL);
-
+				new SimpleGrantedAuthority(ROLE_PREFIX.concat(loginUser.getRole().toString()))
+			),
+			memberAttribute, ATTRIBUTE_EMAIL
+		);
 	}
 
-	private Map<String, Object> getAttribute(OAuth2User oAuth2User, String providerId,
-		String userNameAttributeName) {
-		OAuth2Attribute oAuth2Attribute =
-			OAuth2Attribute.of(providerId, userNameAttributeName, oAuth2User.getAttributes());
-
-		// OAuth2Attribute의 속성값들을 Map으로 반환 받는다.
-		return oAuth2Attribute.convertToMap();
+	private Map<String, Object> convertToMapAttribute(OAuth2User oAuth2User, String providerId, OAuth2UserRequest userRequest) {
+		return OAuth2Attribute.of(
+				providerId,
+				extractAttributeKey(userRequest),
+				oAuth2User.getAttributes()
+			)
+			.convertToMap();
 	}
 
-	private String extractProviderId(final OAuth2UserRequest userRequest) {
+	private String extractProviderId(OAuth2UserRequest userRequest) {
 		return userRequest
 			.getClientRegistration()
 			.getRegistrationId();
 
 	}
 
-	private String extractAttributeKey(final OAuth2UserRequest userRequest) {
+	private String extractAttributeKey(OAuth2UserRequest userRequest) {
 		return userRequest.getClientRegistration()
 			.getProviderDetails()
 			.getUserInfoEndpoint()
