@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -15,11 +14,11 @@ import org.springframework.stereotype.Service;
 import gohigher.usecase.OauthLoginInUseCase;
 import gohigher.user.Provider;
 import gohigher.user.User;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
-public class OauthUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+@RequiredArgsConstructor
+public class OauthUserService extends DefaultOAuth2UserService {
 
 	private static final String ATTRIBUTE_EMAIL = "email";
 	private static final String ROLE_PREFIX = "ROLE_";
@@ -28,8 +27,7 @@ public class OauthUserService implements OAuth2UserService<OAuth2UserRequest, OA
 
 	@Override
 	public OAuth2User loadUser(final OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-		OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
-		OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
+		OAuth2User oAuth2User = super.loadUser(userRequest);
 		String providerId = extractProviderId(userRequest);
 
 		Map<String, Object> memberAttribute = convertToMapAttribute(oAuth2User, providerId, userRequest);
