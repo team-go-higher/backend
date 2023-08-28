@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor
-public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,

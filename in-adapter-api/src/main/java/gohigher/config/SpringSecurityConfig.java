@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-import gohigher.oauth2.MyAuthenticationSuccessHandler;
+import gohigher.oauth2.AuthenticationSuccessHandler;
 import gohigher.oauth2.OauthUserService;
 import lombok.AllArgsConstructor;
 
@@ -21,7 +21,7 @@ import lombok.AllArgsConstructor;
 public class SpringSecurityConfig {
 
 	private final OauthUserService oauthUserService;
-	private final MyAuthenticationSuccessHandler oAuth2LoginSuccessHandler;
+	private final AuthenticationSuccessHandler oAuth2LoginSuccessHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
