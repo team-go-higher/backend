@@ -47,8 +47,7 @@ public class OauthUserService extends DefaultOAuth2UserService {
 		);
 	}
 
-	private Map<String, Object> convertToMapAttribute(OAuth2User oAuth2User, String providerId,
-		OAuth2UserRequest userRequest) {
+	private Map<String, Object> convertToMapAttribute(OAuth2User oAuth2User, String providerId, OAuth2UserRequest userRequest) {
 		return OAuth2Attribute.of(
 				providerId,
 				extractAttributeKey(userRequest),
