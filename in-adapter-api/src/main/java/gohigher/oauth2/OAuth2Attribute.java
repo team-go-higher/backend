@@ -1,4 +1,4 @@
-package gohigher;
+package gohigher.oauth2;
 
 import java.util.HashMap;
 import java.util.Map;
