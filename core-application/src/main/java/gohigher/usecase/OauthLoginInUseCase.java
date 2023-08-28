@@ -8,11 +8,11 @@ import gohigher.port.out.OauthLoginOutPort;
 import gohigher.user.Provider;
 import gohigher.user.Role;
 import gohigher.user.User;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OauthLoginInUseCase implements OauthLoginInPort {
 
 	private final OauthLoginOutPort userRepository;

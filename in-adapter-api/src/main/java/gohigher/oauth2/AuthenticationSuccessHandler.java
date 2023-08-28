@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 
 @Component
-@AllArgsConstructor
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	@Override

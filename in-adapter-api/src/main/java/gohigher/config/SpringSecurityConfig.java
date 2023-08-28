@@ -13,11 +13,11 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import gohigher.oauth2.AuthenticationSuccessHandler;
 import gohigher.oauth2.OauthUserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SpringSecurityConfig {
 
 	private final OauthUserService oauthUserService;
