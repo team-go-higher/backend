@@ -1,11 +1,11 @@
-package gohigher;
+package gohigher.user;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import gohigher.domain.UserJpaEntity;
-import gohigher.domain.UserRepository;
+import gohigher.user.UserJpaEntity;
+import gohigher.user.UserRepository;
 import gohigher.port.out.OauthLoginOutPort;
 import gohigher.user.User;
 import lombok.RequiredArgsConstructor;

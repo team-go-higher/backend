@@ -1,4 +1,4 @@
-package gohigher.domain;
+package gohigher.user;
 
 import java.util.Optional;
 

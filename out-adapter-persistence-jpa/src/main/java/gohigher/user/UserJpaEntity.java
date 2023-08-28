@@ -1,8 +1,5 @@
-package gohigher.domain;
+package gohigher.user;
 
-import gohigher.user.Provider;
-import gohigher.user.Role;
-import gohigher.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
