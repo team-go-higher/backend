@@ -22,7 +22,6 @@ public class SpringSecurityConfig {
 
 	private final OauthUserService oauthUserService;
 	private final MyAuthenticationSuccessHandler oAuth2LoginSuccessHandler;
-	// private final MyAuthenticationFailureHandler oAuth2LoginFailureHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,8 +36,7 @@ public class SpringSecurityConfig {
 		http.oauth2Login(oauth2 -> oauth2
 			.redirectionEndpoint(redirection -> redirection.baseUri("/oauth2/callback/**"))
 			.userInfoEndpoint(userInfo -> userInfo.userService(oauthUserService))
-			.successHandler(oAuth2LoginSuccessHandler)); // OAuth2 로그인 성공시 처리할 핸들러를 지정해준다.
-		// .failureHandler(oAuth2LoginFailureHandler) // OAuth2 로그인 실패시 처리할 핸들러를 지정해준다.
+			.successHandler(oAuth2LoginSuccessHandler));
 
 		return http.build();
 	}

@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 public class User {
 
+	private Long id;
 	private final String email;
 	private final Role role;
 	private final Provider provider;
-	private Long id;
 
 	public User(String email, Role role, Provider provider) {
 		this.email = email;
