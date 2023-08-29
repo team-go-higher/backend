@@ -11,6 +11,8 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import gohigher.oauth2.domain.GoogleOAuth2User;
+import gohigher.oauth2.domain.OAuth2UserInfo;
 import gohigher.usecase.OauthLoginInUseCase;
 import gohigher.user.Provider;
 import gohigher.user.User;
@@ -28,14 +30,12 @@ public class OauthUserService extends DefaultOAuth2UserService {
 	@Override
 	public OAuth2User loadUser(final OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		OAuth2User oAuth2User = super.loadUser(userRequest);
-		String providerId = extractProviderId(userRequest);
+		String provider = extractProvider(userRequest);
 
-		Map<String, Object> memberAttribute = convertToMapAttribute(oAuth2User, providerId, userRequest);
-		String email = (String)memberAttribute.get(ATTRIBUTE_EMAIL);
+		OAuth2UserInfo oAuth2UserInfo = convertToMapAttribute(oAuth2User, provider);
+		User loginUser = oauthLoginUseCase.login(oAuth2UserInfo.getEmail(), Provider.from(provider));
 
-		User loginUser = oauthLoginUseCase.login(email, Provider.from(providerId));
-		return createOAuth2User(memberAttribute, loginUser);
-
+		return createOAuth2User(oAuth2UserInfo.getAttributes(), loginUser);
 	}
 
 	private DefaultOAuth2User createOAuth2User(Map<String, Object> memberAttribute, User loginUser) {
@@ -47,27 +47,17 @@ public class OauthUserService extends DefaultOAuth2UserService {
 		);
 	}
 
-	private Map<String, Object> convertToMapAttribute(OAuth2User oAuth2User, String providerId,
-		OAuth2UserRequest userRequest) {
-		return OAuth2Attribute.of(
-				providerId,
-				extractAttributeKey(userRequest),
-				oAuth2User.getAttributes()
-			)
-			.convertToMap();
+	private OAuth2UserInfo convertToMapAttribute(OAuth2User oAuth2User, String provider) {
+		if (provider.equals("GOOGLE")) {
+			return new GoogleOAuth2User(oAuth2User.getAttributes());
+		}
+		throw new IllegalArgumentException("존재하지 않는 provider 입니다.");
 	}
 
-	private String extractProviderId(OAuth2UserRequest userRequest) {
+	private String extractProvider(OAuth2UserRequest userRequest) {
 		return userRequest
 			.getClientRegistration()
-			.getRegistrationId();
-
-	}
-
-	private String extractAttributeKey(OAuth2UserRequest userRequest) {
-		return userRequest.getClientRegistration()
-			.getProviderDetails()
-			.getUserInfoEndpoint()
-			.getUserNameAttributeName();
+			.getRegistrationId()
+			.toUpperCase();
 	}
 }
