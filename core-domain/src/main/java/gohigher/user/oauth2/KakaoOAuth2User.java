@@ -7,8 +7,9 @@ public class KakaoOAuth2User extends OAuth2UserInfo {
 	private final Long id;
 
 	public KakaoOAuth2User(Map<String, Object> attributes) {
-		super((Map<String, Object>) attributes.get("kakao_account"));
-		id = (Long) attributes.get("id");
+		super("id", (Map<String, Object>)attributes.get("kakao_account"));
+		id = (Long)attributes.get(oauth2IdAttributeName);
+		this.attributes.put(oauth2IdAttributeName, id);
 	}
 
 	@Override
@@ -17,13 +18,18 @@ public class KakaoOAuth2User extends OAuth2UserInfo {
 	}
 
 	@Override
+	public String getOAuth2IdAttributeName() {
+		return oauth2IdAttributeName;
+	}
+
+	@Override
 	public String getEmail() {
-		return (String) attributes.get("email");
+		return (String)attributes.get("email");
 	}
 
 	@Override
 	public String getName() {
-		return (String) ((Map<String, Object>) attributes.get("profile")).get("nickname");
+		return (String)((Map<String, Object>)attributes.get("profile")).get("nickname");
 	}
 
 	@Override
