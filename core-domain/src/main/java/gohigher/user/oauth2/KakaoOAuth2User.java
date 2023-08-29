@@ -1,4 +1,4 @@
-package gohigher.oauth2.domain;
+package gohigher.user.oauth2;
 
 import java.util.Map;
 

@@ -5,9 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.port.in.OauthLoginInPort;
 import gohigher.port.out.OauthLoginOutPort;
-import gohigher.user.Provider;
 import gohigher.user.Role;
 import gohigher.user.User;
+import gohigher.user.oauth2.Provider;
 import lombok.RequiredArgsConstructor;
 
 @Service

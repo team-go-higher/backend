@@ -11,12 +11,12 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import gohigher.oauth2.domain.GoogleOAuth2User;
-import gohigher.oauth2.domain.KakaoOAuth2User;
-import gohigher.oauth2.domain.OAuth2UserInfo;
 import gohigher.usecase.OauthLoginInUseCase;
-import gohigher.user.Provider;
 import gohigher.user.User;
+import gohigher.user.oauth2.GoogleOAuth2User;
+import gohigher.user.oauth2.KakaoOAuth2User;
+import gohigher.user.oauth2.OAuth2UserInfo;
+import gohigher.user.oauth2.Provider;
 import lombok.RequiredArgsConstructor;
 
 @Service

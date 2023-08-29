@@ -1,7 +1,7 @@
 package gohigher.port.in;
 
-import gohigher.user.Provider;
 import gohigher.user.User;
+import gohigher.user.oauth2.Provider;
 
 public interface OauthLoginInPort {
 

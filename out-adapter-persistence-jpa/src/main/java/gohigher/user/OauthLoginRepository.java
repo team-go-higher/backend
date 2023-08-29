@@ -4,10 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import gohigher.user.UserJpaEntity;
-import gohigher.user.UserRepository;
 import gohigher.port.out.OauthLoginOutPort;
-import gohigher.user.User;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
