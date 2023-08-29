@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import gohigher.oauth2.domain.GoogleOAuth2User;
+import gohigher.oauth2.domain.KakaoOAuth2User;
 import gohigher.oauth2.domain.OAuth2UserInfo;
 import gohigher.usecase.OauthLoginInUseCase;
 import gohigher.user.Provider;
@@ -50,6 +51,9 @@ public class OauthUserService extends DefaultOAuth2UserService {
 	private OAuth2UserInfo convertToMapAttribute(OAuth2User oAuth2User, String provider) {
 		if (provider.equals("GOOGLE")) {
 			return new GoogleOAuth2User(oAuth2User.getAttributes());
+		}
+		if (provider.equals("KAKAO")) {
+			return new KakaoOAuth2User(oAuth2User.getAttributes());
 		}
 		throw new IllegalArgumentException("존재하지 않는 provider 입니다.");
 	}
