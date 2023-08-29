@@ -29,9 +29,9 @@ public class SpringSecurityConfig {
 			.cors(CorsConfigurer::disable)
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth ->
-				auth.requestMatchers("/login", "/h2-console").permitAll()
-					.anyRequest().authenticated()
-			).httpBasic(withDefaults());
+				auth.anyRequest().authenticated()
+			)
+			.httpBasic(withDefaults());
 
 		http.oauth2Login(oauth2 -> oauth2
 			.redirectionEndpoint(redirection -> redirection.baseUri("/oauth2/callback/**"))
