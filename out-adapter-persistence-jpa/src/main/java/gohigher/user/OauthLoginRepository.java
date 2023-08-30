@@ -4,12 +4,13 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import gohigher.port.out.OauthLoginOutPort;
+import gohigher.port.out.OAuth2PersistenceCommandPort;
+import gohigher.port.out.OAuth2PersistenceQueryPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
-public class OauthLoginRepository implements OauthLoginOutPort {
+public class OauthLoginRepository implements OAuth2PersistenceQueryPort, OAuth2PersistenceCommandPort {
 
 	private final UserRepository userRepository;
 
