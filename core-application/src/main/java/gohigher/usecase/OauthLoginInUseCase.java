@@ -3,7 +3,7 @@ package gohigher.usecase;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import gohigher.port.in.OauthLoginInPort;
+import gohigher.port.in.OAuth2CommandPort;
 import gohigher.port.out.OauthLoginOutPort;
 import gohigher.user.Role;
 import gohigher.user.User;
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class OauthLoginInUseCase implements OauthLoginInPort {
+public class OauthLoginInUseCase implements OAuth2CommandPort {
 
 	private final OauthLoginOutPort oauthLoginOutPort;
 
