@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class OauthLoginInUseCase implements OAuth2CommandPort {
+public class OAuth2CommandService implements OAuth2CommandPort {
 
 	private final OauthLoginOutPort oauthLoginOutPort;
 

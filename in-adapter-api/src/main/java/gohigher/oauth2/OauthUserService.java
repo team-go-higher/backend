@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import gohigher.usecase.OauthLoginInUseCase;
+import gohigher.usecase.OAuth2CommandService;
 import gohigher.user.User;
 import gohigher.user.oauth2.OAuth2UserInfo;
 import gohigher.user.oauth2.OAuth2UserInfoFactory;
@@ -23,7 +23,7 @@ public class OauthUserService extends DefaultOAuth2UserService {
 
 	private static final String ROLE_PREFIX = "ROLE_";
 
-	private final OauthLoginInUseCase oauthLoginUseCase;
+	private final OAuth2CommandService oAuth2CommandService;
 
 	@Override
 	public OAuth2User loadUser(final OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -31,7 +31,7 @@ public class OauthUserService extends DefaultOAuth2UserService {
 		Provider provider = extractProvider(userRequest);
 		OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.createFor(provider, oAuth2User.getAttributes());
 
-		User loginUser = oauthLoginUseCase.login(oAuth2UserInfo.getEmail(), provider);
+		User loginUser = oAuth2CommandService.login(oAuth2UserInfo.getEmail(), provider);
 
 		return createOAuth2User(oAuth2UserInfo, loginUser);
 	}
