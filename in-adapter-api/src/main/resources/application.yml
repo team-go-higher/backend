@@ -3,3 +3,9 @@ spring:
     import:
       - application-oauth2.yml
       - application-local.yml
+springdoc:
+  packagesToScan: gohigher
+  swagger-ui:
+    path: /api-docs
+    groups:
+      enabled: false
