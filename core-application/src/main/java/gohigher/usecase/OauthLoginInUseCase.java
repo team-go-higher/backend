@@ -15,11 +15,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OauthLoginInUseCase implements OauthLoginInPort {
 
-	private final OauthLoginOutPort userRepository;
+	private final OauthLoginOutPort oauthLoginOutPort;
 
 	@Override
 	public User login(final String email, final Provider provider) {
-		return userRepository.findByEmail(email)
-			.orElseGet(() -> userRepository.save(new User(email, Role.GUEST, provider)));
+		return oauthLoginOutPort.findByEmail(email)
+			.orElseGet(() -> oauthLoginOutPort.save(new User(email, Role.GUEST, provider)));
 	}
 }
