@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
-public class OauthLoginRepository implements OAuth2PersistenceQueryPort, OAuth2PersistenceCommandPort {
+public class OAuth2Repository implements OAuth2PersistenceQueryPort, OAuth2PersistenceCommandPort {
 
 	private final UserRepository userRepository;
 
