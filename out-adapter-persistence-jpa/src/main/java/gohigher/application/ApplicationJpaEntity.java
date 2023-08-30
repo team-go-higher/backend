@@ -3,7 +3,7 @@ package gohigher.application;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import gohigher.recruitment.EmploymentType;
+import gohigher.common.EmploymentType;
 import gohigher.recruitment.RecruitmentJpaEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
