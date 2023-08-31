@@ -1,4 +1,4 @@
-package gohigher.presentation.response;
+package gohigher.common.response;
 
 import gohigher.global.exception.GoHigherException;
 import lombok.RequiredArgsConstructor;
