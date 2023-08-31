@@ -1,9 +1,9 @@
 package gohigher.common.response;
 
-import gohigher.global.exception.GoHigherException;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApiResponse<T> {
 
 	private final boolean success;
@@ -14,8 +14,8 @@ public class ApiResponse<T> {
 		return new ApiResponse<>(true, null, data);
 	}
 
-	public static <T> ApiResponse<T> fail(final GoHigherException exception) {
-		ErrorResponse error = new ErrorResponse(exception.getErrorCode(), exception.getMessage());
+	public static <T> ApiResponse<T> fail(final String errorCode, final String message) {
+		ErrorResponse error = new ErrorResponse(errorCode, message);
 		return new ApiResponse<>(false, error, null);
 	}
 }
