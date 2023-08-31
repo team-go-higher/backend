@@ -9,7 +9,7 @@ public class GoHigherException extends RuntimeException {
 	private final String errorCode;
 	private final String message;
 
-	public GoHigherException(ErrorCode code) {
+	public GoHigherException(final ErrorCode code) {
 		statusCode = code.getStatusCode();
 		errorCode = code.getErrorCode();
 		message = code.getMessage();
