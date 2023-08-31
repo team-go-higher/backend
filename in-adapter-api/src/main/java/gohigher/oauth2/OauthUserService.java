@@ -36,7 +36,7 @@ public class OauthUserService extends DefaultOAuth2UserService {
 		return createOAuth2User(oAuth2UserInfo, loginUser);
 	}
 
-	private DefaultOAuth2User createOAuth2User(OAuth2UserInfo oAuth2UserInfo, User loginUser) {
+	private DefaultOAuth2User createOAuth2User(final OAuth2UserInfo oAuth2UserInfo, final User loginUser) {
 		return new DefaultOAuth2User(
 			Collections.singleton(
 				new SimpleGrantedAuthority(loginUser.getRole().toString())
@@ -46,7 +46,7 @@ public class OauthUserService extends DefaultOAuth2UserService {
 		);
 	}
 
-	private Provider extractProvider(OAuth2UserRequest userRequest) {
+	private Provider extractProvider(final OAuth2UserRequest userRequest) {
 		return Provider.from(
 			userRequest
 				.getClientRegistration()

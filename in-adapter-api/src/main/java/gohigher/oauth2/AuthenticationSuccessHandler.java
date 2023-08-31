@@ -30,7 +30,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 	@SuppressWarnings("checkstyle:WhitespaceAround")
 	@Override
 	public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
-		Authentication authentication) throws IOException {
+		final Authentication authentication) throws IOException {
 		OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
 
 		String email = oAuth2User.getAttribute("email");
@@ -49,7 +49,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);
 	}
 
-	private String createTargetUrl(String role, String requestUri, String accessToken) {
+	private String createTargetUrl(final String role, final String requestUri, final String accessToken) {
 		return UriComponentsBuilder.fromUriString(requestUri)
 			.queryParam("accessToken", accessToken)
 			.queryParam("role", Role.valueOf(role).toString())
@@ -58,7 +58,8 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 			.toUriString();
 	}
 
-	private void addRefreshTokenCookie(HttpServletResponse response, String email, String role, Date now) {
+	private void addRefreshTokenCookie(final HttpServletResponse response, final String email, final String role,
+		final Date now) {
 		if (role.equals(Role.GUEST.toString())) {
 			return;
 		}
