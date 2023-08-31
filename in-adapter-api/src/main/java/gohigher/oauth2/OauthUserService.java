@@ -10,11 +10,11 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import gohigher.usecase.OAuth2CommandService;
-import gohigher.user.User;
 import gohigher.oauth2.user.OAuth2UserInfo;
 import gohigher.oauth2.user.OAuth2UserInfoFactory;
-import gohigher.user.oauth2.Provider;
+import gohigher.usecase.OAuth2CommandService;
+import gohigher.user.Provider;
+import gohigher.user.User;
 import lombok.RequiredArgsConstructor;
 
 @Service

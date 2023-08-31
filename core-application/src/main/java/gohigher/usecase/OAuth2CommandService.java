@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import gohigher.port.in.OAuth2CommandPort;
 import gohigher.port.out.OAuth2PersistenceCommandPort;
 import gohigher.port.out.OAuth2PersistenceQueryPort;
+import gohigher.user.Provider;
 import gohigher.user.Role;
 import gohigher.user.User;
-import gohigher.user.oauth2.Provider;
 import lombok.RequiredArgsConstructor;
 
 @Service

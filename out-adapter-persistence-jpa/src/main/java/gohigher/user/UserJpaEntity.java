@@ -1,6 +1,5 @@
 package gohigher.user;
 
-import gohigher.user.oauth2.Provider;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
