@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import gohigher.usecase.OAuth2CommandService;
 import gohigher.user.User;
-import gohigher.user.oauth2.OAuth2UserInfo;
-import gohigher.user.oauth2.OAuth2UserInfoFactory;
+import gohigher.oauth2.user.OAuth2UserInfo;
+import gohigher.oauth2.user.OAuth2UserInfoFactory;
 import gohigher.user.oauth2.Provider;
 import lombok.RequiredArgsConstructor;
 
