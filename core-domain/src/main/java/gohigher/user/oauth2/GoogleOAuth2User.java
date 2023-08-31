@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class GoogleOAuth2User extends OAuth2UserInfo {
 
-	public GoogleOAuth2User(Map<String, Object> attributes) {
+	public GoogleOAuth2User(final Map<String, Object> attributes) {
 		super("sub", attributes);
 	}
 
