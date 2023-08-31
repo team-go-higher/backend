@@ -13,7 +13,7 @@ public class CookieProvider {
 	private static final String REFRESH_TOKEN = "refreshToken";
 	private final long refreshTokenExpireLength;
 
-	public CookieProvider(@Value("$security.jwt.expire-length.refresh") long refreshTokenExpireLength) {
+	public CookieProvider(@Value("${security.jwt.expire-length.refresh}") long refreshTokenExpireLength) {
 		this.refreshTokenExpireLength = refreshTokenExpireLength;
 	}
 
