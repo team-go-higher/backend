@@ -1,4 +1,4 @@
-package gohigher.common.response;
+package gohigher.controller.response;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
