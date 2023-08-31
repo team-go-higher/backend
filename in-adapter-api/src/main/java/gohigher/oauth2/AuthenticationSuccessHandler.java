@@ -39,7 +39,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 			.orElseThrow(IllegalAccessError::new) // 존재하지 않을 시 예외를 던진다.
 			.getAuthority();
 
-		String requestUri = request.getRequestURI();
+		String requestUri = "http://localhost:3000/login";
 		Date now = new Date();
 
 		String accessToken = jwtProvider.createAccessToken(email, now);
@@ -50,13 +50,12 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 	}
 
 	private String createTargetUrl(String role, String requestUri, String accessToken) {
-		String targetUrl = UriComponentsBuilder.fromUriString(requestUri)
+		return UriComponentsBuilder.fromUriString(requestUri)
 			.queryParam("accessToken", accessToken)
 			.queryParam("role", Role.valueOf(role).toString())
 			.build()
 			.encode(StandardCharsets.UTF_8)
 			.toUriString();
-		return targetUrl;
 	}
 
 	private void addRefreshTokenCookie(HttpServletResponse response, String email, String role, Date now) {
