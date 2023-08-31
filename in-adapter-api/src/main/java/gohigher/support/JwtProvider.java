@@ -65,4 +65,13 @@ public class JwtProvider {
 			.build()
 			.parseClaimsJws(token);
 	}
+
+	public String getUid(final String token) {
+		return Jwts.parserBuilder()
+			.setSigningKey(secretKey)
+			.build()
+			.parseClaimsJws(token)
+			.getBody()
+			.getSubject();
+	}
 }

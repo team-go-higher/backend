@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.CorsConfig
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import gohigher.oauth2.AuthenticationSuccessHandler;
 import gohigher.oauth2.OauthUserService;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class SpringSecurityConfig {
 
 	private final OauthUserService oauthUserService;
+	private final JwtAuthFilter jwtAuthFilter;
 	private final AuthenticationSuccessHandler oAuth2LoginSuccessHandler;
 
 	@Bean
@@ -38,6 +40,7 @@ public class SpringSecurityConfig {
 			.userInfoEndpoint(userInfo -> userInfo.userService(oauthUserService))
 			.successHandler(oAuth2LoginSuccessHandler));
 
-		return http.build();
+		return http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+			.build();
 	}
 }
