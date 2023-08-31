@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import gohigher.user.Role;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -28,19 +29,17 @@ public class JwtProvider {
 		this.refreshTokenExpireLength = refreshTokenExpireLength;
 	}
 
-	public String createAccessToken(final String email, final Role role) {
-		return generateToken(email, role.toString(), accessTokenExpireLength);
+	public String createAccessToken(final String email, final Role role, final Date now) {
+		return generateToken(email, role.toString(), now, accessTokenExpireLength);
 	}
 
-	public String createRefreshToken(final String email, Role role) {
-		return generateToken(email, role.toString(), refreshTokenExpireLength);
+	public String createRefreshToken(final String email, final Role role, final Date now) {
+		return generateToken(email, role.toString(), now, refreshTokenExpireLength);
 	}
 
-	public String generateToken(final String email, final String role, final long expiredLength) {
+	private String generateToken(final String email, final String role, final Date now, final long expiredLength) {
 		Claims claims = Jwts.claims().setSubject(email);
 		claims.put("role", role);
-
-		Date now = new Date();
 
 		return Jwts.builder()
 			.setClaims(claims)
@@ -48,6 +47,24 @@ public class JwtProvider {
 			.setExpiration(new Date(now.getTime() + expiredLength))
 			.signWith(secretKey)
 			.compact();
+	}
 
+	public boolean verifyToken(final String token, final Date now) {
+		try {
+			Jws<Claims> claims = parseClaimsJws(token);
+
+			return claims.getBody()
+				.getExpiration()
+				.after(now);
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	private Jws<Claims> parseClaimsJws(final String token) {
+		return Jwts.parserBuilder()
+			.setSigningKey(secretKey)
+			.build()
+			.parseClaimsJws(token);
 	}
 }
