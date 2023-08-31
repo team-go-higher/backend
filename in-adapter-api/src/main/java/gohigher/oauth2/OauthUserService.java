@@ -39,7 +39,7 @@ public class OauthUserService extends DefaultOAuth2UserService {
 	private DefaultOAuth2User createOAuth2User(OAuth2UserInfo oAuth2UserInfo, User loginUser) {
 		return new DefaultOAuth2User(
 			Collections.singleton(
-				new SimpleGrantedAuthority(ROLE_PREFIX.concat(loginUser.getRole().toString()))
+				new SimpleGrantedAuthority(loginUser.getRole().toString())
 			),
 			oAuth2UserInfo.getAttributes(),
 			oAuth2UserInfo.getOAuth2IdAttributeName()

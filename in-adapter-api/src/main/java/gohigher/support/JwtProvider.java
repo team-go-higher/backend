@@ -8,7 +8,6 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import gohigher.user.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -29,17 +28,16 @@ public class JwtProvider {
 		this.refreshTokenExpireLength = refreshTokenExpireLength;
 	}
 
-	public String createAccessToken(final String email, final Role role, final Date now) {
-		return generateToken(email, role.toString(), now, accessTokenExpireLength);
+	public String createAccessToken(final String email, final Date now) {
+		return generateToken(email, now, accessTokenExpireLength);
 	}
 
-	public String createRefreshToken(final String email, final Role role, final Date now) {
-		return generateToken(email, role.toString(), now, refreshTokenExpireLength);
+	public String createRefreshToken(final String email, final Date now) {
+		return generateToken(email, now, refreshTokenExpireLength);
 	}
 
-	private String generateToken(final String email, final String role, final Date now, final long expiredLength) {
+	private String generateToken(final String email, final Date now, final long expiredLength) {
 		Claims claims = Jwts.claims().setSubject(email);
-		claims.put("role", role);
 
 		return Jwts.builder()
 			.setClaims(claims)

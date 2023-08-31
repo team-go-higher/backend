@@ -9,7 +9,6 @@ import java.util.Date;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import gohigher.user.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -27,24 +26,19 @@ class JwtProviderTest {
 	void createAccessToken() {
 		// given
 		JwtProvider jwtProvider = new JwtProvider(SECRET, ACCESS_TOKEN_EXPIRE_LENGTH, REFRESH_TOKEN_EXPIRE_LENGTH);
-
 		String email = "azpi@naver.com";
-		Role role = Role.USER;
 
 		// when
-		final String accessToken = jwtProvider.createAccessToken(email, role, new Date());
+		String accessToken = jwtProvider.createAccessToken(email, new Date());
 
 		// then
-		final Claims claims = Jwts.parserBuilder()
+		Claims claims = Jwts.parserBuilder()
 			.setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8)))
 			.build()
 			.parseClaimsJws(accessToken)
 			.getBody();
 
-		assertAll(
-			() -> assertThat(claims.getSubject()).isEqualTo(email),
-			() -> assertThat(claims.get("role")).isEqualTo(role.toString())
-		);
+		assertThat(claims.getSubject()).isEqualTo(email);
 	}
 
 	@DisplayName("토큰을 검증한다.")
@@ -54,11 +48,10 @@ class JwtProviderTest {
 		JwtProvider jwtProvider = new JwtProvider(SECRET, ACCESS_TOKEN_EXPIRE_LENGTH, REFRESH_TOKEN_EXPIRE_LENGTH);
 
 		String email = "azpi@naver.com";
-		Role role = Role.USER;
 
 		// when
-		final Date now = new Date();
-		final String accessToken = jwtProvider.createAccessToken(email, role, now);
+		Date now = new Date();
+		String accessToken = jwtProvider.createAccessToken(email, now);
 
 		// then
 		assertAll(
