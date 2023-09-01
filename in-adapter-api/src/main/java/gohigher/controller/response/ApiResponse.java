@@ -10,11 +10,11 @@ public class ApiResponse<T> {
 	private final ErrorResponse error;
 	private final T data;
 
-	public static <T> ApiResponse<T> success(final T data) {
+	public static <T> ApiResponse<T> success(T data) {
 		return new ApiResponse<>(true, null, data);
 	}
 
-	public static <T> ApiResponse<T> fail(final String errorCode, final String message) {
+	public static <T> ApiResponse<T> fail(String errorCode, final String message) {
 		ErrorResponse error = new ErrorResponse(errorCode, message);
 		return new ApiResponse<>(false, error, null);
 	}
