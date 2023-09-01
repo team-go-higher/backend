@@ -14,9 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-		Authentication authentication) throws IOException, ServletException {
-		System.out.println("됐다!!");
-
+	public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
+		final Authentication authentication) throws IOException, ServletException {
 	}
 }
