@@ -14,11 +14,11 @@ public class AuthorizationExtractor {
 	}
 
 	public static String extract(final HttpServletRequest request) {
-		final Enumeration<String> headers = extractHeaders(request);
+		Enumeration<String> headers = extractHeaders(request);
 		while (headers.hasMoreElements()) {
-			final String value = headers.nextElement();
+			String value = headers.nextElement();
 			if (isBearerToken(value)) {
-				final String token = value.substring(BEARER_TYPE.length()).trim();
+				String token = value.substring(BEARER_TYPE.length()).trim();
 				request.setAttribute(ACCESS_TOKEN_TYPE, value.substring(0, BEARER_TYPE.length()).trim());
 				return parseToken(token);
 			}
@@ -35,7 +35,7 @@ public class AuthorizationExtractor {
 	}
 
 	private static String parseToken(final String token) {
-		final int commaIndex = token.indexOf(',');
+		int commaIndex = token.indexOf(',');
 		if (commaIndex > 0) {
 			return token.substring(0, commaIndex);
 		}
