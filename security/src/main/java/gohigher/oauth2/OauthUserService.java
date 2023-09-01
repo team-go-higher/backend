@@ -10,16 +10,18 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import gohigher.oauth2.user.OAuth2UserInfo;
+import gohigher.oauth2.user.OAuth2UserInfoFactory;
 import gohigher.usecase.OAuth2CommandService;
 import gohigher.user.User;
-import gohigher.user.oauth2.OAuth2UserInfo;
-import gohigher.user.oauth2.OAuth2UserInfoFactory;
 import gohigher.user.oauth2.Provider;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class OauthUserService extends DefaultOAuth2UserService {
+
+	private static final String ROLE_PREFIX = "ROLE_";
 
 	private final OAuth2CommandService oAuth2CommandService;
 
@@ -37,7 +39,7 @@ public class OauthUserService extends DefaultOAuth2UserService {
 	private DefaultOAuth2User createOAuth2User(final OAuth2UserInfo oAuth2UserInfo, final User loginUser) {
 		return new DefaultOAuth2User(
 			Collections.singleton(
-				new SimpleGrantedAuthority(loginUser.getRole().toString())
+				new SimpleGrantedAuthority(ROLE_PREFIX.concat(loginUser.getRole().toString()))
 			),
 			oAuth2UserInfo.getAttributes(),
 			oAuth2UserInfo.getOAuth2IdAttributeName()

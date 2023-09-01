@@ -1,4 +1,4 @@
-package gohigher.support;
+package gohigher.jwt.support;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;

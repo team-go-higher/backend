@@ -9,6 +9,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseCookie;
 
+import gohigher.jwt.support.CookieProvider;
+
 class CookieProviderTest {
 
 	private static final int REFRESH_TOKEN_EXPIRE_LENGTH = 300000;

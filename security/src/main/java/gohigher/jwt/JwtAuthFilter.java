@@ -1,4 +1,4 @@
-package gohigher.config;
+package gohigher.jwt;
 
 import java.io.IOException;
 import java.util.Date;
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import gohigher.jwt.support.AuthorizationExtractor;
+import gohigher.jwt.support.JwtProvider;
 import gohigher.port.in.OAuth2QueryPort;
-import gohigher.support.AuthorizationExtractor;
-import gohigher.support.JwtProvider;
 import gohigher.user.User;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;

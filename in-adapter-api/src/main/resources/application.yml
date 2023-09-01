@@ -3,3 +3,11 @@ spring:
     import:
       - application-oauth2.yml
       - application-local.yml
+      - application-jwt.yml
+
+springdoc:
+  packagesToScan: gohigher
+  swagger-ui:
+    path: /api-docs
+    groups:
+      enabled: false

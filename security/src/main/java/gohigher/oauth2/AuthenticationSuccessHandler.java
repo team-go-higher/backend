@@ -13,9 +13,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import gohigher.support.CookieProvider;
-import gohigher.support.JwtProvider;
-import gohigher.user.Role;
+import gohigher.jwt.support.CookieProvider;
+import gohigher.jwt.support.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +52,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 	private String createTargetUrl(final String role, final String accessToken) {
 		return UriComponentsBuilder.fromUriString(redirectUrl)
 			.queryParam("accessToken", accessToken)
-			.queryParam("role", Role.valueOf(role).toString())
+			.queryParam("role", role)
 			.build()
 			.encode(StandardCharsets.UTF_8)
 			.toUriString();

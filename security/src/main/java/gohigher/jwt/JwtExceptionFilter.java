@@ -1,4 +1,4 @@
-package gohigher.config;
+package gohigher.jwt;
 
 import java.io.IOException;
 
