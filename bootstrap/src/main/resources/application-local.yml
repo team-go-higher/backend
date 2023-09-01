@@ -2,7 +2,7 @@ spring:
   config:
     import:
       - application-oauth2.yml
-      - application-local.yml
+      - application-persistence-local.yml
 springdoc:
   packagesToScan: gohigher
   swagger-ui:
