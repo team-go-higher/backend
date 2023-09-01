@@ -4,9 +4,7 @@ import java.util.Optional;
 
 import gohigher.user.User;
 
-public interface OauthLoginOutPort {
+public interface OAuth2PersistenceQueryPort {
 
 	Optional<User> findByEmail(final String email);
-
-	User save(final User user);
 }
