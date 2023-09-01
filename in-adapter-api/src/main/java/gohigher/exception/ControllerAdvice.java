@@ -11,7 +11,7 @@ import gohigher.global.exception.GoHigherException;
 public class ControllerAdvice {
 
 	@ExceptionHandler(GoHigherException.class)
-	public ResponseEntity<ApiResponse<Void>> handleGoHigherException(final GoHigherException e) {
+	public ResponseEntity<ApiResponse<Void>> handleGoHigherException(GoHigherException e) {
 		int statusCode = e.getStatusCode();
 		ApiResponse<Void> response = ApiResponse.fail(e.getErrorCode(), e.getMessage());
 
