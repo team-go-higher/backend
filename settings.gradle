@@ -3,4 +3,5 @@ include 'core-domain'
 include 'core-application'
 include 'in-adapter-api'
 include 'out-adapter-persistence-jpa'
+include 'security'
 
