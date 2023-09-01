@@ -27,7 +27,6 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 	private final JwtProvider jwtProvider;
 	private final CookieProvider cookieProvider;
 
-	@SuppressWarnings("checkstyle:WhitespaceAround")
 	@Override
 	public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
 		final Authentication authentication) throws IOException {
