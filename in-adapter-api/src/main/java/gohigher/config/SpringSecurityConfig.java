@@ -31,7 +31,8 @@ public class SpringSecurityConfig {
 			.cors(CorsConfigurer::disable)
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth ->
-				auth.anyRequest().authenticated()
+				auth.requestMatchers("/token").permitAll()
+					.anyRequest().authenticated()
 			)
 			.httpBasic(withDefaults());
 

@@ -21,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OauthUserService extends DefaultOAuth2UserService {
 
-	private static final String ROLE_PREFIX = "ROLE_";
-
 	private final OAuth2CommandService oAuth2CommandService;
 
 	@Override

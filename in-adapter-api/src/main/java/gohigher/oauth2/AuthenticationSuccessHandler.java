@@ -26,6 +26,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
 	private final JwtProvider jwtProvider;
 	private final CookieProvider cookieProvider;
+	private final String redirectUrl = "http://localhost:3000/token";
 
 	@Override
 	public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
@@ -35,21 +36,22 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		String email = oAuth2User.getAttribute("email");
 		String role = oAuth2User.getAuthorities().stream()
 			.findFirst()
-			.orElseThrow(IllegalAccessError::new) // 존재하지 않을 시 예외를 던진다.
+			.orElseThrow(IllegalAccessError::new)
 			.getAuthority();
 
-		String requestUri = "http://localhost:3000/login";
 		Date now = new Date();
 
 		String accessToken = jwtProvider.createAccessToken(email, now);
-		String targetUrl = createTargetUrl(role, requestUri, accessToken);
-		addRefreshTokenCookie(response, email, role, now);
+		String refreshToken = jwtProvider.createRefreshToken(email, now);
+		String targetUrl = createTargetUrl(role, accessToken);
+
+		addRefreshTokenCookie(response, refreshToken);
 
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);
 	}
 
-	private String createTargetUrl(final String role, final String requestUri, final String accessToken) {
-		return UriComponentsBuilder.fromUriString(requestUri)
+	private String createTargetUrl(final String role, final String accessToken) {
+		return UriComponentsBuilder.fromUriString(redirectUrl)
 			.queryParam("accessToken", accessToken)
 			.queryParam("role", Role.valueOf(role).toString())
 			.build()
@@ -57,13 +59,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 			.toUriString();
 	}
 
-	private void addRefreshTokenCookie(final HttpServletResponse response, final String email, final String role,
-		final Date now) {
-		if (role.equals(Role.GUEST.toString())) {
-			return;
-		}
-
-		String refreshToken = jwtProvider.createRefreshToken(email, now);
+	private void addRefreshTokenCookie(final HttpServletResponse response, final String refreshToken) {
 		ResponseCookie responseCookie = cookieProvider.create(refreshToken);
 		response.addHeader(SET_COOKIE, responseCookie.toString());
 	}
