@@ -1,0 +1,6 @@
+springdoc:
+  packagesToScan: gohigher
+  swagger-ui:
+    path: /api-docs
+    groups:
+      enabled: false
