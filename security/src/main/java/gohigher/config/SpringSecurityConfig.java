@@ -36,7 +36,9 @@ public class SpringSecurityConfig {
 			.cors(CorsConfigurer::disable)
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth ->
-				auth.requestMatchers("/token").permitAll()
+				auth.requestMatchers("/token", "/api-docs", "/swagger-ui/**", "/v3/api-docs/swagger-config",
+					"/v3/api-docs"
+				).permitAll()
 					.anyRequest().authenticated()
 			)
 			.httpBasic(withDefaults());
