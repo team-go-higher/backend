@@ -1,6 +1,6 @@
 package gohigher.application.port.in;
 
-public interface ApplicationUseCase {
+public interface ApplicationCommandPort {
 
 	void applySimply(Long userId, SimpleApplicationCommand command);
 }

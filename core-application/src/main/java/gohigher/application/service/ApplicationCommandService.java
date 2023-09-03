@@ -3,20 +3,20 @@ package gohigher.application.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import gohigher.application.port.in.ApplicationUseCase;
+import gohigher.application.port.in.ApplicationCommandPort;
 import gohigher.application.port.in.SimpleApplicationCommand;
-import gohigher.application.port.out.persistence.ApplicationPersistencePort;
+import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ApplicationService implements ApplicationUseCase {
+public class ApplicationCommandService implements ApplicationCommandPort {
 
-	private final ApplicationPersistencePort applicationPersistencePort;
+	private final ApplicationPersistenceCommandPort applicationPersistenceCommandPort;
 
 	@Override
 	@Transactional
 	public void applySimply(Long userId, SimpleApplicationCommand command) {
-		applicationPersistencePort.save(userId, command.toDomain());
+		applicationPersistenceCommandPort.save(userId, command.toDomain());
 	}
 }
