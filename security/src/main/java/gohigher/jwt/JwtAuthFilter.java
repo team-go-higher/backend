@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import gohigher.jwt.support.AuthorizationExtractor;
 import gohigher.jwt.support.JwtProvider;
-import gohigher.port.in.OAuth2QueryPort;
+import gohigher.port.in.UserQueryPort;
 import gohigher.user.User;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
 	private final JwtProvider jwtProvider;
-	private final OAuth2QueryPort oAuth2QueryPort;
+	private final UserQueryPort userQueryPort;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -45,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			throw new JwtException("Access Token Expired");
 		}
 
-		User user = oAuth2QueryPort.findByEmail(jwtProvider.getUid(accessToken));
+		User user = userQueryPort.findByEmail(jwtProvider.getUid(accessToken));
 
 		Authentication auth = getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(auth);

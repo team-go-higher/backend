@@ -27,10 +27,10 @@ class JwtProviderTest {
 	void createAccessToken() {
 		// given
 		JwtProvider jwtProvider = new JwtProvider(SECRET, ACCESS_TOKEN_EXPIRE_LENGTH, REFRESH_TOKEN_EXPIRE_LENGTH);
-		String email = "azpi@naver.com";
+		Long userId = 1L;
 
 		// when
-		String accessToken = jwtProvider.createAccessToken(email, new Date());
+		String accessToken = jwtProvider.createAccessToken(userId, new Date());
 
 		// then
 		Claims claims = Jwts.parserBuilder()
@@ -39,7 +39,7 @@ class JwtProviderTest {
 			.parseClaimsJws(accessToken)
 			.getBody();
 
-		assertThat(claims.getSubject()).isEqualTo(email);
+		assertThat(claims.getSubject()).isEqualTo(String.valueOf(userId));
 	}
 
 	@DisplayName("토큰을 검증한다.")
@@ -47,12 +47,11 @@ class JwtProviderTest {
 	void verifyToken() {
 		// given
 		JwtProvider jwtProvider = new JwtProvider(SECRET, ACCESS_TOKEN_EXPIRE_LENGTH, REFRESH_TOKEN_EXPIRE_LENGTH);
-
-		String email = "azpi@naver.com";
+		Long userId = 1L;
 
 		// when
 		Date now = new Date();
-		String accessToken = jwtProvider.createAccessToken(email, now);
+		String accessToken = jwtProvider.createAccessToken(userId, now);
 
 		// then
 		assertAll(

@@ -28,16 +28,16 @@ public class JwtProvider {
 		this.refreshTokenExpireLength = refreshTokenExpireLength;
 	}
 
-	public String createAccessToken(String email, Date now) {
-		return generateToken(email, now, accessTokenExpireLength);
+	public String createAccessToken(Long userId, Date now) {
+		return generateToken(userId, now, accessTokenExpireLength);
 	}
 
-	public String createRefreshToken(String email, Date now) {
-		return generateToken(email, now, refreshTokenExpireLength);
+	public String createRefreshToken(Long userId, Date now) {
+		return generateToken(userId, now, refreshTokenExpireLength);
 	}
 
-	private String generateToken(String email, Date now, long expiredLength) {
-		Claims claims = Jwts.claims().setSubject(email);
+	private String generateToken(Long userId, Date now, long expiredLength) {
+		Claims claims = Jwts.claims().setSubject(String.valueOf(userId));
 
 		return Jwts.builder()
 			.setClaims(claims)

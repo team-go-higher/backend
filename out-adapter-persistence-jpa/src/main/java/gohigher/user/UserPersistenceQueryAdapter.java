@@ -4,13 +4,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import gohigher.port.out.OAuth2PersistenceCommandPort;
-import gohigher.port.out.OAuth2PersistenceQueryPort;
+import gohigher.port.out.UserPersistenceQueryPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
-public class OAuth2Repository implements OAuth2PersistenceQueryPort, OAuth2PersistenceCommandPort {
+public class UserPersistenceQueryAdapter implements UserPersistenceQueryPort {
 
 	private final UserRepository userRepository;
 
@@ -18,11 +17,5 @@ public class OAuth2Repository implements OAuth2PersistenceQueryPort, OAuth2Persi
 	public Optional<User> findByEmail(String email) {
 		return userRepository.findByEmail(email)
 			.map(UserJpaEntity::convert);
-	}
-
-	@Override
-	public User save(User user) {
-		final UserJpaEntity savedUser = userRepository.save(UserJpaEntity.from(user));
-		return savedUser.convert();
 	}
 }

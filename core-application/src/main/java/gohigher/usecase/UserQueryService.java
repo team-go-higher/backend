@@ -3,21 +3,21 @@ package gohigher.usecase;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import gohigher.port.in.OAuth2QueryPort;
-import gohigher.port.out.OAuth2PersistenceQueryPort;
+import gohigher.port.in.UserQueryPort;
+import gohigher.port.out.UserPersistenceQueryPort;
 import gohigher.user.User;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class OAuth2QueryService implements OAuth2QueryPort {
+public class UserQueryService implements UserQueryPort {
 
-	private final OAuth2PersistenceQueryPort oAuth2PersistenceQueryPort;
+	private final UserPersistenceQueryPort userPersistenceQueryPort;
 
 	@Override
 	public User findByEmail(String email) {
-		return oAuth2PersistenceQueryPort.findByEmail(email)
+		return userPersistenceQueryPort.findByEmail(email)
 			.orElseThrow(IllegalAccessError::new);
 	}
 

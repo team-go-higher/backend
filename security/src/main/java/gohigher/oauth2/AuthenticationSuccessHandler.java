@@ -32,7 +32,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		Authentication authentication) throws IOException {
 		OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
 
-		String email = oAuth2User.getAttribute("email");
+		Long userId = oAuth2User.getAttribute("userId");
 		String role = oAuth2User.getAuthorities().stream()
 			.findFirst()
 			.orElseThrow(IllegalAccessError::new)
@@ -40,8 +40,8 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
 		Date now = new Date();
 
-		String accessToken = jwtProvider.createAccessToken(email, now);
-		String refreshToken = jwtProvider.createRefreshToken(email, now);
+		String accessToken = jwtProvider.createAccessToken(userId, now);
+		String refreshToken = jwtProvider.createRefreshToken(userId, now);
 		String targetUrl = createTargetUrl(role, accessToken);
 
 		addRefreshTokenCookie(response, refreshToken);

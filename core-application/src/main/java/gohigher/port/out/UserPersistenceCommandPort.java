@@ -2,7 +2,7 @@ package gohigher.port.out;
 
 import gohigher.user.User;
 
-public interface OAuth2PersistenceCommandPort {
+public interface UserPersistenceCommandPort {
 
 	User save(User user);
 }
