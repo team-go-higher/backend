@@ -5,16 +5,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import gohigher.controller.response.ApiResponse;
-import gohigher.global.exception.ErrorCodeFinder;
 import gohigher.global.exception.GlobalErrorCode;
 import gohigher.global.exception.GoHigherException;
-import lombok.RequiredArgsConstructor;
 
 @RestControllerAdvice
-@RequiredArgsConstructor
 public class ControllerAdvice {
-
-	private final ErrorCodeFinder errorCodeFinder;
 
 	@ExceptionHandler(GoHigherException.class)
 	public ResponseEntity<ApiResponse<Void>> handleGoHigherException(GoHigherException e) {
