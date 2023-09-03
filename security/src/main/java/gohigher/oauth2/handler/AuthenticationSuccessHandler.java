@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -17,15 +18,20 @@ import gohigher.jwt.support.CookieProvider;
 import gohigher.jwt.support.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	private final JwtProvider jwtProvider;
 	private final CookieProvider cookieProvider;
-	private final String redirectUrl = "http://localhost:3000/token";
+	private final String redirectUrl;
+
+	public AuthenticationSuccessHandler(JwtProvider jwtProvider, CookieProvider cookieProvider,
+		@Value("${oauth2.success.redirect_uri}") String redirectUrl) {
+		this.jwtProvider = jwtProvider;
+		this.cookieProvider = cookieProvider;
+		this.redirectUrl = redirectUrl;
+	}
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
