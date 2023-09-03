@@ -5,3 +5,7 @@ spring:
       - application-persistence-local.yml
       - application-docs.yml
       - application-jwt.yml
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
