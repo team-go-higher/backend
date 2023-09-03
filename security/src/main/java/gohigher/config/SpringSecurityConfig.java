@@ -10,9 +10,13 @@ import org.springframework.security.config.annotation.web.configurers.CorsConfig
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import gohigher.oauth2.AuthenticationSuccessHandler;
+import gohigher.jwt.JwtAuthFilter;
+import gohigher.jwt.JwtExceptionFilter;
 import gohigher.oauth2.OauthUserService;
+import gohigher.oauth2.handler.AuthenticationFailureHandler;
+import gohigher.oauth2.handler.AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -21,23 +25,32 @@ import lombok.RequiredArgsConstructor;
 public class SpringSecurityConfig {
 
 	private final OauthUserService oauthUserService;
+	private final JwtAuthFilter jwtAuthFilter;
+	private final JwtExceptionFilter jwtExceptionFilter;
 	private final AuthenticationSuccessHandler oAuth2LoginSuccessHandler;
+	private final AuthenticationFailureHandler oAuth2LoginFailureHandler;
 
 	@Bean
-	public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(CsrfConfigurer::disable)
 			.cors(CorsConfigurer::disable)
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth ->
-				auth.anyRequest().authenticated()
+				auth.requestMatchers("/token", "/api-docs", "/swagger-ui/**", "/v3/api-docs/swagger-config",
+					"/v3/api-docs"
+				).permitAll()
+					.anyRequest().authenticated()
 			)
 			.httpBasic(withDefaults());
 
 		http.oauth2Login(oauth2 -> oauth2
 			.redirectionEndpoint(redirection -> redirection.baseUri("/oauth2/callback/**"))
 			.userInfoEndpoint(userInfo -> userInfo.userService(oauthUserService))
-			.successHandler(oAuth2LoginSuccessHandler));
+			.successHandler(oAuth2LoginSuccessHandler)
+			.failureHandler(oAuth2LoginFailureHandler));
 
-		return http.build();
+		return http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class)
+			.build();
 	}
 }

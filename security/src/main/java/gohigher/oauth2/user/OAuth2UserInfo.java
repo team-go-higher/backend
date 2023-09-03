@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class OAuth2UserInfo {
 
+	protected static final String USER_ID = "userId";
+
 	protected final String oauth2IdAttributeName;
 	protected final Map<String, Object> attributes;
 
@@ -21,4 +23,8 @@ public abstract class OAuth2UserInfo {
 	public abstract String getEmail();
 
 	public abstract Map<String, Object> getAttributes();
+
+	public abstract Long getUserId();
+
+	public abstract void setUserId(Long userId);
 }

@@ -1,5 +1,6 @@
 package gohigher.user;
 
+import gohigher.user.oauth2.Provider;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -29,13 +30,13 @@ public class UserJpaEntity {
 	@Enumerated(EnumType.STRING)
 	private Provider provider;
 
-	public UserJpaEntity(final String email, final Role role, final Provider provider) {
+	public UserJpaEntity(String email, Role role, Provider provider) {
 		this.email = email;
 		this.role = role;
 		this.provider = provider;
 	}
 
-	public static UserJpaEntity from(final User user) {
+	public static UserJpaEntity from(User user) {
 		return new UserJpaEntity(user.getEmail(), user.getRole(), user.getProvider());
 	}
 

@@ -1,5 +1,6 @@
 package gohigher.user;
 
+import gohigher.user.oauth2.Provider;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
