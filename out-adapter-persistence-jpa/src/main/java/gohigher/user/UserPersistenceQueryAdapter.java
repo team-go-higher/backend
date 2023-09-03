@@ -18,4 +18,10 @@ public class UserPersistenceQueryAdapter implements UserPersistenceQueryPort {
 		return userRepository.findByEmail(email)
 			.map(UserJpaEntity::convert);
 	}
+
+	@Override
+	public Optional<User> findById(Long id) {
+		return userRepository.findById(id)
+			.map(UserJpaEntity::convert);
+	}
 }

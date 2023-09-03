@@ -43,7 +43,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		}
 
 		verifyToken(accessToken, now);
-		User user = userQueryPort.findByEmail(jwtProvider.getUid(accessToken));
+		User user = userQueryPort.findById(jwtProvider.getPayload(accessToken));
 
 		Authentication auth = getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(auth);

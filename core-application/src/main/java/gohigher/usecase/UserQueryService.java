@@ -18,8 +18,8 @@ public class UserQueryService implements UserQueryPort {
 	private final UserPersistenceQueryPort userPersistenceQueryPort;
 
 	@Override
-	public User findByEmail(String email) {
-		return userPersistenceQueryPort.findByEmail(email)
+	public User findById(Long id) {
+		return userPersistenceQueryPort.findById(id)
 			.orElseThrow(() -> new GoHigherException(UserErrorCode.USER_NOT_EXISTS));
 	}
 }
