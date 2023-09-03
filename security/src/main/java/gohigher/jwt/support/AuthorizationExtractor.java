@@ -3,15 +3,15 @@ package gohigher.jwt.support;
 import java.util.Enumeration;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthorizationExtractor {
 
 	private static final String AUTHORIZATION = "Authorization";
 	private static final String ACCESS_TOKEN_TYPE = AuthorizationExtractor.class.getSimpleName() + ".ACCESS_TOKEN_TYPE";
 	private static final String BEARER_TYPE = "Bearer";
-
-	private AuthorizationExtractor() {
-	}
 
 	public static String extract(HttpServletRequest request) {
 		Enumeration<String> headers = extractHeaders(request);
