@@ -22,5 +22,4 @@ public class UserQueryService implements UserQueryPort {
 		return userPersistenceQueryPort.findByEmail(email)
 			.orElseThrow(() -> new GoHigherException(UserErrorCode.USER_NOT_EXISTS));
 	}
-
 }
