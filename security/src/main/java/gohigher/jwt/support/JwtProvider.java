@@ -8,10 +8,13 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import gohigher.AuthErrorCode;
+import gohigher.global.exception.GoHigherException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 @Component
 public class JwtProvider {
@@ -54,12 +57,12 @@ public class JwtProvider {
 			return claims.getBody()
 				.getExpiration()
 				.after(now);
-		} catch (Exception e) {
-			return false;
+		} catch (SignatureException e) {
+			throw new GoHigherException(AuthErrorCode.INVALID_TOKEN_BY_SIGNATURE);
 		}
 	}
 
-	private Jws<Claims> parseClaimsJws(String token) {
+	private Jws<Claims> parseClaimsJws(String token) throws SignatureException {
 		return Jwts.parserBuilder()
 			.setSigningKey(secretKey)
 			.build()

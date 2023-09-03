@@ -1,4 +1,4 @@
-package gohigher.oauth2;
+package gohigher.oauth2.handler;
 
 import java.io.IOException;
 

@@ -14,9 +14,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import gohigher.jwt.JwtAuthFilter;
 import gohigher.jwt.JwtExceptionFilter;
-import gohigher.oauth2.AuthenticationFailureHandler;
-import gohigher.oauth2.AuthenticationSuccessHandler;
 import gohigher.oauth2.OauthUserService;
+import gohigher.oauth2.handler.AuthenticationFailureHandler;
+import gohigher.oauth2.handler.AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
