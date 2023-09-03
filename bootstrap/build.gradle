@@ -2,22 +2,22 @@ plugins {
     id 'java'
 }
 
-group 'gohigher'
-version '0.0.1-SNAPSHOT'
+group = 'gohigher'
+version = '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation(project(":core-domain"))
     implementation(project(":core-application"))
+    implementation(project(":core-domain"))
+    implementation(project(":out-adapter-persistence-jpa"))
+    implementation(project(":in-adapter-api"))
     implementation(project(":security"))
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {

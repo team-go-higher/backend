@@ -1,0 +1,6 @@
+spring:
+  config:
+    import:
+      - application-oauth2.yml
+      - application-persistence-local.yml
+      - application-docs.yml
