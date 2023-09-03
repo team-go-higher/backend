@@ -1,4 +1,4 @@
-package gohigher.jwt.support;
+package gohigher.usecase.token;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -8,8 +8,9 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import gohigher.AuthErrorCode;
 import gohigher.global.exception.GoHigherException;
+import gohigher.port.in.token.TokenCommandPort;
+import gohigher.user.AuthErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -17,13 +18,13 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 
 @Component
-public class JwtProvider {
+public class JwtCommandService implements TokenCommandPort {
 
 	private final SecretKey secretKey;
 	private final long accessTokenExpireLength;
 	private final long refreshTokenExpireLength;
 
-	public JwtProvider(@Value("${security.jwt.secret-key}") String secretKey,
+	public JwtCommandService(@Value("${security.jwt.secret-key}") String secretKey,
 		@Value("${security.jwt.expire-length.access}") long accessTokenExpireLength,
 		@Value("${security.jwt.expire-length.refresh}") long refreshTokenExpireLength) {
 		this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -50,7 +51,7 @@ public class JwtProvider {
 			.compact();
 	}
 
-	public boolean verifyToken(String token, Date now) {
+	public boolean verify(String token, Date now) {
 		try {
 			Jws<Claims> claims = parseClaimsJws(token);
 
@@ -69,12 +70,13 @@ public class JwtProvider {
 			.parseClaimsJws(token);
 	}
 
-	public String getUid(String token) {
-		return Jwts.parserBuilder()
+	public Long getPayload(String token) {
+		String payload = Jwts.parserBuilder()
 			.setSigningKey(secretKey)
 			.build()
 			.parseClaimsJws(token)
 			.getBody()
 			.getSubject();
+		return Long.valueOf(payload);
 	}
 }

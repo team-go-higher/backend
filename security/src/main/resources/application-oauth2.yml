@@ -24,4 +24,4 @@ spring:
 
 oauth2:
   success:
-    redirect_uri: 'http://localhost:3000/token'
+    redirect_uri: 'http://localhost:8080/token'

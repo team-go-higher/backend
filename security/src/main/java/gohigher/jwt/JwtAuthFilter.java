@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import gohigher.AuthErrorCode;
 import gohigher.global.exception.GoHigherException;
 import gohigher.jwt.support.AuthorizationExtractor;
-import gohigher.jwt.support.JwtProvider;
 import gohigher.port.in.UserQueryPort;
+import gohigher.port.in.token.TokenCommandPort;
+import gohigher.user.AuthErrorCode;
 import gohigher.user.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-	private final JwtProvider jwtProvider;
+	private final TokenCommandPort tokenCommandPort;
 	private final UserQueryPort userQueryPort;
 
 	@Override
@@ -43,7 +43,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		}
 
 		verifyToken(accessToken, now);
-		User user = userQueryPort.findByEmail(jwtProvider.getUid(accessToken));
+		User user = userQueryPort.findById(tokenCommandPort.getPayload(accessToken));
 
 		Authentication auth = getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(auth);
@@ -52,7 +52,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	}
 
 	private void verifyToken(String accessToken, Date now) {
-		if (!jwtProvider.verifyToken(accessToken, now)) {
+		if (!tokenCommandPort.verify(accessToken, now)) {
 			throw new GoHigherException(AuthErrorCode.TOKEN_EXPIRED);
 		}
 	}

@@ -1,4 +1,4 @@
-package gohigher;
+package gohigher.user;
 
 import gohigher.global.exception.ErrorCode;
 import lombok.Getter;

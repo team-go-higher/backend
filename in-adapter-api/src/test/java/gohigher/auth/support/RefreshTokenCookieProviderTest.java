@@ -1,4 +1,4 @@
-package gohigher.support;
+package gohigher.auth.support;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,9 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseCookie;
 
-import gohigher.jwt.support.CookieProvider;
-
-class CookieProviderTest {
+class RefreshTokenCookieProviderTest {
 
 	private static final int REFRESH_TOKEN_EXPIRE_LENGTH = 300000;
 
@@ -19,11 +17,12 @@ class CookieProviderTest {
 	@Test
 	void create() {
 		// given
-		CookieProvider cookieProvider = new CookieProvider(REFRESH_TOKEN_EXPIRE_LENGTH);
+		RefreshTokenCookieProvider refreshTokenCookieProvider = new RefreshTokenCookieProvider(
+			REFRESH_TOKEN_EXPIRE_LENGTH);
 		String refreshToken = "refreshToken";
 
 		// when
-		ResponseCookie refreshTokenCookie = cookieProvider.create(refreshToken);
+		ResponseCookie refreshTokenCookie = refreshTokenCookieProvider.create(refreshToken);
 
 		// then
 		assertAll(
