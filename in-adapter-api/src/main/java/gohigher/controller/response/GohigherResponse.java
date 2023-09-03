@@ -6,18 +6,18 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class ApiResponse<T> {
+public class GohigherResponse<T> {
 
 	private final boolean success;
 	private final ErrorResponse error;
 	private final T data;
 
-	public static <T> ApiResponse<T> success(T data) {
-		return new ApiResponse<>(true, null, data);
+	public static <T> GohigherResponse<T> success(T data) {
+		return new GohigherResponse<>(true, null, data);
 	}
 
-	public static <T> ApiResponse<T> fail(String errorCode, String message) {
+	public static <T> GohigherResponse<T> fail(String errorCode, String message) {
 		ErrorResponse error = new ErrorResponse(errorCode, message);
-		return new ApiResponse<>(false, error, null);
+		return new GohigherResponse<>(false, error, null);
 	}
 }
