@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CookieProvider {
 
-	private static final String REFRESH_TOKEN = "refreshToken";
+	private static final String REFRESH_TOKEN_KEY = "refresh token";
+
 	private final long refreshTokenExpireLength;
 
 	public CookieProvider(@Value("${security.jwt.expire-length.refresh}") long refreshTokenExpireLength) {
@@ -24,7 +25,7 @@ public class CookieProvider {
 	}
 
 	private ResponseCookie.ResponseCookieBuilder createTokenCookieBuilder(String value) {
-		return ResponseCookie.from(REFRESH_TOKEN, value)
+		return ResponseCookie.from(REFRESH_TOKEN_KEY, value)
 			.httpOnly(true)
 			.secure(true)
 			.path("/token")
