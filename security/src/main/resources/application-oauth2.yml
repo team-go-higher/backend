@@ -1,0 +1,23 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ENC(SiDMxnkUCX605o8TH5NBYtYnE0CHEVs4EfI+XJvFdbI1WK5VWktBgp+wG9rEyGWXzbXNABs0/b9bkcbaNbAWh9g7o5Hm3B6geC2PxK5WXwc=)
+            client-secret: ENC(54eCyVZWg568iCRLeiwRU00wtVv5aHx+XigoTBQN2Ub7tHoE8+IlCgZa5Bby0VvR)
+            scope: email
+            redirect_uri: http://localhost:8080/oauth2/callback/google
+          kakao:
+            client-id: ENC(I5PeqTmLd/vUpKxHQVo5a2xTVrXWqlLjRSoANQCipSH2Ed07G//YMme46hN8eFA2)
+            redirect-uri: http://localhost:8080/oauth2/callback/kakao
+            authorization-grant-type: authorization_code
+            scope: account_email,profile_nickname
+            client-name: Kakao
+            client-authentication-method: client_secret_post
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
