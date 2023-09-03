@@ -20,7 +20,7 @@ public class OAuth2CommandService implements OAuth2CommandPort {
 	private final OAuth2PersistenceCommandPort oAuth2PersistenceCommandPort;
 
 	@Override
-	public User login(final String email, final Provider provider) {
+	public User login(String email, Provider provider) {
 		return oAuth2PersistenceQueryPort.findByEmail(email)
 			.orElseGet(() -> oAuth2PersistenceCommandPort.save(new User(email, Role.GUEST, provider)));
 	}

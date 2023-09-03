@@ -4,5 +4,5 @@ import gohigher.user.User;
 
 public interface OAuth2PersistenceCommandPort {
 
-	User save(final User user);
+	User save(User user);
 }

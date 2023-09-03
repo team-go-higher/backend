@@ -30,13 +30,13 @@ public class UserJpaEntity {
 	@Enumerated(EnumType.STRING)
 	private Provider provider;
 
-	public UserJpaEntity(final String email, final Role role, final Provider provider) {
+	public UserJpaEntity(String email, Role role, Provider provider) {
 		this.email = email;
 		this.role = role;
 		this.provider = provider;
 	}
 
-	public static UserJpaEntity from(final User user) {
+	public static UserJpaEntity from(User user) {
 		return new UserJpaEntity(user.getEmail(), user.getRole(), user.getProvider());
 	}
 

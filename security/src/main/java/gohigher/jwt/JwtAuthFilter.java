@@ -31,10 +31,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	private final OAuth2QueryPort oAuth2QueryPort;
 
 	@Override
-	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
-		final FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+		FilterChain filterChain) throws ServletException, IOException {
 		String accessToken = AuthorizationExtractor.extract(request);
-		final Date now = new Date();
+		Date now = new Date();
 
 		if (!StringUtils.hasText(accessToken)) {
 			doFilter(request, response, filterChain);
@@ -45,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			throw new JwtException("Access Token Expired");
 		}
 
-		final User user = oAuth2QueryPort.findByEmail(jwtProvider.getUid(accessToken));
+		User user = oAuth2QueryPort.findByEmail(jwtProvider.getUid(accessToken));
 
 		Authentication auth = getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(auth);
@@ -53,7 +53,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	public Authentication getAuthentication(final User user) {
+	public Authentication getAuthentication(User user) {
 		return new UsernamePasswordAuthenticationToken(user, "",
 			List.of(new SimpleGrantedAuthority("ROLE_".concat(user.getRole().toString()))));
 	}

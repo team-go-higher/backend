@@ -13,17 +13,17 @@ public class CookieProvider {
 	private static final String REFRESH_TOKEN = "refreshToken";
 	private final long refreshTokenExpireLength;
 
-	public CookieProvider(@Value("${security.jwt.expire-length.refresh}") final long refreshTokenExpireLength) {
+	public CookieProvider(@Value("${security.jwt.expire-length.refresh}") long refreshTokenExpireLength) {
 		this.refreshTokenExpireLength = refreshTokenExpireLength;
 	}
 
-	public ResponseCookie create(final String refreshToken) {
+	public ResponseCookie create(String refreshToken) {
 		return createTokenCookieBuilder(refreshToken)
 			.maxAge(Duration.ofMillis(refreshTokenExpireLength))
 			.build();
 	}
 
-	private ResponseCookie.ResponseCookieBuilder createTokenCookieBuilder(final String value) {
+	private ResponseCookie.ResponseCookieBuilder createTokenCookieBuilder(String value) {
 		return ResponseCookie.from(REFRESH_TOKEN, value)
 			.httpOnly(true)
 			.secure(true)

@@ -13,7 +13,7 @@ public class AuthorizationExtractor {
 	private AuthorizationExtractor() {
 	}
 
-	public static String extract(final HttpServletRequest request) {
+	public static String extract(HttpServletRequest request) {
 		Enumeration<String> headers = extractHeaders(request);
 		while (headers.hasMoreElements()) {
 			String value = headers.nextElement();
@@ -26,15 +26,15 @@ public class AuthorizationExtractor {
 		return null;
 	}
 
-	private static Enumeration<String> extractHeaders(final HttpServletRequest request) {
+	private static Enumeration<String> extractHeaders(HttpServletRequest request) {
 		return request.getHeaders(AUTHORIZATION);
 	}
 
-	private static boolean isBearerToken(final String value) {
+	private static boolean isBearerToken(String value) {
 		return value.toLowerCase().startsWith(BEARER_TYPE.toLowerCase());
 	}
 
-	private static String parseToken(final String token) {
+	private static String parseToken(String token) {
 		int commaIndex = token.indexOf(',');
 		if (commaIndex > 0) {
 			return token.substring(0, commaIndex);

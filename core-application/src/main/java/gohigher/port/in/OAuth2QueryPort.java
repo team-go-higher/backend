@@ -4,5 +4,5 @@ import gohigher.user.User;
 
 public interface OAuth2QueryPort {
 
-	User findByEmail(final String email);
+	User findByEmail(String email);
 }

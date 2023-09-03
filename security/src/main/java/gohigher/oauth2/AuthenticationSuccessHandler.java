@@ -28,8 +28,8 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 	private final String redirectUrl = "http://localhost:3000/token";
 
 	@Override
-	public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
-		final Authentication authentication) throws IOException {
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+		Authentication authentication) throws IOException {
 		OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
 
 		String email = oAuth2User.getAttribute("email");
@@ -49,7 +49,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);
 	}
 
-	private String createTargetUrl(final String role, final String accessToken) {
+	private String createTargetUrl(String role, String accessToken) {
 		return UriComponentsBuilder.fromUriString(redirectUrl)
 			.queryParam("accessToken", accessToken)
 			.queryParam("role", role)
@@ -58,7 +58,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 			.toUriString();
 	}
 
-	private void addRefreshTokenCookie(final HttpServletResponse response, final String refreshToken) {
+	private void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
 		ResponseCookie responseCookie = cookieProvider.create(refreshToken);
 		response.addHeader(SET_COOKIE, responseCookie.toString());
 	}

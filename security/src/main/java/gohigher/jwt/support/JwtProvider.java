@@ -20,23 +20,23 @@ public class JwtProvider {
 	private final long accessTokenExpireLength;
 	private final long refreshTokenExpireLength;
 
-	public JwtProvider(@Value("${security.jwt.secret-key}") final String secretKey,
-		@Value("${security.jwt.expire-length.access}") final long accessTokenExpireLength,
-		@Value("${security.jwt.expire-length.refresh}") final long refreshTokenExpireLength) {
+	public JwtProvider(@Value("${security.jwt.secret-key}") String secretKey,
+		@Value("${security.jwt.expire-length.access}") long accessTokenExpireLength,
+		@Value("${security.jwt.expire-length.refresh}") long refreshTokenExpireLength) {
 		this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 		this.accessTokenExpireLength = accessTokenExpireLength;
 		this.refreshTokenExpireLength = refreshTokenExpireLength;
 	}
 
-	public String createAccessToken(final String email, final Date now) {
+	public String createAccessToken(String email, Date now) {
 		return generateToken(email, now, accessTokenExpireLength);
 	}
 
-	public String createRefreshToken(final String email, final Date now) {
+	public String createRefreshToken(String email, Date now) {
 		return generateToken(email, now, refreshTokenExpireLength);
 	}
 
-	private String generateToken(final String email, final Date now, final long expiredLength) {
+	private String generateToken(String email, Date now, long expiredLength) {
 		Claims claims = Jwts.claims().setSubject(email);
 
 		return Jwts.builder()
@@ -47,7 +47,7 @@ public class JwtProvider {
 			.compact();
 	}
 
-	public boolean verifyToken(final String token, final Date now) {
+	public boolean verifyToken(String token, Date now) {
 		try {
 			Jws<Claims> claims = parseClaimsJws(token);
 
@@ -59,14 +59,14 @@ public class JwtProvider {
 		}
 	}
 
-	private Jws<Claims> parseClaimsJws(final String token) {
+	private Jws<Claims> parseClaimsJws(String token) {
 		return Jwts.parserBuilder()
 			.setSigningKey(secretKey)
 			.build()
 			.parseClaimsJws(token);
 	}
 
-	public String getUid(final String token) {
+	public String getUid(String token) {
 		return Jwts.parserBuilder()
 			.setSigningKey(secretKey)
 			.build()

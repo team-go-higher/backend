@@ -15,13 +15,13 @@ public class OAuth2Repository implements OAuth2PersistenceQueryPort, OAuth2Persi
 	private final UserRepository userRepository;
 
 	@Override
-	public Optional<User> findByEmail(final String email) {
+	public Optional<User> findByEmail(String email) {
 		return userRepository.findByEmail(email)
 			.map(UserJpaEntity::convert);
 	}
 
 	@Override
-	public User save(final User user) {
+	public User save(User user) {
 		final UserJpaEntity savedUser = userRepository.save(UserJpaEntity.from(user));
 		return savedUser.convert();
 	}

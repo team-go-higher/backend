@@ -6,5 +6,5 @@ import gohigher.user.User;
 
 public interface OAuth2PersistenceQueryPort {
 
-	Optional<User> findByEmail(final String email);
+	Optional<User> findByEmail(String email);
 }
