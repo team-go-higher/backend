@@ -9,13 +9,13 @@ import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationProcessJpaEntity;
 import gohigher.application.entity.ApplicationProcessRepository;
 import gohigher.application.entity.ApplicationRepository;
-import gohigher.application.port.out.persistence.ApplicationPersistencePort;
+import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.common.Process;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class ApplicationPersistenceAdapter implements ApplicationPersistencePort {
+public class ApplicationPersistenceCommandAdapter implements ApplicationPersistenceCommandPort {
 
 	private final ApplicationRepository applicationRepository;
 	private final ApplicationProcessRepository applicationProcessRepository;
