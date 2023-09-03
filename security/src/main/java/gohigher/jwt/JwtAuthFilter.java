@@ -42,16 +42,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			return;
 		}
 
-		if (!jwtProvider.verifyToken(accessToken, now)) {
-			throw new GoHigherException(AuthErrorCode.TOKEN_EXPIRED);
-		}
-
+		verifyToken(accessToken, now);
 		User user = userQueryPort.findByEmail(jwtProvider.getUid(accessToken));
 
 		Authentication auth = getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
 		filterChain.doFilter(request, response);
+	}
+
+	private void verifyToken(String accessToken, Date now) {
+		if (!jwtProvider.verifyToken(accessToken, now)) {
+			throw new GoHigherException(AuthErrorCode.TOKEN_EXPIRED);
+		}
 	}
 
 	public Authentication getAuthentication(User user) {
