@@ -33,20 +33,24 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
 
 		Long userId = oAuth2User.getAttribute("userId");
-		String role = oAuth2User.getAuthorities().stream()
-			.findFirst()
-			.orElseThrow(IllegalAccessError::new)
-			.getAuthority();
+		String role = getRole(oAuth2User);
 
 		Date now = new Date();
 
-		String accessToken = jwtProvider.createAccessToken(userId, now);
 		String refreshToken = jwtProvider.createRefreshToken(userId, now);
-		String targetUrl = createTargetUrl(role, accessToken);
-
 		addRefreshTokenCookie(response, refreshToken);
 
+		String accessToken = jwtProvider.createAccessToken(userId, now);
+		String targetUrl = createTargetUrl(role, accessToken);
+
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);
+	}
+
+	private String getRole(OAuth2User oAuth2User) {
+		return oAuth2User.getAuthorities().stream()
+			.findFirst()
+			.orElseThrow(IllegalAccessError::new)
+			.getAuthority();
 	}
 
 	private String createTargetUrl(String role, String accessToken) {
