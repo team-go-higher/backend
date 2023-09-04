@@ -3,8 +3,8 @@ package gohigher.application.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import gohigher.common.EmploymentType;
 import gohigher.application.Application;
+import gohigher.common.EmploymentType;
 import gohigher.common.Process;
 import gohigher.recruitment.RecruitmentJpaEntity;
 import jakarta.persistence.Entity;
