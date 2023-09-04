@@ -18,15 +18,15 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 	private final TokenCommandPort tokenCommandPort;
 
 	@Override
-	public boolean supportsParameter(final MethodParameter parameter) {
+	public boolean supportsParameter(MethodParameter parameter) {
 		return parameter.hasParameterAnnotation(AuthenticationPrincipal.class);
 	}
 
 	@Override
-	public Object resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
-		final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) {
-		final HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-		final String token = AuthorizationExtractor.extract(request);
+	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+		String token = AuthorizationExtractor.extract(request);
 		return tokenCommandPort.getPayload(token);
 	}
 }

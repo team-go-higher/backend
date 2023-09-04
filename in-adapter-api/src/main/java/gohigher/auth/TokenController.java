@@ -26,7 +26,7 @@ public class TokenController {
 	private final TokenCommandPort tokenCommandPort;
 	private final RefreshTokenCookieProvider refreshTokenCookieProvider;
 
-	@GetMapping()
+	@GetMapping
 	public ResponseEntity<GohigherResponse<TokenResponse>> login(HttpServletResponse response,
 		@RequestParam("userId") Long userId, @RequestParam("role") String role) {
 		Date today = new Date();
