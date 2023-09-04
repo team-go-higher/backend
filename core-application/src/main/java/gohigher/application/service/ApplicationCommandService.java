@@ -9,13 +9,13 @@ import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPo
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ApplicationCommandService implements ApplicationCommandPort {
 
 	private final ApplicationPersistenceCommandPort applicationPersistenceCommandPort;
 
 	@Override
-	@Transactional
 	public void applySimply(Long userId, SimpleApplicationCommand command) {
 		applicationPersistenceCommandPort.save(userId, command.toDomain());
 	}
