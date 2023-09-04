@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gohigher.AuthErrorCode;
 import gohigher.response.GoHigherResponse;
+import gohigher.user.auth.AuthErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

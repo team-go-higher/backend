@@ -8,7 +8,7 @@ import gohigher.port.out.UserPersistenceCommandPort;
 import gohigher.port.out.UserPersistenceQueryPort;
 import gohigher.user.Role;
 import gohigher.user.User;
-import gohigher.user.oauth2.Provider;
+import gohigher.user.auth.Provider;
 import lombok.RequiredArgsConstructor;
 
 @Service

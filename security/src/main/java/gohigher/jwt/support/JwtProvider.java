@@ -8,8 +8,8 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import gohigher.AuthErrorCode;
 import gohigher.global.exception.GoHigherException;
+import gohigher.user.auth.AuthErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

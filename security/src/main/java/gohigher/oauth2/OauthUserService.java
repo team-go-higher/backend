@@ -14,7 +14,7 @@ import gohigher.oauth2.user.OAuth2UserInfo;
 import gohigher.oauth2.user.OAuth2UserInfoFactory;
 import gohigher.usecase.UserCommandService;
 import gohigher.user.User;
-import gohigher.user.oauth2.Provider;
+import gohigher.user.auth.Provider;
 import lombok.RequiredArgsConstructor;
 
 @Service

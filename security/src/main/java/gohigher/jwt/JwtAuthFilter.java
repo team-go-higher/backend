@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import gohigher.AuthErrorCode;
 import gohigher.global.exception.GoHigherException;
 import gohigher.jwt.support.AuthorizationExtractor;
 import gohigher.jwt.support.JwtProvider;
 import gohigher.port.in.UserQueryPort;
 import gohigher.user.User;
+import gohigher.user.auth.AuthErrorCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
