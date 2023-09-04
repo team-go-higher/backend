@@ -13,7 +13,7 @@ public class User {
 	private final Role role;
 	private final Provider provider;
 
-	public User(final Long id, final String email, final Role role, final Provider provider) {
+	public User(Long id, String email, Role role, Provider provider) {
 		this.id = id;
 		this.email = email;
 		this.role = role;
