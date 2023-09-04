@@ -1,6 +1,9 @@
 package gohigher.user.auth;
 
-import java.util.Locale;
+import java.util.Arrays;
+
+import gohigher.global.exception.GoHigherException;
+import gohigher.user.auth.AuthErrorCode;
 
 public enum Provider {
 	GOOGLE,
@@ -8,6 +11,9 @@ public enum Provider {
 	;
 
 	public static Provider from(final String name) {
-		return Provider.valueOf(name.toUpperCase(Locale.ROOT));
+		return Arrays.stream(Provider.values())
+			.filter(provider -> provider.name().equals(name.toUpperCase()))
+			.findFirst()
+			.orElseThrow(() -> new GoHigherException(AuthErrorCode.INVALID_PROVIDER));
 	}
 }
