@@ -7,8 +7,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gohigher.controller.response.GohigherResponse;
 import gohigher.global.exception.GoHigherException;
-import gohigher.response.GoHigherResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +31,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("utf-8");
 
-			GoHigherResponse<Object> errorResponse = GoHigherResponse.fail(e.getErrorCode(), e.getMessage());
+			GohigherResponse<Object> errorResponse = GohigherResponse.fail(e.getErrorCode(), e.getMessage());
 
 			response.getWriter()
 				.write(objectMapper.writeValueAsString(errorResponse));

@@ -1,4 +1,4 @@
-package gohigher.jwt.support;
+package gohigher.auth;
 
 import java.util.Enumeration;
 

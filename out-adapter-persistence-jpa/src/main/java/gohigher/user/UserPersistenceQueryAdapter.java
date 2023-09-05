@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import gohigher.port.out.UserPersistenceQueryPort;
+import gohigher.user.port.out.UserPersistenceQueryPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
