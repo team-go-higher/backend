@@ -13,7 +13,7 @@ public enum AuthErrorCode implements ErrorCode {
 	INVALID_TOKEN_BY_SIGNATURE(401, "AUTH_002", "잘못된 토큰입니다."),
 
 	// 11 - 20 외부와의 정보 교환 부분에서 일어날 수 있는 에러 코드
-	INVALID_OAUTH_RESPONSE(401, "AUTH_010", "소셜 로그인 실패입니다."),
+	INVALID_OAUTH_RESPONSE(401, "AUTH_011", "소셜 로그인 실패입니다."),
 	;
 
 	private final int statusCode;
