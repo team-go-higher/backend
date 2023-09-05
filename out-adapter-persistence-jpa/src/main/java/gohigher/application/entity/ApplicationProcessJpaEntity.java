@@ -43,7 +43,7 @@ public class ApplicationProcessJpaEntity {
 	private LocalDateTime schedule;
 	private String description;
 
-	public static ApplicationProcessJpaEntity from(ApplicationJpaEntity application, Process process, int order) {
+	public static ApplicationProcessJpaEntity of(ApplicationJpaEntity application, Process process, int order) {
 		return new ApplicationProcessJpaEntity(null, application, process.type(), order, process.schedule(),
 			process.description());
 	}

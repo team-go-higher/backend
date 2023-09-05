@@ -33,7 +33,7 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 		List<ApplicationProcessJpaEntity> applicationProcessJpaEntities = new ArrayList<>();
 		for (int i = 0; i < processes.size(); i++) {
 			applicationProcessJpaEntities.add(
-				ApplicationProcessJpaEntity.from(applicationJpaEntity, processes.get(i), i));
+				ApplicationProcessJpaEntity.of(applicationJpaEntity, processes.get(i), i));
 		}
 		applicationProcessRepository.saveAll(applicationProcessJpaEntities);
 	}
