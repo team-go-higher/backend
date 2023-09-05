@@ -39,12 +39,15 @@ class OAuth2RepositoryTest {
 			@DisplayName("사용자 정보를 반환해야 한다.")
 			@Test
 			void success() {
+				// given
 				String email = "test@email.com";
 				UserJpaEntity userJpaEntity = new UserJpaEntity(email, Role.USER, Provider.GOOGLE);
 				given(userRepository.findByEmail(email)).willReturn(Optional.of(userJpaEntity));
 
+				// when
 				Optional<User> savedUser = oAuth2Repository.findByEmail(email);
 
+				// then
 				assertThat(savedUser).isPresent();
 			}
 		}
@@ -56,11 +59,14 @@ class OAuth2RepositoryTest {
 			@DisplayName("빈 값을 반환해야 한다.")
 			@Test
 			void success() {
+				// given
 				String email = "test@email.com";
 				given(userRepository.findByEmail(email)).willReturn(Optional.empty());
 
+				// when
 				Optional<User> user = oAuth2Repository.findByEmail(email);
 
+				// then
 				assertThat(user).isEmpty();
 			}
 		}
@@ -77,12 +83,15 @@ class OAuth2RepositoryTest {
 			@DisplayName("입력받은 사용자 정보를 저장해야 한다.")
 			@Test
 			void success() {
+				// given
 				String email = "test@email.com";
 				UserJpaEntity userJpaEntity = new UserJpaEntity(email, Role.USER, Provider.GOOGLE);
 				given(userRepository.save(any())).willReturn(userJpaEntity);
 
+				// when
 				User savedUser = oAuth2Repository.save(new User(email, Role.USER, Provider.GOOGLE));
 
+				// then
 				assertAll(
 					() -> assertThat(savedUser.getEmail()).isEqualTo(userJpaEntity.getEmail()),
 					() -> assertThat(savedUser.getRole()).isEqualTo(userJpaEntity.getRole()),

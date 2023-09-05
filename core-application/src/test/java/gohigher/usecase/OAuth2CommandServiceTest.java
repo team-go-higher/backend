@@ -48,12 +48,15 @@ class OAuth2CommandServiceTest {
 			@DisplayName("저장되어 있는 정보를 반환해야 한다.")
 			@Test
 			void success() {
+				// given
 				String email = "test@gmail.com";
 				User user = new User(email, Role.USER, Provider.GOOGLE);
 				given(oAuth2PersistenceQueryPort.findByEmail(email)).willReturn(Optional.of(user));
 
+				// when
 				User savedUser = oAuth2CommandService.login(email, Provider.GOOGLE);
 
+				// then
 				assertThat(savedUser).isEqualTo(user);
 			}
 		}
@@ -65,6 +68,7 @@ class OAuth2CommandServiceTest {
 			@DisplayName("사용자 정보를 저장해야 한다.")
 			@Test
 			void success() {
+				// given
 				String email = "test@gmail.com";
 				Provider provider = Provider.GOOGLE;
 				User user = new User(email, Role.GUEST, Provider.GOOGLE);
@@ -72,8 +76,10 @@ class OAuth2CommandServiceTest {
 				given(oAuth2PersistenceQueryPort.findByEmail(email)).willReturn(Optional.empty());
 				given(oAuth2PersistenceCommandPort.save(any())).willReturn(user);
 
+				// when
 				User savedUser = oAuth2CommandService.login(email, provider);
 
+				// then
 				assertAll(
 					() -> assertThat(savedUser.getEmail()).isEqualTo(user.getEmail()),
 					() -> assertThat(savedUser.getRole()).isEqualTo(user.getRole()),

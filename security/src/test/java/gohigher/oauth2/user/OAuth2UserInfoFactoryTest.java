@@ -24,10 +24,13 @@ class OAuth2UserInfoFactoryTest {
 			@DisplayName("google oauth 사용자 객체를 생성한다")
 			@Test
 			void success() {
+				// given
 				Provider provider = Provider.GOOGLE;
 
+				// when
 				OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.createFor(provider, new HashMap<>());
 
+				// then
 				assertThat(oAuth2UserInfo).isInstanceOf(GoogleOAuth2User.class);
 			}
 		}
@@ -39,12 +42,15 @@ class OAuth2UserInfoFactoryTest {
 			@DisplayName("kakao oauth 사용자 객체를 생성한다")
 			@Test
 			void success() {
+				// given
 				Provider provider = Provider.KAKAO;
-
 				HashMap<String, Object> attributes = new HashMap<>();
 				attributes.put("kakao_account", new HashMap<>());
+
+				// when
 				OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.createFor(provider, attributes);
 
+				// then
 				assertThat(oAuth2UserInfo).isInstanceOf(KakaoOAuth2User.class);
 			}
 		}

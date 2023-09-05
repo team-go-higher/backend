@@ -25,6 +25,7 @@ public class ProviderTest {
 			@ParameterizedTest
 			@ValueSource(strings = {"google", "Google", "GOOGLE"})
 			void success(String provider) {
+				// given & when & then
 				assertThat(Provider.from(provider)).isEqualTo(Provider.GOOGLE);
 			}
 		}
@@ -37,6 +38,7 @@ public class ProviderTest {
 			@ParameterizedTest
 			@ValueSource(strings = {"kakao", "Kakao", "KAKAO"})
 			void success(String provider) {
+				// given & when & then
 				assertThat(Provider.from(provider)).isEqualTo(Provider.KAKAO);
 			}
 		}
@@ -48,6 +50,7 @@ public class ProviderTest {
 			@DisplayName("예외가 발생해야 한다.")
 			@Test
 			void fail() {
+				// given & when & then
 				assertThatThrownBy(() -> Provider.from("invalid"))
 					.isInstanceOf(GoHigherException.class);
 			}

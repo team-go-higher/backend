@@ -25,10 +25,14 @@ class KakaoOAuth2UserTest {
 			@DisplayName("kakao oauth 사용자 객체를 생성해야 한다.")
 			@Test
 			void success() {
+				// given
 				HashMap<String, Object> attributes = new HashMap<>();
 				attributes.put("kakao_account", new HashMap<>());
+
+				// when
 				KakaoOAuth2User user = new KakaoOAuth2User(attributes);
 
+				// then
 				assertAll(
 					() -> assertThat(user.oauth2IdAttributeName).isEqualTo("id"),
 					() -> assertThat(user.attributes).containsKey("id")
@@ -43,6 +47,7 @@ class KakaoOAuth2UserTest {
 			@DisplayName("예외가 발생해야 한다.")
 			@Test
 			void fail() {
+				// given & when & then
 				assertThatThrownBy(() -> new KakaoOAuth2User(new HashMap<>()))
 					.isInstanceOf(GoHigherException.class);
 			}

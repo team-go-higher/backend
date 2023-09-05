@@ -22,8 +22,10 @@ class GoogleOAuth2UserTest {
 			@DisplayName("google oauth 사용자 객체를 생성해야 한다.")
 			@Test
 			void success() {
+				// given & when
 				GoogleOAuth2User user = new GoogleOAuth2User(new HashMap<>());
 
+				// then
 				assertThat(user.oauth2IdAttributeName).isEqualTo("sub");
 			}
 		}

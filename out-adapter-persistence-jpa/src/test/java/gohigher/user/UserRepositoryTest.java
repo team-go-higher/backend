@@ -30,12 +30,15 @@ public class UserRepositoryTest {
 			@DisplayName("사용자 정보를 반환해야 한다.")
 			@Test
 			void success() {
+				// given
 				String email = "test@email.com";
 				UserJpaEntity user = new UserJpaEntity(email, Role.USER, Provider.GOOGLE);
 				userRepository.save(user);
 
+				// when
 				Optional<UserJpaEntity> savedUser = userRepository.findByEmail(email);
 
+				// then
 				assertThat(savedUser).isPresent();
 			}
 		}
@@ -47,10 +50,13 @@ public class UserRepositoryTest {
 			@DisplayName("빈 값을 반환해야 한다.")
 			@Test
 			void success() {
+				// given
 				String email = "test@email.com";
 
+				// when
 				Optional<UserJpaEntity> user = userRepository.findByEmail(email);
 
+				// then
 				assertThat(user).isEmpty();
 			}
 		}
