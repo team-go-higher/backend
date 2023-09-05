@@ -1,8 +1,11 @@
 package gohigher.user;
 
+import gohigher.user.auth.Provider;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@AllArgsConstructor
 @RequiredArgsConstructor
 @Getter
 public class User {
@@ -12,10 +15,7 @@ public class User {
 	private final Role role;
 	private final Provider provider;
 
-	public User(final Long id, final String email, final Role role, final Provider provider) {
-		this.id = id;
-		this.email = email;
-		this.role = role;
-		this.provider = provider;
+	public static User join(String email, Provider provider) {
+		return new User(email, Role.GUEST, provider);
 	}
 }

@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class GoogleOAuth2User extends OAuth2UserInfo {
 
-	public GoogleOAuth2User(final Map<String, Object> attributes) {
+	public GoogleOAuth2User(Map<String, Object> attributes) {
 		super("sub", attributes);
 	}
 
@@ -32,4 +32,15 @@ public class GoogleOAuth2User extends OAuth2UserInfo {
 	public Map<String, Object> getAttributes() {
 		return attributes;
 	}
+
+	@Override
+	public Long getUserId() {
+		return (Long)attributes.get(USER_ID);
+	}
+
+	@Override
+	public void setUserId(Long userId) {
+		attributes.put(USER_ID, userId);
+	}
+
 }
