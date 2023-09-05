@@ -21,6 +21,7 @@ import gohigher.user.Role;
 import gohigher.user.User;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("OAuth2CommandService 클래스의")
 class OAuth2CommandServiceTest {
 
 	@Mock
@@ -36,39 +37,49 @@ class OAuth2CommandServiceTest {
 		oAuth2CommandService = new OAuth2CommandService(oAuth2PersistenceQueryPort, oAuth2PersistenceCommandPort);
 	}
 
-	@DisplayName("로그인 테스트")
+	@DisplayName("login 메서드는")
 	@Nested
 	class login {
 
-		@DisplayName("가입된 사용자일 경우 저장되어 있는 정보를 반환한다")
-		@Test
-		void joined() {
-			String email = "test@gmail.com";
-			User user = new User(email, Role.USER, Provider.GOOGLE);
-			given(oAuth2PersistenceQueryPort.findByEmail(email)).willReturn(Optional.of(user));
+		@DisplayName("해당 이메일로 가입한 사용자가 있을 때")
+		@Nested
+		class exist {
 
-			User savedUser = oAuth2CommandService.login(email, Provider.GOOGLE);
+			@DisplayName("저장되어 있는 정보를 반환해야 한다.")
+			@Test
+			void success() {
+				String email = "test@gmail.com";
+				User user = new User(email, Role.USER, Provider.GOOGLE);
+				given(oAuth2PersistenceQueryPort.findByEmail(email)).willReturn(Optional.of(user));
 
-			assertThat(savedUser).isEqualTo(user);
+				User savedUser = oAuth2CommandService.login(email, Provider.GOOGLE);
+
+				assertThat(savedUser).isEqualTo(user);
+			}
 		}
 
-		@DisplayName("가입하지 않았던 사용자일 경우 사용자 정보를 저장한다")
-		@Test
-		void join() {
-			String email = "test@gmail.com";
-			Provider provider = Provider.GOOGLE;
-			User user = new User(email, Role.GUEST, Provider.GOOGLE);
+		@DisplayName("해당 이메일로 가입한 사용자가 없을 때")
+		@Nested
+		class notExist {
 
-			given(oAuth2PersistenceQueryPort.findByEmail(email)).willReturn(Optional.empty());
-			given(oAuth2PersistenceCommandPort.save(any())).willReturn(user);
+			@DisplayName("사용자 정보를 저장해야 한다.")
+			@Test
+			void success() {
+				String email = "test@gmail.com";
+				Provider provider = Provider.GOOGLE;
+				User user = new User(email, Role.GUEST, Provider.GOOGLE);
 
-			User savedUser = oAuth2CommandService.login(email, provider);
+				given(oAuth2PersistenceQueryPort.findByEmail(email)).willReturn(Optional.empty());
+				given(oAuth2PersistenceCommandPort.save(any())).willReturn(user);
 
-			assertAll(
-				() -> assertThat(savedUser.getEmail()).isEqualTo(user.getEmail()),
-				() -> assertThat(savedUser.getRole()).isEqualTo(user.getRole()),
-				() -> assertThat(savedUser.getProvider()).isEqualTo(user.getProvider())
-			);
+				User savedUser = oAuth2CommandService.login(email, provider);
+
+				assertAll(
+					() -> assertThat(savedUser.getEmail()).isEqualTo(user.getEmail()),
+					() -> assertThat(savedUser.getRole()).isEqualTo(user.getRole()),
+					() -> assertThat(savedUser.getProvider()).isEqualTo(user.getProvider())
+				);
+			}
 		}
 	}
 }

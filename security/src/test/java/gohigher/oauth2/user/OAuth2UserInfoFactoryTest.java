@@ -10,32 +10,43 @@ import org.junit.jupiter.api.Test;
 
 import gohigher.user.Provider;
 
+@DisplayName("OAuth2UserInfoFactory 클래스의")
 class OAuth2UserInfoFactoryTest {
 
-	@DisplayName("provider 를 이용하여 적절한 oauth 사용자 객체 생성")
+	@DisplayName("createFor 메서드는")
 	@Nested
 	class createFor {
 
-		@DisplayName("google oauth 사용자 객체를 생성한다")
-		@Test
-		void google() {
-			Provider provider = Provider.GOOGLE;
+		@DisplayName("google provider 를 입력받을 때")
+		@Nested
+		class google {
 
-			OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.createFor(provider, new HashMap<>());
+			@DisplayName("google oauth 사용자 객체를 생성한다")
+			@Test
+			void success() {
+				Provider provider = Provider.GOOGLE;
 
-			assertThat(oAuth2UserInfo).isInstanceOf(GoogleOAuth2User.class);
+				OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.createFor(provider, new HashMap<>());
+
+				assertThat(oAuth2UserInfo).isInstanceOf(GoogleOAuth2User.class);
+			}
 		}
 
-		@DisplayName("kakao oauth 사용자 객체를 생성한다")
-		@Test
-		void kakao() {
-			Provider provider = Provider.KAKAO;
+		@DisplayName("kakao provider 를 입력받을 때")
+		@Nested
+		class kakao {
 
-			HashMap<String, Object> attributes = new HashMap<>();
-			attributes.put("kakao_account", new HashMap<>());
-			OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.createFor(provider, attributes);
+			@DisplayName("kakao oauth 사용자 객체를 생성한다")
+			@Test
+			void success() {
+				Provider provider = Provider.KAKAO;
 
-			assertThat(oAuth2UserInfo).isInstanceOf(KakaoOAuth2User.class);
+				HashMap<String, Object> attributes = new HashMap<>();
+				attributes.put("kakao_account", new HashMap<>());
+				OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.createFor(provider, attributes);
+
+				assertThat(oAuth2UserInfo).isInstanceOf(KakaoOAuth2User.class);
+			}
 		}
 	}
 }

@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("OAuth2Repository 클래스의")
 class OAuth2RepositoryTest {
 
 	@Mock
@@ -27,52 +28,67 @@ class OAuth2RepositoryTest {
 		oAuth2Repository = new OAuth2Repository(userRepository);
 	}
 
-	@DisplayName("이메일을 이용하여 사용자 정보 조회")
+	@DisplayName("findByEmail 메서드는")
 	@Nested
 	class findByEmail {
 
-		@DisplayName("해당하는 이메일이 있을 경우 사용자 정보를 반환한다")
-		@Test
-		void exist() {
-			String email = "test@email.com";
-			UserJpaEntity userJpaEntity = new UserJpaEntity(email, Role.USER, Provider.GOOGLE);
-			given(userRepository.findByEmail(email)).willReturn(Optional.of(userJpaEntity));
+		@DisplayName("입력한 이메일에 해당하는 정보가 있을 때")
+		@Nested
+		class exist {
 
-			Optional<User> savedUser = oAuth2Repository.findByEmail(email);
+			@DisplayName("사용자 정보를 반환해야 한다.")
+			@Test
+			void success() {
+				String email = "test@email.com";
+				UserJpaEntity userJpaEntity = new UserJpaEntity(email, Role.USER, Provider.GOOGLE);
+				given(userRepository.findByEmail(email)).willReturn(Optional.of(userJpaEntity));
 
-			assertThat(savedUser).isPresent();
+				Optional<User> savedUser = oAuth2Repository.findByEmail(email);
+
+				assertThat(savedUser).isPresent();
+			}
 		}
 
-		@DisplayName("해당하는 이메일이 없을 경우 빈 값을 반환한다")
-		@Test
-		void notExist() {
-			String email = "test@email.com";
-			given(userRepository.findByEmail(email)).willReturn(Optional.empty());
+		@DisplayName("입력한 이메일에 해당하는 정보가 없을 때")
+		@Nested
+		class notExist {
 
-			Optional<User> user = oAuth2Repository.findByEmail(email);
+			@DisplayName("빈 값을 반환해야 한다.")
+			@Test
+			void success() {
+				String email = "test@email.com";
+				given(userRepository.findByEmail(email)).willReturn(Optional.empty());
 
-			assertThat(user).isEmpty();
+				Optional<User> user = oAuth2Repository.findByEmail(email);
+
+				assertThat(user).isEmpty();
+			}
 		}
 	}
 
-	@DisplayName("사용자 정보 저장")
+	@DisplayName("save 메서드는")
 	@Nested
 	class save {
 
-		@DisplayName("사용자 정보를 저장한다")
-		@Test
-		void success() {
-			String email = "test@email.com";
-			UserJpaEntity userJpaEntity = new UserJpaEntity(email, Role.USER, Provider.GOOGLE);
-			given(userRepository.save(any())).willReturn(userJpaEntity);
+		@DisplayName("사용자 정보가 입력될 때")
+		@Nested
+		class insert {
 
-			User savedUser = oAuth2Repository.save(new User(email, Role.USER, Provider.GOOGLE));
+			@DisplayName("입력받은 사용자 정보를 저장해야 한다.")
+			@Test
+			void success() {
+				String email = "test@email.com";
+				UserJpaEntity userJpaEntity = new UserJpaEntity(email, Role.USER, Provider.GOOGLE);
+				given(userRepository.save(any())).willReturn(userJpaEntity);
 
-			assertAll(
-				() -> assertThat(savedUser.getEmail()).isEqualTo(userJpaEntity.getEmail()),
-				() -> assertThat(savedUser.getRole()).isEqualTo(userJpaEntity.getRole()),
-				() -> assertThat(savedUser.getProvider()).isEqualTo(userJpaEntity.getProvider())
-			);
+				User savedUser = oAuth2Repository.save(new User(email, Role.USER, Provider.GOOGLE));
+
+				assertAll(
+					() -> assertThat(savedUser.getEmail()).isEqualTo(userJpaEntity.getEmail()),
+					() -> assertThat(savedUser.getRole()).isEqualTo(userJpaEntity.getRole()),
+					() -> assertThat(savedUser.getProvider()).isEqualTo(userJpaEntity.getProvider())
+				);
+			}
 		}
 	}
 }
