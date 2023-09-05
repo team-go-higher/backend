@@ -1,5 +1,7 @@
 package gohigher.jwt.support;
 
+import java.io.Serial;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.util.Assert;
@@ -8,6 +10,7 @@ import gohigher.user.Role;
 
 public class RoleGrantedAuthority implements GrantedAuthority {
 
+	@Serial
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 	private static final String ROLE_PREFIX = "ROLE_";
 
