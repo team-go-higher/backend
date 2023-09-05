@@ -7,10 +7,12 @@ import gohigher.common.EmploymentType;
 import gohigher.common.JobInfo;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
+import lombok.Getter;
 
 /**
  * currentProcess   현재 프로세스
  */
+@Getter
 public class Application extends JobInfo {
 
 	private final Process currentProcess;
