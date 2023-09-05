@@ -24,14 +24,17 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 	public Long save(Long userId, Application application) {
 		ApplicationJpaEntity applicationJpaEntity =
 			applicationRepository.save(ApplicationJpaEntity.from(userId, application));
-		List<ApplicationProcessJpaEntity> applicationProcessJpaEntities = new ArrayList<>();
 		List<Process> processes = application.getProcesses();
+		saveApplicationProcesses(applicationJpaEntity, processes);
+		return applicationJpaEntity.getId();
+	}
+
+	private void saveApplicationProcesses(ApplicationJpaEntity applicationJpaEntity, List<Process> processes) {
+		List<ApplicationProcessJpaEntity> applicationProcessJpaEntities = new ArrayList<>();
 		for (int i = 0; i < processes.size(); i++) {
 			applicationProcessJpaEntities.add(
 				ApplicationProcessJpaEntity.from(applicationJpaEntity, processes.get(i), i));
 		}
 		applicationProcessRepository.saveAll(applicationProcessJpaEntities);
-
-		return applicationJpaEntity.getId();
 	}
 }
