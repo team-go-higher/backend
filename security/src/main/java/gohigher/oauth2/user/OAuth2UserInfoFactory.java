@@ -3,7 +3,7 @@ package gohigher.oauth2.user;
 import java.util.HashMap;
 import java.util.Map;
 
-import gohigher.user.oauth2.Provider;
+import gohigher.user.auth.Provider;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

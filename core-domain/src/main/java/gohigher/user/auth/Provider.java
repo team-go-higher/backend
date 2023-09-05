@@ -1,4 +1,4 @@
-package gohigher.user.oauth2;
+package gohigher.user.auth;
 
 import java.util.Locale;
 

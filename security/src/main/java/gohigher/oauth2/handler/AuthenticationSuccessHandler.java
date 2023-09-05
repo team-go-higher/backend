@@ -10,15 +10,21 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import gohigher.global.exception.GlobalErrorCode;
+import gohigher.global.exception.GoHigherException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-	private final String redirectUrl;
 
-	public AuthenticationSuccessHandler(@Value("${oauth2.success.redirect_uri}") String redirectUrl) {
-		this.redirectUrl = redirectUrl;
+	private final String redirectUri;
+	private final String tokenRequestUri;
+
+	public AuthenticationSuccessHandler(@Value("${oauth2.success.redirect_uri}") String redirectUri,
+		@Value("${token.request.uri}") String tokenRequestUri) {
+		this.redirectUri = redirectUri;
+		this.tokenRequestUri = tokenRequestUri;
 	}
 
 	@Override
@@ -36,12 +42,12 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 	private String getRole(OAuth2User oAuth2User) {
 		return oAuth2User.getAuthorities().stream()
 			.findFirst()
-			.orElseThrow(IllegalAccessError::new)
+			.orElseThrow(() -> new GoHigherException(GlobalErrorCode.NOT_CONTROLLED_ERROR))
 			.getAuthority();
 	}
 
 	private String createTargetUrl(Long userId, String role) {
-		return UriComponentsBuilder.fromUriString(redirectUrl)
+		return UriComponentsBuilder.fromUriString(redirectUri + tokenRequestUri)
 			.queryParam("userId", userId)
 			.queryParam("role", role)
 			.build()

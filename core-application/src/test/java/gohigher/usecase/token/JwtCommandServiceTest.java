@@ -18,8 +18,7 @@ class JwtCommandServiceTest {
 	private static final int ACCESS_TOKEN_EXPIRE_LENGTH = 100000;
 	private static final int REFRESH_TOKEN_EXPIRE_LENGTH = 300000;
 	private static final int UNIT_TO_CONVERT_MILLI_TO_SECOND = 1000;
-	private static final String SECRET =
-		"1b5f8fb17f30171fdc794a47e35d284e0ef047c90a09571b2a3914eb5c0cd1e798d5d4a8a0b8f295dc4588a9e3d87907fed168e32348c56a346a8f1ada76b82e";
+	private static final String SECRET = "secretKey".repeat(6);
 
 	private JwtCommandService jwtCommandService = new JwtCommandService(SECRET, ACCESS_TOKEN_EXPIRE_LENGTH,
 		REFRESH_TOKEN_EXPIRE_LENGTH);

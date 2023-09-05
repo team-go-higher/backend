@@ -1,7 +1,7 @@
 package gohigher.port.in;
 
 import gohigher.user.User;
-import gohigher.user.oauth2.Provider;
+import gohigher.user.auth.Provider;
 
 public interface UserCommandPort {
 

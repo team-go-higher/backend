@@ -2,7 +2,6 @@ package gohigher.oauth2;
 
 import java.util.Collections;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -10,18 +9,17 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import gohigher.jwt.support.RoleGrantedAuthority;
 import gohigher.oauth2.user.OAuth2UserInfo;
 import gohigher.oauth2.user.OAuth2UserInfoFactory;
 import gohigher.usecase.UserCommandService;
 import gohigher.user.User;
-import gohigher.user.oauth2.Provider;
+import gohigher.user.auth.Provider;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class OauthUserService extends DefaultOAuth2UserService {
-
-	private static final String ROLE_PREFIX = "ROLE_";
 
 	private final UserCommandService oAuth2CommandService;
 
@@ -40,7 +38,7 @@ public class OauthUserService extends DefaultOAuth2UserService {
 	private DefaultOAuth2User createOAuth2User(OAuth2UserInfo oAuth2UserInfo, User loginUser) {
 		return new DefaultOAuth2User(
 			Collections.singleton(
-				new SimpleGrantedAuthority(ROLE_PREFIX.concat(loginUser.getRole().toString()))
+				new RoleGrantedAuthority(loginUser.getRole())
 			),
 			oAuth2UserInfo.getAttributes(),
 			oAuth2UserInfo.getOAuth2IdAttributeName()
