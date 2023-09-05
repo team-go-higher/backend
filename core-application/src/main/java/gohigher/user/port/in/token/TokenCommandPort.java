@@ -1,4 +1,4 @@
-package gohigher.port.in.token;
+package gohigher.user.port.in.token;
 
 import java.util.Date;
 

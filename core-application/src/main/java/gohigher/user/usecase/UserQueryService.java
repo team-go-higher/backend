@@ -1,13 +1,13 @@
-package gohigher.usecase;
+package gohigher.user.usecase;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.global.exception.GoHigherException;
-import gohigher.port.in.UserQueryPort;
-import gohigher.port.out.UserPersistenceQueryPort;
 import gohigher.user.User;
 import gohigher.user.UserErrorCode;
+import gohigher.user.port.in.UserQueryPort;
+import gohigher.user.port.out.UserPersistenceQueryPort;
 import lombok.RequiredArgsConstructor;
 
 @Service

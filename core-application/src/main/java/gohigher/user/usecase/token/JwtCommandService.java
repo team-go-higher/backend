@@ -1,4 +1,4 @@
-package gohigher.usecase.token;
+package gohigher.user.usecase.token;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import gohigher.global.exception.GoHigherException;
-import gohigher.port.in.token.TokenCommandPort;
 import gohigher.user.AuthErrorCode;
+import gohigher.user.port.in.token.TokenCommandPort;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

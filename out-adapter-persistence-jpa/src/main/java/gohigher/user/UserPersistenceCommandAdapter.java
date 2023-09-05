@@ -2,7 +2,7 @@ package gohigher.user;
 
 import org.springframework.stereotype.Component;
 
-import gohigher.port.out.UserPersistenceCommandPort;
+import gohigher.user.port.out.UserPersistenceCommandPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

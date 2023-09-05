@@ -1,4 +1,4 @@
-package gohigher.port.in;
+package gohigher.user.port.in;
 
 import gohigher.user.User;
 import gohigher.user.auth.Provider;

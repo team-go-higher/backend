@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gohigher.auth.support.RefreshTokenCookieProvider;
 import gohigher.controller.response.GohigherResponse;
 import gohigher.controller.response.data.TokenResponse;
-import gohigher.port.in.token.TokenCommandPort;
+import gohigher.user.port.in.token.TokenCommandPort;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 

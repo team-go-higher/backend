@@ -1,4 +1,4 @@
-package gohigher.usecase.token;
+package gohigher.user.usecase.token;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +20,7 @@ class JwtCommandServiceTest {
 	private static final int UNIT_TO_CONVERT_MILLI_TO_SECOND = 1000;
 	private static final String SECRET = "secretKey".repeat(6);
 
-	private JwtCommandService jwtCommandService = new JwtCommandService(SECRET, ACCESS_TOKEN_EXPIRE_LENGTH,
+	private final JwtCommandService jwtCommandService = new JwtCommandService(SECRET, ACCESS_TOKEN_EXPIRE_LENGTH,
 		REFRESH_TOKEN_EXPIRE_LENGTH);
 
 	@DisplayName("엑세스 토큰이 정상적으로 만들어지는지 확인한다.")
