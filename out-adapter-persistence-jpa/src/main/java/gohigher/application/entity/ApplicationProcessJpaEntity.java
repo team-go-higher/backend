@@ -1,4 +1,4 @@
-package gohigher.application;
+package gohigher.application.entity;
 
 import java.time.LocalDateTime;
 

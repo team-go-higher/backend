@@ -1,11 +1,12 @@
-package gohigher.application;
+package gohigher.application.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import gohigher.application.Application;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
-import gohigher.recruitment.RecruitmentJpaEntity;
+import gohigher.recruitment.entity.RecruitmentJpaEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

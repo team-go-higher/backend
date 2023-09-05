@@ -1,4 +1,4 @@
-package gohigher.recruitment;
+package gohigher.recruitment.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
