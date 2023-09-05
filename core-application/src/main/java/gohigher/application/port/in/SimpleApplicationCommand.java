@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SimpleApplicationCommand {
 
-	@NotBlank(message = "companyName is blank")
+	@NotBlank(message = "회사명이 빈 값입니다.")
 	private String companyName;
-	@NotBlank(message = "duty is blank")
+
+	@NotBlank(message = "직무가 빈 값입니다.")
 	private String duty;
 
 	private SimpleProcessCommand currentProcess;
