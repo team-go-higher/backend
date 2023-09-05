@@ -2,7 +2,6 @@ package gohigher.jwt;
 
 import java.io.IOException;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,7 +27,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 		try {
 			filterChain.doFilter(request, response);
 		} catch (GoHigherException e) {
-			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			response.setStatus(e.getStatusCode());
 			response.setContentType("application/json");
 			response.setCharacterEncoding("utf-8");
 

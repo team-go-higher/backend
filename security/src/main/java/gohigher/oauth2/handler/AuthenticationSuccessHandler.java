@@ -14,6 +14,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import gohigher.global.exception.GlobalErrorCode;
+import gohigher.global.exception.GoHigherException;
 import gohigher.jwt.support.CookieProvider;
 import gohigher.jwt.support.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,7 +60,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 	private String getRole(OAuth2User oAuth2User) {
 		return oAuth2User.getAuthorities().stream()
 			.findFirst()
-			.orElseThrow(IllegalAccessError::new)
+			.orElseThrow(() -> new GoHigherException(GlobalErrorCode.NOT_CONTROLLED_ERROR))
 			.getAuthority();
 	}
 
