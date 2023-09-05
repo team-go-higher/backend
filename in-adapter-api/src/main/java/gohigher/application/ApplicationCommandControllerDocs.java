@@ -3,7 +3,7 @@ package gohigher.application;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import gohigher.application.port.in.SimpleApplicationCommand;
+import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,5 +21,5 @@ public interface ApplicationCommandControllerDocs {
 		}
 	)
 	ResponseEntity<GohigherResponse<Void>> registerApplication(@Parameter(hidden = true) Long userId,
-		@RequestBody SimpleApplicationCommand command);
+		@RequestBody SimpleApplicationRequest command);
 }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class SimpleApplicationCommand {
+public class SimpleApplicationRequest {
 
 	@NotBlank(message = "회사명이 빈 값입니다.")
 	private String companyName;
@@ -15,7 +15,7 @@ public class SimpleApplicationCommand {
 	@NotBlank(message = "직무가 빈 값입니다.")
 	private String duty;
 
-	private SimpleProcessCommand currentProcess;
+	private SimpleProcessRequest currentProcess;
 
 	public Application toDomain() {
 		return Application.simple(companyName, duty, currentProcess.getType(), currentProcess.getSchedule());
