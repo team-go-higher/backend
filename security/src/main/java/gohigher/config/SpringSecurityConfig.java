@@ -2,6 +2,7 @@ package gohigher.config;
 
 import static org.springframework.security.config.Customizer.*;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,11 +18,9 @@ import gohigher.jwt.JwtExceptionFilter;
 import gohigher.oauth2.OauthUserService;
 import gohigher.oauth2.handler.AuthenticationFailureHandler;
 import gohigher.oauth2.handler.AuthenticationSuccessHandler;
-import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SpringSecurityConfig {
 
 	private final OauthUserService oauthUserService;
@@ -29,6 +28,20 @@ public class SpringSecurityConfig {
 	private final JwtExceptionFilter jwtExceptionFilter;
 	private final AuthenticationSuccessHandler oAuth2LoginSuccessHandler;
 	private final AuthenticationFailureHandler oAuth2LoginFailureHandler;
+	private final String tokenRequestUri;
+
+	public SpringSecurityConfig(OauthUserService oauthUserService, JwtAuthFilter jwtAuthFilter,
+		JwtExceptionFilter jwtExceptionFilter,
+		AuthenticationSuccessHandler oAuth2LoginSuccessHandler,
+		AuthenticationFailureHandler oAuth2LoginFailureHandler,
+		@Value("${token.request.uri}") String tokenRequestUri) {
+		this.oauthUserService = oauthUserService;
+		this.jwtAuthFilter = jwtAuthFilter;
+		this.jwtExceptionFilter = jwtExceptionFilter;
+		this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
+		this.oAuth2LoginFailureHandler = oAuth2LoginFailureHandler;
+		this.tokenRequestUri = tokenRequestUri;
+	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -36,7 +49,8 @@ public class SpringSecurityConfig {
 			.cors(CorsConfigurer::disable)
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth ->
-				auth.requestMatchers("/token", "/api-docs", "/swagger-ui/**", "/v3/api-docs/swagger-config",
+				auth.requestMatchers(tokenRequestUri + "/**", "/api-docs", "/swagger-ui/**",
+					"/v3/api-docs/swagger-config",
 					"/v3/api-docs"
 				).permitAll()
 					.anyRequest().authenticated()

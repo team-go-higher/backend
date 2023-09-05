@@ -24,13 +24,16 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
 	private final JwtProvider jwtProvider;
 	private final CookieProvider cookieProvider;
-	private final String redirectUrl;
+	private final String redirectUri;
+	private final String tokenRequestUri;
 
 	public AuthenticationSuccessHandler(JwtProvider jwtProvider, CookieProvider cookieProvider,
-		@Value("${oauth2.success.redirect_uri}") String redirectUrl) {
+		@Value("${oauth2.success.redirect_uri}") String redirectUri,
+		@Value("${token.request.uri}") String tokenRequestUri) {
 		this.jwtProvider = jwtProvider;
 		this.cookieProvider = cookieProvider;
-		this.redirectUrl = redirectUrl;
+		this.redirectUri = redirectUri;
+		this.tokenRequestUri = tokenRequestUri;
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 	}
 
 	private String createTargetUrl(String role, String accessToken) {
-		return UriComponentsBuilder.fromUriString(redirectUrl)
+		return UriComponentsBuilder.fromUriString(redirectUri + tokenRequestUri)
 			.queryParam("accessToken", accessToken)
 			.queryParam("role", role)
 			.build()

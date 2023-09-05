@@ -1,7 +1,7 @@
 spring:
   config:
     import:
-      - application-oauth2.yml
+      - application-auth.yml
       - application-persistence-local.yml
       - application-docs.yml
       - application-jwt.yml

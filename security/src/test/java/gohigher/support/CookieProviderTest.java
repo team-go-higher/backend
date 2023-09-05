@@ -19,7 +19,7 @@ class CookieProviderTest {
 	@Test
 	void create() {
 		// given
-		CookieProvider cookieProvider = new CookieProvider(REFRESH_TOKEN_EXPIRE_LENGTH);
+		CookieProvider cookieProvider = new CookieProvider(REFRESH_TOKEN_EXPIRE_LENGTH, "/token");
 		String refreshToken = "refreshToken";
 
 		// when

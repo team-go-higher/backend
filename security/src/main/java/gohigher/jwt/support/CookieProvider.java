@@ -13,9 +13,12 @@ public class CookieProvider {
 	private static final String REFRESH_TOKEN_KEY = "refresh-token";
 
 	private final long refreshTokenExpireLength;
+	private final String tokenRequestUri;
 
-	public CookieProvider(@Value("${security.jwt.expire-length.refresh}") long refreshTokenExpireLength) {
+	public CookieProvider(@Value("${security.jwt.expire-length.refresh}") long refreshTokenExpireLength,
+		@Value("${token.request.uri}") String tokenRequestUri) {
 		this.refreshTokenExpireLength = refreshTokenExpireLength;
+		this.tokenRequestUri = tokenRequestUri;
 	}
 
 	public ResponseCookie create(String refreshToken) {
@@ -28,7 +31,7 @@ public class CookieProvider {
 		return ResponseCookie.from(REFRESH_TOKEN_KEY, value)
 			.httpOnly(true)
 			.secure(true)
-			.path("/token")
+			.path(tokenRequestUri)
 			.sameSite(SameSite.NONE.attributeValue());
 	}
 }
