@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -15,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import gohigher.global.exception.GoHigherException;
 import gohigher.jwt.support.AuthorizationExtractor;
 import gohigher.jwt.support.JwtProvider;
+import gohigher.jwt.support.RoleGrantedAuthority;
 import gohigher.port.in.UserQueryPort;
 import gohigher.user.User;
 import gohigher.user.auth.AuthErrorCode;
@@ -59,6 +59,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 	public Authentication getAuthentication(User user) {
 		return new UsernamePasswordAuthenticationToken(user, "",
-			List.of(new SimpleGrantedAuthority("ROLE_".concat(user.getRole().toString()))));
+			List.of(new RoleGrantedAuthority(user.getRole())));
 	}
 }
