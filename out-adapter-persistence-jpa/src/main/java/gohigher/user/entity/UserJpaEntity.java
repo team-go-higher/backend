@@ -1,5 +1,7 @@
-package gohigher.user;
+package gohigher.user.entity;
 
+import gohigher.user.Role;
+import gohigher.user.User;
 import gohigher.user.auth.Provider;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

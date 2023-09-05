@@ -2,6 +2,8 @@ package gohigher.user;
 
 import org.springframework.stereotype.Component;
 
+import gohigher.user.entity.UserJpaEntity;
+import gohigher.user.entity.UserRepository;
 import gohigher.user.port.out.UserPersistenceCommandPort;
 import lombok.RequiredArgsConstructor;
 
