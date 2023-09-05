@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import gohigher.common.EmploymentType;
+import gohigher.common.Process;
 import gohigher.recruitment.RecruitmentJpaEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,11 +18,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "application")
 @Entity
 public class ApplicationJpaEntity {
@@ -55,4 +58,28 @@ public class ApplicationJpaEntity {
 	private RecruitmentJpaEntity recruitment;
 
 	private boolean deleted;
+
+	public static ApplicationJpaEntity from(Long userId, Application application) {
+		List<Process> processes = application.getProcesses();
+		int currentProcessIndex = processes.indexOf(application.getCurrentProcess());
+		return new ApplicationJpaEntity(null,
+			userId,
+			application.getCompanyName(),
+			application.getLocation(),
+			application.getContact(),
+			application.getDuty(),
+			application.getJobDescription(),
+			application.getWorkType(),
+			application.getEmploymentType(),
+			application.getCareerRequirement(),
+			application.getRequiredCapability(),
+			application.getPreferredQualification(),
+			application.getDeadLine(),
+			application.getUrl(),
+			currentProcessIndex,
+			null,
+			null,
+			false
+		);
+	}
 }
