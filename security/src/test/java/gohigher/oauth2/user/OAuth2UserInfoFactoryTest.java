@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import gohigher.user.Provider;
+import gohigher.user.auth.Provider;
 
 @DisplayName("OAuth2UserInfoFactory 클래스의")
 class OAuth2UserInfoFactoryTest {

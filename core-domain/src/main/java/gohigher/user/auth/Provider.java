@@ -3,7 +3,6 @@ package gohigher.user.auth;
 import java.util.Arrays;
 
 import gohigher.global.exception.GoHigherException;
-import gohigher.user.auth.AuthErrorCode;
 
 public enum Provider {
 	GOOGLE,
