@@ -9,7 +9,7 @@ public enum Provider {
 	KAKAO,
 	;
 
-	public static Provider from(final String name) {
+	public static Provider from(String name) {
 		return Arrays.stream(Provider.values())
 			.filter(provider -> provider.name().equals(name.toUpperCase()))
 			.findFirst()
