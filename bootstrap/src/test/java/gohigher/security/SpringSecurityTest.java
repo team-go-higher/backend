@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 @DisplayName("Spring Security 의")
+@SpringBootTest
 public class SpringSecurityTest {
 
 	@DisplayName("registration 생성은")

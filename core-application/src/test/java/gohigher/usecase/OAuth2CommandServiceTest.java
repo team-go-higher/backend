@@ -20,8 +20,8 @@ import gohigher.user.Role;
 import gohigher.user.User;
 import gohigher.user.auth.Provider;
 
-@ExtendWith(MockitoExtension.class)
 @DisplayName("OAuth2CommandService 클래스의")
+@ExtendWith(MockitoExtension.class)
 class OAuth2CommandServiceTest {
 
 	@Mock

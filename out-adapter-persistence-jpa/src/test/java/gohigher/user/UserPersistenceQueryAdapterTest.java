@@ -15,8 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import gohigher.user.auth.Provider;
 
-@ExtendWith(MockitoExtension.class)
 @DisplayName("UserPersistenceQueryAdapter 클래스의")
+@ExtendWith(MockitoExtension.class)
 class UserPersistenceQueryAdapterTest {
 
 	@Mock
