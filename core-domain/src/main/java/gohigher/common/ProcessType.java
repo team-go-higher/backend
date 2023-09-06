@@ -18,6 +18,6 @@ public enum ProcessType {
 		return Arrays.stream(values())
 			.filter(processType -> processType.name().equals(value))
 			.findAny()
-			.orElseThrow(() -> new GoHigherException(APPLICATION_NOT_EXIST));
+			.orElseThrow(() -> new GoHigherException(INVALID_PROCESS_TYPE));
 	}
 }

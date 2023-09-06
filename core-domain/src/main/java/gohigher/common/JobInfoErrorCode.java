@@ -8,8 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum JobInfoErrorCode implements ErrorCode {
 
-	// 클라이언트에서 문자열로 받은 ProcessType 타입의 값이 유효하지 않을 때
-	APPLICATION_NOT_EXIST(400, "JOB_INFO_001", "존재하지 않는 전형 단계입니다."),
+	INVALID_PROCESS_TYPE(400, "JOB_INFO_001", "유효하지 않은 전형 단계입니다."),
 	;
 
 	private final int statusCode;
