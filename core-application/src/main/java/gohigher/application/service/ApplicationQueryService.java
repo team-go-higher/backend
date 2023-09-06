@@ -20,8 +20,8 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
 
 	@Override
-	public ApplicationMonthQueryResponse findByMonth(Long userId, int month) {
-		List<Application> applications = applicationPersistenceQueryPort.findByIdAndMonth(userId, month);
+	public ApplicationMonthQueryResponse findByMonth(Long userId, int year, int month) {
+		List<Application> applications = applicationPersistenceQueryPort.findByIdAndMonth(userId, year, month);
 
 		List<ApplicationCalendarResponse> applicationCalendarResponses = new ArrayList<>();
 		for (Application application : applications) {

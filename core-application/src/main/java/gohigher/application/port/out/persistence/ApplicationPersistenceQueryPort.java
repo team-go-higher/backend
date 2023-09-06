@@ -6,5 +6,5 @@ import gohigher.application.Application;
 
 public interface ApplicationPersistenceQueryPort {
 
-	List<Application> findByIdAndMonth(Long userId, int month);
+	List<Application> findByIdAndMonth(Long userId, int year, int month);
 }
