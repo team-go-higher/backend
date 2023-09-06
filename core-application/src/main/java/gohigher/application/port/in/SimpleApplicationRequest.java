@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SimpleApplicationRequest {
 
-	@NotBlank(message = "회사명이 빈 값입니다.")
+	@NotBlank(message = "JOB_INFO_002||회사명이 입력되지 않았습니다.")
 	private String companyName;
 
-	@NotBlank(message = "직무가 빈 값입니다.")
+	@NotBlank(message = "JOB_INFO_003||직무가 입력되지 않았습니다.")
 	private String duty;
 
 	private String url;
