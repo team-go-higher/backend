@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * companyName            회사명
@@ -20,8 +22,10 @@ import lombok.AllArgsConstructor;
  * processes              공고 과정
  * url                    공고 URL
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Getter
 public abstract class JobInfo {
+
 	private final String companyName;
 	private final String location;
 	private final String contact;
