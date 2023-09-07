@@ -19,10 +19,10 @@ public class Application extends JobInfo {
 
 	public Application(String companyName, String location, String contact, String duty, String jobDescription,
 		String workType, EmploymentType employmentType, String careerRequirement, String requiredCapability,
-		String preferredQualification, LocalDateTime deadLine, List<Process> processes,
+		String preferredQualification, LocalDateTime deadline, List<Process> processes,
 		String url, Process currentProcess) {
 		super(companyName, location, contact, duty, jobDescription, workType, employmentType, careerRequirement,
-			requiredCapability, preferredQualification, deadLine, processes, url);
+			requiredCapability, preferredQualification, deadline, processes, url);
 		this.currentProcess = currentProcess;
 	}
 

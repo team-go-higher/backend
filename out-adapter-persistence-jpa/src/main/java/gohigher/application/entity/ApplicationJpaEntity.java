@@ -75,7 +75,7 @@ public class ApplicationJpaEntity {
 			application.getCareerRequirement(),
 			application.getRequiredCapability(),
 			application.getPreferredQualification(),
-			application.getDeadLine(),
+			application.getDeadline(),
 			application.getUrl(),
 			currentProcessIndex,
 			null,

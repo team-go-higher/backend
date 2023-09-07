@@ -3,7 +3,6 @@ package gohigher.common;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +17,7 @@ import lombok.RequiredArgsConstructor;
  * careerRequirement      경력 조건
  * requiredCapability     필수 역량
  * preferredQualification 우대사항
- * deadLine               마감 날짜(상시면 해당 년의 마지막 날로 설정)
+ * deadline               마감 날짜(상시면 해당 년의 마지막 날로 설정)
  * processes              공고 과정
  * url                    공고 URL
  */
@@ -36,7 +35,7 @@ public abstract class JobInfo {
 	private final String careerRequirement;
 	private final String requiredCapability;
 	private final String preferredQualification;
-	private final LocalDateTime deadLine;
+	private final LocalDateTime deadline;
 	private final List<Process> processes;
 	private final String url;
 }
