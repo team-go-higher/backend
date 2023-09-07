@@ -33,21 +33,17 @@ class JwtProviderTest {
 		@DisplayName("value가 정해지면")
 		@Nested
 		class Value {
-			Long userId = 1L;
-			Date now = new Date();
+			private final Long userId = 1L;
+			private final Date now = new Date();
 
-			@DisplayName("엑세스 토큰이 정상적으로 만든다")
+			@DisplayName("엑세스 토큰이 정상적으로 만든다.")
 			@Test
 			void access_token_success() {
 				// given & when
 				String accessToken = jwtProvider.createToken(userId, now, TokenType.ACCESS);
 
 				// then
-				Claims claims = Jwts.parserBuilder()
-					.setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8)))
-					.build()
-					.parseClaimsJws(accessToken)
-					.getBody();
+				Claims claims = getClaims(accessToken);
 
 				assertAll(
 					() -> assertThat(claims.getSubject()).isEqualTo(String.valueOf(userId)),
@@ -59,18 +55,14 @@ class JwtProviderTest {
 				);
 			}
 
-			@DisplayName("리프레시 토큰이 정상적으로 만든다")
+			@DisplayName("리프레시 토큰이 정상적으로 만든다.")
 			@Test
 			void refresh_token_success() {
 				// given & when
 				String refreshToken = jwtProvider.createToken(userId, now, TokenType.REFRESH);
 
 				// then
-				Claims claims = Jwts.parserBuilder()
-					.setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8)))
-					.build()
-					.parseClaimsJws(refreshToken)
-					.getBody();
+				Claims claims = getClaims(refreshToken);
 
 				assertAll(
 					() -> assertThat(claims.getSubject()).isEqualTo(String.valueOf(userId)),
@@ -81,8 +73,15 @@ class JwtProviderTest {
 					}
 				);
 			}
-		}
 
+			private Claims getClaims(String accessToken) {
+				return Jwts.parserBuilder()
+					.setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8)))
+					.build()
+					.parseClaimsJws(accessToken)
+					.getBody();
+			}
+		}
 	}
 
 	@DisplayName("verifyToken 메서드는")
@@ -96,7 +95,7 @@ class JwtProviderTest {
 		@Nested
 		class expired_length {
 
-			@DisplayName("만료 기간이 지나지 않았다면 true를 리턴한다")
+			@DisplayName("만료 기간이 지나지 않았다면 true를 리턴한다.")
 			@Test
 			void returns_true_valid_time() {
 				// given & when
@@ -107,7 +106,7 @@ class JwtProviderTest {
 					new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_LENGTH - UNIT_TO_CONVERT_MILLI_TO_SECOND))).isTrue();
 			}
 
-			@DisplayName("만료 기간이 지났다면 false를 리턴한다")
+			@DisplayName("만료 기간이 지났다면 false를 리턴한다.")
 			@Test
 			void returns_false_invalid_time() {
 				// given & when
@@ -123,7 +122,7 @@ class JwtProviderTest {
 		@Nested
 		class secret_key {
 
-			@DisplayName("다른 secret key로 생성된 토큰이라면 예외를 발생한다")
+			@DisplayName("다른 secret key로 생성된 토큰이라면 예외를 발생한다.")
 			@Test
 			void returns_false_different_secret_key() {
 				// given
@@ -137,4 +136,3 @@ class JwtProviderTest {
 		}
 	}
 }
-

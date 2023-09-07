@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseCookie;
 
-@DisplayName("CookieProvider 클래스의")
+@DisplayName("RefreshTokenCookieProvider 클래스의")
 class RefreshTokenCookieProviderTest {
 
 	@DisplayName("create 메서드는")
