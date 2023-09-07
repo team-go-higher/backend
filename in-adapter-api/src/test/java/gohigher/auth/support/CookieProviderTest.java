@@ -1,4 +1,4 @@
-package gohigher.support;
+package gohigher.auth.support;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,8 +8,6 @@ import java.time.Duration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseCookie;
-
-import gohigher.jwt.support.CookieProvider;
 
 class CookieProviderTest {
 

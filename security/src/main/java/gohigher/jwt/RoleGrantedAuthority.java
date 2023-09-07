@@ -1,4 +1,4 @@
-package gohigher.jwt.support;
+package gohigher.jwt;
 
 import java.io.Serial;
 

@@ -1,4 +1,4 @@
-package gohigher.auth;
+package gohigher.auth.support;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

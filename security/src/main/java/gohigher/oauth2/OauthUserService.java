@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import gohigher.jwt.support.RoleGrantedAuthority;
+import gohigher.jwt.RoleGrantedAuthority;
 import gohigher.oauth2.user.OAuth2UserInfo;
 import gohigher.oauth2.user.OAuth2UserInfoFactory;
 import gohigher.user.User;

@@ -1,4 +1,4 @@
-package gohigher.auth;
+package gohigher.auth.support;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;

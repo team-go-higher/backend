@@ -1,4 +1,4 @@
-package gohigher.auth;
+package gohigher.auth.support;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +22,7 @@ class JwtProviderTest {
 
 	private final JwtProvider jwtProvider = new JwtProvider(SECRET, ACCESS_TOKEN_EXPIRE_LENGTH,
 		REFRESH_TOKEN_EXPIRE_LENGTH);
-	
+
 	@DisplayName("엑세스 토큰이 정상적으로 만들어지는지 확인한다.")
 	@Test
 	void createAccessToken() {
