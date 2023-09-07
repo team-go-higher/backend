@@ -31,12 +31,16 @@ public class JwtProvider {
 		this.refreshTokenExpireLength = refreshTokenExpireLength;
 	}
 
-	public String createAccessToken(Long userId, Date now) {
-		return generateToken(userId, now, accessTokenExpireLength);
-	}
+	public String createToken(Long userId, Date now, TokenType tokenType) {
+		if (tokenType.equals(TokenType.ACCESS)) {
+			return generateToken(userId, now, accessTokenExpireLength);
+		}
 
-	public String createRefreshToken(Long userId, Date now) {
-		return generateToken(userId, now, refreshTokenExpireLength);
+		if (tokenType.equals(TokenType.REFRESH)) {
+			return generateToken(userId, now, refreshTokenExpireLength);
+		}
+
+		throw new GoHigherException(AuthErrorCode.NOT_EXISTED_TOKEN_TYPE);
 	}
 
 	private String generateToken(Long userId, Date now, long expiredLength) {
