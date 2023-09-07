@@ -66,7 +66,7 @@ class ApplicationPersistenceQueryAdapterTest {
 
 			@DisplayName("일정 정보가 담긴 지원서를 반환한다.")
 			@Test
-			void success() {
+			void it_return_application_with_processes() {
 				List<Application> applications = applicationPersistenceQueryAdapter.findByIdAndMonth(userId, year,
 					month);
 
