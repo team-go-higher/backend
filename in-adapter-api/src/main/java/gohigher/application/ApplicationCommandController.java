@@ -18,7 +18,7 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 
 	private final ApplicationCommandPort applicationCommandPort;
 
-	@PostMapping("/v1/application/simple")
+	@PostMapping("/v1/applications/simple")
 	public ResponseEntity<GohigherResponse<Void>> registerApplication(@Login Long userId,
 		@RequestBody @Valid SimpleApplicationRequest command) {
 		applicationCommandPort.applySimply(userId, command);
