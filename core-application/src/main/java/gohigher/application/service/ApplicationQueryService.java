@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.Application;
 import gohigher.application.port.in.ApplicationCalendarResponse;
@@ -14,6 +15,7 @@ import gohigher.common.Process;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ApplicationQueryService implements ApplicationQueryPort {
 
