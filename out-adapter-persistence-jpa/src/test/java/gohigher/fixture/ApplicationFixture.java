@@ -1,6 +1,7 @@
 package gohigher.fixture;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import gohigher.application.entity.ApplicationJpaEntity;
@@ -41,6 +42,6 @@ public enum ApplicationFixture {
 	public ApplicationJpaEntity toEntity(Long userId) {
 		return new ApplicationJpaEntity(null, userId, companyName, location, contact, duty, jobDescription,
 			workType, employmentType, careerRequirement, requiredCapability, preferredQualification, deadLine, url,
-			0, List.of(), null, false);
+			0, new ArrayList<>(), null, false);
 	}
 }
