@@ -136,24 +136,5 @@ class JwtProviderTest {
 			}
 		}
 	}
-	//
-	// @DisplayName("토큰을 검증한다.")
-	// @Test
-	// void verifyToken() {
-	// 	// given
-	// 	Long userId = 1L;
-	//
-	// 	// when
-	// 	Date now = new Date();
-	// 	String accessToken = jwtProvider.createAccessToken(userId, now);
-	//
-	// 	// then
-	// 	assertAll(
-	// 		() -> assertThat(jwtProvider.verifyToken(accessToken, new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_LENGTH)))
-	// 			.isFalse(),
-	// 		() -> assertThat(jwtProvider.verifyToken(accessToken,
-	// 			new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_LENGTH - UNIT_TO_CONVERT_MILLI_TO_SECOND))).isTrue()
-	// 	);
-	// }
 }
 
