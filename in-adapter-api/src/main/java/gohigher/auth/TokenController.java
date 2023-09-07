@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/token")
 @RequiredArgsConstructor
-public class TokenController {
+public class TokenController implements TokenControllerDocs {
 
 	private final JwtProvider jwtProvider;
 	private final RefreshTokenCookieProvider refreshTokenCookieProvider;
