@@ -1,9 +1,8 @@
 package gohigher.auth;
 
-import static org.springframework.http.HttpHeaders.*;
-
 import java.util.Date;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +39,6 @@ public class TokenController implements TokenControllerDocs {
 
 	private void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
 		ResponseCookie responseCookie = refreshTokenCookieProvider.create(refreshToken);
-		response.addHeader(SET_COOKIE, responseCookie.toString());
+		response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
 	}
 }
