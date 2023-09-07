@@ -4,12 +4,12 @@ spring:
       client:
         registration:
           google:
-            client-id: ENC(SiDMxnkUCX605o8TH5NBYtYnE0CHEVs4EfI+XJvFdbI1WK5VWktBgp+wG9rEyGWXzbXNABs0/b9bkcbaNbAWh9g7o5Hm3B6geC2PxK5WXwc=)
-            client-secret: ENC(54eCyVZWg568iCRLeiwRU00wtVv5aHx+XigoTBQN2Ub7tHoE8+IlCgZa5Bby0VvR)
+            client-id: ENC(h47JjPyAlcc6k1vudWNektC6cc6kjKOOZ7V+U0jKhS747qx++/EriOgP3ND49HA8F6CCzfxA4l0ftb60cKBodqBwB+5binG+SxhV4+0xaN5aGmHHOMf6tA==)
+            client-secret: ENC(tKWZLr6cgzNM9heCx7Q0UqJkBTqasiS1gNnYAeLSYqXd0PTw0bUE+XItPCLIX+0Y)
             scope: email
             redirect_uri: http://localhost:8080/oauth2/callback/google
           kakao:
-            client-id: ENC(I5PeqTmLd/vUpKxHQVo5a2xTVrXWqlLjRSoANQCipSH2Ed07G//YMme46hN8eFA2)
+            client-id: ENC(uNd/J/dlaSuNsJ6BFMgUNIrZ5lXhMPEvNYduZ96tIEm3V5uimMKJpAcuGUk70yYi)
             redirect-uri: http://localhost:8080/oauth2/callback/kakao
             authorization-grant-type: authorization_code
             scope: account_email,profile_nickname
