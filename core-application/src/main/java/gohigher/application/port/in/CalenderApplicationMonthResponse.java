@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ApplicationMonthQueryResponse {
+public class CalenderApplicationMonthResponse {
 
-	private final List<ApplicationCalendarResponse> applications;
+	private final List<CalenderApplicationResponse> applications;
 }

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.Application;
-import gohigher.application.port.in.ApplicationCalendarResponse;
-import gohigher.application.port.in.ApplicationMonthQueryResponse;
 import gohigher.application.port.in.ApplicationQueryPort;
+import gohigher.application.port.in.CalenderApplicationMonthResponse;
+import gohigher.application.port.in.CalenderApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.Process;
 import lombok.RequiredArgsConstructor;
@@ -22,21 +22,21 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
 
 	@Override
-	public ApplicationMonthQueryResponse findByMonth(Long userId, int year, int month) {
+	public CalenderApplicationMonthResponse findByMonth(Long userId, int year, int month) {
 		List<Application> applications = applicationPersistenceQueryPort.findByIdAndMonth(userId, year, month);
 
-		List<ApplicationCalendarResponse> applicationCalendarResponses = new ArrayList<>();
+		List<CalenderApplicationResponse> calenderApplicationRespons = new ArrayList<>();
 		for (Application application : applications) {
-			addScheduleResponses(application, applicationCalendarResponses);
+			addScheduleResponses(application, calenderApplicationRespons);
 		}
-		return new ApplicationMonthQueryResponse(applicationCalendarResponses);
+		return new CalenderApplicationMonthResponse(calenderApplicationRespons);
 	}
 
 	private void addScheduleResponses(Application application,
-		List<ApplicationCalendarResponse> applicationCalendarResponses) {
+		List<CalenderApplicationResponse> calenderApplicationRespons) {
 		for (Process process : application.getProcesses()) {
-			applicationCalendarResponses.add(
-				new ApplicationCalendarResponse(application.getCompanyName(), process.getType().name(),
+			calenderApplicationRespons.add(
+				new CalenderApplicationResponse(application.getCompanyName(), process.getType().name(),
 					process.getSchedule()));
 		}
 	}

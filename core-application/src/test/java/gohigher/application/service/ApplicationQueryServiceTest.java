@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import gohigher.application.Application;
-import gohigher.application.port.in.ApplicationMonthQueryResponse;
+import gohigher.application.port.in.CalenderApplicationMonthResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.Process;
 
@@ -70,7 +70,7 @@ class ApplicationQueryServiceTest {
 			@DisplayName("일정 정보를 반환한다.")
 			@Test
 			void it_return_application_processes() {
-				ApplicationMonthQueryResponse actual = applicationQueryService.findByMonth(userId, year, month);
+				CalenderApplicationMonthResponse actual = applicationQueryService.findByMonth(userId, year, month);
 
 				assertThat(actual.getApplications()).hasSize(naverProcesses.size() + kakaoProcesses.size());
 			}
