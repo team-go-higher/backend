@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 public class CurrentProcessUpdateRequest {
 
 	private Long applicationId;
-	private String currentProcess;
+	private String currentProcessType;
 }
