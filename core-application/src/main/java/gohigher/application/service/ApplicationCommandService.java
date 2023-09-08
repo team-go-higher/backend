@@ -12,7 +12,6 @@ import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
-import gohigher.common.Process;
 import gohigher.common.ProcessType;
 import gohigher.global.exception.GoHigherException;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +41,8 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 			.orElseThrow(() -> new GoHigherException(APPLICATION_NOT_FOUND));
 		validateForbidden(application, userId);
 		ProcessType processType = ProcessType.from(request.getCurrentProcessType());
-		Process process = application.getProcessOfType(processType);
-		applicationPersistenceCommandPort.updateCurrentProcess(applicationId, process);
+		int processOrder = application.getProcessOrderOfType(processType);
+		applicationPersistenceCommandPort.updateCurrentProcessOrder(applicationId, processOrder);
 	}
 
 	private void validateForbidden(Application application, Long userId) {
