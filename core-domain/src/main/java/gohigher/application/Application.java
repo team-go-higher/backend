@@ -26,12 +26,9 @@ public class Application extends JobInfo {
 		this.currentProcess = currentProcess;
 	}
 
-	public static Application simple(String companyName, String duty, String url, ProcessType processType,
-		LocalDateTime schedule) {
-		Process process = new Process(processType, null, schedule);
+	public static Application simple(String companyName, String duty, String url, Process process) {
 		return new Application(companyName, null, null, null, duty, null, null,
 			null, null, null, null, null, null,
 			List.of(process), url, process);
 	}
 }
-

@@ -20,6 +20,6 @@ public class SimpleApplicationRequest {
 	private SimpleApplicationProcessRequest currentProcess;
 
 	public Application toDomain() {
-		return Application.simple(companyName, duty, url, currentProcess.getType(), currentProcess.getSchedule());
+		return Application.simple(companyName, duty, url, currentProcess.toDomain());
 	}
 }
