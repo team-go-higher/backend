@@ -22,9 +22,9 @@ class ApplicationTest {
 	class Describe_GetProcessTypeOf {
 
 		private final Long USER_ID = 1L;
-		private final Process firstProcess = new Process(1L, ProcessType.TEST, "코딩테스트", LocalDateTime.now());
-		private final Process secondProcess = new Process(2L, ProcessType.INTERVIEW, "기술 면접", LocalDateTime.now());
-		private final Process thirdProcess = new Process(3L, ProcessType.INTERVIEW, "인성 면접", LocalDateTime.now());
+		private final Process firstProcess = new Process(1L, 0, ProcessType.TEST, "코딩테스트", LocalDateTime.now());
+		private final Process secondProcess = new Process(2L, 1, ProcessType.INTERVIEW, "기술 면접", LocalDateTime.now());
+		private final Process thirdProcess = new Process(3L, 2, ProcessType.INTERVIEW, "인성 면접", LocalDateTime.now());
 		private final Application application = new Application("", "", "", "", "", "", "", "",
 			EmploymentType.PERMANENT, "", "", "", LocalDateTime.now(),
 			List.of(firstProcess, secondProcess, thirdProcess), "", USER_ID, firstProcess);

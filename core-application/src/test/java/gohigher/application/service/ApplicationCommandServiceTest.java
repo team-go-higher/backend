@@ -38,9 +38,9 @@ class ApplicationCommandServiceTest {
 	@InjectMocks
 	private ApplicationCommandService applicationCommandService;
 
-	private final Process firstProcess = new Process(ProcessType.TEST, "코딩테스트", LocalDateTime.now());
-	private final Process secondProcess = new Process(ProcessType.INTERVIEW, "기술 면접", LocalDateTime.now());
-	private final Process thirdProcess = new Process(ProcessType.INTERVIEW, "인성 면접", LocalDateTime.now());
+	private final Process firstProcess = new Process(1L, 0, ProcessType.TEST, "코딩테스트", LocalDateTime.now());
+	private final Process secondProcess = new Process(2L, 1, ProcessType.INTERVIEW, "기술 면접", LocalDateTime.now());
+	private final Process thirdProcess = new Process(3L, 2, ProcessType.INTERVIEW, "인성 면접", LocalDateTime.now());
 	private final long applicationOwnerId = 1L;
 	Application application = new Application("", "", "", "", "", "", "", "",
 		EmploymentType.PERMANENT, "", "", "", LocalDateTime.now(),

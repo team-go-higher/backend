@@ -50,6 +50,6 @@ public class ApplicationProcessJpaEntity {
 	}
 
 	public Process toDomain() {
-		return new Process(id, type, description, schedule);
+		return new Process(id, order, type, description, schedule);
 	}
 }
