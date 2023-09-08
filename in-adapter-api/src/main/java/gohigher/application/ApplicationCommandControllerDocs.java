@@ -3,6 +3,7 @@ package gohigher.application;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.controller.response.GohigherResponse;
@@ -110,4 +111,66 @@ public interface ApplicationCommandControllerDocs {
 	)
 	ResponseEntity<GohigherResponse<Void>> registerApplicationSpecifically(@Parameter(hidden = true) Long userId,
 		SpecificApplicationRequest command);
+
+	@Operation(summary = "현재 진행 전형 변경")
+	@ApiResponses(
+		value = {
+			@ApiResponse(responseCode = "200", description = "현재 진행 전형 변경 성공"),
+			@ApiResponse(responseCode = "400", description = "현재 진행 전형 변경 실패", content = @Content(
+				examples = {
+					@ExampleObject(name = "유효하지 않은 전형 단계", value = """
+						{
+						"success": false,
+						"error": {
+							"code": "JOB_INFO_001",
+							"message": "유효하지 않은 전형 단계입니다."
+						},
+						"data": null
+						}
+						""")
+				}
+			)
+			),
+			@ApiResponse(responseCode = "404", description = "존재하지 않는 지원서", content = @Content(
+				examples = {@ExampleObject(name = "존재하지 않는 지원서", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "APPLICATION_001",
+						"message": "존재하지 않는 지원서입니다."
+					},
+					"data": null
+					}
+					"""),
+					@ExampleObject(name = "지원서에 존재하지 않는 전형 단계", value = """
+						{
+						"success": false,
+						"error": {
+							"code": "APPLICATION_002",
+							"message": "지원서에서 존재하지 않는 ProcessType 입니다."
+						},
+						"data": null
+						}
+						""")
+				}
+			)
+			),
+			@ApiResponse(responseCode = "403", description = "수정 권한이 없는 지원서", content = @Content(
+				examples = {@ExampleObject(name = "수정 권한이 없는 지원서", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "APPLICATION_003",
+						"message": "지원서에 대한 수정 권한이 없습니다."
+					},
+					"data": null
+					}
+					""")
+				}
+			)
+			)
+		}
+	)
+	ResponseEntity<GohigherResponse<Void>> updateApplicationCurrentProcess(@Parameter(hidden = true) Long userId,
+		@RequestBody CurrentProcessUpdateRequest request);
 }
