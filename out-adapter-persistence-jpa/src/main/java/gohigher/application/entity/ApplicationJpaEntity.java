@@ -85,6 +85,14 @@ public class ApplicationJpaEntity {
 		);
 	}
 
+	public void addProcess(ApplicationProcessJpaEntity process) {
+		if (process.getApplication() == null) {
+			process.assignApplication(this);
+		}
+
+		processes.add(process);
+	}
+
 	public Application convertToDomain() {
 		List<Process> processes = this.processes.stream()
 			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))

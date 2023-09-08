@@ -48,4 +48,8 @@ public class ApplicationProcessJpaEntity {
 		return new ApplicationProcessJpaEntity(null, application, process.getType(), order, process.getSchedule(),
 			process.getDescription());
 	}
+
+	public void assignApplication(ApplicationJpaEntity application) {
+		this.application = application;
+	}
 }
