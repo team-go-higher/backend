@@ -7,4 +7,8 @@ public record Process(
 	String description,
 	LocalDateTime schedule
 ) {
+
+	public boolean hasType(ProcessType type) {
+		return this.type == type;
+	}
 }
