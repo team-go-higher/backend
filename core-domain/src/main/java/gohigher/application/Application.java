@@ -32,4 +32,8 @@ public class Application extends JobInfo {
 			null, null, null, null, null, null,
 			List.of(process), url, userId, process);
 	}
+
+	public boolean isAppliedBy(Long userId) {
+		return this.userId.equals(userId);
+	}
 }
