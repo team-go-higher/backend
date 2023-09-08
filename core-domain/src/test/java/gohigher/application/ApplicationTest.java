@@ -30,10 +30,10 @@ class ApplicationTest {
 			List.of(firstProcess, secondProcess, thirdProcess), "", USER_ID, firstProcess);
 
 		@Nested
-		@DisplayName("해당 지원서에 존재하지 않는 전형 타입의 전형을 찾으려 할 때,")
+		@DisplayName("해당 지원서에 존재하는 전형 타입의 전형을 찾으려 할 때,")
 		class ExistentProcessOfProcessType {
 
-			@DisplayName("예외를 발생시킨다.")
+			@DisplayName("정상적으로 전형의 id를 반환할 수 있다.")
 			@Test
 			void getProcessType() {
 				//given
