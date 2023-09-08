@@ -28,19 +28,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class JobInfo {
 
-	private final String companyName;
-	private final String team;
-	private final String location;
-	private final String contact;
-	private final String duty;
-	private final String position;
-	private final String jobDescription;
-	private final String workType;
-	private final EmploymentType employmentType;
-	private final String careerRequirement;
-	private final String requiredCapability;
-	private final String preferredQualification;
-	private final LocalDateTime deadLine;
-	private final List<Process> processes;
-	private final String url;
+	protected final String companyName;
+	protected final String team;
+	protected final String location;
+	protected final String contact;
+	protected final String duty;
+	protected final String position;
+	protected final String jobDescription;
+	protected final String workType;
+	protected final EmploymentType employmentType;
+	protected final String careerRequirement;
+	protected final String requiredCapability;
+	protected final String preferredQualification;
+	protected final LocalDateTime deadLine;
+	protected final List<Process> processes;
+	protected final String url;
 }
