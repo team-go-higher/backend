@@ -22,7 +22,7 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 	}
 
 	@Override
-	public void applySpecifically(Long userId, SpecificApplicationRequest command) {
-		applicationPersistenceCommandPort.save(userId, command.toDomain());
+	public long applySpecifically(Long userId, SpecificApplicationRequest command) {
+		return applicationPersistenceCommandPort.save(userId, command.toDomain());
 	}
 }

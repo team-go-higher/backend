@@ -4,5 +4,5 @@ public interface ApplicationCommandPort {
 
 	void applySimply(Long userId, SimpleApplicationRequest command);
 
-	void applySpecifically(Long userId, SpecificApplicationRequest command);
+	long applySpecifically(Long userId, SpecificApplicationRequest command);
 }
