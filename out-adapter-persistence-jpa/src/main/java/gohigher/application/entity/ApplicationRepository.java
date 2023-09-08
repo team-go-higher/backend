@@ -12,5 +12,5 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "WHERE a.userId = :userId "
 		+ "AND FUNCTION('YEAR', p.schedule) = :year "
 		+ "AND FUNCTION('MONTH', p.schedule) = :month")
-	List<ApplicationJpaEntity> findByUserIdAndMonth(Long userId, int year, int month);
+	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, int year, int month);
 }

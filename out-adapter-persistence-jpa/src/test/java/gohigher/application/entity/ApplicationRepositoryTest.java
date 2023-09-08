@@ -77,7 +77,7 @@ class ApplicationRepositoryTest {
 			@DisplayName("특정 유저의 데이터만 반환한다.")
 			@Test
 			void it_returns_only_data_for_a_specific_user() {
-				List<ApplicationJpaEntity> actual = applicationRepository.findByUserIdAndMonth(userId, year, month);
+				List<ApplicationJpaEntity> actual = applicationRepository.findByUserIdAndDate(userId, year, month);
 
 				assertThat(actual).containsOnly(naverApplication, kakaoApplication);
 			}
@@ -111,7 +111,7 @@ class ApplicationRepositoryTest {
 			@DisplayName("조회하는 달의 일정 데이터만 반환한다.")
 			@Test
 			void it_returns_schedules_for_month() {
-				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndMonth(userId, year, month);
+				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndDate(userId, year, month);
 
 				List<ApplicationProcessJpaEntity> actualProcesses = new ArrayList<>();
 				for (ApplicationJpaEntity application : response) {
@@ -146,7 +146,7 @@ class ApplicationRepositoryTest {
 			@Test
 			@DisplayName("2개성의 과정을 모두 담은 하나의 지원 공고를 반환한다.")
 			void it_return_application_with_two_processes() {
-				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndMonth(userId, year, month);
+				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndDate(userId, year, month);
 				List<ApplicationProcessJpaEntity> actual = response.get(0).getProcesses();
 
 				assertThat(actual).hasSize(expectedProcesses.size());

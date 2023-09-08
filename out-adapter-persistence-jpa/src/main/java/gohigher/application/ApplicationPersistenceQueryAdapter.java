@@ -18,7 +18,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	@Override
 	public List<Application> findByIdAndMonth(Long userId, int year, int month) {
 		List<ApplicationJpaEntity> applicationJpaEntities =
-			applicationRepository.findByUserIdAndMonth(userId, year, month);
+			applicationRepository.findByUserIdAndDate(userId, year, month);
 
 		return applicationJpaEntities.stream()
 			.map(ApplicationJpaEntity::convertToDomain)
