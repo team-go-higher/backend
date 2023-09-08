@@ -1,11 +1,9 @@
-package gohigher.fixture;
+package gohigher.application;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import gohigher.application.entity.ApplicationJpaEntity;
-import gohigher.application.entity.ApplicationProcessJpaEntity;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
 import lombok.Getter;
@@ -30,14 +28,7 @@ public enum ProcessFixture {
 		return new Process(this.getType(), this.getDescription(), schedule);
 	}
 
-	public ApplicationProcessJpaEntity toApplicationProcessEntity(
-		ApplicationJpaEntity applicationJpaEntity, LocalDate date) {
-		return ApplicationProcessJpaEntity.of(applicationJpaEntity,
-			this.toDomainWithSchedule(LocalDateTime.of(date, LocalTime.now())), 0);
-	}
-
-	public ApplicationProcessJpaEntity toApplicationProcessEntity(ApplicationJpaEntity applicationJpaEntity,
-		LocalDateTime schedule, int order) {
-		return ApplicationProcessJpaEntity.of(applicationJpaEntity, this.toDomainWithSchedule(schedule), order);
+	public Process toDomainWithSchedule(LocalDate date) {
+		return toDomainWithSchedule(LocalDateTime.of(date, LocalTime.now()));
 	}
 }
