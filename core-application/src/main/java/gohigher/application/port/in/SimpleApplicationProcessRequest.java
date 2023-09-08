@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class SimpleProcessRequest {
+public class SimpleApplicationProcessRequest {
 
 	private String type;
 
