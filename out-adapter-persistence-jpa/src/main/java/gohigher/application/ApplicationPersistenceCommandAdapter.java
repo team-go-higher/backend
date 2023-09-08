@@ -37,4 +37,9 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 		}
 		applicationProcessRepository.saveAll(applicationProcessJpaEntities);
 	}
+
+	@Override
+	public void updateCurrentProcessOrder(long id, int order) {
+		applicationRepository.updateCurrentProcessOrder(id, order);
+	}
 }
