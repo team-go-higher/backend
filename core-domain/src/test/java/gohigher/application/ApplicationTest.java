@@ -18,13 +18,13 @@ import gohigher.common.ProcessType;
 class ApplicationTest {
 
 	@Nested
-	@DisplayName("getProcessTypeOf 메서드는")
+	@DisplayName("getProcessIdTypeOf 메서드는")
 	class Describe_GetProcessTypeOf {
 
 		private final Long USER_ID = 1L;
-		private final Process firstProcess = new Process(ProcessType.TEST, "코딩테스트", LocalDateTime.now());
-		private final Process secondProcess = new Process(ProcessType.INTERVIEW, "기술 면접", LocalDateTime.now());
-		private final Process thirdProcess = new Process(ProcessType.INTERVIEW, "인성 면접", LocalDateTime.now());
+		private final Process firstProcess = new Process(1L, ProcessType.TEST, "코딩테스트", LocalDateTime.now());
+		private final Process secondProcess = new Process(2L, ProcessType.INTERVIEW, "기술 면접", LocalDateTime.now());
+		private final Process thirdProcess = new Process(3L, ProcessType.INTERVIEW, "인성 면접", LocalDateTime.now());
 		private final Application application = new Application("", "", "", "", "", "", "", "",
 			EmploymentType.PERMANENT, "", "", "", LocalDateTime.now(),
 			List.of(firstProcess, secondProcess, thirdProcess), "", USER_ID, firstProcess);
@@ -40,10 +40,10 @@ class ApplicationTest {
 				ProcessType processType = ProcessType.INTERVIEW;
 
 				//when
-				Process actual = application.getProcessOfType(processType);
+				Long actual = application.getProcessIdOfType(processType);
 
 				//then
-				assertThat(actual).isEqualTo(secondProcess);
+				assertThat(actual).isEqualTo(secondProcess.getId());
 			}
 		}
 
@@ -58,7 +58,7 @@ class ApplicationTest {
 				ProcessType notFoundProcessType = ProcessType.TO_APPLY;
 
 				//when then
-				assertThatThrownBy(() -> application.getProcessOfType(notFoundProcessType))
+				assertThatThrownBy(() -> application.getProcessIdOfType(notFoundProcessType))
 					.hasMessage(APPLICATION_PROCESS_NOT_FOUND.getMessage());
 			}
 		}

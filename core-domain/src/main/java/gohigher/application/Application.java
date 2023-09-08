@@ -41,10 +41,11 @@ public class Application extends JobInfo {
 		return this.userId.equals(userId);
 	}
 
-	public Process getProcessOfType(ProcessType currentProcessType) {
+	public long getProcessIdOfType(ProcessType currentProcessType) {
 		return processes.stream()
 			.filter(process -> process.hasType(currentProcessType))
 			.findFirst()
-			.orElseThrow(() -> new GoHigherException(APPLICATION_PROCESS_NOT_FOUND));
+			.orElseThrow(() -> new GoHigherException(APPLICATION_PROCESS_NOT_FOUND))
+			.getId();
 	}
 }
