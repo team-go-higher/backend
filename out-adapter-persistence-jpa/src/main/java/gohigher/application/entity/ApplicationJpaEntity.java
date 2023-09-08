@@ -51,7 +51,7 @@ public class ApplicationJpaEntity {
 	private String preferredQualification;
 	private LocalDateTime deadline;
 	private String url;
-	private int currentProcess;
+	private int currentProcessOrder;
 
 	@OneToMany(mappedBy = "application")
 	private List<ApplicationProcessJpaEntity> processes;
@@ -92,7 +92,7 @@ public class ApplicationJpaEntity {
 		List<Process> processes = this.processes.stream()
 			.map(ApplicationProcessJpaEntity::toDomain)
 			.toList();
-		Process currentProcess = processes.get(this.currentProcess);
+		Process currentProcess = processes.get(this.currentProcessOrder);
 		return new Application(companyName, team, location, contact, duty, position, jobDescription, workType,
 			employmentType, careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
 			userId, currentProcess);
