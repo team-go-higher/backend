@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    username: ENC(iOzPFqGzquyFDMKVUekAg26LDOwhBTvW)
+    password: ENC(3s6N6Fb0NYjyv6AIW3wHLv3c8O7tsrMg)
+    url: jdbc:mysql://gohigher-mysql.cykwfb67mwkd.ap-northeast-2.rds.amazonaws.com:3306/gohigher?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+  jpa:
+    hibernate.ddl-auto: validate

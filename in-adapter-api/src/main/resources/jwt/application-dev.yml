@@ -1,0 +1,3 @@
+security:
+  jwt:
+    secret-key: ENC(fKmmue468CoevhjNzOwOzaztgd+tDAHFqP0GUJqTV4hrElYK5OgHTrQc2ogm1RMH4t9dOa8vfwqXZd+q/hcr9KT6H0/NCOv2UsCjj5K9U8w/uQp5DiQ2IrpJPAYwW9NzzCz742Hg++qocyXn0H/R7oTlcRp/LnEBjuHe94y0Zd2t8NQZEX65zN6zLQSJY80U)
