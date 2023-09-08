@@ -13,16 +13,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ProcessFixture {
 
-	TO_APPLY(ProcessType.TO_APPLY, "", LocalDateTime.now()),
-	DOCUMENT(ProcessType.DOCUMENT, "", LocalDateTime.now()),
-	TEST(ProcessType.TEST, "", LocalDateTime.now()),
-	INTERVIEW(ProcessType.INTERVIEW, "", LocalDateTime.now()),
-	COMPLETE(ProcessType.COMPLETE, "", LocalDateTime.now()),
+	TO_APPLY(ProcessType.TO_APPLY, "", null),
+	DOCUMENT(ProcessType.DOCUMENT, "", LocalDateTime.now().plusDays(6)),
+	TEST(ProcessType.TEST, "", LocalDateTime.now().plusDays(10)),
+	INTERVIEW(ProcessType.INTERVIEW, "", LocalDateTime.now().plusDays(20)),
+	COMPLETE(ProcessType.COMPLETE, "", LocalDateTime.now().plusDays(40)),
 	;
 
 	private final ProcessType type;
 	private final String description;
 	private final LocalDateTime schedule;
+
+	public Process toDomain() {
+		return new Process(this.getType(), this.getDescription(), this.getSchedule());
+	}
 
 	public Process toDomainWithSchedule(LocalDateTime schedule) {
 		return new Process(this.getType(), this.getDescription(), schedule);
