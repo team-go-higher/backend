@@ -48,4 +48,8 @@ public class ApplicationProcessJpaEntity {
 		return new ApplicationProcessJpaEntity(null, application, process.type(), order, process.schedule(),
 			process.description());
 	}
+
+	public Process toDomain() {
+		return new Process(type, description, schedule);
+	}
 }
