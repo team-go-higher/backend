@@ -25,13 +25,13 @@ import jakarta.persistence.EntityManager;
 class ApplicationRepositoryTest {
 
 	@Autowired
-	ApplicationRepository applicationRepository;
+	private ApplicationRepository applicationRepository;
 
 	@Autowired
-	ApplicationProcessRepository applicationProcessRepository;
+	private ApplicationProcessRepository applicationProcessRepository;
 
 	@Autowired
-	EntityManager entityManager;
+	private EntityManager entityManager;
 
 	@DisplayName("findByUserIdAndMonth 메소드는")
 	@Nested
