@@ -87,5 +87,14 @@ public class ApplicationJpaEntity {
 			false
 		);
 	}
-}
 
+	public Application toDomain() {
+		List<Process> processes = this.processes.stream()
+			.map(ApplicationProcessJpaEntity::toDomain)
+			.toList();
+		Process currentProcess = processes.get(this.currentProcess);
+		return new Application(companyName, team, location, contact, duty, position, jobDescription, workType,
+			employmentType, careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
+			userId, currentProcess);
+	}
+}
