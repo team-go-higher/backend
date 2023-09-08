@@ -1,5 +1,7 @@
 package gohigher.application;
 
+import java.net.URI;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +31,8 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 	@PostMapping("/v1/application/specific")
 	public ResponseEntity<GohigherResponse<Void>> registerApplicationSpecifically(@Login Long userId,
 		@RequestBody @Valid SpecificApplicationRequest command) {
-		applicationCommandPort.applySpecifically(userId, command);
-		return ResponseEntity.ok(GohigherResponse.success(null));
+		long applicationId = applicationCommandPort.applySpecifically(userId, command);
+		return ResponseEntity.created(URI.create("/applications/" + applicationId))
+			.body(GohigherResponse.success(null));
 	}
 }
