@@ -1,0 +1,5 @@
+security:
+  jwt:
+    expire-length:
+      access: 300000
+      refresh: 691200000

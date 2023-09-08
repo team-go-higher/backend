@@ -1,6 +1,3 @@
 security:
   jwt:
     secret-key: ENC(kmdkmc5zMo8nXTqF7f3w2iwCiVv1iwIG77jgbgwnUPsfqkLYwjZ34ZEGLY6YiXd/qsAChzW0TInQlQmVJ+p6YhxBVo/jrIip/Mmwhv6UXifUKaTTbCgYwKtKbVp2JEX+5zv9eh7UHP/h3p1vsepOhUQoDLZ5JTc/JWid8C8FO6LPbbF3yRwt+1if/it870W+)
-    expire-length:
-      access: 300000
-      refresh: 691200000

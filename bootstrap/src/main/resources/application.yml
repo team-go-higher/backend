@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: local
+  config:
+    import:
+      - application-docs.yml
+      - auth/application.yml
+      - jwt/application.yml
+      - persistence/application.yml
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor

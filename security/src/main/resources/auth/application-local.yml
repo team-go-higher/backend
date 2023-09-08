@@ -1,0 +1,13 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            redirect_uri: http://localhost:8080/oauth2/callback/google
+          kakao:
+            redirect-uri: http://localhost:8080/oauth2/callback/kakao
+
+oauth2:
+  success:
+    redirect_uri: 'http://localhost:8080'
