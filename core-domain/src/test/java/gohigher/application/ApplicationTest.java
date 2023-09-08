@@ -14,7 +14,7 @@ import gohigher.common.EmploymentType;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
 
-@DisplayName("Application 클래스는")
+@DisplayName("Application 클래스의")
 class ApplicationTest {
 
 	@Nested
