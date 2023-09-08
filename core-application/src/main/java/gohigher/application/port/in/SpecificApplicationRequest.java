@@ -5,7 +5,11 @@ import java.util.List;
 import gohigher.application.Application;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 public class SpecificApplicationRequest {
 
 	private String companyName;

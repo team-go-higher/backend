@@ -6,7 +6,11 @@ import gohigher.common.Process;
 import gohigher.common.ProcessType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 public class SpecificApplicationProcessRequest {
 
 	@NotBlank(message = "JOB_INFO_005||전형 단계가 입력되지 않았습니다.")
