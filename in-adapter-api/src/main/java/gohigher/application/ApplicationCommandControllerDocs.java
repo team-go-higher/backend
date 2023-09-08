@@ -59,7 +59,7 @@ public interface ApplicationCommandControllerDocs {
 						"success": false,
 						"error": {
 							"code": "JOB_INFO_001",
-							"message": "유효하지 않은 고용 형태입니다."
+							"message": "유효하지 않은 전형 단계입니다."
 						},
 						"data": null
 						}
