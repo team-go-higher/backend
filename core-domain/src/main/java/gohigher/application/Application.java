@@ -17,22 +17,21 @@ public class Application extends JobInfo {
 
 	private final Process currentProcess;
 
-	public Application(String companyName, String location, String contact, String duty, String jobDescription,
-		String workType, EmploymentType employmentType, String careerRequirement, String requiredCapability,
-		String preferredQualification, LocalDateTime deadLine, List<Process> processes,
+	public Application(String companyName, String team, String location, String contact, String duty, String position,
+		String jobDescription, String workType, EmploymentType employmentType, String careerRequirement,
+		String requiredCapability, String preferredQualification, LocalDateTime deadLine, List<Process> processes,
 		String url, Process currentProcess) {
-		super(companyName, location, contact, duty, jobDescription, workType, employmentType, careerRequirement,
-			requiredCapability, preferredQualification, deadLine, processes, url);
+		super(companyName, team, location, contact, duty, position, jobDescription, workType, employmentType,
+			careerRequirement, requiredCapability, preferredQualification, deadLine, processes, url);
 		this.currentProcess = currentProcess;
 	}
 
-	public static Application simple(String companyName, String duty, String url,
-		ProcessType processType, LocalDateTime schedule) {
+	public static Application simple(String companyName, String duty, String url, ProcessType processType,
+		LocalDateTime schedule) {
 		Process process = new Process(processType, null, schedule);
-		return new Application(
-			companyName, null, null, duty, null, null,
-			null, null, null, null, null,
-			List.of(process), url, process
-		);
+		return new Application(companyName, null, null, null, duty, null, null,
+			null, null, null, null, null, null,
+			List.of(process), url, process);
 	}
 }
+

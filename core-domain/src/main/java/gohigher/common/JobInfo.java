@@ -9,27 +9,31 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * companyName            회사명
- * location               회사 위치
- * contact                인사팀 연락처
+ * team					  부서
  * duty                   직무
- * jobDescription         담당 업무
- * workType               근무 형태
- * employmentType         고용형태
- * careerRequirement      경력 조건
+ * position				  포지션
+ * processes              전형 단계
+ * deadLine               전형 마감일(상시면 해당 년의 마지막 날로 설정)
+ * jobDescription         주요 업무
  * requiredCapability     필수 역량
- * preferredQualification 우대사항
- * deadLine               마감 날짜(상시면 해당 년의 마지막 날로 설정)
- * processes              공고 과정
  * url                    공고 URL
+ * location               회사 위치
+ * preferredQualification  우대사항
+ * contact                채용 담당자 연락처
+ * employmentType         고용 형태
+ * careerRequirement      경력 조건
+ * workType               근무 형태
  */
-@RequiredArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public abstract class JobInfo {
 
 	private final String companyName;
+	private final String team;
 	private final String location;
 	private final String contact;
 	private final String duty;
+	private final String position;
 	private final String jobDescription;
 	private final String workType;
 	private final EmploymentType employmentType;
