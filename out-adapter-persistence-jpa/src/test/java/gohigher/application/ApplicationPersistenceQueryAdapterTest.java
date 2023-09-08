@@ -1,7 +1,8 @@
 package gohigher.application;
 
-import static gohigher.fixture.ApplicationFixture.*;
-import static gohigher.fixture.ProcessFixture.*;
+import static gohigher.application.ApplicationFixture.*;
+import static gohigher.application.ProcessFixture.*;
+import static gohigher.fixtureConverter.ApplicationFixtureConverter.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -46,17 +47,20 @@ class ApplicationPersistenceQueryAdapterTest {
 		@Nested
 		class Context_with_many_schedules_for_several_months {
 
+			private ApplicationJpaEntity naverApplication;
+			private ApplicationJpaEntity kakaoApplication;
+
 			@BeforeEach
 			void setUp() {
-				ApplicationJpaEntity naverApplication = NAVER_APPLICATION.toEntity(userId);
-				naverApplication.getProcesses()
-					.add(TEST.toApplicationProcessEntity(naverApplication, LocalDate.of(year, month, 20)));
-				naverApplication.getProcesses()
-					.add(TO_APPLY.toApplicationProcessEntity(naverApplication, LocalDate.of(year, month, 11)));
+				naverApplication = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
+				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication,
+					TEST.toDomainWithSchedule(LocalDate.of(year, month, 11)), 1));
+				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication,
+					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 20)), 1));
 
-				ApplicationJpaEntity kakaoApplication = KAKAO_APPLICATION.toEntity(userId);
-				kakaoApplication.getProcesses()
-					.add(TO_APPLY.toApplicationProcessEntity(kakaoApplication, LocalDate.of(year, month, 20)));
+				kakaoApplication = convertToApplicationEntity(userId, KAKAO_APPLICATION.toDomain());
+				kakaoApplication.addProcess(convertToApplicationProcessEntity(kakaoApplication,
+					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11)), 1));
 
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(naverApplication, kakaoApplication);
 
