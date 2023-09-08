@@ -17,6 +17,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
     implementation 'jakarta.validation:jakarta.validation-api'
 
+    testImplementation(testFixtures(project(":core-domain")))
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

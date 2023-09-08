@@ -1,11 +1,11 @@
 package gohigher.application.service;
 
+import static gohigher.application.ApplicationFixture.*;
+import static gohigher.application.ProcessFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import gohigher.application.Application;
 import gohigher.application.port.in.ApplicationMonthQueryResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
-import gohigher.common.EmploymentType;
 import gohigher.common.Process;
-import gohigher.common.ProcessType;
 
 @DisplayName("ApplicationQueryService 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -49,28 +47,24 @@ class ApplicationQueryServiceTest {
 		@Nested
 		class Context_with_schedules {
 
-			private final LocalDate searchDate = LocalDate.of(year, month, 20);
-			private final Process toApply = new Process(ProcessType.TO_APPLY, null,
-				LocalDateTime.of(searchDate, LocalTime.now()));
-			private final Process document = new Process(ProcessType.DOCUMENT, null,
-				LocalDateTime.of(searchDate, LocalTime.now()));
-			private final Process interview = new Process(ProcessType.INTERVIEW, null,
-				LocalDateTime.of(searchDate, LocalTime.now()));
+			private List<Process> naverProcesses;
+			private List<Process> kakaoProcesses;
 
 			@BeforeEach
 			void setUp() {
-				List<Process> naverProcesses = List.of(toApply, document, interview);
-				Application naverApplication = new Application("Naver", "Bakcend", "", "", "", "",
-					EmploymentType.PERMANENT, "", "", "", LocalDateTime.now().plusDays(7), naverProcesses, "", toApply);
+				LocalDate searchDate = LocalDate.of(year, month, 20);
+				Process toApply = TO_APPLY.toDomainWithSchedule(searchDate);
+				Process document = DOCUMENT.toDomainWithSchedule(searchDate);
+				Process interview = INTERVIEW.toDomainWithSchedule(searchDate);
 
-				List<Process> kakaoProcesses = List.of(toApply, document);
-				Application kakaoApplication = new Application("Kakao", "Bakcend", "", "", "", "",
-					EmploymentType.PERMANENT, "", "", "", LocalDateTime.now().plusDays(7), kakaoProcesses, "", toApply);
+				naverProcesses = List.of(toApply, document, interview);
+				Application naverApplication = NAVER_APPLICATION.toDomain(naverProcesses, toApply);
 
-				List<Application> applicationJpaEntities = List.of(naverApplication, kakaoApplication);
+				kakaoProcesses = List.of(toApply, document);
+				Application kakaoApplication = KAKAO_APPLICATION.toDomain(kakaoProcesses, toApply);
 
 				given(applicationPersistenceQueryPort.findByIdAndMonth(userId, year, month))
-					.willReturn(applicationJpaEntities);
+					.willReturn(List.of(naverApplication, kakaoApplication));
 			}
 
 			@DisplayName("일정 정보를 반환한다.")
@@ -78,7 +72,7 @@ class ApplicationQueryServiceTest {
 			void it_return_application_processes() {
 				ApplicationMonthQueryResponse actual = applicationQueryService.findByMonth(userId, year, month);
 
-				assertThat(actual.getApplications()).hasSize(5);
+				assertThat(actual.getApplications()).hasSize(naverProcesses.size() + kakaoProcesses.size());
 			}
 		}
 	}
