@@ -2,7 +2,9 @@ package gohigher.application.port.in;
 
 public interface ApplicationCommandPort {
 
-	void applySimply(Long userId, SimpleApplicationRequest request);
+	void applySimply(Long userId, SimpleApplicationRequest command);
 
-	long applySpecifically(Long userId, SpecificApplicationRequest request);
+	long applySpecifically(Long userId, SpecificApplicationRequest command);
+
+	void updateCurrentProcess(Long userId, CurrentProcessUpdateRequest command);
 }
