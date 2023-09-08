@@ -27,12 +27,12 @@ public class SpecificApplicationRequest {
 	private List<SpecificApplicationProcessRequest> processes;
 	private String url;
 
-	public Application toDomain() {
+	public Application toDomain(Long userId) {
 		List<Process> processes = this.processes.stream()
 			.map(SpecificApplicationProcessRequest::toDomain)
 			.toList();
 		return new Application(companyName, team, location, contact, duty, position, jobDescription, workType,
 			EmploymentType.from(employmentType), careerRequirement, requiredCapability, preferredQualification, null,
-			processes, url, processes.get(0));
+			processes, url, userId, processes.get(0));
 	}
 }

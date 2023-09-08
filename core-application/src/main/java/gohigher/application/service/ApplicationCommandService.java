@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.port.in.ApplicationCommandPort;
-import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
@@ -19,11 +18,11 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 
 	@Override
 	public void applySimply(Long userId, SimpleApplicationRequest request) {
-		applicationPersistenceCommandPort.save(userId, request.toDomain());
+		applicationPersistenceCommandPort.save(request.toDomain(userId));
 	}
 
 	@Override
 	public long applySpecifically(Long userId, SpecificApplicationRequest request) {
-		return applicationPersistenceCommandPort.save(userId, request.toDomain());
+		return applicationPersistenceCommandPort.save(request.toDomain(userId));
 	}
 }

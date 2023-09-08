@@ -62,11 +62,11 @@ public class ApplicationJpaEntity {
 
 	private boolean deleted;
 
-	public static ApplicationJpaEntity from(Long userId, Application application) {
+	public static ApplicationJpaEntity from(Application application) {
 		List<Process> processes = application.getProcesses();
 		int currentProcessIndex = processes.indexOf(application.getCurrentProcess());
 		return new ApplicationJpaEntity(null,
-			userId,
+			application.getUserId(),
 			application.getCompanyName(),
 			application.getTeam(),
 			application.getLocation(),
