@@ -45,11 +45,11 @@ public class ApplicationProcessJpaEntity {
 	private String description;
 
 	public static ApplicationProcessJpaEntity of(ApplicationJpaEntity application, Process process, int order) {
-		return new ApplicationProcessJpaEntity(null, application, process.type(), order, process.schedule(),
-			process.description());
+		return new ApplicationProcessJpaEntity(process.getId(), application, process.getType(), order,
+			process.getSchedule(), process.getDescription());
 	}
 
 	public Process toDomain() {
-		return new Process(type, description, schedule);
+		return new Process(id, type, description, schedule);
 	}
 }
