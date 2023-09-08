@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.port.in.ApplicationCommandPort;
 import gohigher.application.port.in.SimpleApplicationRequest;
+import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +18,11 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 
 	@Override
 	public void applySimply(Long userId, SimpleApplicationRequest command) {
+		applicationPersistenceCommandPort.save(userId, command.toDomain());
+	}
+
+	@Override
+	public void applySpecifically(Long userId, SpecificApplicationRequest command) {
 		applicationPersistenceCommandPort.save(userId, command.toDomain());
 	}
 }
