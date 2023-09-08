@@ -25,4 +25,11 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 		applicationCommandPort.applySimply(userId, command);
 		return ResponseEntity.ok(GohigherResponse.success(null));
 	}
+
+	@PostMapping("/v1/application/specific")
+	public ResponseEntity<GohigherResponse<Void>> registerApplicationSpecifically(@Login Long userId,
+		@RequestBody @Valid SpecificApplicationRequest command) {
+		applicationCommandPort.applySpecifically(userId, command);
+		return ResponseEntity.ok(GohigherResponse.success(null));
+	}
 }
