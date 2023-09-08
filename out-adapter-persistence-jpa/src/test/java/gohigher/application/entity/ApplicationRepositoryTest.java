@@ -16,8 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
-import jakarta.persistence.EntityManager;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @DisplayName("ApplicationRepository 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -31,7 +30,7 @@ class ApplicationRepositoryTest {
 	private ApplicationProcessRepository applicationProcessRepository;
 
 	@Autowired
-	private EntityManager entityManager;
+	private TestEntityManager entityManager;
 
 	@DisplayName("findByUserIdAndMonth 메소드는")
 	@Nested
