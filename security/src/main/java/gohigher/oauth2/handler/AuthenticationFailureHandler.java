@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gohigher.response.GoHigherResponse;
+import gohigher.controller.response.GohigherResponse;
 import gohigher.user.auth.AuthErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 
-		GoHigherResponse<Object> errorResponse = GoHigherResponse.fail(errorCode.getErrorCode(),
+		GohigherResponse<Object> errorResponse = GohigherResponse.fail(errorCode.getErrorCode(),
 			errorCode.getMessage());
 
 		response.getWriter()

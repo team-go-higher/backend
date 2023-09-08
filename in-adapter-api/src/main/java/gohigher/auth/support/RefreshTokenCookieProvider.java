@@ -1,4 +1,4 @@
-package gohigher.jwt.support;
+package gohigher.auth.support;
 
 import java.time.Duration;
 
@@ -8,14 +8,14 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CookieProvider {
+public class RefreshTokenCookieProvider {
 
 	private static final String REFRESH_TOKEN_KEY = "refresh-token";
 
 	private final long refreshTokenExpireLength;
 	private final String tokenRequestUri;
 
-	public CookieProvider(@Value("${security.jwt.expire-length.refresh}") long refreshTokenExpireLength,
+	public RefreshTokenCookieProvider(@Value("${security.jwt.expire-length.refresh}") long refreshTokenExpireLength,
 		@Value("${token.request.uri}") String tokenRequestUri) {
 		this.refreshTokenExpireLength = refreshTokenExpireLength;
 		this.tokenRequestUri = tokenRequestUri;

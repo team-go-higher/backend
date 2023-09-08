@@ -1,13 +1,13 @@
-package gohigher.usecase;
+package gohigher.user.usecase;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import gohigher.port.in.UserCommandPort;
-import gohigher.port.out.UserPersistenceCommandPort;
-import gohigher.port.out.UserPersistenceQueryPort;
 import gohigher.user.User;
 import gohigher.user.auth.Provider;
+import gohigher.user.port.in.UserCommandPort;
+import gohigher.user.port.out.UserPersistenceCommandPort;
+import gohigher.user.port.out.UserPersistenceQueryPort;
 import lombok.RequiredArgsConstructor;
 
 @Service

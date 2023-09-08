@@ -9,18 +9,18 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import gohigher.jwt.support.RoleGrantedAuthority;
+import gohigher.jwt.RoleGrantedAuthority;
 import gohigher.oauth2.user.OAuth2UserInfo;
 import gohigher.oauth2.user.OAuth2UserInfoFactory;
-import gohigher.usecase.UserCommandService;
 import gohigher.user.User;
 import gohigher.user.auth.Provider;
+import gohigher.user.usecase.UserCommandService;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class OauthUserService extends DefaultOAuth2UserService {
-	
+
 	private final UserCommandService oAuth2CommandService;
 
 	@Override

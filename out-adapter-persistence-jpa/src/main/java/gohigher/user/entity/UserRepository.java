@@ -1,4 +1,4 @@
-package gohigher.user;
+package gohigher.user.entity;
 
 import java.util.Optional;
 
