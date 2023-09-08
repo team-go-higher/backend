@@ -18,10 +18,32 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface ApplicationCommandControllerDocs {
 
 	@Operation(summary = "지원서 간편등록")
-	@ApiResponses(
-		value = {@ApiResponse(responseCode = "200", description = "간편 지원서 등록 성공"),
-			@ApiResponse(responseCode = "400", description = "회사명 혹은 직무가 입력되지 않음")
-		}
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "간편 지원서 등록 성공"),
+		@ApiResponse(responseCode = "400", description = "회사명 혹은 직무가 입력되지 않음", content = @Content(
+			examples = {
+				@ExampleObject(name = "회사명 입력되지 않음", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "JOB_INFO_002",
+						"message": "회사명이 입력되지 않았습니다."
+					},
+					"data": null
+					}
+					"""),
+				@ExampleObject(name = "직무 입력되지 않음", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "JOB_INFO_003",
+						"message": "직무가 입력되지 않았습니다."
+					},
+					"data": null
+					}
+					""")
+			}))
+	}
 	)
 	ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Parameter(hidden = true) Long userId,
 		@RequestBody SimpleApplicationRequest command);
