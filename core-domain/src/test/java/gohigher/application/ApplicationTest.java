@@ -18,7 +18,7 @@ import gohigher.common.ProcessType;
 class ApplicationTest {
 
 	@Nested
-	@DisplayName("getProcessIdTypeOf 메서드는")
+	@DisplayName("getProcessOrderOfType 메서드는")
 	class Describe_GetProcessTypeOf {
 
 		private final Long USER_ID = 1L;
@@ -30,25 +30,25 @@ class ApplicationTest {
 			List.of(firstProcess, secondProcess, thirdProcess), "", USER_ID, firstProcess);
 
 		@Nested
-		@DisplayName("해당 지원서에 존재하는 전형 타입의 전형을 찾으려 할 때,")
+		@DisplayName("해당 지원서에 존재하는 전형 타입의 순서를 찾으려 할 때,")
 		class ExistentProcessOfProcessType {
 
-			@DisplayName("정상적으로 전형의 id를 반환할 수 있다.")
+			@DisplayName("정상적으로 전형의 순서를 반환할 수 있다.")
 			@Test
 			void getProcessType() {
 				//given
 				ProcessType processType = ProcessType.INTERVIEW;
 
 				//when
-				Long actual = application.getProcessIdOfType(processType);
+				int actual = application.getProcessOrderOfType(processType);
 
 				//then
-				assertThat(actual).isEqualTo(secondProcess.getId());
+				assertThat(actual).isEqualTo(secondProcess.getOrder());
 			}
 		}
 
 		@Nested
-		@DisplayName("해당 지원서에 존재하지 않는 전형 타입의 전형을 찾으려 할 때,")
+		@DisplayName("해당 지원서에 존재하지 않는 전형 타입의 순서를 찾으려 할 때,")
 		class NotFoundProcessOfProcessType {
 
 			@DisplayName("예외를 발생시킨다.")
@@ -58,7 +58,7 @@ class ApplicationTest {
 				ProcessType notFoundProcessType = ProcessType.TO_APPLY;
 
 				//when then
-				assertThatThrownBy(() -> application.getProcessIdOfType(notFoundProcessType))
+				assertThatThrownBy(() -> application.getProcessOrderOfType(notFoundProcessType))
 					.hasMessage(APPLICATION_PROCESS_NOT_FOUND.getMessage());
 			}
 		}
