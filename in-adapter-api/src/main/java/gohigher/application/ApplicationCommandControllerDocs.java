@@ -20,6 +20,6 @@ public interface ApplicationCommandControllerDocs {
 			@ApiResponse(responseCode = "400", description = "회사명 혹은 직무가 입력되지 않음")
 		}
 	)
-	ResponseEntity<GohigherResponse<Void>> registerApplication(@Parameter(hidden = true) Long userId,
+	ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Parameter(hidden = true) Long userId,
 		@RequestBody SimpleApplicationRequest command);
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gohigher.application.port.in.ApplicationCommandPort;
 import gohigher.application.port.in.SimpleApplicationRequest;
+import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 	private final ApplicationCommandPort applicationCommandPort;
 
 	@PostMapping("/v1/application/simple")
-	public ResponseEntity<GohigherResponse<Void>> registerApplication(@Login Long userId,
+	public ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Login Long userId,
 		@RequestBody @Valid SimpleApplicationRequest command) {
 		applicationCommandPort.applySimply(userId, command);
 		return ResponseEntity.ok(GohigherResponse.success(null));
