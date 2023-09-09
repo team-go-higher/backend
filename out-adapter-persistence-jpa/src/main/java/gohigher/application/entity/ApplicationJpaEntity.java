@@ -93,7 +93,7 @@ public class ApplicationJpaEntity {
 		processes.add(process);
 	}
 
-	public Application convertToDomain() {
+	public Application toDomain() {
 		List<Process> processes = this.processes.stream()
 			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))
 			.map(it -> new Process(it.getType(), it.getDescription(), it.getSchedule()))

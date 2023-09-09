@@ -21,7 +21,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 			applicationRepository.findByUserIdAndDate(userId, year, month);
 
 		return applicationJpaEntities.stream()
-			.map(ApplicationJpaEntity::convertToDomain)
+			.map(ApplicationJpaEntity::toDomain)
 			.toList();
 	}
 }
