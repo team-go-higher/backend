@@ -36,7 +36,7 @@ class ApplicationRepositoryTest {
 	@Nested
 	class Describe_findByUserIdAndMonth {
 
-		private final Long userId = 1L;
+		private final Long userId = 0L;
 		private final int year = 2023;
 		private final int month = 9;
 
@@ -55,7 +55,7 @@ class ApplicationRepositoryTest {
 		@Nested
 		class Context_with_many_user_applications {
 
-			private Long otherUserId = 2L;
+			private Long otherUserId = -1L;
 			private ApplicationJpaEntity otherUserApplication;
 
 			@BeforeEach
