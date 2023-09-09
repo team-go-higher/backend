@@ -1,9 +1,11 @@
 package gohigher.application;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import gohigher.application.port.in.CalenderApplicationMonthResponse;
+import gohigher.application.port.in.CalenderApplicationResponse;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,6 +35,6 @@ public interface ApplicationQueryControllerDocs {
 					""")
 			}))
 	})
-	ResponseEntity<GohigherResponse<CalenderApplicationMonthResponse>> findByMonth(
+	ResponseEntity<GohigherResponse<List<CalenderApplicationResponse>>> findByMonth(
 		@Parameter(hidden = true) Long userId, @RequestParam int year, @RequestParam int month);
 }

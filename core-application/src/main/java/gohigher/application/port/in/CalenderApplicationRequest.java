@@ -6,13 +6,13 @@ import gohigher.global.exception.GoHigherException;
 import lombok.Getter;
 
 @Getter
-public class CalenderApplicationMonthRequest {
+public class CalenderApplicationRequest {
 
 	private final Long userId;
 	private final int year;
 	private final int month;
 
-	public CalenderApplicationMonthRequest(Long userId, int year, int month) {
+	public CalenderApplicationRequest(Long userId, int year, int month) {
 		validateNegativeYear(year);
 		verifyMonthIsInValidRange(month);
 		this.userId = userId;

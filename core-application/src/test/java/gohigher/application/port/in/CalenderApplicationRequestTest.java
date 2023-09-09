@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import gohigher.global.exception.GoHigherException;
 
 @DisplayName("CalenderApplicationMonthRequest 클래스의")
-class CalenderApplicationMonthRequestTest {
+class CalenderApplicationRequestTest {
 
 	@DisplayName("생성자는")
 	@Nested
@@ -30,7 +30,7 @@ class CalenderApplicationMonthRequestTest {
 			@ValueSource(ints = {0, -1})
 			void it_throw_exception(int year) {
 				GoHigherException goHigherException = assertThrows(GoHigherException.class,
-					() -> new CalenderApplicationMonthRequest(userId, year, month));
+					() -> new CalenderApplicationRequest(userId, year, month));
 				assertThat(goHigherException.getErrorCode()).isEqualTo(INVALID_DATE_INFO.getErrorCode());
 			}
 		}
@@ -47,7 +47,7 @@ class CalenderApplicationMonthRequestTest {
 			@ValueSource(ints = {0, 13, 20})
 			void it_throw_exception(int month) {
 				GoHigherException goHigherException = assertThrows(GoHigherException.class,
-					() -> new CalenderApplicationMonthRequest(userId, year, month));
+					() -> new CalenderApplicationRequest(userId, year, month));
 				assertThat(goHigherException.getErrorCode()).isEqualTo(INVALID_DATE_INFO.getErrorCode());
 			}
 		}
