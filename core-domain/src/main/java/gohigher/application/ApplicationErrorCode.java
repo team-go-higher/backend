@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 public enum ApplicationErrorCode implements ErrorCode {
 
 	APPLICATION_NOT_EXIST(400, "APPLICATION_001", "존재하지 않는 지원서입니다."),
+
+	INVALID_DATE_INFO(400, "APPLICATION_011", "잘못된 날짜 정보입니다."),
 	;
 
 	private final int statusCode;
