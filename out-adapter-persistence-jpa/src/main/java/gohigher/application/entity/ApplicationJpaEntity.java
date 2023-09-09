@@ -96,7 +96,7 @@ public class ApplicationJpaEntity {
 	public Application toDomain() {
 		List<Process> processes = this.processes.stream()
 			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))
-			.map(it -> new Process(it.getType(), it.getDescription(), it.getSchedule()))
+			.map(ApplicationProcessJpaEntity::toDomain)
 			.toList();
 
 		return new Application(companyName, location, contact, duty, jobDescription, workType, employmentType,

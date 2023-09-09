@@ -52,4 +52,8 @@ public class ApplicationProcessJpaEntity {
 	public void assignApplication(ApplicationJpaEntity application) {
 		this.application = application;
 	}
+
+	public Process toDomain() {
+		return new Process(type, description, schedule);
+	}
 }
