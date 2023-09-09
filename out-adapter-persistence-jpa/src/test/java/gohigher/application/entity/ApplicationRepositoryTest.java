@@ -143,7 +143,7 @@ class ApplicationRepositoryTest {
 			}
 
 			@Test
-			@DisplayName("2개성의 과정을 모두 담은 하나의 지원 공고를 반환한다.")
+			@DisplayName("2개의 과정을 모두 담은 하나의 지원 공고를 반환한다.")
 			void it_return_application_with_two_processes() {
 				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndDate(userId, year, month);
 				List<ApplicationProcessJpaEntity> actual = response.get(0).getProcesses();
