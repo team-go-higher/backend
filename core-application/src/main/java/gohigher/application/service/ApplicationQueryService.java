@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.Application;
 import gohigher.application.port.in.ApplicationQueryPort;
+import gohigher.application.port.in.CalenderApplicationMonthRequest;
 import gohigher.application.port.in.CalenderApplicationMonthResponse;
 import gohigher.application.port.in.CalenderApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
@@ -22,8 +23,9 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
 
 	@Override
-	public CalenderApplicationMonthResponse findByMonth(Long userId, int year, int month) {
-		List<Application> applications = applicationPersistenceQueryPort.findByIdAndMonth(userId, year, month);
+	public CalenderApplicationMonthResponse findByMonth(CalenderApplicationMonthRequest request) {
+		List<Application> applications = applicationPersistenceQueryPort.findByIdAndMonth(request.getUserId(),
+			request.getYear(), request.getMonth());
 
 		List<CalenderApplicationResponse> calenderApplicationRespons = new ArrayList<>();
 		for (Application application : applications) {
