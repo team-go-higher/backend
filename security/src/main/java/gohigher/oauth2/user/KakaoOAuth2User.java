@@ -2,14 +2,25 @@ package gohigher.oauth2.user;
 
 import java.util.Map;
 
+import gohigher.global.exception.GoHigherException;
+import gohigher.user.auth.AuthErrorCode;
+
 public class KakaoOAuth2User extends OAuth2UserInfo {
 
 	private final Long id;
 
 	public KakaoOAuth2User(Map<String, Object> attributes) {
-		super("id", (Map<String, Object>)attributes.get("kakao_account"));
+		super("id", extractValue(attributes));
 		id = (Long)attributes.get(oauth2IdAttributeName);
 		this.attributes.put(oauth2IdAttributeName, id);
+	}
+
+	private static Map<String, Object> extractValue(Map<String, Object> attributes) {
+		String keyOfKakaoValue = "kakao_account";
+		if (attributes.containsKey(keyOfKakaoValue)) {
+			return (Map<String, Object>)attributes.get(keyOfKakaoValue);
+		}
+		throw new GoHigherException(AuthErrorCode.KAKAO_VALUE_IS_EMPTY);
 	}
 
 	@Override
