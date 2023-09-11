@@ -42,9 +42,7 @@ public interface ApplicationCommandControllerDocs {
 					"data": null
 					}
 					""")
-			}))
-	}
-	)
+			}))})
 	ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Parameter(hidden = true) Long userId,
 		@RequestBody SimpleApplicationRequest request);
 
@@ -83,31 +81,8 @@ public interface ApplicationCommandControllerDocs {
 						},
 						"data": null
 						}
-						"""),
-					@ExampleObject(name = "세부 전형 입력되지 않음", value = """
-						{
-						"success": false,
-						"error": {
-							"code": "JOB_INFO_006",
-							"message": "세부 전형이 입력되지 않았습니다."
-						},
-						"data": null
-						}
-						"""),
-					@ExampleObject(name = "전형 일정 입력되지 않음", value = """
-						{
-						"success": false,
-						"error": {
-							"code": "JOB_INFO_007",
-							"message": "전형 일정이 입력되지 않았습니다."
-						},
-						"data": null
-						}
 						""")
-				}
-			))
-		}
-	)
+				}))})
 	ResponseEntity<GohigherResponse<Void>> registerApplicationSpecifically(@Parameter(hidden = true) Long userId,
 		SpecificApplicationRequest request);
 }
