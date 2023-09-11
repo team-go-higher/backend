@@ -34,9 +34,9 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	}
 
 	private void addScheduleResponses(Application application,
-		List<CalenderApplicationResponse> calenderApplicationRespons) {
+		List<CalenderApplicationResponse> calenderApplicationResponse) {
 		for (Process process : application.getProcesses()) {
-			calenderApplicationRespons.add(
+			calenderApplicationResponse.add(
 				new CalenderApplicationResponse(application.getId(), application.getCompanyName(),
 					process.getType().name(), process.getSchedule()));
 		}
