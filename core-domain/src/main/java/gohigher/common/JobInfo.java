@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public abstract class JobInfo {
 
+	private final Long id;
 	private final String companyName;
 	private final String location;
 	private final String contact;

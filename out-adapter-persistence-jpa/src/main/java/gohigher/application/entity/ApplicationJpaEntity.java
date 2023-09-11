@@ -99,7 +99,7 @@ public class ApplicationJpaEntity {
 			.map(ApplicationProcessJpaEntity::toDomain)
 			.toList();
 
-		return new Application(companyName, location, contact, duty, jobDescription, workType, employmentType,
+		return new Application(id, companyName, location, contact, duty, jobDescription, workType, employmentType,
 			careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
 			processes.get(currentProcess));
 	}

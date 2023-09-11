@@ -100,7 +100,7 @@ public enum ApplicationFixture {
 		}
 
 		public Application toDomain() {
-			return new Application(companyName, location, contact, duty, jobDescription, workType, employmentType,
+			return new Application(null, companyName, location, contact, duty, jobDescription, workType, employmentType,
 				careerRequirement, requiredCapability, preferredQualification, deadLine, processes, url,
 				currentProcess);
 		}

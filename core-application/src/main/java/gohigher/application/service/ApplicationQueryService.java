@@ -37,8 +37,8 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 		List<CalenderApplicationResponse> calenderApplicationRespons) {
 		for (Process process : application.getProcesses()) {
 			calenderApplicationRespons.add(
-				new CalenderApplicationResponse(application.getCompanyName(), process.getType().name(),
-					process.getSchedule()));
+				new CalenderApplicationResponse(application.getId(), application.getCompanyName(),
+					process.getType().name(), process.getSchedule()));
 		}
 	}
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CalenderApplicationResponse {
 
+	private final Long id;
 	private final String name;
 	private final String processType;
 	private final LocalDateTime schedule;

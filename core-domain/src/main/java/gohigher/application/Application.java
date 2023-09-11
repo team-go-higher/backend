@@ -17,11 +17,11 @@ public class Application extends JobInfo {
 
 	private final Process currentProcess;
 
-	public Application(String companyName, String location, String contact, String duty, String jobDescription,
+	public Application(Long id, String companyName, String location, String contact, String duty, String jobDescription,
 		String workType, EmploymentType employmentType, String careerRequirement, String requiredCapability,
 		String preferredQualification, LocalDateTime deadline, List<Process> processes,
 		String url, Process currentProcess) {
-		super(companyName, location, contact, duty, jobDescription, workType, employmentType, careerRequirement,
+		super(id, companyName, location, contact, duty, jobDescription, workType, employmentType, careerRequirement,
 			requiredCapability, preferredQualification, deadline, processes, url);
 		this.currentProcess = currentProcess;
 	}
@@ -29,10 +29,7 @@ public class Application extends JobInfo {
 	public static Application simple(String companyName, String duty, String url,
 		ProcessType processType, LocalDateTime schedule) {
 		Process process = new Process(processType, null, schedule);
-		return new Application(
-			companyName, null, null, duty, null, null,
-			null, null, null, null, null,
-			List.of(process), url, process
-		);
+		return new Application(null, companyName, null, null, duty, null, null, null, null, null, null, null,
+			List.of(process), url, process);
 	}
 }
