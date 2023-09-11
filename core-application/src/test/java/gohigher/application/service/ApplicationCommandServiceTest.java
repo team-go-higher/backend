@@ -21,6 +21,7 @@ import gohigher.application.Application;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
+import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
@@ -35,6 +36,8 @@ class ApplicationCommandServiceTest {
 	private ApplicationPersistenceCommandPort applicationPersistenceCommandPort;
 	@Mock
 	private ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
+	@Mock
+	private ApplicationProcessPersistenceQueryPort applicationProcessPersistenceQueryPort;
 	@InjectMocks
 	private ApplicationCommandService applicationCommandService;
 
@@ -50,13 +53,14 @@ class ApplicationCommandServiceTest {
 	@Nested
 	class Describe_UpdateCurrentProcess {
 
+		private final long processId = 1L;
+
 		@DisplayName("존재하지 않는 지원서의 현재 절차를 변경하려고 할 때")
 		@Nested
 		class NotFoundApplication {
 
 			private final long userId = 1L;
-			private final String currentProcessType = "INTERVIEW";
-			CurrentProcessUpdateRequest request = new CurrentProcessUpdateRequest(APPLICATION_ID, currentProcessType);
+			CurrentProcessUpdateRequest request = new CurrentProcessUpdateRequest(APPLICATION_ID, processId);
 
 			@BeforeEach
 			void setUp() {
@@ -77,9 +81,8 @@ class ApplicationCommandServiceTest {
 		@Nested
 		class ForbiddenApplicationCurrentProcessUpdate {
 
-			private final String currentProcessType = "INTERVIEW";
 			private final CurrentProcessUpdateRequest request =
-				new CurrentProcessUpdateRequest(APPLICATION_ID, currentProcessType);
+				new CurrentProcessUpdateRequest(APPLICATION_ID, processId);
 
 			@BeforeEach
 			void setUp() {
@@ -99,18 +102,44 @@ class ApplicationCommandServiceTest {
 			}
 		}
 
-		@DisplayName("자신의 지원서의 현재 절차를 변경하려고 할 때")
+		@DisplayName("존재하지 않는 절차 id로 현재 절차를 변경하려고 할 때")
 		@Nested
-		class ApplicationCurrentProcessUpdate {
+		class ApplicationProcessNotFound {
 
-			private final String currentProcessType = "INTERVIEW";
 			private final CurrentProcessUpdateRequest request =
-				new CurrentProcessUpdateRequest(APPLICATION_ID, currentProcessType);
+				new CurrentProcessUpdateRequest(APPLICATION_ID, processId);
 
 			@BeforeEach
 			void setUp() {
 				when(applicationPersistenceQueryPort.findById(APPLICATION_ID))
 					.thenReturn(Optional.of(application));
+				when(applicationProcessPersistenceQueryPort.findByIdAndApplicationId(APPLICATION_ID, processId))
+					.thenReturn(Optional.empty());
+			}
+
+			@DisplayName("예외를 발생시킨다.")
+			@Test
+			void updateCurrentProcess() {
+				//when then
+				assertThatThrownBy(() -> applicationCommandService.updateCurrentProcess(applicationOwnerId, request))
+					.hasMessage(APPLICATION_PROCESS_NOT_FOUND.getMessage());
+			}
+		}
+
+		@DisplayName("자신의 지원서의 현재 절차를 변경하려고 할 때")
+		@Nested
+		class ApplicationCurrentProcessUpdate {
+
+			private final CurrentProcessUpdateRequest request =
+				new CurrentProcessUpdateRequest(APPLICATION_ID, processId);
+
+			@BeforeEach
+			void setUp() {
+				Process process = new Process(1L, 2, ProcessType.INTERVIEW, "기술면접", LocalDateTime.now());
+				when(applicationPersistenceQueryPort.findById(APPLICATION_ID))
+					.thenReturn(Optional.of(application));
+				when(applicationProcessPersistenceQueryPort.findByIdAndApplicationId(APPLICATION_ID, processId))
+					.thenReturn(Optional.of(process));
 			}
 
 			@DisplayName("정상적으로 현재 절차를 변경할 수 있어야 한다.")
