@@ -12,6 +12,6 @@ public class CurrentProcessUpdateRequest {
 
 	@NotNull(message = "APPLICATION_004||지원서 id가 입력되지 않았습니다.")
 	private Long applicationId;
-	@NotNull(message = "APPLICATION_006||지원서의 전형 id가 입력되지 않았습니다.")
+	@NotNull(message = "APPLICATION_005||지원서의 전형 id가 입력되지 않았습니다.")
 	private Long processId;
 }
