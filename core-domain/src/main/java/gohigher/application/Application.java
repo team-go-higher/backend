@@ -1,15 +1,11 @@
 package gohigher.application;
 
-import static gohigher.application.ApplicationErrorCode.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 import gohigher.common.EmploymentType;
 import gohigher.common.JobInfo;
 import gohigher.common.Process;
-import gohigher.common.ProcessType;
-import gohigher.global.exception.GoHigherException;
 import lombok.Getter;
 
 /**

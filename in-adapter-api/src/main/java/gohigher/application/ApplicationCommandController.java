@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gohigher.application.port.in.ApplicationCommandPort;
@@ -18,27 +19,28 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequestMapping("/v1/applications")
 @RequiredArgsConstructor
 public class ApplicationCommandController implements ApplicationCommandControllerDocs {
 
 	private final ApplicationCommandPort applicationCommandPort;
 
-	@PostMapping("/v1/application/simple")
+	@PostMapping("/simple")
 	public ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Login Long userId,
-		@RequestBody @Valid SimpleApplicationRequest command) {
-		applicationCommandPort.applySimply(userId, command);
+		@RequestBody @Valid SimpleApplicationRequest request) {
+		applicationCommandPort.applySimply(userId, request);
 		return ResponseEntity.ok(GohigherResponse.success(null));
 	}
 
-	@PostMapping("/v1/application/specific")
+	@PostMapping("/specific")
 	public ResponseEntity<GohigherResponse<Void>> registerApplicationSpecifically(@Login Long userId,
-		@RequestBody @Valid SpecificApplicationRequest command) {
-		long applicationId = applicationCommandPort.applySpecifically(userId, command);
-		return ResponseEntity.created(URI.create("/applications/" + applicationId))
+		@RequestBody @Valid SpecificApplicationRequest request) {
+		long applicationId = applicationCommandPort.applySpecifically(userId, request);
+		return ResponseEntity.created(URI.create("/v1/applications/" + applicationId))
 			.body(GohigherResponse.success(null));
 	}
 
-	@PatchMapping("/v1/application/current-process")
+	@PatchMapping("/current-process")
 	public ResponseEntity<GohigherResponse<Void>> updateApplicationCurrentProcess(@Login Long userId,
 		@RequestBody CurrentProcessUpdateRequest request) {
 		applicationCommandPort.updateCurrentProcess(userId, request);

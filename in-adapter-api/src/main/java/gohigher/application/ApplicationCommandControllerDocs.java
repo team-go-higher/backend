@@ -42,10 +42,7 @@ public interface ApplicationCommandControllerDocs {
 					},
 					"data": null
 					}
-					""")
-			}))
-	}
-	)
+					""")}))})
 	ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Parameter(hidden = true) Long userId,
 		@RequestBody SimpleApplicationRequest request);
 
