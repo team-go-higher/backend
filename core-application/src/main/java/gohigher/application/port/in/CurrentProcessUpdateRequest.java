@@ -1,5 +1,6 @@
 package gohigher.application.port.in;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class CurrentProcessUpdateRequest {
 
 	private Long applicationId;
-	private String currentProcessType;
+	private Long processId;
 }
