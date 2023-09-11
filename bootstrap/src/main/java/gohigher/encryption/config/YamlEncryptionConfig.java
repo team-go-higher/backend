@@ -3,6 +3,7 @@ package gohigher.encryption.config;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,11 +13,17 @@ import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties
 @EnableEncryptableProperties
 public class YamlEncryptionConfig {
 
+	private final String encryptionKey;
+
+	public YamlEncryptionConfig(@Value("${encryption-key}") String encryptionKey) {
+		this.encryptionKey = encryptionKey;
+	}
+
 	@Bean("jasyptStringEncryptor")
 	public StringEncryptor stringEncryptor() {
 		PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
 		SimpleStringPBEConfig config = new SimpleStringPBEConfig();
-		config.setPassword(System.getProperty("encryption-key"));
+		config.setPassword(encryptionKey);
 		config.setPoolSize("1");
 		config.setAlgorithm("PBEWithMD5AndDES");
 		config.setStringOutputType("base64");
