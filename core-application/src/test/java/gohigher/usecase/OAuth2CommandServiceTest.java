@@ -14,11 +14,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import gohigher.port.out.UserPersistenceCommandPort;
-import gohigher.port.out.UserPersistenceQueryPort;
 import gohigher.user.Role;
 import gohigher.user.User;
 import gohigher.user.auth.Provider;
+import gohigher.user.port.out.UserPersistenceCommandPort;
+import gohigher.user.port.out.UserPersistenceQueryPort;
+import gohigher.user.usecase.UserCommandService;
 
 @DisplayName("OAuth2CommandService 클래스의")
 @ExtendWith(MockitoExtension.class)
