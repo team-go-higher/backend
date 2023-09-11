@@ -34,7 +34,7 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 	public ResponseEntity<GohigherResponse<Void>> registerApplicationSpecifically(@Login Long userId,
 		@RequestBody @Valid SpecificApplicationRequest request) {
 		long applicationId = applicationCommandPort.applySpecifically(userId, request);
-		return ResponseEntity.created(URI.create("/applications/" + applicationId))
+		return ResponseEntity.created(URI.create("/v1/applications/" + applicationId))
 			.body(GohigherResponse.success(null));
 	}
 }
