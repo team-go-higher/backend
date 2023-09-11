@@ -47,7 +47,7 @@ public interface ApplicationCommandControllerDocs {
 	}
 	)
 	ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Parameter(hidden = true) Long userId,
-		@RequestBody SimpleApplicationRequest command);
+		@RequestBody SimpleApplicationRequest request);
 
 	@Operation(summary = "지원서 상세등록")
 	@ApiResponses(
@@ -122,15 +122,23 @@ public interface ApplicationCommandControllerDocs {
 						{
 						"success": false,
 						"error": {
-							"code": "JOB_INFO_001",
-							"message": "유효하지 않은 전형 단계입니다."
+							"code": "JOB_INFO_004",
+							"message": "지원서 id가 입력되지 않았습니다."
+						},
+						"data": null
+						}
+						"""),
+					@ExampleObject(name = "유효하지 않은 전형 단계", value = """
+						{
+						"success": false,
+						"error": {
+							"code": "JOB_INFO_005",
+							"message": "지원서의 전형 id가 입력되지 않았습니다."
 						},
 						"data": null
 						}
 						""")
-				}
-			)
-			),
+				})),
 			@ApiResponse(responseCode = "404", description = "존재하지 않는 지원서", content = @Content(
 				examples = {@ExampleObject(name = "존재하지 않는 지원서", value = """
 					{
@@ -147,14 +155,11 @@ public interface ApplicationCommandControllerDocs {
 						"success": false,
 						"error": {
 							"code": "APPLICATION_002",
-							"message": "지원서에서 존재하지 않는 ProcessType 입니다."
+							"message": "지원서에 존재하지 않는 전형입니다."
 						},
 						"data": null
 						}
-						""")
-				}
-			)
-			),
+						""")})),
 			@ApiResponse(responseCode = "403", description = "수정 권한이 없는 지원서", content = @Content(
 				examples = {@ExampleObject(name = "수정 권한이 없는 지원서", value = """
 					{
@@ -165,12 +170,7 @@ public interface ApplicationCommandControllerDocs {
 					},
 					"data": null
 					}
-					""")
-				}
-			)
-			)
-		}
-	)
+					""")}))})
 	ResponseEntity<GohigherResponse<Void>> updateApplicationCurrentProcess(@Parameter(hidden = true) Long userId,
 		@RequestBody CurrentProcessUpdateRequest request);
 }
