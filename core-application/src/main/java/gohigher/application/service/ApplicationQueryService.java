@@ -1,7 +1,7 @@
 package gohigher.application.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +11,6 @@ import gohigher.application.port.in.ApplicationQueryPort;
 import gohigher.application.port.in.CalenderApplicationRequest;
 import gohigher.application.port.in.CalenderApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
-import gohigher.common.Process;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,19 +25,14 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 		List<Application> applications = applicationPersistenceQueryPort.findByIdAndMonth(request.getUserId(),
 			request.getYear(), request.getMonth());
 
-		List<CalenderApplicationResponse> calenderApplicationResponses = new ArrayList<>();
-		for (Application application : applications) {
-			addScheduleResponses(application, calenderApplicationResponses);
-		}
-		return calenderApplicationResponses;
+		return applications.stream()
+			.flatMap(ApplicationQueryService::extractCalenderResponses)
+			.toList();
 	}
 
-	private void addScheduleResponses(Application application,
-		List<CalenderApplicationResponse> calenderApplicationResponse) {
-		for (Process process : application.getProcesses()) {
-			calenderApplicationResponse.add(
-				new CalenderApplicationResponse(application.getId(), application.getCompanyName(),
-					process.getType().name(), process.getSchedule()));
-		}
+	private static Stream<CalenderApplicationResponse> extractCalenderResponses(Application application) {
+		return application.getProcesses().stream()
+			.map(process -> new CalenderApplicationResponse(application.getId(), application.getCompanyName(),
+				process.getType().name(), process.getSchedule()));
 	}
 }
