@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gohigher.application.port.in.ApplicationCommandPort;
@@ -21,14 +22,14 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 
 	private final ApplicationCommandPort applicationCommandPort;
 
-	@PostMapping("/v1/application/simple")
+	@PostMapping("/v1/applications/simple")
 	public ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Login Long userId,
 		@RequestBody @Valid SimpleApplicationRequest request) {
 		applicationCommandPort.applySimply(userId, request);
 		return ResponseEntity.ok(GohigherResponse.success(null));
 	}
 
-	@PostMapping("/v1/application/specific")
+	@PostMapping("/v1/applications/specific")
 	public ResponseEntity<GohigherResponse<Void>> registerApplicationSpecifically(@Login Long userId,
 		@RequestBody @Valid SpecificApplicationRequest request) {
 		long applicationId = applicationCommandPort.applySpecifically(userId, request);
