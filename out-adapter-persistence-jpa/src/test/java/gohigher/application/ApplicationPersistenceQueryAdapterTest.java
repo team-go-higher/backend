@@ -84,7 +84,7 @@ class ApplicationPersistenceQueryAdapterTest {
 					.orElseThrow();
 
 				assertAll(
-					() -> assertThat(response).hasSize(2), // naverApplicatio, kakaoApplication
+					() -> assertThat(response).hasSize(2), // naverApplication, kakaoApplication
 					() -> assertThat(actualNaverApplication.getProcesses()).hasSize(
 						naverApplication.getProcesses().size()),
 					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(
