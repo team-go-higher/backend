@@ -17,19 +17,20 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequestMapping("/v1/applications")
 @RequiredArgsConstructor
 public class ApplicationCommandController implements ApplicationCommandControllerDocs {
 
 	private final ApplicationCommandPort applicationCommandPort;
 
-	@PostMapping("/v1/applications/simple")
+	@PostMapping("/simple")
 	public ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Login Long userId,
 		@RequestBody @Valid SimpleApplicationRequest request) {
 		applicationCommandPort.applySimply(userId, request);
 		return ResponseEntity.ok(GohigherResponse.success(null));
 	}
 
-	@PostMapping("/v1/applications/specific")
+	@PostMapping("/specific")
 	public ResponseEntity<GohigherResponse<Void>> registerApplicationSpecifically(@Login Long userId,
 		@RequestBody @Valid SpecificApplicationRequest request) {
 		long applicationId = applicationCommandPort.applySpecifically(userId, request);
