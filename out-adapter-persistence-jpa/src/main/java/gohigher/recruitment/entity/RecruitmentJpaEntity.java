@@ -27,9 +27,11 @@ public class RecruitmentJpaEntity {
 	private Long id;
 
 	private String companyName;
+	private String team;
 	private String location;
 	private String contact;
 	private String duty;
+	private String position;
 	private String jobDescription;
 	private String workType;
 
