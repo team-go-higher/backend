@@ -23,15 +23,15 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 
 	@PostMapping("/v1/application/simple")
 	public ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Login Long userId,
-		@RequestBody @Valid SimpleApplicationRequest command) {
-		applicationCommandPort.applySimply(userId, command);
+		@RequestBody @Valid SimpleApplicationRequest request) {
+		applicationCommandPort.applySimply(userId, request);
 		return ResponseEntity.ok(GohigherResponse.success(null));
 	}
 
 	@PostMapping("/v1/application/specific")
 	public ResponseEntity<GohigherResponse<Void>> registerApplicationSpecifically(@Login Long userId,
-		@RequestBody @Valid SpecificApplicationRequest command) {
-		long applicationId = applicationCommandPort.applySpecifically(userId, command);
+		@RequestBody @Valid SpecificApplicationRequest request) {
+		long applicationId = applicationCommandPort.applySpecifically(userId, request);
 		return ResponseEntity.created(URI.create("/applications/" + applicationId))
 			.body(GohigherResponse.success(null));
 	}

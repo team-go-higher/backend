@@ -46,7 +46,7 @@ public interface ApplicationCommandControllerDocs {
 	}
 	)
 	ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Parameter(hidden = true) Long userId,
-		@RequestBody SimpleApplicationRequest command);
+		@RequestBody SimpleApplicationRequest request);
 
 	@Operation(summary = "지원서 상세등록")
 	@ApiResponses(
@@ -109,5 +109,5 @@ public interface ApplicationCommandControllerDocs {
 		}
 	)
 	ResponseEntity<GohigherResponse<Void>> registerApplicationSpecifically(@Parameter(hidden = true) Long userId,
-		SpecificApplicationRequest command);
+		SpecificApplicationRequest request);
 }

@@ -17,12 +17,12 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 	private final ApplicationPersistenceCommandPort applicationPersistenceCommandPort;
 
 	@Override
-	public void applySimply(Long userId, SimpleApplicationRequest command) {
-		applicationPersistenceCommandPort.save(userId, command.toDomain());
+	public void applySimply(Long userId, SimpleApplicationRequest request) {
+		applicationPersistenceCommandPort.save(userId, request.toDomain());
 	}
 
 	@Override
-	public long applySpecifically(Long userId, SpecificApplicationRequest command) {
-		return applicationPersistenceCommandPort.save(userId, command.toDomain());
+	public long applySpecifically(Long userId, SpecificApplicationRequest request) {
+		return applicationPersistenceCommandPort.save(userId, request.toDomain());
 	}
 }
