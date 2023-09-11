@@ -4,10 +4,10 @@ spring:
       client:
         registration:
           google:
-            redirect_uri: http://52.79.35.2:8080/oauth2/callback/google
+            redirect_uri: http://api.dev.gohigher.site:8080/oauth2/callback/google
           kakao:
-            redirect-uri: http://52.79.35.2:8080/oauth2/callback/kakao
+            redirect-uri: http://api.dev.gohigher.site:8080/oauth2/callback/kakao
 
 oauth2:
   success:
-    redirect_uri: 'https://gohigher.site'
+    redirect_uri: 'http://api.dev.gohigher.site:8080'
