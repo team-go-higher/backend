@@ -37,9 +37,11 @@ public class ApplicationJpaEntity {
 
 	private Long userId;
 	private String companyName;
+	private String team;
 	private String location;
 	private String contact;
 	private String duty;
+	private String position;
 	private String jobDescription;
 	private String workType;
 
@@ -61,15 +63,17 @@ public class ApplicationJpaEntity {
 
 	private boolean deleted;
 
-	public static ApplicationJpaEntity of(Long userId, Application application) {
+	public static ApplicationJpaEntity from(Long userId, Application application) {
 		List<Process> processes = application.getProcesses();
 		int currentProcessIndex = processes.indexOf(application.getCurrentProcess());
 		return new ApplicationJpaEntity(null,
 			userId,
 			application.getCompanyName(),
+			application.getTeam(),
 			application.getLocation(),
 			application.getContact(),
 			application.getDuty(),
+			application.getPosition(),
 			application.getJobDescription(),
 			application.getWorkType(),
 			application.getEmploymentType(),
@@ -99,8 +103,9 @@ public class ApplicationJpaEntity {
 			.map(ApplicationProcessJpaEntity::toDomain)
 			.toList();
 
-		return new Application(id, companyName, location, contact, duty, jobDescription, workType, employmentType,
-			careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
+		return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
+			employmentType, careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
 			processes.get(currentProcess));
 	}
 }
+

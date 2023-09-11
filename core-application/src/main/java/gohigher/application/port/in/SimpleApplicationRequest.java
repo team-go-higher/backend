@@ -17,9 +17,9 @@ public class SimpleApplicationRequest {
 
 	private String url;
 
-	private SimpleProcessRequest currentProcess;
+	private SimpleApplicationProcessRequest currentProcess;
 
 	public Application toDomain() {
-		return Application.simple(companyName, duty, url, currentProcess.getType(), currentProcess.getSchedule());
+		return Application.simple(companyName, duty, url, currentProcess.toDomain());
 	}
 }
