@@ -2,14 +2,11 @@ package gohigher.application.port.in;
 
 import static gohigher.application.ApplicationErrorCode.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import gohigher.global.exception.GoHigherException;
 
 @DisplayName("CalenderApplicationMonthRequest 클래스의")
 class CalenderApplicationRequestTest {
@@ -29,9 +26,8 @@ class CalenderApplicationRequestTest {
 			@ParameterizedTest
 			@ValueSource(ints = {0, -1})
 			void it_throw_exception(int year) {
-				GoHigherException goHigherException = assertThrows(GoHigherException.class,
-					() -> new CalenderApplicationRequest(userId, year, month));
-				assertThat(goHigherException.getErrorCode()).isEqualTo(INVALID_DATE_INFO.getErrorCode());
+				assertThatThrownBy(() -> new CalenderApplicationRequest(userId, year, month))
+					.hasMessage(INVALID_DATE_INFO.getMessage());
 			}
 		}
 
@@ -46,9 +42,8 @@ class CalenderApplicationRequestTest {
 			@ParameterizedTest
 			@ValueSource(ints = {0, 13, 20})
 			void it_throw_exception(int month) {
-				GoHigherException goHigherException = assertThrows(GoHigherException.class,
-					() -> new CalenderApplicationRequest(userId, year, month));
-				assertThat(goHigherException.getErrorCode()).isEqualTo(INVALID_DATE_INFO.getErrorCode());
+				assertThatThrownBy(() -> new CalenderApplicationRequest(userId, year, month))
+					.hasMessage(INVALID_DATE_INFO.getMessage());
 			}
 		}
 	}
