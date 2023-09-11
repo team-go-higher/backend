@@ -14,7 +14,7 @@ public class CalenderApplicationRequest {
 
 	public CalenderApplicationRequest(Long userId, int year, int month) {
 		validateNegativeYear(year);
-		verifyMonthIsInValidRange(month);
+		validateMonthIsWithinRange(month);
 		this.userId = userId;
 		this.year = year;
 		this.month = month;
@@ -26,7 +26,7 @@ public class CalenderApplicationRequest {
 		}
 	}
 
-	private void verifyMonthIsInValidRange(int month) {
+	private void validateMonthIsWithinRange(int month) {
 		if (month < 1 || month > 12) {
 			throw new GoHigherException(INVALID_DATE_INFO);
 		}
