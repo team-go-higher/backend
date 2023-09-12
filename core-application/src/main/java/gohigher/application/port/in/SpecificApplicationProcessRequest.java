@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +18,6 @@ public class SpecificApplicationProcessRequest {
 	private LocalDateTime schedule;
 
 	public Process toDomain() {
-		return new Process(ProcessType.from(type), description, schedule);
+		return new Process(null, ProcessType.from(type), description, schedule);
 	}
 }

@@ -1,6 +1,7 @@
 package gohigher.application.entity;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 import gohigher.application.Application;
@@ -79,13 +80,32 @@ public class ApplicationJpaEntity {
 			application.getCareerRequirement(),
 			application.getRequiredCapability(),
 			application.getPreferredQualification(),
-			application.getDeadLine(),
+			application.getDeadline(),
 			application.getUrl(),
 			currentProcessIndex,
 			null,
 			null,
 			false
 		);
+	}
+
+	public void addProcess(ApplicationProcessJpaEntity process) {
+		if (process.getApplication() == null) {
+			process.assignApplication(this);
+		}
+
+		processes.add(process);
+	}
+
+	public Application toDomain() {
+		List<Process> processes = this.processes.stream()
+			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))
+			.map(ApplicationProcessJpaEntity::toDomain)
+			.toList();
+
+		return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
+			employmentType, careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
+			processes.get(currentProcess));
 	}
 }
 
