@@ -12,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import gohigher.user.auth.Provider;
+import gohigher.user.entity.UserJpaEntity;
+import gohigher.user.entity.UserRepository;
 
 @DisplayName("UserRepository 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
