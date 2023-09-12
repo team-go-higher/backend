@@ -4,10 +4,10 @@ spring:
       client:
         registration:
           google:
-            redirect_uri: http://api.dev.gohigher.site:8080/oauth2/callback/google
+            redirect_uri: ENC(VU4oKqGyFVcJUoUPahypP/c22ddURBwnubjUQUz1ylKtuebH7EDccQyS6ChYbwrBmDLmWFMHccTpZEaU4BrsSOEwcWUtVzKy)
           kakao:
-            redirect-uri: http://api.dev.gohigher.site:8080/oauth2/callback/kakao
+            redirect-uri: ENC(SicOYRhzq9SPvT460/64gBqPVHC9uOf4elR3aeQxYIyakstqXI69C5xWKJ6Ua2faOjsUDI9LuCI/IsJC2oT7Vw==)
 
 oauth2:
   success:
-    redirect_uri: 'http://api.dev.gohigher.site:8080'
+    redirect_uri: 'https://dev.dprz5tkaxr2l9.amplifyapp.com'
