@@ -3,7 +3,3 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
