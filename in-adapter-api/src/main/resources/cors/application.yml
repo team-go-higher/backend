@@ -1,0 +1,3 @@
+cors-config:
+  local-origin: 'http://localhost:3000'
+  allowed-origin: 'https://dev.dprz5tkaxr2l9.amplifyapp.com'
