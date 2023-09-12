@@ -10,7 +10,6 @@ spring:
             redirect_uri: http://localhost:8080/oauth2/callback/google
           kakao:
             client-id: ENC(uNd/J/dlaSuNsJ6BFMgUNIrZ5lXhMPEvNYduZ96tIEm3V5uimMKJpAcuGUk70yYi)
-            redirect-uri: http://localhost:8080/oauth2/callback/kakao
             authorization-grant-type: authorization_code
             scope: account_email,profile_nickname
             client-name: Kakao
@@ -21,10 +20,6 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-
-oauth2:
-  success:
-    redirect_uri: 'http://localhost:3000'
 
 token:
   request:

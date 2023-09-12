@@ -1,0 +1,6 @@
+spring:
+  config:
+    import:
+      - persistence/application-dev.yml
+      - jwt/application-dev.yml
+      - auth/application-dev.yml
