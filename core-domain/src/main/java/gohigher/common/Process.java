@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Process {
 
+	private final Long id;
 	private final ProcessType type;
 	private final String description;
 	private final LocalDateTime schedule;

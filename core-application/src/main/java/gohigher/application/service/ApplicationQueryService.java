@@ -32,7 +32,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	private static Stream<CalenderApplicationResponse> extractCalenderResponses(Application application) {
 		return application.getProcesses().stream()
-			.map(process -> new CalenderApplicationResponse(application.getId(), application.getCompanyName(),
-				process.getType().name(), process.getSchedule()));
+			.map(process -> new CalenderApplicationResponse(application.getId(), process.getId(),
+				application.getCompanyName(), process.getType().name(), process.getSchedule()));
 	}
 }

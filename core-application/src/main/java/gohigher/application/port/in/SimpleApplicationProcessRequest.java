@@ -25,6 +25,6 @@ public class SimpleApplicationProcessRequest {
 	}
 
 	public Process toDomain() {
-		return new Process(ProcessType.from(type), description, schedule);
+		return new Process(null, ProcessType.from(type), description, schedule);
 	}
 }

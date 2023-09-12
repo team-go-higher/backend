@@ -54,6 +54,6 @@ public class ApplicationProcessJpaEntity {
 	}
 
 	public Process toDomain() {
-		return new Process(type, description, schedule);
+		return new Process(id, type, description, schedule);
 	}
 }
