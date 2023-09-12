@@ -23,7 +23,7 @@ import gohigher.user.usecase.UserCommandService;
 
 @DisplayName("OAuth2CommandService 클래스의")
 @ExtendWith(MockitoExtension.class)
-class OAuth2CommandServiceTest {
+class UserCommandServiceTest {
 
 	@Mock
 	private UserPersistenceQueryPort userPersistenceQueryPort;
