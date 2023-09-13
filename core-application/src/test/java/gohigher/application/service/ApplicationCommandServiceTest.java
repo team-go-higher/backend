@@ -83,8 +83,8 @@ class ApplicationCommandServiceTest {
 			void setUp() {
 				when(applicationPersistenceQueryPort.existsByIdAndUserId(APPLICATION_ID, userId))
 					.thenReturn(true);
-				when(applicationProcessPersistenceQueryPort.findById(processId))
-					.thenReturn(Optional.empty());
+				when(applicationProcessPersistenceQueryPort.existsById(processId))
+					.thenReturn(false);
 			}
 
 			@DisplayName("예외를 발생시킨다.")
@@ -105,11 +105,10 @@ class ApplicationCommandServiceTest {
 
 			@BeforeEach
 			void setUp() {
-				Process process = new Process(1L, ProcessType.INTERVIEW, "기술면접", LocalDateTime.now());
 				when(applicationPersistenceQueryPort.existsByIdAndUserId(APPLICATION_ID, userId))
 					.thenReturn(true);
-				when(applicationProcessPersistenceQueryPort.findById(processId))
-					.thenReturn(Optional.of(process));
+				when(applicationProcessPersistenceQueryPort.existsById(processId))
+					.thenReturn(true);
 			}
 
 			@DisplayName("정상적으로 현재 절차를 변경할 수 있어야 한다.")
