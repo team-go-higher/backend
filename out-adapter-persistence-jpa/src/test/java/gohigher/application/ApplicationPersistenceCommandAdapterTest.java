@@ -29,6 +29,8 @@ import jakarta.persistence.EntityManager;
 @Transactional
 class ApplicationPersistenceCommandAdapterTest {
 
+	private static final Long USER_ID = 1L;
+
 	@Autowired
 	private ApplicationRepository applicationRepository;
 	@Autowired
@@ -55,7 +57,7 @@ class ApplicationPersistenceCommandAdapterTest {
 			@Test
 			void updateCurrentProcessOrder() {
 				//when
-				applicationPersistenceCommandAdapter.save(application);
+				applicationPersistenceCommandAdapter.save(USER_ID, application);
 
 				//then
 				List<ApplicationProcessJpaEntity> applicationProcesses = applicationProcessRepository.findAll();
@@ -86,7 +88,7 @@ class ApplicationPersistenceCommandAdapterTest {
 			@BeforeEach
 			void setUp() {
 				ApplicationJpaEntity applicationJpaEntity =
-					applicationRepository.save(ApplicationJpaEntity.from(application));
+					applicationRepository.save(ApplicationJpaEntity.from(application, USER_ID));
 				applicationId = applicationJpaEntity.getId();
 				ApplicationProcessJpaEntity secondProcessJpaEntity = applicationProcessRepository.save(
 					ApplicationProcessJpaEntity.of(applicationJpaEntity, secondProcess, 1));
