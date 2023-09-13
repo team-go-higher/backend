@@ -17,8 +17,8 @@ public class ApplicationProcessPersistenceQueryAdapter implements ApplicationPro
 	private final ApplicationProcessRepository applicationProcessRepository;
 
 	@Override
-	public Optional<Process> findByIdAndApplicationId(Long id, Long applicationId) {
-		return applicationProcessRepository.findByIdAndApplicationId(id, applicationId)
+	public Optional<Process> findById(Long id) {
+		return applicationProcessRepository.findById(id)
 			.map(ApplicationProcessJpaEntity::toDomain);
 	}
 }

@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface ApplicationProcessPersistenceQueryPort {
 
-    Optional<Process> findByIdAndApplicationId(Long id, Long applicationId);
+    Optional<Process> findById(Long id);
 }

@@ -113,7 +113,7 @@ class ApplicationCommandServiceTest {
 			void setUp() {
 				when(applicationPersistenceQueryPort.findById(APPLICATION_ID))
 					.thenReturn(Optional.of(application));
-				when(applicationProcessPersistenceQueryPort.findByIdAndApplicationId(APPLICATION_ID, processId))
+				when(applicationProcessPersistenceQueryPort.findById(processId))
 					.thenReturn(Optional.empty());
 			}
 
@@ -138,7 +138,7 @@ class ApplicationCommandServiceTest {
 				Process process = new Process(1L, ProcessType.INTERVIEW, "기술면접", LocalDateTime.now());
 				when(applicationPersistenceQueryPort.findById(APPLICATION_ID))
 					.thenReturn(Optional.of(application));
-				when(applicationProcessPersistenceQueryPort.findByIdAndApplicationId(APPLICATION_ID, processId))
+				when(applicationProcessPersistenceQueryPort.findById(processId))
 					.thenReturn(Optional.of(process));
 			}
 
