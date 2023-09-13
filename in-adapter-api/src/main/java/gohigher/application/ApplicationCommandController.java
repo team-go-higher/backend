@@ -42,7 +42,7 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 
 	@PatchMapping("/current-process")
 	public ResponseEntity<GohigherResponse<Void>> updateApplicationCurrentProcess(@Login Long userId,
-		@RequestBody CurrentProcessUpdateRequest request) {
+		@RequestBody @Valid CurrentProcessUpdateRequest request) {
 		applicationCommandPort.updateCurrentProcess(userId, request);
 		return ResponseEntity.ok(GohigherResponse.success(null));
 	}
