@@ -5,4 +5,6 @@ import java.util.List;
 public interface ApplicationQueryPort {
 
 	List<CalenderApplicationResponse> findByMonth(CalenderApplicationRequest request);
+
+	List<DateApplicationResponse> findByDate(DateApplicationRequest request);
 }

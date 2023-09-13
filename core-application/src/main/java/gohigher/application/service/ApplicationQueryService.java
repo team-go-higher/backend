@@ -10,6 +10,8 @@ import gohigher.application.Application;
 import gohigher.application.port.in.ApplicationQueryPort;
 import gohigher.application.port.in.CalenderApplicationRequest;
 import gohigher.application.port.in.CalenderApplicationResponse;
+import gohigher.application.port.in.DateApplicationRequest;
+import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +21,12 @@ import lombok.RequiredArgsConstructor;
 public class ApplicationQueryService implements ApplicationQueryPort {
 
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
+
+	private static Stream<CalenderApplicationResponse> extractCalenderResponses(Application application) {
+		return application.getProcesses().stream()
+			.map(process -> new CalenderApplicationResponse(application.getId(), process.getId(),
+				application.getCompanyName(), process.getType().name(), process.getSchedule()));
+	}
 
 	@Override
 	public List<CalenderApplicationResponse> findByMonth(CalenderApplicationRequest request) {
@@ -30,9 +38,8 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.toList();
 	}
 
-	private static Stream<CalenderApplicationResponse> extractCalenderResponses(Application application) {
-		return application.getProcesses().stream()
-			.map(process -> new CalenderApplicationResponse(application.getId(), process.getId(),
-				application.getCompanyName(), process.getType().name(), process.getSchedule()));
+	@Override
+	public List<DateApplicationResponse> findByDate(DateApplicationRequest request) {
+		return null;
 	}
 }
