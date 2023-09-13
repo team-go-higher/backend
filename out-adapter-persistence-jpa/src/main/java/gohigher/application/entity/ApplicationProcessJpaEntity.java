@@ -49,7 +49,11 @@ public class ApplicationProcessJpaEntity {
 			process.getSchedule(), process.getDescription());
 	}
 
+	public void assignApplication(ApplicationJpaEntity application) {
+		this.application = application;
+	}
+
 	public Process toDomain() {
-		return new Process(id, order, type, description, schedule);
+		return new Process(id, type, description, schedule);
 	}
 }

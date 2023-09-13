@@ -41,7 +41,7 @@ class ApplicationPersistenceCommandAdapterTest {
 	private final Process firstProcess = new Process(ProcessType.TEST, "코딩테스트", LocalDateTime.now());
 	private final Process secondProcess = new Process(ProcessType.INTERVIEW, "기술 면접", LocalDateTime.now());
 	private final Process thirdProcess = new Process(ProcessType.INTERVIEW, "인성 면접", LocalDateTime.now());
-	Application application = new Application("", "", "", "", "", "", "", "",
+	Application application = new Application(null, "", "", "", "", "", "", "", "",
 		EmploymentType.PERMANENT, "", "", "", LocalDateTime.now(),
 		List.of(firstProcess, secondProcess, thirdProcess), "", 1L, firstProcess);
 

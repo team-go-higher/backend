@@ -21,6 +21,7 @@ dependencies {
     // database
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 
+    testImplementation(testFixtures(project(":core-domain")))
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

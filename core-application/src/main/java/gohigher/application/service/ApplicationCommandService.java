@@ -44,7 +44,7 @@ public class ApplicationCommandService implements ApplicationCommandPort {
         Process process = applicationProcessPersistenceQueryPort
                 .findByIdAndApplicationId(request.getProcessId(), applicationId)
                 .orElseThrow(() -> new GoHigherException(APPLICATION_PROCESS_NOT_FOUND));
-        applicationPersistenceCommandPort.updateCurrentProcessOrder(applicationId, process.getOrder());
+        applicationPersistenceCommandPort.updateCurrentProcessOrder(applicationId, 1);
     }
 
     private void validateForbidden(Application application, Long userId) {

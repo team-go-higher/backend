@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import gohigher.user.auth.Provider;
+import gohigher.user.entity.UserJpaEntity;
+import gohigher.user.entity.UserRepository;
 
 @DisplayName("UserPersistenceCommandAdapter 클래스의")
 @ExtendWith(MockitoExtension.class)
