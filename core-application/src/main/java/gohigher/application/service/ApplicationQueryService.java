@@ -12,6 +12,7 @@ import gohigher.application.port.in.CalenderApplicationRequest;
 import gohigher.application.port.in.CalenderApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.port.in.ProcessResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +23,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
 
-	private static Stream<CalenderApplicationResponse> extractCalenderResponses(Application application) {
+	private Stream<CalenderApplicationResponse> extractCalenderResponses(Application application) {
 		return application.getProcesses().stream()
 			.map(process -> new CalenderApplicationResponse(application.getId(), process.getId(),
 				application.getCompanyName(), process.getType().name(), process.getSchedule()));
@@ -34,12 +35,23 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			request.getYear(), request.getMonth());
 
 		return applications.stream()
-			.flatMap(ApplicationQueryService::extractCalenderResponses)
+			.flatMap(this::extractCalenderResponses)
 			.toList();
 	}
 
 	@Override
 	public List<DateApplicationResponse> findByDate(DateApplicationRequest request) {
-		return null;
+		List<Application> applications = applicationPersistenceQueryPort.findByUserIdAndDate(request.getUserId(),
+			request.getDate());
+		return applications.stream()
+			.flatMap(this::extractDateApplicationResponses)
+			.toList();
+	}
+
+	private Stream<DateApplicationResponse> extractDateApplicationResponses(Application application) {
+		return application.getProcesses().stream()
+			.map(ProcessResponse::from)
+			.map(processResponse -> new DateApplicationResponse(application.getId(), application.getCompanyName(),
+				processResponse));
 	}
 }

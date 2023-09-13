@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 public class DateApplicationRequest {
-	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(Pattern.DATE.getFormat());
 
 	private final Long userId;
 	private final LocalDate date;

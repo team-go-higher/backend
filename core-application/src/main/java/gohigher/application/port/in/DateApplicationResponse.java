@@ -8,5 +8,6 @@ import lombok.RequiredArgsConstructor;
 public class DateApplicationResponse {
 
 	private final Long applicationId;
+	private final String companyName;
 	private final ProcessResponse process;
 }
