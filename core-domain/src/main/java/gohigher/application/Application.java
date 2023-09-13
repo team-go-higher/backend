@@ -14,27 +14,20 @@ import lombok.Getter;
 @Getter
 public class Application extends JobInfo {
 
-	private final Long userId;
 	private final Process currentProcess;
 
 	public Application(Long id, String companyName, String team, String location, String contact, String duty,
-		String position,
-		String jobDescription, String workType, EmploymentType employmentType, String careerRequirement,
-		String requiredCapability, String preferredQualification, LocalDateTime deadLine, List<Process> processes,
-		String url, Long userId, Process currentProcess) {
+		String position, String jobDescription, String workType, EmploymentType employmentType,
+		String careerRequirement, String requiredCapability, String preferredQualification, LocalDateTime deadLine,
+		List<Process> processes, String url, Process currentProcess) {
 		super(id, companyName, team, location, contact, duty, position, jobDescription, workType, employmentType,
 			careerRequirement, requiredCapability, preferredQualification, deadLine, processes, url);
-		this.userId = userId;
 		this.currentProcess = currentProcess;
 	}
 
-	public static Application simple(Long userId, String companyName, String duty, String url, Process process) {
+	public static Application simple(String companyName, String duty, String url, Process process) {
 		return new Application(null, companyName, null, null, null, duty, null, null,
 			null, null, null, null, null, null,
-			List.of(process), url, userId, process);
-	}
-
-	public boolean isAppliedBy(Long userId) {
-		return this.userId.equals(userId);
+			List.of(process), url, process);
 	}
 }
