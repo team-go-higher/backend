@@ -1,14 +1,8 @@
 package gohigher.application.service;
 
 import static gohigher.application.ApplicationErrorCode.*;
-import static gohigher.application.ApplicationFixture.*;
-import static gohigher.application.ProcessFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,13 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import gohigher.application.Application;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
-import gohigher.common.Process;
-import gohigher.common.ProcessType;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ApplicationCommandService 클래스의 ")
@@ -48,7 +39,7 @@ class ApplicationCommandServiceTest {
 	@Nested
 	class Describe_UpdateCurrentProcess {
 
-		private final long processId = 1L;
+		private final long processId = 2L;
 		private final long userId = 1L;
 
 		@DisplayName("존재하지 않는 지원서의 현재 절차를 변경하려고 할 때")
@@ -114,9 +105,12 @@ class ApplicationCommandServiceTest {
 			@DisplayName("정상적으로 현재 절차를 변경할 수 있어야 한다.")
 			@Test
 			void updateCurrentProcess() {
-				//when then
-				assertThatCode(() -> applicationCommandService.updateCurrentProcess(applicationOwnerId, request))
-					.doesNotThrowAnyException();
+				//when
+				applicationCommandService.updateCurrentProcess(applicationOwnerId, request);
+
+				//then
+				verify(applicationPersistenceCommandPort)
+					.updateCurrentProcessOrder(request.getApplicationId(), request.getProcessId());
 			}
 		}
 	}
