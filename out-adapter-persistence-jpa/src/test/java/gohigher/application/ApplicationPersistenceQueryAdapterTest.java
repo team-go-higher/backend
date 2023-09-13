@@ -91,6 +91,7 @@ class ApplicationPersistenceQueryAdapterTest {
 	@DisplayName("findByUserIdAndMonth 메서드는")
 	@Nested
 	class Describe_findByUserIdAndMonth {
+
 		private final long userId = 1L;
 		private final int year = 2023;
 		private final int month = 9;
@@ -123,18 +124,10 @@ class ApplicationPersistenceQueryAdapterTest {
 			@DisplayName("일정 정보가 담긴 지원서를 반환한다.")
 			@Test
 			void it_return_application_with_processes() {
-				List<Application> response = applicationPersistenceQueryAdapter.findByUserIdAndMonth(userId, year,
-					month);
+				List<Application> response = applicationPersistenceQueryAdapter.findByUserIdAndMonth(userId, year, month);
 
-				Application actualNaverApplication = response.stream()
-					.filter(it -> it.getCompanyName().equals(naverApplication.getCompanyName()))
-					.findAny()
-					.orElseThrow();
-
-				Application actualKakaoApplication = response.stream()
-					.filter(it -> it.getCompanyName().equals(kakaoApplication.getCompanyName()))
-					.findAny()
-					.orElseThrow();
+				Application actualNaverApplication = findApplication(response, naverApplication);
+				Application actualKakaoApplication = findApplication(response, kakaoApplication);
 
 				assertAll(
 					() -> assertThat(response).hasSize(2), // naverApplication, kakaoApplication
@@ -143,6 +136,13 @@ class ApplicationPersistenceQueryAdapterTest {
 					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(
 						kakaoApplication.getProcesses().size())
 				);
+			}
+
+			private Application findApplication(List<Application> response, ApplicationJpaEntity application) {
+				return response.stream()
+					.filter(it -> it.getCompanyName().equals(application.getCompanyName()))
+					.findAny()
+					.orElseThrow();
 			}
 		}
 	}
