@@ -1,4 +1,4 @@
 spring:
   config:
     import:
-      - application-persistence-local.yml
+      - persistence/application-local.yml
