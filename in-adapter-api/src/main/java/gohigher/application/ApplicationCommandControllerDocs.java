@@ -107,7 +107,7 @@ public interface ApplicationCommandControllerDocs {
 		}
 	)
 	ResponseEntity<GohigherResponse<Void>> registerApplicationSpecifically(@Parameter(hidden = true) Long userId,
-		SpecificApplicationRequest command);
+		SpecificApplicationRequest request);
 
 	@Operation(summary = "현재 진행 전형 변경")
 	@ApiResponses(
