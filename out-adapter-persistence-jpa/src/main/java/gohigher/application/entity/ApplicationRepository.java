@@ -10,9 +10,10 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 
 	@Modifying
 	@Query("UPDATE ApplicationJpaEntity a "
-		+ "SET a.currentProcessOrder = :order "
+		+ "SET a.currentProcessOrder = "
+		+ "(SELECT ap.order FROM ApplicationProcessJpaEntity ap WHERE ap.id = :processId) "
 		+ "WHERE a.id = :id")
-	void updateCurrentProcessOrder(long id, int order);
+	void updateCurrentProcessOrder(long id, long processId);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "

@@ -31,6 +31,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ApplicationJpaEntity {
 
+	private static final int FIRST_PROCESS_ORDER = 0;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -65,7 +67,6 @@ public class ApplicationJpaEntity {
 
 	public static ApplicationJpaEntity from(Application application) {
 		List<Process> processes = application.getProcesses();
-		int currentProcessIndex = processes.indexOf(application.getCurrentProcess());
 		return new ApplicationJpaEntity(null,
 			application.getUserId(),
 			application.getCompanyName(),
@@ -82,7 +83,7 @@ public class ApplicationJpaEntity {
 			application.getPreferredQualification(),
 			application.getDeadline(),
 			application.getUrl(),
-			currentProcessIndex,
+			FIRST_PROCESS_ORDER,
 			null,
 			null,
 			false

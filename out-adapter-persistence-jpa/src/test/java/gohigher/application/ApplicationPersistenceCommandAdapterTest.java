@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationProcessJpaEntity;
 import gohigher.application.entity.ApplicationProcessRepository;
 import gohigher.application.entity.ApplicationRepository;
@@ -82,28 +84,32 @@ class ApplicationPersistenceCommandAdapterTest {
 		class UpdateCurrentProcessOrderWithId {
 
 			long applicationId;
+			long applicationProcessId;
+			long expectedProcessOrder;
 
 			@BeforeEach
 			void setUp() {
-				applicationId = applicationPersistenceCommandAdapter.save(application);
-				entityManager.clear();
+				ApplicationJpaEntity applicationJpaEntity =
+					applicationRepository.save(ApplicationJpaEntity.from(application));
+				applicationId = applicationJpaEntity.getId();
+				ApplicationProcessJpaEntity secondProcessJpaEntity = applicationProcessRepository.save(
+					ApplicationProcessJpaEntity.of(applicationJpaEntity, secondProcess, 1));
+				applicationProcessId = secondProcessJpaEntity.getId();
+				expectedProcessOrder = secondProcessJpaEntity.getOrder();
 			}
 
 			@DisplayName("정상적으로 변경할 수 있다.")
 			@Test
 			void updateCurrentProcessOrder() {
-				//given
-				int currentProcessOrder = 2;
-
 				//when
-				applicationPersistenceCommandAdapter.updateCurrentProcessOrder(applicationId, currentProcessOrder);
+				applicationPersistenceCommandAdapter.updateCurrentProcessOrder(applicationId, applicationProcessId);
 
 				//then
 				entityManager.clear();
-				int currentProcessOrderAfterUpdate = applicationRepository.findById(applicationId)
+				int currentProcessOrder = applicationRepository.findById(applicationId)
 					.get()
 					.getCurrentProcessOrder();
-				assertThat(currentProcessOrderAfterUpdate).isEqualTo(currentProcessOrder);
+				assertThat(currentProcessOrder).isEqualTo(expectedProcessOrder);
 			}
 		}
 	}

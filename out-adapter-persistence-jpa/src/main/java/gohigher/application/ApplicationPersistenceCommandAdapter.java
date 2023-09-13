@@ -39,7 +39,7 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 	}
 
 	@Override
-	public void updateCurrentProcessOrder(long id, int order) {
-		applicationRepository.updateCurrentProcessOrder(id, order);
+	public void updateCurrentProcessOrder(long id, long processId) {
+		applicationRepository.updateCurrentProcessOrder(id, processId);
 	}
 }
