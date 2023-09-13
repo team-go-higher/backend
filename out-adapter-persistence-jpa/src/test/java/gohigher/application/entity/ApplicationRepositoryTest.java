@@ -206,8 +206,8 @@ class ApplicationRepositoryTest {
 			}
 		}
 
-		@Nested
 		@DisplayName("한 달에 동일한 공고의 일정이 2개가 있으면")
+		@Nested
 		class Context_with_application_that_has_two_processes {
 
 			private final List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
@@ -227,8 +227,8 @@ class ApplicationRepositoryTest {
 				entityManager.clear();
 			}
 
-			@Test
 			@DisplayName("2개의 과정을 모두 담은 하나의 지원 공고를 반환한다.")
+			@Test
 			void it_return_application_with_two_processes() {
 				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndMonth(userId, year, month);
 				List<ApplicationProcessJpaEntity> actual = response.get(0).getProcesses();
