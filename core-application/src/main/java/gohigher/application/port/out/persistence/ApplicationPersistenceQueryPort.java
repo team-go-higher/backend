@@ -15,4 +15,6 @@ public interface ApplicationPersistenceQueryPort {
 	List<Application> findByUserIdAndMonth(Long userId, int year, int month);
 
 	List<Application> findByUserIdAndDate(Long userId, LocalDate date);
+
+	List<CurrentProcess> findCurrentProcessByUserId(Long userId);
 }

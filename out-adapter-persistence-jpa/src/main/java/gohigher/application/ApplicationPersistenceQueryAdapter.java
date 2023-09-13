@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import gohigher.application.dto.CurrentProcessDto;
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
@@ -49,6 +50,14 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	private List<Application> convertToDomain(List<ApplicationJpaEntity> applicationJpaEntities) {
 		return applicationJpaEntities.stream()
 			.map(ApplicationJpaEntity::toCalenderDomain)
+			.toList();
+	}
+
+	@Override
+	public List<CurrentProcess> findCurrentProcessByUserId(Long userId) {
+		List<CurrentProcessDto> currentProcesses = applicationRepository.findCurrentProcessByUserId(userId);
+		return currentProcesses.stream()
+			.map(CurrentProcessDto::toDomain)
 			.toList();
 	}
 }

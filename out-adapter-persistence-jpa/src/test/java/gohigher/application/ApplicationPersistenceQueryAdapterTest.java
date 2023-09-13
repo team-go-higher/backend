@@ -19,8 +19,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import gohigher.application.dto.CurrentProcessDto;
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
+import lombok.RequiredArgsConstructor;
 
 @DisplayName("ApplicationPersistenceQueryAdapter 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -208,6 +210,80 @@ class ApplicationPersistenceQueryAdapterTest {
 					() -> assertThat(actualNaverApplication.getProcesses()).hasSize(2),
 					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(1)
 				);
+			}
+		}
+	}
+
+	@DisplayName("findCurrentProcessByUserId 메서드는")
+	@Nested
+	class Describe_findCurrentProcessByUserId {
+
+		@DisplayName("사용자 아이디를 이용하여 조회할 때")
+		@Nested
+		class Context_with_user_id {
+
+			@DisplayName("현재 프로세스 정보를 반환한다")
+			@Test
+			void it_return_current_process() {
+				// given
+				Long userId = 1L;
+				CurrentProcessDtoImpl currentProcessDto = new CurrentProcessDtoImpl(
+					1L, "회사명", "직무", "상세 직무", "프로세스 설명", LocalDate.now()
+				);
+				List<CurrentProcessDto> currentProcessDtos = List.of(currentProcessDto);
+				given(applicationRepository.findCurrentProcessByUserId(userId)).willReturn(currentProcessDtos);
+
+				// when
+				List<CurrentProcess> currentProcesses = applicationPersistenceQueryAdapter.findCurrentProcessByUserId(userId);
+
+				// then
+				assertThat(currentProcesses.size()).isEqualTo(currentProcessDtos.size());
+			}
+
+			@RequiredArgsConstructor
+			private class CurrentProcessDtoImpl implements CurrentProcessDto {
+
+				private final Long id;
+				private final String companyName;
+				private final String duty;
+				private final String detailedDuty;
+				private final String description;
+				private final LocalDate schedule;
+
+				@Override
+				public Long getId() {
+					return id;
+				}
+
+				@Override
+				public String getCompanyName() {
+					return companyName;
+				}
+
+				@Override
+				public String getDuty() {
+					return duty;
+				}
+
+				@Override
+				public String getDetailedDuty() {
+					return detailedDuty;
+				}
+
+				@Override
+				public String getDescription() {
+					return description;
+				}
+
+				@Override
+				public LocalDate getSchedule() {
+					return schedule;
+				}
+
+				@Override
+				public CurrentProcess toDomain() {
+					return new CurrentProcess(id, companyName, duty, detailedDuty, description, schedule);
+				}
 			}
 		}
 	}
