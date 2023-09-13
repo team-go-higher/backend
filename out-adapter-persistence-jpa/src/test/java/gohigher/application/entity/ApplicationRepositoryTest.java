@@ -22,6 +22,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import gohigher.application.Application;
+import gohigher.application.dto.CurrentProcessDto;
+
 @DisplayName("ApplicationRepository 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
@@ -303,6 +306,72 @@ class ApplicationRepositoryTest {
 					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(1)
 				);
 			}
+		}
+	}
+
+	@DisplayName("findCurrentProcessByUserId 메서드는")
+	@Nested
+	class Describe_findCurrentProcessByUserId {
+
+		@DisplayName("사용자 아이디를 이용하여 조회할 때")
+		@Nested
+		class Context_with_user_id {
+
+			@DisplayName("현재 프로세스 정보들을 반환한다")
+			@Test
+			void it_return_application_current_processes() {
+				// given
+				Long userId = 1L;
+
+				int count = 2;
+				for (int i = 0; i < count; i++) {
+					ApplicationJpaEntity application = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
+					applicationRepository.save(application);
+				}
+
+				// when
+				List<CurrentProcessDto> currentProcesses = applicationRepository.findCurrentProcessByUserId(userId);
+
+				// then
+				assertThat(currentProcesses).hasSize(count);
+			}
+		}
+
+		@DisplayName("삭제된 어플리케이션이 저장되어 있을 때")
+		@Nested
+		class Context_contain_deleted_is_true {
+
+			@DisplayName("반환값에 포함되지 않는다")
+			@Test
+			void it_not_return() {
+				// given
+				Long userId = 1L;
+
+				int count = 2;
+				for (int i = 0; i < count; i++) {
+					ApplicationJpaEntity application = createDeletedApplication(userId);
+					applicationRepository.save(application);
+				}
+
+				// when
+				List<CurrentProcessDto> currentProcesses = applicationRepository.findCurrentProcessByUserId(userId);
+
+				// then
+				assertThat(currentProcesses).isEmpty();
+			}
+		}
+
+		private ApplicationJpaEntity createDeletedApplication(Long userId) {
+			boolean deleted = true;
+
+			Application application = NAVER_APPLICATION.toDomain();
+			return new ApplicationJpaEntity(
+				application.getId(), userId, application.getCompanyName(), application.getTeam(),
+				application.getLocation(), application.getContact(), application.getDuty(), application.getDetailedDuty(),
+				application.getJobDescription(), application.getWorkType(), application.getEmploymentType(),
+				application.getCareerRequirement(), application.getRequiredCapability(), application.getPreferredQualification(),
+				application.getDeadline(), application.getUrl(), null, null, null, deleted
+			);
 		}
 	}
 }

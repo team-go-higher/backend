@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import gohigher.application.dto.CurrentProcessDto;
+
 public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntity, Long> {
 
 	boolean existsByIdAndUserId(Long id, Long userId);
@@ -41,4 +43,21 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "AND p.schedule >= :startOfDate "
 		+ "AND p.schedule < :endOfDate")
 	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, LocalDateTime startOfDate, LocalDateTime endOfDate);
+
+	@Query(
+		value = "SELECT * "
+			+ "FROM application AS a "
+			+ "LEFT JOIN application_process AS p "
+			+ "ON a.current_process = p.id "
+			+ "WHERE a.user_id = ?1 "
+			+ "AND a.deleted = false",
+		countQuery = "SELECT count(a.id) "
+			+ "FROM application AS a "
+			+ "LEFT JOIN application_process AS p "
+			+ "ON a.current_process = p.id "
+			+ "WHERE a.user_id = ?1 "
+			+ "AND a.deleted = false",
+		nativeQuery = true
+	)
+	List<CurrentProcessDto> findCurrentProcessByUserId(Long userId);
 }
