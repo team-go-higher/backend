@@ -55,7 +55,7 @@ class ApplicationRepositoryTest {
 		@Nested
 		class Context_with_many_user_applications {
 
-			private Long otherUserId = -1L;
+			private final Long otherUserId = -1L;
 			private ApplicationJpaEntity otherUserApplication;
 
 			@BeforeEach
@@ -76,7 +76,7 @@ class ApplicationRepositoryTest {
 			@DisplayName("특정 유저의 데이터만 반환한다.")
 			@Test
 			void it_returns_only_data_for_a_specific_user() {
-				List<ApplicationJpaEntity> actual = applicationRepository.findByUserIdAndDate(userId, year, month);
+				List<ApplicationJpaEntity> actual = applicationRepository.findByUserIdAndMonth(userId, year, month);
 
 				assertThat(actual).containsOnly(naverApplication, kakaoApplication);
 			}
@@ -87,7 +87,7 @@ class ApplicationRepositoryTest {
 		class Context_with_many_schedules_for_several_months {
 
 			private final int otherMonth = 10;
-			private List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
+			private final List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
 
 			@BeforeEach
 			void setUp() {
@@ -110,7 +110,7 @@ class ApplicationRepositoryTest {
 			@DisplayName("조회하는 달의 일정 데이터만 반환한다.")
 			@Test
 			void it_returns_schedules_for_month() {
-				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndDate(userId, year, month);
+				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndMonth(userId, year, month);
 
 				List<ApplicationProcessJpaEntity> actualProcesses = new ArrayList<>();
 				for (ApplicationJpaEntity application : response) {
@@ -125,7 +125,7 @@ class ApplicationRepositoryTest {
 		@DisplayName("한 달에 동일한 공고의 일정이 2개가 있으면")
 		class Context_with_application_that_has_two_processes {
 
-			private List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
+			private final List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
 
 			@BeforeEach
 			void setUp() {
@@ -145,7 +145,7 @@ class ApplicationRepositoryTest {
 			@Test
 			@DisplayName("2개의 과정을 모두 담은 하나의 지원 공고를 반환한다.")
 			void it_return_application_with_two_processes() {
-				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndDate(userId, year, month);
+				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndMonth(userId, year, month);
 				List<ApplicationProcessJpaEntity> actual = response.get(0).getProcesses();
 
 				assertThat(actual).hasSize(expectedProcesses.size());

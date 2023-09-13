@@ -1,5 +1,6 @@
 package gohigher.application.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,11 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "WHERE a.userId = :userId "
 		+ "AND FUNCTION('YEAR', p.schedule) = :year "
 		+ "AND FUNCTION('MONTH', p.schedule) = :month")
-	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, int year, int month);
+	List<ApplicationJpaEntity> findByUserIdAndMonth(Long userId, int year, int month);
+
+	@Query("SELECT a FROM ApplicationJpaEntity a "
+		+ "JOIN FETCH a.processes p "
+		+ "WHERE a.userId = :userId "
+		+ "AND p.schedule = :date")
+	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, LocalDate date);
 }

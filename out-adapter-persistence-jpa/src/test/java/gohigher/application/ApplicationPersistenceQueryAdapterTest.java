@@ -63,7 +63,7 @@ class ApplicationPersistenceQueryAdapterTest {
 
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(naverApplication, kakaoApplication);
 
-				given(applicationRepository.findByUserIdAndDate(userId, year, month))
+				given(applicationRepository.findByUserIdAndMonth(userId, year, month))
 					.willReturn(applicationJpaEntities);
 			}
 
