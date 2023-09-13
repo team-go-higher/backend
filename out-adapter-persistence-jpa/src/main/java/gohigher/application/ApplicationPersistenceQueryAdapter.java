@@ -1,5 +1,6 @@
 package gohigher.application;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -23,5 +24,10 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 		return applicationJpaEntities.stream()
 			.map(ApplicationJpaEntity::toDomain)
 			.toList();
+	}
+
+	@Override
+	public List<Application> findByUserIdAndDate(long userId, LocalDate date) {
+		return null;
 	}
 }
