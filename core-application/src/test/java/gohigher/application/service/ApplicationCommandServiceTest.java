@@ -1,6 +1,8 @@
 package gohigher.application.service;
 
 import static gohigher.application.ApplicationErrorCode.*;
+import static gohigher.application.ApplicationFixture.*;
+import static gohigher.application.ProcessFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -41,13 +43,11 @@ class ApplicationCommandServiceTest {
 	@InjectMocks
 	private ApplicationCommandService applicationCommandService;
 
-	private final Process firstProcess = new Process(1L, ProcessType.TEST, "코딩테스트", LocalDateTime.now());
-	private final Process secondProcess = new Process(2L, ProcessType.INTERVIEW, "기술 면접", LocalDateTime.now());
-	private final Process thirdProcess = new Process(3L, ProcessType.INTERVIEW, "인성 면접", LocalDateTime.now());
+	private final Process firstProcess = TO_APPLY.toDomain();
+	private final Process secondProcess = DOCUMENT.toDomain();
+	private final Application application = NAVER_APPLICATION.toDomain(List.of(firstProcess, secondProcess), firstProcess);
+
 	private final long applicationOwnerId = 1L;
-	Application application = new Application(null, "", "", "", "", "", "", "", "",
-		EmploymentType.PERMANENT, "", "", "", LocalDateTime.now(),
-		List.of(firstProcess, secondProcess, thirdProcess), "", applicationOwnerId, firstProcess);
 
 	@DisplayName("UpdateCurrentProcess 메서드는")
 	@Nested

@@ -1,12 +1,12 @@
 package gohigher.application;
 
+import static gohigher.application.ApplicationFixture.*;
+import static gohigher.application.ProcessFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,9 +20,7 @@ import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationProcessJpaEntity;
 import gohigher.application.entity.ApplicationProcessRepository;
 import gohigher.application.entity.ApplicationRepository;
-import gohigher.common.EmploymentType;
 import gohigher.common.Process;
-import gohigher.common.ProcessType;
 import jakarta.persistence.EntityManager;
 
 @DisplayName("ApplicationPersistenceCommandAdapter 클래스의")
@@ -40,12 +38,10 @@ class ApplicationPersistenceCommandAdapterTest {
 	@Autowired
 	private EntityManager entityManager;
 
-	private final Process firstProcess = new Process(ProcessType.TEST, "코딩테스트", LocalDateTime.now());
-	private final Process secondProcess = new Process(ProcessType.INTERVIEW, "기술 면접", LocalDateTime.now());
-	private final Process thirdProcess = new Process(ProcessType.INTERVIEW, "인성 면접", LocalDateTime.now());
-	Application application = new Application(null, "", "", "", "", "", "", "", "",
-		EmploymentType.PERMANENT, "", "", "", LocalDateTime.now(),
-		List.of(firstProcess, secondProcess, thirdProcess), "", 1L, firstProcess);
+	private final Process firstProcess = TO_APPLY.toDomainWithDescription("코딩테스트");
+	private final Process secondProcess = DOCUMENT.toDomainWithDescription("기술 면접");
+	private final Application application = NAVER_APPLICATION.toDomain(List.of(firstProcess, secondProcess),
+		firstProcess);
 
 	@DisplayName("save 메서드는")
 	@Nested
@@ -64,12 +60,12 @@ class ApplicationPersistenceCommandAdapterTest {
 				//then
 				List<ApplicationProcessJpaEntity> applicationProcesses = applicationProcessRepository.findAll();
 				assertAll(
-					() -> assertThat(applicationProcesses).hasSize(3),
+					() -> assertThat(applicationProcesses).hasSize(2),
 					() -> assertThat(applicationProcesses).extracting("order", "description")
 						.contains(
 							tuple(0, "코딩테스트"),
-							tuple(1, "기술 면접"),
-							tuple(2, "인성 면접"))
+							tuple(1, "기술 면접")
+						)
 				);
 			}
 		}
