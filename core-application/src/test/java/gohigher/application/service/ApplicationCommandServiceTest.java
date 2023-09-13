@@ -41,11 +41,11 @@ class ApplicationCommandServiceTest {
 	@InjectMocks
 	private ApplicationCommandService applicationCommandService;
 
-	private final Process firstProcess = new Process(1L, 0, ProcessType.TEST, "코딩테스트", LocalDateTime.now());
-	private final Process secondProcess = new Process(2L, 1, ProcessType.INTERVIEW, "기술 면접", LocalDateTime.now());
-	private final Process thirdProcess = new Process(3L, 2, ProcessType.INTERVIEW, "인성 면접", LocalDateTime.now());
+	private final Process firstProcess = new Process(1L, ProcessType.TEST, "코딩테스트", LocalDateTime.now());
+	private final Process secondProcess = new Process(2L, ProcessType.INTERVIEW, "기술 면접", LocalDateTime.now());
+	private final Process thirdProcess = new Process(3L, ProcessType.INTERVIEW, "인성 면접", LocalDateTime.now());
 	private final long applicationOwnerId = 1L;
-	Application application = new Application("", "", "", "", "", "", "", "",
+	Application application = new Application(null, "", "", "", "", "", "", "", "",
 		EmploymentType.PERMANENT, "", "", "", LocalDateTime.now(),
 		List.of(firstProcess, secondProcess, thirdProcess), "", applicationOwnerId, firstProcess);
 
@@ -135,7 +135,7 @@ class ApplicationCommandServiceTest {
 
 			@BeforeEach
 			void setUp() {
-				Process process = new Process(1L, 2, ProcessType.INTERVIEW, "기술면접", LocalDateTime.now());
+				Process process = new Process(1L, ProcessType.INTERVIEW, "기술면접", LocalDateTime.now());
 				when(applicationPersistenceQueryPort.findById(APPLICATION_ID))
 					.thenReturn(Optional.of(application));
 				when(applicationProcessPersistenceQueryPort.findByIdAndApplicationId(APPLICATION_ID, processId))
