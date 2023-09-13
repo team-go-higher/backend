@@ -10,4 +10,4 @@ spring:
 
 oauth2:
   success:
-    redirect_uri: 'https://dev.dprz5tkaxr2l9.amplifyapp.com'
+    redirect_uri: 'https://dev.gohigher.site'
