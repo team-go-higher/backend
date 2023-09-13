@@ -24,7 +24,6 @@ import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
-import gohigher.common.EmploymentType;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
 
@@ -43,10 +42,6 @@ class ApplicationCommandServiceTest {
 	@InjectMocks
 	private ApplicationCommandService applicationCommandService;
 
-	private final Process firstProcess = TO_APPLY.toDomain();
-	private final Process secondProcess = DOCUMENT.toDomain();
-	private final Application application = NAVER_APPLICATION.toDomain(List.of(firstProcess, secondProcess), firstProcess);
-
 	private final long applicationOwnerId = 1L;
 
 	@DisplayName("UpdateCurrentProcess 메서드는")
@@ -54,18 +49,18 @@ class ApplicationCommandServiceTest {
 	class Describe_UpdateCurrentProcess {
 
 		private final long processId = 1L;
+		private final long userId = 1L;
 
 		@DisplayName("존재하지 않는 지원서의 현재 절차를 변경하려고 할 때")
 		@Nested
 		class NotFoundApplication {
 
-			private final long userId = 1L;
 			CurrentProcessUpdateRequest request = new CurrentProcessUpdateRequest(APPLICATION_ID, processId);
 
 			@BeforeEach
 			void setUp() {
-				when(applicationPersistenceQueryPort.findById(APPLICATION_ID))
-					.thenReturn(Optional.empty());
+				when(applicationPersistenceQueryPort.existsByIdAndUserId(APPLICATION_ID, userId))
+					.thenReturn(false);
 			}
 
 			@DisplayName("예외를 발생시켜야 한다.")
@@ -74,31 +69,6 @@ class ApplicationCommandServiceTest {
 				//when then
 				assertThatThrownBy(() -> applicationCommandService.updateCurrentProcess(userId, request))
 					.hasMessage(APPLICATION_NOT_FOUND.getMessage());
-			}
-		}
-
-		@DisplayName("다른 사용자가 작성한 지원서의 현재 절차를 변경하려고 할 때")
-		@Nested
-		class ForbiddenApplicationCurrentProcessUpdate {
-
-			private final CurrentProcessUpdateRequest request =
-				new CurrentProcessUpdateRequest(APPLICATION_ID, processId);
-
-			@BeforeEach
-			void setUp() {
-				when(applicationPersistenceQueryPort.findById(APPLICATION_ID))
-					.thenReturn(Optional.of(application));
-			}
-
-			@DisplayName("예외를 발생시켜야 한다.")
-			@Test
-			void updateCurrentProcess_Forbidden() {
-				//given
-				long anotherUserId = 2L;
-
-				//when then
-				assertThatThrownBy(() -> applicationCommandService.updateCurrentProcess(anotherUserId, request))
-					.hasMessage(APPLICATION_FORBIDDEN.getMessage());
 			}
 		}
 
@@ -111,8 +81,8 @@ class ApplicationCommandServiceTest {
 
 			@BeforeEach
 			void setUp() {
-				when(applicationPersistenceQueryPort.findById(APPLICATION_ID))
-					.thenReturn(Optional.of(application));
+				when(applicationPersistenceQueryPort.existsByIdAndUserId(APPLICATION_ID, userId))
+					.thenReturn(true);
 				when(applicationProcessPersistenceQueryPort.findById(processId))
 					.thenReturn(Optional.empty());
 			}
@@ -136,8 +106,8 @@ class ApplicationCommandServiceTest {
 			@BeforeEach
 			void setUp() {
 				Process process = new Process(1L, ProcessType.INTERVIEW, "기술면접", LocalDateTime.now());
-				when(applicationPersistenceQueryPort.findById(APPLICATION_ID))
-					.thenReturn(Optional.of(application));
+				when(applicationPersistenceQueryPort.existsByIdAndUserId(APPLICATION_ID, userId))
+					.thenReturn(true);
 				when(applicationProcessPersistenceQueryPort.findById(processId))
 					.thenReturn(Optional.of(process));
 			}
