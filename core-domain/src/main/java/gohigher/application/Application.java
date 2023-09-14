@@ -1,6 +1,5 @@
 package gohigher.application;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import gohigher.common.EmploymentType;
