@@ -51,7 +51,6 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	private Stream<DateApplicationResponse> extractDateApplicationResponses(Application application) {
 		return application.getProcesses().stream()
 			.map(ProcessResponse::from)
-			.map(processResponse -> new DateApplicationResponse(application.getId(), application.getCompanyName(),
-				processResponse));
+			.map(processResponse -> DateApplicationResponse.of(application, processResponse));
 	}
 }

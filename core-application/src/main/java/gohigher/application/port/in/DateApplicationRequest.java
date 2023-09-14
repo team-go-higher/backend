@@ -17,14 +17,14 @@ public class DateApplicationRequest {
 	private final Long userId;
 	private final LocalDate date;
 
-	public DateApplicationRequest(Long userId, String dateStr) {
+	public DateApplicationRequest(Long userId, String date) {
 		this.userId = userId;
-		this.date = convertToLocalDate(dateStr);
+		this.date = convertToLocalDate(date);
 	}
 
-	private LocalDate convertToLocalDate(String dateStr) {
+	private LocalDate convertToLocalDate(String date) {
 		try {
-			return LocalDate.parse(dateStr, DATE_TIME_FORMATTER);
+			return LocalDate.parse(date, DATE_TIME_FORMATTER);
 		} catch (DateTimeParseException e) {
 			throw new GoHigherException(ApplicationErrorCode.INVALID_DATE_INFO);
 		}
