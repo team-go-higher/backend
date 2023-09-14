@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum DatePattern {
 	DATE("yyyy-MM-dd"),
-	DATE_TIME("yyyy-MM-dd'T'HH:mm:ss"),
 	;
 
 	private final String format;
