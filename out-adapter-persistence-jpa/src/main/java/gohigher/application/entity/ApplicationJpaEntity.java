@@ -65,10 +65,9 @@ public class ApplicationJpaEntity {
 
 	private boolean deleted;
 
-	public static ApplicationJpaEntity from(Application application) {
-		List<Process> processes = application.getProcesses();
+	public static ApplicationJpaEntity of(Application application, Long userId) {
 		return new ApplicationJpaEntity(null,
-			application.getUserId(),
+			userId,
 			application.getCompanyName(),
 			application.getTeam(),
 			application.getLocation(),
@@ -106,6 +105,6 @@ public class ApplicationJpaEntity {
 
 		return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
 			employmentType, careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
-			userId, processes.get(currentProcessOrder));
+			processes.get(currentProcessOrder));
 	}
 }
