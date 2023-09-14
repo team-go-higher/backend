@@ -45,16 +45,18 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, LocalDateTime startOfDate, LocalDateTime endOfDate);
 
 	@Query(
-		value = "SELECT * "
+		value = "SELECT a.id, a.company_name, a.duty, a.detailed_duty, p.type, p.description, p.schedule "
 			+ "FROM application AS a "
 			+ "LEFT JOIN application_process AS p "
-			+ "ON a.current_process = p.orders "
+			+ "ON a.id = p.application_id "
+			+ "AND a.current_process = p.orders "
 			+ "WHERE a.user_id = ?1 "
 			+ "AND a.deleted = false",
 		countQuery = "SELECT count(a.id) "
 			+ "FROM application AS a "
 			+ "LEFT JOIN application_process AS p "
-			+ "ON a.current_process = p.orders "
+			+ "ON a.id = p.application_id "
+			+ "AND a.current_process = p.orders "
 			+ "WHERE a.user_id = ?1 "
 			+ "AND a.deleted = false",
 		nativeQuery = true
