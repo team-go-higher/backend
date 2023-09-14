@@ -1,6 +1,7 @@
 package gohigher.application;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 		return applicationRepository.existsByIdAndUserId(id, userId);
 	}
 
+	@Override
 	public List<Application> findByIdAndMonth(Long userId, int year, int month) {
 		List<ApplicationJpaEntity> applicationJpaEntities =
 			applicationRepository.findByUserIdAndDate(userId, year, month);
@@ -27,5 +29,12 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 		return applicationJpaEntities.stream()
 			.map(ApplicationJpaEntity::toDomain)
 			.toList();
+	}
+
+	@Override
+	public Optional<Application> findByIdAndUserId(Long id, Long userId) {
+		Optional<ApplicationJpaEntity> applicationJpaEntity = applicationRepository.findByIdAndUserId(id, userId);
+
+		return applicationJpaEntity.map(ApplicationJpaEntity::toDomain);
 	}
 }

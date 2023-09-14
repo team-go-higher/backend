@@ -9,6 +9,7 @@ import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -90,6 +91,58 @@ class ApplicationPersistenceQueryAdapterTest {
 					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(
 						kakaoApplication.getProcesses().size())
 				);
+			}
+		}
+	}
+
+	@DisplayName("findByIdAndUserId 메서드는")
+	@Nested
+	class Describe_findByIdAndUserId {
+
+		private final long userId = 1L;
+
+		@DisplayName("존재하는 지원서 id로 조회하면")
+		@Nested
+		class Context_with_exist_application_id {
+
+			private final long applicationId = 1L;
+
+			@BeforeEach
+			void setUp() {
+				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId,
+					NAVER_APPLICATION.toDomain());
+				given(applicationRepository.findByIdAndUserId(applicationId, userId))
+					.willReturn(Optional.ofNullable(naverApplication));
+			}
+
+			@DisplayName("Optional로 감싸진 Application객체를 반환한다.")
+			@Test
+			void it_return_application_wrapped_by_optional() {
+				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(applicationId,
+					userId);
+
+				assertThat(actual).isNotEmpty();
+			}
+		}
+
+		@DisplayName("존재하지 않는 지원서 id로 조회하면")
+		@Nested
+		class Context_with_not_exist_application_id {
+
+			private final long notExistId = 1L;
+
+			@BeforeEach
+			void setUp() {
+				given(applicationRepository.findByIdAndUserId(notExistId, userId))
+					.willReturn(Optional.empty());
+			}
+
+			@DisplayName("비어있는 Optional를 반환한다.")
+			@Test
+			void it_return_empty_optional() {
+				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(notExistId, userId);
+
+				assertThat(actual).isEmpty();
 			}
 		}
 	}
