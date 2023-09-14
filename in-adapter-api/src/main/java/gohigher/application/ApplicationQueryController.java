@@ -32,7 +32,7 @@ public class ApplicationQueryController implements ApplicationQueryControllerDoc
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
 
-	@GetMapping("/calendar")
+	@GetMapping("/processes/date")
 	public ResponseEntity<GohigherResponse<List<DateApplicationResponse>>> findByDate(@Login Long userId,
 		@RequestParam String date) {
 		DateApplicationRequest dateApplicationRequest = new DateApplicationRequest(userId, date);
