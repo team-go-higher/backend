@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class ProcessResponse {
 
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(Pattern.DATE.getFormat());
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DatePattern.DATE.getFormat());
 
 	private final Long id;
 	private final String type;

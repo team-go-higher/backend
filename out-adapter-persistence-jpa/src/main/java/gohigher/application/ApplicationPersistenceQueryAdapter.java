@@ -33,7 +33,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	}
 
 	@Override
-	public List<Application> findByUserIdAndDate(long userId, LocalDate date) {
+	public List<Application> findByUserIdAndDate(Long userId, LocalDate date) {
 		LocalDateTime startOfDate = date.atStartOfDay();
 		LocalDateTime endOfDate = date.plusDays(1).atStartOfDay();
 		List<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findByUserIdAndDate(userId,

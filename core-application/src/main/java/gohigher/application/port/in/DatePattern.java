@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum Pattern {
+public enum DatePattern {
 	DATE("yyyy-MM-dd"),
 	;
 

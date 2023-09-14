@@ -27,7 +27,6 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
 		+ "AND p.schedule >= :startOfDate "
-		+ "AND p.schedule < :endOfDate"
-	)
+		+ "AND p.schedule < :endOfDate")
 	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, LocalDateTime startOfDate, LocalDateTime endOfDate);
 }
