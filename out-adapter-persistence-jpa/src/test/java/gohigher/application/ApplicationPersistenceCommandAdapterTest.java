@@ -88,7 +88,7 @@ class ApplicationPersistenceCommandAdapterTest {
 			@BeforeEach
 			void setUp() {
 				ApplicationJpaEntity applicationJpaEntity =
-					applicationRepository.save(ApplicationJpaEntity.from(application, USER_ID));
+					applicationRepository.save(ApplicationJpaEntity.of(application, USER_ID));
 				applicationId = applicationJpaEntity.getId();
 				ApplicationProcessJpaEntity secondProcessJpaEntity = applicationProcessRepository.save(
 					ApplicationProcessJpaEntity.of(applicationJpaEntity, secondProcess, 1));
