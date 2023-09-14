@@ -4,6 +4,7 @@ import static gohigher.application.ApplicationFixture.*;
 import static gohigher.application.ProcessFixture.*;
 import static gohigher.fixtureConverter.ApplicationFixtureConverter.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -149,6 +152,74 @@ class ApplicationRepositoryTest {
 				List<ApplicationProcessJpaEntity> actual = response.get(0).getProcesses();
 
 				assertThat(actual).hasSize(expectedProcesses.size());
+			}
+		}
+	}
+
+	@DisplayName("findByUserIdAndDate 메서드는")
+	@Nested
+	class Describe_findByUserIdAndDate {
+
+		private final Long userId = 1L;
+		private final LocalDate date = LocalDate.of(2023, 9, 13);
+
+		private ApplicationJpaEntity naverApplication;
+		private ApplicationJpaEntity kakaoApplication;
+
+		@BeforeEach
+		void setUp() {
+			naverApplication = applicationRepository.save(
+				convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain()));
+			kakaoApplication = applicationRepository.save(
+				convertToApplicationEntity(userId, KAKAO_APPLICATION.toDomain()));
+		}
+
+		@DisplayName("해당 일이 전형일인 지원 전형이 있으면")
+		@Nested
+		class Context_exist_some_process_at_date {
+
+			@BeforeEach
+			void setUp() {
+				applicationProcessRepository.save(
+					convertToApplicationProcessEntity(naverApplication, DOCUMENT.toDomainWithSchedule(date), 1));
+
+				applicationProcessRepository.save(
+					convertToApplicationProcessEntity(kakaoApplication, INTERVIEW.toDomainWithSchedule(date), 1));
+
+				entityManager.clear();
+			}
+
+			@DisplayName("지원들에 해당 전형들을 넣어 리턴한다")
+			@ParameterizedTest
+			@ValueSource(longs = {0L, 1L})
+			void it_returns_applications_with_proper_processes(long day) {
+				// given
+				applicationProcessRepository.save(convertToApplicationProcessEntity(naverApplication,
+					TEST.toDomainWithSchedule(date.plusDays(day)), 2));    // day = 0일 때는 반환할 전형이 추가
+
+				// when
+				List<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findByUserIdAndDate(userId,
+					date.atStartOfDay(), date.plusDays(1).atStartOfDay());
+
+				ApplicationJpaEntity actualNaverApplication = applicationJpaEntities.stream()
+					.filter(applicationJpaEntity -> applicationJpaEntity.getCompanyName()
+						.equals(naverApplication.getCompanyName()))
+					.findAny()
+					.orElseThrow();
+
+				ApplicationJpaEntity actualKakaoApplication = applicationJpaEntities.stream()
+					.filter(applicationJpaEntity -> applicationJpaEntity.getCompanyName()
+						.equals(kakaoApplication.getCompanyName()))
+					.findAny()
+					.orElseThrow();
+
+				// then
+				int expectedNaverProcessSize = (day == 0) ? 2 : 1;
+				assertAll(
+					() -> assertThat(applicationJpaEntities).hasSize(2),
+					() -> assertThat(actualNaverApplication.getProcesses()).hasSize(expectedNaverProcessSize),
+					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(1)
+				);
 			}
 		}
 	}

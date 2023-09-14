@@ -31,7 +31,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	@Override
 	public List<CalenderApplicationResponse> findByMonth(CalenderApplicationRequest request) {
-		List<Application> applications = applicationPersistenceQueryPort.findByIdAndMonth(request.getUserId(),
+		List<Application> applications = applicationPersistenceQueryPort.findByUserIdAndMonth(request.getUserId(),
 			request.getYear(), request.getMonth());
 
 		return applications.stream()

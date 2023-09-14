@@ -50,7 +50,7 @@ class ApplicationQueryServiceTest {
 		@Nested
 		class Context_with_schedules {
 
-			private CalenderApplicationRequest request = new CalenderApplicationRequest(userId, year, month);
+			private final CalenderApplicationRequest request = new CalenderApplicationRequest(userId, year, month);
 			private List<Process> naverProcesses;
 			private List<Process> kakaoProcesses;
 
@@ -67,7 +67,7 @@ class ApplicationQueryServiceTest {
 				kakaoProcesses = List.of(toApply, document);
 				Application kakaoApplication = KAKAO_APPLICATION.toDomain(kakaoProcesses, toApply);
 
-				given(applicationPersistenceQueryPort.findByIdAndMonth(userId, year, month))
+				given(applicationPersistenceQueryPort.findByUserIdAndMonth(userId, year, month))
 					.willReturn(List.of(naverApplication, kakaoApplication));
 			}
 
@@ -94,7 +94,6 @@ class ApplicationQueryServiceTest {
 
 			Process interview = INTERVIEW.toDomainWithSchedule(date);
 			Process document = DOCUMENT.toDomainWithSchedule(date);
-			Process test = TEST.toDomainWithSchedule(LocalDate.of(2023, 9, 11));
 
 			@DisplayName("일정 정보를 반환한다.")
 			@Test

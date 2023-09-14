@@ -1,6 +1,6 @@
 package gohigher.application.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +18,8 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
-		+ "AND p.schedule = :date")
-	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, LocalDate date);
+		+ "AND p.schedule >= :startOfDay "
+		+ "AND p.schedule < :endOfDay"
+	)
+	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, LocalDateTime startOfDay, LocalDateTime endOfDay);
 }

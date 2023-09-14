@@ -1,6 +1,7 @@
 package gohigher.application;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	private final ApplicationRepository applicationRepository;
 
 	@Override
-	public List<Application> findByIdAndMonth(Long userId, int year, int month) {
+	public List<Application> findByUserIdAndMonth(Long userId, int year, int month) {
 		List<ApplicationJpaEntity> applicationJpaEntities =
 			applicationRepository.findByUserIdAndMonth(userId, year, month);
 
@@ -26,7 +27,10 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 
 	@Override
 	public List<Application> findByUserIdAndDate(long userId, LocalDate date) {
-		List<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findByUserIdAndDate(userId, date);
+		LocalDateTime startOfDay = date.atStartOfDay();
+		LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
+		List<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findByUserIdAndDate(userId,
+			startOfDay, endOfDay);
 		return convertToDomain(applicationJpaEntities);
 	}
 
