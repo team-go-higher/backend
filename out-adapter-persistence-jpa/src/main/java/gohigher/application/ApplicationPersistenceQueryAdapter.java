@@ -57,7 +57,19 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	public List<CurrentProcess> findCurrentProcessByUserId(Long userId) {
 		List<CurrentProcessDto> currentProcesses = applicationRepository.findCurrentProcessByUserId(userId);
 		return currentProcesses.stream()
-			.map(CurrentProcessDto::toDomain)
+			.map(this::convertToCurrentProcess)
 			.toList();
+	}
+
+	private CurrentProcess convertToCurrentProcess(CurrentProcessDto currentProcessDto) {
+		return new CurrentProcess(
+			currentProcessDto.getId(),
+			currentProcessDto.getCompany_name(),
+			currentProcessDto.getDuty(),
+			currentProcessDto.getDetailed_duty(),
+			currentProcessDto.getType(),
+			currentProcessDto.getDescription(),
+			currentProcessDto.getSchedule()
+		);
 	}
 }

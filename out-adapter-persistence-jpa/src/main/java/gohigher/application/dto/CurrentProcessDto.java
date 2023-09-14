@@ -1,17 +1,16 @@
 package gohigher.application.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import gohigher.application.CurrentProcess;
+import gohigher.common.ProcessType;
 
 public interface CurrentProcessDto {
 
 	Long getId();
-	String getCompanyName();
+	String getCompany_name();
 	String getDuty();
-	String getDetailedDuty();
+	String getDetailed_duty();
+	ProcessType getType();
 	String getDescription();
-	LocalDate getSchedule();
-
-	CurrentProcess toDomain();
+	LocalDateTime getSchedule();
 }
