@@ -1,12 +1,15 @@
 package gohigher.application.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.Application;
+import gohigher.application.CurrentProcess;
 import gohigher.application.ApplicationErrorCode;
 import gohigher.application.port.in.ApplicationQueryPort;
 import gohigher.application.port.in.ApplicationResponse;
@@ -15,8 +18,12 @@ import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.in.ProcessResponse;
+import gohigher.application.port.in.CalenderApplicationRequest;
+import gohigher.application.port.in.CalenderApplicationResponse;
+import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.global.exception.GoHigherException;
+import gohigher.common.ProcessType;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -53,6 +60,12 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.toList();
 	}
 
+	@Override
+	public List<KanbanApplicationResponse> findForKanban(Long userId) {
+		List<CurrentProcess> currentProcesses = applicationPersistenceQueryPort.findCurrentProcessByUserId(userId);
+		return createKanbanApplicationResponses(currentProcesses);
+	}
+
 	private Stream<CalendarApplicationResponse> extractCalendarResponses(Application application) {
 		return application.getProcesses()
 			.stream()
@@ -64,5 +77,17 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.stream()
 			.map(ProcessResponse::from)
 			.map(processResponse -> DateApplicationResponse.of(application, processResponse));
+	}
+
+	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<CurrentProcess> currentProcesses) {
+		Map<ProcessType, List<CurrentProcess>> groupedProcesses = groupByProcessType(currentProcesses);
+		return groupedProcesses.entrySet().stream()
+			.map(process -> KanbanApplicationResponse.from(process.getKey().name(), process.getValue()))
+			.toList();
+	}
+
+	private Map<ProcessType, List<CurrentProcess>> groupByProcessType(List<CurrentProcess> currentProcesses) {
+		return currentProcesses.stream()
+			.collect(Collectors.groupingBy(CurrentProcess::getType));
 	}
 }

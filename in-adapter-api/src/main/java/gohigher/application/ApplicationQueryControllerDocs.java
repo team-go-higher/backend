@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import gohigher.application.port.in.ApplicationResponse;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -81,4 +82,12 @@ public interface ApplicationQueryControllerDocs {
 	})
 	ResponseEntity<GohigherResponse<List<DateApplicationResponse>>> findByDate(
 		@Parameter(hidden = true) Long userId, @RequestParam String date);
+
+	@Operation(summary = "칸반 지원서 목록 조회")
+	@ApiResponses(
+		value = {
+			@ApiResponse(responseCode = "200", description = "칸반 지원서 목록 조회 성공")
+		}
+	)
+	ResponseEntity<GohigherResponse<List<KanbanApplicationResponse>>> findForKanban(@Parameter(hidden = true) Long userId);
 }

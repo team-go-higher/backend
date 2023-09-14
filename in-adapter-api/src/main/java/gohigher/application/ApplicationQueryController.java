@@ -15,6 +15,7 @@ import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,12 @@ public class ApplicationQueryController implements ApplicationQueryControllerDoc
 		@RequestParam String date) {
 		DateApplicationRequest dateApplicationRequest = new DateApplicationRequest(userId, date);
 		List<DateApplicationResponse> response = applicationQueryPort.findByDate(dateApplicationRequest);
+		return ResponseEntity.ok(GohigherResponse.success(response));
+	}
+
+	@GetMapping("/kanban")
+	public ResponseEntity<GohigherResponse<List<KanbanApplicationResponse>>> findForKanban(@Login Long userId) {
+		List<KanbanApplicationResponse> response = applicationQueryPort.findForKanban(userId);
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
 }
