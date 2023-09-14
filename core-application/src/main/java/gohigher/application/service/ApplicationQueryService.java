@@ -43,13 +43,14 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	}
 
 	private Stream<CalendarApplicationResponse> extractCalendarResponses(Application application) {
-		return application.getProcesses().stream()
-			.map(process -> new CalendarApplicationResponse(application.getId(), process.getId(),
-				application.getCompanyName(), process.getType().name(), process.getSchedule()));
+		return application.getProcesses()
+			.stream()
+			.map(process -> CalendarApplicationResponse.of(application, process));
 	}
 
 	private Stream<DateApplicationResponse> extractDateApplicationResponses(Application application) {
-		return application.getProcesses().stream()
+		return application.getProcesses()
+			.stream()
 			.map(ProcessResponse::from)
 			.map(processResponse -> DateApplicationResponse.of(application, processResponse));
 	}
