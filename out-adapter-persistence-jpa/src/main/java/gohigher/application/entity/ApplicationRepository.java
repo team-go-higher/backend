@@ -11,6 +11,8 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 
 	boolean existsByIdAndUserId(Long id, Long userId);
 
+	Optional<ApplicationJpaEntity> findByIdAndUserId(Long id, Long userId);
+
 	@Modifying
 	@Query("UPDATE ApplicationJpaEntity a "
 		+ "SET a.currentProcessOrder = "
