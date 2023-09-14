@@ -3,7 +3,6 @@ package gohigher.application;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
@@ -19,9 +18,8 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	private final ApplicationRepository applicationRepository;
 
 	@Override
-	public Optional<Application> findById(Long id) {
-		return applicationRepository.findById(id)
-			.map(ApplicationJpaEntity::toDomain);
+	public boolean existsByIdAndUserId(Long id, Long userId) {
+		return applicationRepository.existsByIdAndUserId(id, userId);
 	}
 
 	@Override

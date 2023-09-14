@@ -15,13 +15,13 @@ import lombok.RequiredArgsConstructor;
 public enum ApplicationFixture {
 
 	NAVER_APPLICATION("Naver", "파이낸셜", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
-		"", "", LocalDateTime.now(), new ArrayList<>(), null, 1L, ""),
+		"", "", LocalDateTime.now(), new ArrayList<>(), null, ""),
 	KAKAO_APPLICATION("KAKAO", "페이", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
-		"", "", LocalDateTime.now(), new ArrayList<>(), null, 1L, ""),
+		"", "", LocalDateTime.now(), new ArrayList<>(), null, ""),
 	LINE_APPLICATION("LINE", "메신저", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
-		"", "", LocalDateTime.now(), new ArrayList<>(), null, 1L, ""),
+		"", "", LocalDateTime.now(), new ArrayList<>(), null, ""),
 	COUPANG_APPLICATION("COUPANG", "로켓배송", "서울특별시 송파구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT,
-		"", "", "", LocalDateTime.now(), new ArrayList<>(), null, 1L, ""),
+		"", "", "", LocalDateTime.now(), new ArrayList<>(), null, ""),
 	;
 
 	private final String companyName;
@@ -39,7 +39,6 @@ public enum ApplicationFixture {
 	private final LocalDateTime deadLine;
 	private final List<Process> processes;
 	private final Process currentProcess;
-	private final Long userId;
 	private final String url;
 
 	public Application toDomain() {
@@ -70,7 +69,6 @@ public enum ApplicationFixture {
 		private LocalDateTime deadLine;
 		private List<Process> processes;
 		private Process currentProcess;
-		private Long userId;
 		private String url;
 
 		public Builder(ApplicationFixture application) {
@@ -89,7 +87,6 @@ public enum ApplicationFixture {
 			this.deadLine = application.getDeadLine();
 			this.processes = application.getProcesses();
 			this.currentProcess = application.getCurrentProcess();
-			this.userId = application.getUserId();
 			this.url = application.getUrl();
 		}
 
@@ -104,9 +101,9 @@ public enum ApplicationFixture {
 		}
 
 		public Application toDomain() {
-			return new Application(null, companyName, team, location, contact, duty, position, jobDescription, workType,
-				employmentType, careerRequirement, requiredCapability, preferredQualification, deadLine, processes, url,
-				userId, currentProcess);
+			return new Application(null, companyName, team, location, contact, duty, position, jobDescription,
+				workType, employmentType, careerRequirement, requiredCapability, preferredQualification, deadLine,
+				processes, url, currentProcess);
 		}
 	}
 }

@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntity, Long> {
 
+	boolean existsByIdAndUserId(Long id, Long userId);
+
 	@Modifying
 	@Query("UPDATE ApplicationJpaEntity a "
 		+ "SET a.currentProcessOrder = "
