@@ -11,5 +11,5 @@ public interface ApplicationPersistenceQueryPort {
 
 	List<Application> findByIdAndMonth(Long userId, int year, int month);
 
-	Optional<Application> findById(Long userId, Long applicationId);
+	Optional<Application> findByIdAndUserId(Long id, Long userId);
 }
