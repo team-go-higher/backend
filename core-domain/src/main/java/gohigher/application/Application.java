@@ -27,7 +27,6 @@ public class Application extends JobInfo {
 
 	public static Application simple(String companyName, String duty, String url, Process process) {
 		return new Application(null, companyName, null, null, null, duty, null, null,
-			null, null, null, null, null, null,
-			List.of(process), url, process);
+			null, null, null, null, null, null, List.of(process), url, process);
 	}
 }
