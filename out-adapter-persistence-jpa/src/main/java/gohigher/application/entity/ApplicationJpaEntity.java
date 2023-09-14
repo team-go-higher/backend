@@ -116,6 +116,6 @@ public class ApplicationJpaEntity {
 
 		return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
 			employmentType, careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
-			userId, null);
+			null);
 	}
 }
