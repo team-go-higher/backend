@@ -9,8 +9,10 @@ import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,7 +51,8 @@ public interface ApplicationCommandControllerDocs {
 	@Operation(summary = "지원서 상세등록")
 	@ApiResponses(
 		value = {
-			@ApiResponse(responseCode = "200", description = "상세 지원서 등록 성공"),
+			@ApiResponse(responseCode = "201", description = "상세 지원서 등록 성공",
+				headers = @Header(name = "Location", description = "/applications/{applicationId}")),
 			@ApiResponse(responseCode = "400", description = "상세 지원서 등록 실패", content = @Content(
 				examples = {
 					@ExampleObject(name = "유효하지 않은 전형 단계", value = """
