@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +24,13 @@ import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.CurrentProcess;
+import gohigher.application.port.in.CalenderApplicationRequest;
+import gohigher.application.port.in.CalenderApplicationResponse;
+import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.Process;
+import gohigher.common.ProcessType;
 
 @DisplayName("ApplicationQueryService 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -162,6 +168,40 @@ class ApplicationQueryServiceTest {
 
 				// then
 				assertThat(responses).hasSize(naverProcesses.size() + kakaoProcesses.size());
+			}
+		}
+	}
+
+	@DisplayName("findForKanban 메서드는")
+	@Nested
+	class Discribe_findForKanban {
+
+		@DisplayName("사용자 아이디에 해당하는 지원서 목록이 있을 때")
+		@Nested
+		class Context_with_user_id {
+
+			@DisplayName("일정 정보를 반환한다")
+			@Test
+			void it_return_application_processes() {
+				// given
+				Long userId = 1L;
+				ProcessType processType = ProcessType.DOCUMENT;
+
+				CurrentProcess currentProcess = new CurrentProcess(
+					1L, "회사명", "직무", "상세 직무", processType,
+					"설명", LocalDateTime.now()
+				);
+				given(applicationPersistenceQueryPort.findCurrentProcessByUserId(userId)).willReturn(List.of(currentProcess));
+
+				// when
+				List<KanbanApplicationResponse> response = applicationQueryService.findForKanban(userId);
+
+				// then
+				Optional<String> processes = response.stream()
+					.map(KanbanApplicationResponse::getProcessType)
+					.filter(process -> process.equals(processType.name()))
+					.findFirst();
+				assertThat(processes).isPresent();
 			}
 		}
 	}
