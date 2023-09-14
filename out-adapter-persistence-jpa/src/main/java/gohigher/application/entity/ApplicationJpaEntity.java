@@ -1,6 +1,5 @@
 package gohigher.application.entity;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -52,7 +51,6 @@ public class ApplicationJpaEntity {
 	private String careerRequirement;
 	private String requiredCapability;
 	private String preferredQualification;
-	private LocalDateTime deadline;
 	private String url;
 	private int currentProcessOrder;
 
@@ -81,7 +79,6 @@ public class ApplicationJpaEntity {
 			application.getCareerRequirement(),
 			application.getRequiredCapability(),
 			application.getPreferredQualification(),
-			application.getDeadline(),
 			application.getUrl(),
 			FIRST_PROCESS_ORDER,
 			null,
@@ -105,7 +102,7 @@ public class ApplicationJpaEntity {
 			.toList();
 
 		return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
-			employmentType, careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
-			userId, processes.get(currentProcessOrder));
+			employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url, userId,
+			processes.get(currentProcessOrder));
 	}
 }

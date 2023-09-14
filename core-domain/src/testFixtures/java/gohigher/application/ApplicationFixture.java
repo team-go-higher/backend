@@ -1,6 +1,5 @@
 package gohigher.application;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +14,13 @@ import lombok.RequiredArgsConstructor;
 public enum ApplicationFixture {
 
 	NAVER_APPLICATION("Naver", "파이낸셜", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
-		"", "", LocalDateTime.now(), new ArrayList<>(), null, 1L, ""),
+		"", "", new ArrayList<>(), null, 1L, ""),
 	KAKAO_APPLICATION("KAKAO", "페이", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
-		"", "", LocalDateTime.now(), new ArrayList<>(), null, 1L, ""),
+		"", "", new ArrayList<>(), null, 1L, ""),
 	LINE_APPLICATION("LINE", "메신저", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
-		"", "", LocalDateTime.now(), new ArrayList<>(), null, 1L, ""),
+		"", "", new ArrayList<>(), null, 1L, ""),
 	COUPANG_APPLICATION("COUPANG", "로켓배송", "서울특별시 송파구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT,
-		"", "", "", LocalDateTime.now(), new ArrayList<>(), null, 1L, ""),
+		"", "", "", new ArrayList<>(), null, 1L, ""),
 	;
 
 	private final String companyName;
@@ -36,7 +35,6 @@ public enum ApplicationFixture {
 	private final String careerRequirement;
 	private final String requiredCapability;
 	private final String preferredQualification;
-	private final LocalDateTime deadLine;
 	private final List<Process> processes;
 	private final Process currentProcess;
 	private final Long userId;
@@ -67,7 +65,6 @@ public enum ApplicationFixture {
 		private String careerRequirement;
 		private String requiredCapability;
 		private String preferredQualification;
-		private LocalDateTime deadLine;
 		private List<Process> processes;
 		private Process currentProcess;
 		private Long userId;
@@ -86,7 +83,6 @@ public enum ApplicationFixture {
 			this.careerRequirement = application.getCareerRequirement();
 			this.requiredCapability = application.getRequiredCapability();
 			this.preferredQualification = application.getPreferredQualification();
-			this.deadLine = application.getDeadLine();
 			this.processes = application.getProcesses();
 			this.currentProcess = application.getCurrentProcess();
 			this.userId = application.getUserId();
@@ -105,8 +101,8 @@ public enum ApplicationFixture {
 
 		public Application toDomain() {
 			return new Application(null, companyName, team, location, contact, duty, position, jobDescription, workType,
-				employmentType, careerRequirement, requiredCapability, preferredQualification, deadLine, processes, url,
-				userId, currentProcess);
+				employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url, userId,
+				currentProcess);
 		}
 	}
 }
