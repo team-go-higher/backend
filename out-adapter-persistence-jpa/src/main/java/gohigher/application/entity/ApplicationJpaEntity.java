@@ -66,7 +66,6 @@ public class ApplicationJpaEntity {
 	private boolean deleted;
 
 	public static ApplicationJpaEntity of(Application application, Long userId) {
-		List<Process> processes = application.getProcesses();
 		return new ApplicationJpaEntity(null,
 			userId,
 			application.getCompanyName(),
