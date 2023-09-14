@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class CalenderApplicationResponse {
+public class CalendarApplicationResponse {
 
 	private final Long applicationId;
 	private final Long processId;

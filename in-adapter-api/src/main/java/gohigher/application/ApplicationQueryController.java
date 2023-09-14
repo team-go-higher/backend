@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import gohigher.application.port.in.ApplicationQueryPort;
-import gohigher.application.port.in.CalenderApplicationRequest;
-import gohigher.application.port.in.CalenderApplicationResponse;
+import gohigher.application.port.in.CalendarApplicationRequest;
+import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.auth.support.Login;
@@ -24,11 +24,11 @@ public class ApplicationQueryController implements ApplicationQueryControllerDoc
 
 	private final ApplicationQueryPort applicationQueryPort;
 
-	@GetMapping("/calender")
-	public ResponseEntity<GohigherResponse<List<CalenderApplicationResponse>>> findByMonth(@Login Long userId,
+	@GetMapping("/calendar")
+	public ResponseEntity<GohigherResponse<List<CalendarApplicationResponse>>> findByMonth(@Login Long userId,
 		@RequestParam int year, @RequestParam int month) {
-		CalenderApplicationRequest request = new CalenderApplicationRequest(userId, year, month);
-		List<CalenderApplicationResponse> response = applicationQueryPort.findByMonth(request);
+		CalendarApplicationRequest request = new CalendarApplicationRequest(userId, year, month);
+		List<CalendarApplicationResponse> response = applicationQueryPort.findByMonth(request);
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
 

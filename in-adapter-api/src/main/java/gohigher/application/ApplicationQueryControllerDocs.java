@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import gohigher.application.port.in.CalenderApplicationResponse;
+import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +36,7 @@ public interface ApplicationQueryControllerDocs {
 					""")
 			}))
 	})
-	ResponseEntity<GohigherResponse<List<CalenderApplicationResponse>>> findByMonth(
+	ResponseEntity<GohigherResponse<List<CalendarApplicationResponse>>> findByMonth(
 		@Parameter(hidden = true) Long userId, @RequestParam int year, @RequestParam int month);
 
 	@Operation(summary = "지원서 캘린더 일간 데이터 조회")

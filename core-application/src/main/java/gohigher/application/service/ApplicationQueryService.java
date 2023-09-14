@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.Application;
 import gohigher.application.port.in.ApplicationQueryPort;
-import gohigher.application.port.in.CalenderApplicationRequest;
-import gohigher.application.port.in.CalenderApplicationResponse;
+import gohigher.application.port.in.CalendarApplicationRequest;
+import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.in.ProcessResponse;
@@ -23,14 +23,14 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
 
-	private Stream<CalenderApplicationResponse> extractCalenderResponses(Application application) {
+	private Stream<CalendarApplicationResponse> extractCalenderResponses(Application application) {
 		return application.getProcesses().stream()
-			.map(process -> new CalenderApplicationResponse(application.getId(), process.getId(),
+			.map(process -> new CalendarApplicationResponse(application.getId(), process.getId(),
 				application.getCompanyName(), process.getType().name(), process.getSchedule()));
 	}
 
 	@Override
-	public List<CalenderApplicationResponse> findByMonth(CalenderApplicationRequest request) {
+	public List<CalendarApplicationResponse> findByMonth(CalendarApplicationRequest request) {
 		List<Application> applications = applicationPersistenceQueryPort.findByUserIdAndMonth(request.getUserId(),
 			request.getYear(), request.getMonth());
 

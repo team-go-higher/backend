@@ -17,8 +17,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import gohigher.application.Application;
-import gohigher.application.port.in.CalenderApplicationRequest;
-import gohigher.application.port.in.CalenderApplicationResponse;
+import gohigher.application.port.in.CalendarApplicationRequest;
+import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
@@ -50,7 +50,7 @@ class ApplicationQueryServiceTest {
 		@Nested
 		class Context_with_schedules {
 
-			private final CalenderApplicationRequest request = new CalenderApplicationRequest(userId, year, month);
+			private final CalendarApplicationRequest request = new CalendarApplicationRequest(userId, year, month);
 			private List<Process> naverProcesses;
 			private List<Process> kakaoProcesses;
 
@@ -74,7 +74,7 @@ class ApplicationQueryServiceTest {
 			@DisplayName("일정 정보를 반환한다.")
 			@Test
 			void it_return_application_processes() {
-				List<CalenderApplicationResponse> actual = applicationQueryService.findByMonth(request);
+				List<CalendarApplicationResponse> actual = applicationQueryService.findByMonth(request);
 
 				assertThat(actual).hasSize(naverProcesses.size() + kakaoProcesses.size());
 			}
