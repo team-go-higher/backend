@@ -97,6 +97,10 @@ public class ApplicationJpaEntity {
 		processes.add(process);
 	}
 
+	public void changeToDelete() {
+		this.deleted = true;
+	}
+
 	public Application toDomain() {
 		List<Process> processes = this.processes.stream()
 			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))

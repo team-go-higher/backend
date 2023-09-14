@@ -4,10 +4,12 @@ import static gohigher.application.ApplicationFixture.*;
 import static gohigher.application.ProcessFixture.*;
 import static gohigher.fixtureConverter.ApplicationFixtureConverter.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +33,87 @@ class ApplicationRepositoryTest {
 
 	@Autowired
 	private TestEntityManager entityManager;
+
+	@DisplayName("findByIdAndUserIdWithProcess 메소드는")
+	@Nested
+	class Describe_findByIdAndUserIdWithProcess {
+
+		private final Long userId = 0L;
+
+		private ApplicationJpaEntity naverApplication;
+
+		@BeforeEach
+		void setUp() {
+			naverApplication = applicationRepository.save(
+				convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain()));
+		}
+
+		@DisplayName("등록된 전형 과정이 없을 경우에도")
+		@Nested
+		class Context_with_no_process {
+
+			@DisplayName("지원서를 반환한다.")
+			@Test
+			void it_returns_optional_empty() {
+				Optional<ApplicationJpaEntity> response = applicationRepository.findByIdAndUserIdWithProcess(
+					naverApplication.getId(), userId);
+
+				assertThat(response).isNotEmpty();
+			}
+		}
+
+		@DisplayName("지원서가 여러 프로세스를 갖고 있을 경우")
+		@Nested
+		class Context_with_many_processes {
+
+			private List<ApplicationProcessJpaEntity> naverProcesses;
+
+			@BeforeEach
+			void setUp() {
+				ApplicationProcessJpaEntity toApply = applicationProcessRepository.save(
+					convertToApplicationProcessEntity(naverApplication, TO_APPLY.toDomain(), 1));
+
+				ApplicationProcessJpaEntity test = applicationProcessRepository.save(
+					convertToApplicationProcessEntity(naverApplication, TEST.toDomain(), 2));
+
+				ApplicationProcessJpaEntity interview = applicationProcessRepository.save(
+					convertToApplicationProcessEntity(naverApplication, INTERVIEW.toDomain(), 3));
+
+				naverProcesses = List.of(toApply, test, interview);
+
+				entityManager.clear();
+			}
+
+			@DisplayName("모든 과정 데이터와 함께 지원서 데이터를 가져온다.")
+			@Test
+			void it_returns_application_with_processes() {
+				Optional<ApplicationJpaEntity> response = applicationRepository.findByIdAndUserIdWithProcess(
+					naverApplication.getId(), userId);
+
+				assertAll(() -> assertThat(response).isNotEmpty(),
+					() -> assertThat(response.get().getProcesses()).hasSize(naverProcesses.size()));
+			}
+		}
+
+		@DisplayName("지원서가 삭제된 경우")
+		@Nested
+		class Context_with_deleted_application {
+
+			@BeforeEach
+			void setUp() {
+				naverApplication.changeToDelete();
+			}
+
+			@DisplayName("비어있는 결과를 반환한다.")
+			@Test
+			void it_returns_optional_empty() {
+				Optional<ApplicationJpaEntity> response = applicationRepository.findByIdAndUserIdWithProcess(
+					naverApplication.getId(), userId);
+
+				assertThat(response).isEmpty();
+			}
+		}
+	}
 
 	@DisplayName("findByUserIdAndMonth 메소드는")
 	@Nested

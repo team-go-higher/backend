@@ -11,7 +11,12 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 
 	boolean existsByIdAndUserId(Long id, Long userId);
 
-	Optional<ApplicationJpaEntity> findByIdAndUserId(Long id, Long userId);
+	@Query("SELECT a FROM ApplicationJpaEntity a "
+		+ "LEFT JOIN FETCH a.processes p "
+		+ "WHERE a.id = :id "
+		+ "AND a.userId = :userId "
+		+ "AND a.deleted = false")
+	Optional<ApplicationJpaEntity> findByIdAndUserIdWithProcess(Long id, Long userId);
 
 	@Modifying
 	@Query("UPDATE ApplicationJpaEntity a "

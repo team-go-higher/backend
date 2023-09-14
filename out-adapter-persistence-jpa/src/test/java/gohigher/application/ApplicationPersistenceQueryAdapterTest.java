@@ -111,7 +111,7 @@ class ApplicationPersistenceQueryAdapterTest {
 			void setUp() {
 				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId,
 					NAVER_APPLICATION.toDomain());
-				given(applicationRepository.findByIdAndUserId(applicationId, userId))
+				given(applicationRepository.findByIdAndUserIdWithProcess(applicationId, userId))
 					.willReturn(Optional.ofNullable(naverApplication));
 			}
 
@@ -133,7 +133,7 @@ class ApplicationPersistenceQueryAdapterTest {
 
 			@BeforeEach
 			void setUp() {
-				given(applicationRepository.findByIdAndUserId(notExistId, userId))
+				given(applicationRepository.findByIdAndUserIdWithProcess(notExistId, userId))
 					.willReturn(Optional.empty());
 			}
 
