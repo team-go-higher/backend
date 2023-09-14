@@ -25,7 +25,7 @@ public class ApplicationResponse {
 	private final String requiredCapability;
 	private final String preferredQualification;
 	private final LocalDateTime deadline;
-	private final List<ApplicationProcessResponse> processes;
+	private final List<ProcessResponse> processes;
 	private final int currentProcessOrder;
 	private final String url;
 }

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ApplicationProcessResponse {
+public class ProcessResponse {
 
 	private final Long id;
 	private final String type;
