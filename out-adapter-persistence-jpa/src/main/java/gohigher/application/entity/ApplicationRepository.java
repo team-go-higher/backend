@@ -49,14 +49,14 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 			+ "FROM application AS a "
 			+ "LEFT JOIN application_process AS p "
 			+ "ON a.id = p.application_id "
-			+ "AND a.current_process = p.orders "
+			+ "AND a.current_process_order = p.orders "
 			+ "WHERE a.user_id = ?1 "
 			+ "AND a.deleted = false",
 		countQuery = "SELECT count(a.id) "
 			+ "FROM application AS a "
 			+ "LEFT JOIN application_process AS p "
 			+ "ON a.id = p.application_id "
-			+ "AND a.current_process = p.orders "
+			+ "AND a.current_process_order = p.orders "
 			+ "WHERE a.user_id = ?1 "
 			+ "AND a.deleted = false",
 		nativeQuery = true
