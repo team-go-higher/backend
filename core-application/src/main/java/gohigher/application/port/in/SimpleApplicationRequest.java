@@ -19,7 +19,7 @@ public class SimpleApplicationRequest {
 
 	private SimpleApplicationProcessRequest currentProcess;
 
-	public Application toDomain() {
-		return Application.simple(companyName, duty, url, currentProcess.toDomain());
+	public Application toDomain(Long userId) {
+		return Application.simple(userId, companyName, duty, url, currentProcess.toDomain());
 	}
 }

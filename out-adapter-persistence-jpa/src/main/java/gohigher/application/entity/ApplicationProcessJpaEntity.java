@@ -45,8 +45,8 @@ public class ApplicationProcessJpaEntity {
 	private String description;
 
 	public static ApplicationProcessJpaEntity of(ApplicationJpaEntity application, Process process, int order) {
-		return new ApplicationProcessJpaEntity(null, application, process.getType(), order, process.getSchedule(),
-			process.getDescription());
+		return new ApplicationProcessJpaEntity(process.getId(), application, process.getType(), order,
+			process.getSchedule(), process.getDescription());
 	}
 
 	public void assignApplication(ApplicationJpaEntity application) {
