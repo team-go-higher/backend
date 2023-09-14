@@ -23,19 +23,13 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
 
-	private Stream<CalendarApplicationResponse> extractCalenderResponses(Application application) {
-		return application.getProcesses().stream()
-			.map(process -> new CalendarApplicationResponse(application.getId(), process.getId(),
-				application.getCompanyName(), process.getType().name(), process.getSchedule()));
-	}
-
 	@Override
 	public List<CalendarApplicationResponse> findByMonth(CalendarApplicationRequest request) {
 		List<Application> applications = applicationPersistenceQueryPort.findByUserIdAndMonth(request.getUserId(),
 			request.getYear(), request.getMonth());
 
 		return applications.stream()
-			.flatMap(this::extractCalenderResponses)
+			.flatMap(this::extractCalendarResponses)
 			.toList();
 	}
 
@@ -46,6 +40,12 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 		return applications.stream()
 			.flatMap(this::extractDateApplicationResponses)
 			.toList();
+	}
+
+	private Stream<CalendarApplicationResponse> extractCalendarResponses(Application application) {
+		return application.getProcesses().stream()
+			.map(process -> new CalendarApplicationResponse(application.getId(), process.getId(),
+				application.getCompanyName(), process.getType().name(), process.getSchedule()));
 	}
 
 	private Stream<DateApplicationResponse> extractDateApplicationResponses(Application application) {
