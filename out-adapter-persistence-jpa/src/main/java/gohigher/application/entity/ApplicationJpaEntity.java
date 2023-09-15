@@ -94,7 +94,7 @@ public class ApplicationJpaEntity {
 		processes.add(process);
 	}
 
-	public Application toDomain() {
+	public Application toCalenderDomain() {
 		List<Process> processes = this.processes.stream()
 			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))
 			.map(ApplicationProcessJpaEntity::toDomain)
@@ -102,6 +102,6 @@ public class ApplicationJpaEntity {
 
 		return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
 			employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
-			processes.get(currentProcessOrder));
+			null);
 	}
 }

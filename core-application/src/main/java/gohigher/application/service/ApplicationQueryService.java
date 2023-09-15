@@ -8,8 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.Application;
 import gohigher.application.port.in.ApplicationQueryPort;
-import gohigher.application.port.in.CalenderApplicationRequest;
-import gohigher.application.port.in.CalenderApplicationResponse;
+import gohigher.application.port.in.CalendarApplicationRequest;
+import gohigher.application.port.in.CalendarApplicationResponse;
+import gohigher.application.port.in.DateApplicationRequest;
+import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.port.in.ProcessResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import lombok.RequiredArgsConstructor;
 
@@ -21,18 +24,34 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
 
 	@Override
-	public List<CalenderApplicationResponse> findByMonth(CalenderApplicationRequest request) {
-		List<Application> applications = applicationPersistenceQueryPort.findByIdAndMonth(request.getUserId(),
+	public List<CalendarApplicationResponse> findByMonth(CalendarApplicationRequest request) {
+		List<Application> applications = applicationPersistenceQueryPort.findByUserIdAndMonth(request.getUserId(),
 			request.getYear(), request.getMonth());
 
 		return applications.stream()
-			.flatMap(ApplicationQueryService::extractCalenderResponses)
+			.flatMap(this::extractCalendarResponses)
 			.toList();
 	}
 
-	private static Stream<CalenderApplicationResponse> extractCalenderResponses(Application application) {
-		return application.getProcesses().stream()
-			.map(process -> new CalenderApplicationResponse(application.getId(), process.getId(),
-				application.getCompanyName(), process.getType().name(), process.getSchedule()));
+	@Override
+	public List<DateApplicationResponse> findByDate(DateApplicationRequest request) {
+		List<Application> applications = applicationPersistenceQueryPort.findByUserIdAndDate(request.getUserId(),
+			request.getDate());
+		return applications.stream()
+			.flatMap(this::extractDateApplicationResponses)
+			.toList();
+	}
+
+	private Stream<CalendarApplicationResponse> extractCalendarResponses(Application application) {
+		return application.getProcesses()
+			.stream()
+			.map(process -> CalendarApplicationResponse.of(application, process));
+	}
+
+	private Stream<DateApplicationResponse> extractDateApplicationResponses(Application application) {
+		return application.getProcesses()
+			.stream()
+			.map(ProcessResponse::from)
+			.map(processResponse -> DateApplicationResponse.of(application, processResponse));
 	}
 }

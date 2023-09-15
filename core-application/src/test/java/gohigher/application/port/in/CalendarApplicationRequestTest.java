@@ -9,7 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 @DisplayName("CalenderApplicationMonthRequest 클래스의")
-class CalenderApplicationRequestTest {
+class CalendarApplicationRequestTest {
 
 	@DisplayName("생성자는")
 	@Nested
@@ -26,7 +26,7 @@ class CalenderApplicationRequestTest {
 			@ParameterizedTest
 			@ValueSource(ints = {0, -1})
 			void it_throw_exception(int year) {
-				assertThatThrownBy(() -> new CalenderApplicationRequest(userId, year, month))
+				assertThatThrownBy(() -> new CalendarApplicationRequest(userId, year, month))
 					.hasMessage(INVALID_DATE_INFO.getMessage());
 			}
 		}
@@ -42,7 +42,7 @@ class CalenderApplicationRequestTest {
 			@ParameterizedTest
 			@ValueSource(ints = {0, 13, 20})
 			void it_throw_exception(int month) {
-				assertThatThrownBy(() -> new CalenderApplicationRequest(userId, year, month))
+				assertThatThrownBy(() -> new CalendarApplicationRequest(userId, year, month))
 					.hasMessage(INVALID_DATE_INFO.getMessage());
 			}
 		}
