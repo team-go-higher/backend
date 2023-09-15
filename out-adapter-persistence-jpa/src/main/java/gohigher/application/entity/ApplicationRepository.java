@@ -21,6 +21,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
+		+ "AND a.deleted = false "
 		+ "AND FUNCTION('YEAR', p.schedule) = :year "
 		+ "AND FUNCTION('MONTH', p.schedule) = :month")
 	List<ApplicationJpaEntity> findByUserIdAndMonth(Long userId, int year, int month);
@@ -28,6 +29,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
+		+ "AND a.deleted = false "
 		+ "AND p.schedule >= :startOfDate "
 		+ "AND p.schedule < :endOfDate")
 	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, LocalDateTime startOfDate, LocalDateTime endOfDate);
