@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum GlobalErrorCode implements ErrorCode {
 
 	NOT_CONTROLLED_ERROR(400, "GLOBAL_001", "다뤄지지 않은 에러입니다."),
-	;
+
+	INPUT_EMPTY_ERROR(400, "GLOBAL_011", "빈 입력값입니다.");
 
 	private final int statusCode;
 	private final String errorCode;

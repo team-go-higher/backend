@@ -17,9 +17,9 @@ public enum ApplicationFixture {
 	NAVER_APPLICATION("Naver", "파이낸셜", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
 		"", "", LocalDateTime.now(), new ArrayList<>(), null, ""),
 	KAKAO_APPLICATION("KAKAO", "페이", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
-		"", "", LocalDateTime.now(), new ArrayList<>(), null,  ""),
+		"", "", LocalDateTime.now(), new ArrayList<>(), null, ""),
 	LINE_APPLICATION("LINE", "메신저", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
-		"", "", LocalDateTime.now(), new ArrayList<>(), null,  ""),
+		"", "", LocalDateTime.now(), new ArrayList<>(), null, ""),
 	COUPANG_APPLICATION("COUPANG", "로켓배송", "서울특별시 송파구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT,
 		"", "", "", LocalDateTime.now(), new ArrayList<>(), null, ""),
 	;

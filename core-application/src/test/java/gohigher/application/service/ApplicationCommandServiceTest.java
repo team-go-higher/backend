@@ -23,7 +23,7 @@ import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQu
 class ApplicationCommandServiceTest {
 
 	private static final long APPLICATION_ID = 1L;
-
+	private final long applicationOwnerId = 1L;
 	@Mock
 	private ApplicationPersistenceCommandPort applicationPersistenceCommandPort;
 	@Mock
@@ -32,8 +32,6 @@ class ApplicationCommandServiceTest {
 	private ApplicationProcessPersistenceQueryPort applicationProcessPersistenceQueryPort;
 	@InjectMocks
 	private ApplicationCommandService applicationCommandService;
-
-	private final long applicationOwnerId = 1L;
 
 	@DisplayName("UpdateCurrentProcess 메서드는")
 	@Nested
