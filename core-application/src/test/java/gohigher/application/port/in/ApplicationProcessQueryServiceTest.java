@@ -48,9 +48,12 @@ class ApplicationProcessQueryServiceTest {
 			@DisplayName("예외를 발생시킨다.")
 			@Test
 			void it_Throws_Application_Not_Found_Exception() {
+				//given
+				ApplicationProcessByProcessTypeRequest request =
+					new ApplicationProcessByProcessTypeRequest(applicationId, TEST);
 				//when then
 				assertThatThrownBy(() ->
-					applicationProcessQueryService.findByApplicationIdAndProcessType(userId, applicationId, TEST))
+					applicationProcessQueryService.findByApplicationIdAndProcessType(userId, request))
 					.hasMessage(APPLICATION_NOT_FOUND.getMessage());
 			}
 		}
