@@ -32,7 +32,7 @@ class ApplicationProcessQueryServiceTest {
 	@Nested
 	class Describe_FindByApplicationIdAndProcessType {
 
-		@DisplayName("id와 userId가 일치하는 지원서가 없는 경우에, ")
+		@DisplayName("id와 userId가 일치하는 지원서가 없는 경우에")
 		@Nested
 		class Context_NonExistent_Application_By_Id_And_User_Id {
 
