@@ -14,6 +14,7 @@ public enum ApplicationErrorCode implements ErrorCode {
 	APPLICATION_PROCESS_ID_NULL(400, "APPLICATION_004", "지원서의 전형 id가 입력되지 않았습니다."),
 
 	INVALID_DATE_INFO(400, "APPLICATION_011", "잘못된 날짜 정보입니다."),
+	INVALID_DATE_PATTERN(400, "APPLICATION_012", "잘못된 날짜 형식입니다."),
 	;
 
 	private final int statusCode;

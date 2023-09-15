@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import gohigher.application.ApplicationErrorCode;
+import gohigher.global.exception.GlobalErrorCode;
 import gohigher.global.exception.GoHigherException;
 
 @DisplayName("DateApplicationMonthRequest 클래스의")
@@ -48,7 +50,26 @@ class DateApplicationRequestTest {
 
 			// when & then
 			assertThatThrownBy(() -> new DateApplicationRequest(userId, date))
-				.isInstanceOf(GoHigherException.class);
+				.isInstanceOf(GoHigherException.class)
+				.hasMessage(ApplicationErrorCode.INVALID_DATE_PATTERN.getMessage());
+		}
+	}
+
+	@DisplayName("빈 입력값이 날짜로 주어진다면")
+	@Nested
+	class Context_with_empty_date {
+
+		@DisplayName("예외를 발생시킨다")
+		@ParameterizedTest
+		@ValueSource(strings = {"", " ", "	"})
+		void it_throws_exception(String date) {
+			// given
+			Long userId = 1L;
+
+			// when & then
+			assertThatThrownBy(() -> new DateApplicationRequest(userId, date))
+				.isInstanceOf(GoHigherException.class)
+				.hasMessage(GlobalErrorCode.INPUT_EMPTY_ERROR.getMessage());
 		}
 	}
 }

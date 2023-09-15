@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import gohigher.application.ApplicationErrorCode;
+import gohigher.global.exception.GlobalErrorCode;
 import gohigher.global.exception.GoHigherException;
 import lombok.Getter;
 
@@ -24,9 +25,16 @@ public class DateApplicationRequest {
 
 	private LocalDate convertToLocalDate(String date) {
 		try {
+			validateEmpty(date);
 			return LocalDate.parse(date, DATE_TIME_FORMATTER);
 		} catch (DateTimeParseException e) {
-			throw new GoHigherException(ApplicationErrorCode.INVALID_DATE_INFO);
+			throw new GoHigherException(ApplicationErrorCode.INVALID_DATE_PATTERN);
+		}
+	}
+
+	private void validateEmpty(String date) {
+		if (date.isBlank()) {
+			throw new GoHigherException(GlobalErrorCode.INPUT_EMPTY_ERROR);
 		}
 	}
 }
