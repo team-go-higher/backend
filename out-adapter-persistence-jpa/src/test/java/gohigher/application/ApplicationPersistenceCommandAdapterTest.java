@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationProcessJpaEntity;
@@ -29,9 +27,11 @@ import jakarta.persistence.EntityManager;
 @DataJpaTest
 class ApplicationPersistenceCommandAdapterTest {
 
+	private static final String FIRST_PROCESS_DESCRIPTION = "코딩테스트";
+	private static final String SECOND_PROCESS_DESCRIPTION = "기술면접";
 	private static final Long USER_ID = 1L;
-	private final Process firstProcess = TO_APPLY.toDomainWithDescription("코딩테스트");
-	private final Process secondProcess = DOCUMENT.toDomainWithDescription("기술 면접");
+	private final Process firstProcess = TO_APPLY.toDomainWithDescription(FIRST_PROCESS_DESCRIPTION);
+	private final Process secondProcess = DOCUMENT.toDomainWithDescription(SECOND_PROCESS_DESCRIPTION);
 	private final Application application = NAVER_APPLICATION.toDomain(List.of(firstProcess, secondProcess),
 		firstProcess);
 
@@ -72,8 +72,8 @@ class ApplicationPersistenceCommandAdapterTest {
 					() -> assertThat(applicationProcesses).hasSize(2),
 					() -> assertThat(applicationProcesses).extracting("order", "description")
 						.contains(
-							tuple(0, "코딩테스트"),
-							tuple(1, "기술 면접")
+							tuple(0, FIRST_PROCESS_DESCRIPTION),
+							tuple(1, SECOND_PROCESS_DESCRIPTION)
 						)
 				);
 			}

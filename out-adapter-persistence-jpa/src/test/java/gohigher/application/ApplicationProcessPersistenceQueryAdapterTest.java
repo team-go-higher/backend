@@ -29,6 +29,8 @@ import gohigher.common.ProcessType;
 class ApplicationProcessPersistenceQueryAdapterTest {
 
 	private static final long USER_ID = 1L;
+	private static final String FIRST_PROCESS_DESCRIPTION = "코딩테스트";
+	private static final String SECOND_PROCESS_DESCRIPTION = "기술면접";
 
 	@Autowired
 	private ApplicationRepository applicationRepository;
@@ -61,9 +63,9 @@ class ApplicationProcessPersistenceQueryAdapterTest {
 				ApplicationProcessJpaEntity firstApplicationProcessJpaEntity =
 					convertToApplicationProcessEntity(applicationJpaEntity, DOCUMENT.toDomain(), 0);
 				ApplicationProcessJpaEntity thirdApplicationProcessJpaEntity = convertToApplicationProcessEntity(
-					applicationJpaEntity, ProcessFixture.TEST.toDomainWithDescription("a"), 2);
+					applicationJpaEntity, ProcessFixture.TEST.toDomainWithDescription(FIRST_PROCESS_DESCRIPTION), 2);
 				ApplicationProcessJpaEntity secondApplicationProcessJpaEntity = convertToApplicationProcessEntity(
-					applicationJpaEntity, ProcessFixture.TEST.toDomainWithDescription("b"), 1);
+					applicationJpaEntity, ProcessFixture.TEST.toDomainWithDescription(SECOND_PROCESS_DESCRIPTION), 1);
 				applicationProcessRepository.saveAll(List.of(firstApplicationProcessJpaEntity,
 					secondApplicationProcessJpaEntity, thirdApplicationProcessJpaEntity));
 			}
@@ -81,8 +83,8 @@ class ApplicationProcessPersistenceQueryAdapterTest {
 				//then
 				assertAll(
 					() -> assertThat(actual).hasSize(2),
-					() -> assertThat(actual.get(0).getDescription()).isEqualTo("b"),
-					() -> assertThat(actual.get(1).getDescription()).isEqualTo("a")
+					() -> assertThat(actual.get(0).getDescription()).isEqualTo(SECOND_PROCESS_DESCRIPTION),
+					() -> assertThat(actual.get(1).getDescription()).isEqualTo(FIRST_PROCESS_DESCRIPTION)
 				);
 			}
 		}
