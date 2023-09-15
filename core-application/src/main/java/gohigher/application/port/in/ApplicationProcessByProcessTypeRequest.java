@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ApplicationProcessByProcessTypeRequest {
 
-	@NotNull
+	@NotNull(message = "APPLICATION_003||지원서 id가 입력되지 않았습니다.")
 	private Long applicationId;
 
-	@NotNull
+	@NotNull(message = "APPLICATION_005||지원서 전형의 타입이 입력되지 않았습니다.")
 	private ProcessType processType;
 }
