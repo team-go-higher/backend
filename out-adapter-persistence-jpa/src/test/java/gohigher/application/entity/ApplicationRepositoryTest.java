@@ -15,6 +15,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -138,7 +140,7 @@ class ApplicationRepositoryTest {
 		@Nested
 		class Context_with_many_user_applications {
 
-			private Long otherUserId = -1L;
+			private final Long otherUserId = -1L;
 			private ApplicationJpaEntity otherUserApplication;
 
 			@BeforeEach
@@ -159,7 +161,7 @@ class ApplicationRepositoryTest {
 			@DisplayName("특정 유저의 데이터만 반환한다.")
 			@Test
 			void it_returns_only_data_for_a_specific_user() {
-				List<ApplicationJpaEntity> actual = applicationRepository.findByUserIdAndDate(userId, year, month);
+				List<ApplicationJpaEntity> actual = applicationRepository.findByUserIdAndMonth(userId, year, month);
 
 				assertThat(actual).containsOnly(naverApplication, kakaoApplication);
 			}
@@ -170,7 +172,7 @@ class ApplicationRepositoryTest {
 		class Context_with_many_schedules_for_several_months {
 
 			private final int otherMonth = 10;
-			private List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
+			private final List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
 
 			@BeforeEach
 			void setUp() {
@@ -193,7 +195,7 @@ class ApplicationRepositoryTest {
 			@DisplayName("조회하는 달의 일정 데이터만 반환한다.")
 			@Test
 			void it_returns_schedules_for_month() {
-				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndDate(userId, year, month);
+				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndMonth(userId, year, month);
 
 				List<ApplicationProcessJpaEntity> actualProcesses = new ArrayList<>();
 				for (ApplicationJpaEntity application : response) {
@@ -208,7 +210,7 @@ class ApplicationRepositoryTest {
 		@DisplayName("한 달에 동일한 공고의 일정이 2개가 있으면")
 		class Context_with_application_that_has_two_processes {
 
-			private List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
+			private final List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
 
 			@BeforeEach
 			void setUp() {
@@ -228,10 +230,78 @@ class ApplicationRepositoryTest {
 			@Test
 			@DisplayName("2개의 과정을 모두 담은 하나의 지원 공고를 반환한다.")
 			void it_return_application_with_two_processes() {
-				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndDate(userId, year, month);
+				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndMonth(userId, year, month);
 				List<ApplicationProcessJpaEntity> actual = response.get(0).getProcesses();
 
 				assertThat(actual).hasSize(expectedProcesses.size());
+			}
+		}
+	}
+
+	@DisplayName("findByUserIdAndDate 메서드는")
+	@Nested
+	class Describe_findByUserIdAndDate {
+
+		private final Long userId = 1L;
+		private final LocalDate date = LocalDate.of(2023, 9, 13);
+
+		private ApplicationJpaEntity naverApplication;
+		private ApplicationJpaEntity kakaoApplication;
+
+		@BeforeEach
+		void setUp() {
+			naverApplication = applicationRepository.save(
+				convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain()));
+			kakaoApplication = applicationRepository.save(
+				convertToApplicationEntity(userId, KAKAO_APPLICATION.toDomain()));
+		}
+
+		@DisplayName("해당 일이 전형일인 지원 전형이 있으면")
+		@Nested
+		class Context_exist_some_process_at_date {
+
+			@BeforeEach
+			void setUp() {
+				applicationProcessRepository.save(
+					convertToApplicationProcessEntity(naverApplication, DOCUMENT.toDomainWithSchedule(date), 1));
+
+				applicationProcessRepository.save(
+					convertToApplicationProcessEntity(kakaoApplication, INTERVIEW.toDomainWithSchedule(date), 1));
+
+				entityManager.clear();
+			}
+
+			@DisplayName("지원들에 해당 전형들을 넣어 리턴한다")
+			@ParameterizedTest
+			@ValueSource(longs = {0L, 1L})
+			void it_returns_applications_with_proper_processes(long day) {
+				// given
+				applicationProcessRepository.save(convertToApplicationProcessEntity(naverApplication,
+					TEST.toDomainWithSchedule(date.plusDays(day)), 2));    // day = 0일 때는 반환할 전형이 추가
+
+				// when
+				List<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findByUserIdAndDate(userId,
+					date.atStartOfDay(), date.plusDays(1).atStartOfDay());
+
+				ApplicationJpaEntity actualNaverApplication = applicationJpaEntities.stream()
+					.filter(applicationJpaEntity -> applicationJpaEntity.getCompanyName()
+						.equals(naverApplication.getCompanyName()))
+					.findAny()
+					.orElseThrow();
+
+				ApplicationJpaEntity actualKakaoApplication = applicationJpaEntities.stream()
+					.filter(applicationJpaEntity -> applicationJpaEntity.getCompanyName()
+						.equals(kakaoApplication.getCompanyName()))
+					.findAny()
+					.orElseThrow();
+
+				// then
+				int expectedNaverProcessSize = (day == 0) ? 2 : 1;
+				assertAll(
+					() -> assertThat(applicationJpaEntities).hasSize(2),
+					() -> assertThat(actualNaverApplication.getProcesses()).hasSize(expectedNaverProcessSize),
+					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(1)
+				);
 			}
 		}
 	}

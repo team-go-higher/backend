@@ -6,8 +6,8 @@ import gohigher.common.Process;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor
+@Getter
 public class ProcessResponse {
 
 	private final Long id;

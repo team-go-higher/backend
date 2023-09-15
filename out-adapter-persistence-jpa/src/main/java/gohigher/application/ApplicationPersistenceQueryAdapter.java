@@ -1,5 +1,7 @@
 package gohigher.application;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,20 +24,33 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	}
 
 	@Override
-	public List<Application> findByIdAndMonth(Long userId, int year, int month) {
-		List<ApplicationJpaEntity> applicationJpaEntities =
-			applicationRepository.findByUserIdAndDate(userId, year, month);
-
-		return applicationJpaEntities.stream()
-			.map(ApplicationJpaEntity::toDomain)
-			.toList();
-	}
-
-	@Override
 	public Optional<Application> findByIdAndUserId(Long id, Long userId) {
 		Optional<ApplicationJpaEntity> applicationJpaEntity = applicationRepository.findByIdAndUserIdWithProcess(id,
 			userId);
 
 		return applicationJpaEntity.map(ApplicationJpaEntity::toDomain);
+	}
+
+	@Override
+	public List<Application> findByUserIdAndMonth(Long userId, int year, int month) {
+		List<ApplicationJpaEntity> applicationJpaEntities =
+			applicationRepository.findByUserIdAndMonth(userId, year, month);
+
+		return convertToDomain(applicationJpaEntities);
+	}
+
+	@Override
+	public List<Application> findByUserIdAndDate(Long userId, LocalDate date) {
+		LocalDateTime startOfDate = date.atStartOfDay();
+		LocalDateTime endOfDate = date.plusDays(1).atStartOfDay();
+		List<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findByUserIdAndDate(userId,
+			startOfDate, endOfDate);
+		return convertToDomain(applicationJpaEntities);
+	}
+
+	private List<Application> convertToDomain(List<ApplicationJpaEntity> applicationJpaEntities) {
+		return applicationJpaEntities.stream()
+			.map(ApplicationJpaEntity::toCalenderDomain)
+			.toList();
 	}
 }

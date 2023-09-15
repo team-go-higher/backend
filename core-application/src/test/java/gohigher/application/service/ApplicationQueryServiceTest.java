@@ -20,8 +20,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import gohigher.application.Application;
-import gohigher.application.port.in.CalenderApplicationRequest;
-import gohigher.application.port.in.CalenderApplicationResponse;
+import gohigher.application.port.in.CalendarApplicationRequest;
+import gohigher.application.port.in.CalendarApplicationResponse;
+import gohigher.application.port.in.DateApplicationRequest;
+import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.Process;
 
@@ -98,7 +100,7 @@ class ApplicationQueryServiceTest {
 		@Nested
 		class Context_with_schedules {
 
-			private CalenderApplicationRequest request = new CalenderApplicationRequest(userId, year, month);
+			private final CalendarApplicationRequest request = new CalendarApplicationRequest(userId, year, month);
 			private List<Process> naverProcesses;
 			private List<Process> kakaoProcesses;
 
@@ -115,16 +117,51 @@ class ApplicationQueryServiceTest {
 				kakaoProcesses = List.of(toApply, document);
 				Application kakaoApplication = KAKAO_APPLICATION.toDomain(kakaoProcesses, toApply);
 
-				given(applicationPersistenceQueryPort.findByIdAndMonth(userId, year, month))
+				given(applicationPersistenceQueryPort.findByUserIdAndMonth(userId, year, month))
 					.willReturn(List.of(naverApplication, kakaoApplication));
 			}
 
 			@DisplayName("일정 정보를 반환한다.")
 			@Test
 			void it_return_application_processes() {
-				List<CalenderApplicationResponse> actual = applicationQueryService.findByMonth(request);
+				List<CalendarApplicationResponse> actual = applicationQueryService.findByMonth(request);
 
 				assertThat(actual).hasSize(naverProcesses.size() + kakaoProcesses.size());
+			}
+		}
+	}
+
+	@DisplayName("findByDate 메서드는")
+	@Nested
+	class Describe_findByDate {
+
+		private final long userId = 1L;
+		private final LocalDate date = LocalDate.of(2023, 9, 12);
+
+		@DisplayName("해당 날짜가 전형일인 지원서가 있을 때")
+		@Nested
+		class Context_with_schedules {
+
+			Process interview = INTERVIEW.toDomainWithSchedule(date);
+			Process document = DOCUMENT.toDomainWithSchedule(date);
+
+			@DisplayName("일정 정보를 반환한다.")
+			@Test
+			void it_return_processes() {
+				// given
+				List<Process> naverProcesses = List.of(this.interview);
+				Application naverApplication = NAVER_APPLICATION.toDomain(naverProcesses, null);
+				List<Process> kakaoProcesses = List.of(this.document);
+				Application kakaoApplication = KAKAO_APPLICATION.toDomain(kakaoProcesses, null);
+				given(applicationPersistenceQueryPort.findByUserIdAndDate(userId, date)).willReturn(
+					List.of(naverApplication, kakaoApplication));
+
+				// when
+				List<DateApplicationResponse> responses = applicationQueryService.findByDate(
+					new DateApplicationRequest(userId, "2023-09-12"));
+
+				// then
+				assertThat(responses).hasSize(naverProcesses.size() + kakaoProcesses.size());
 			}
 		}
 	}
