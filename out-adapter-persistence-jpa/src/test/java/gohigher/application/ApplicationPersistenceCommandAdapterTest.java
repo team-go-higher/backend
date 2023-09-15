@@ -30,7 +30,10 @@ import jakarta.persistence.EntityManager;
 class ApplicationPersistenceCommandAdapterTest {
 
 	private static final Long USER_ID = 1L;
-
+	private final Process firstProcess = TO_APPLY.toDomainWithDescription("코딩테스트");
+	private final Process secondProcess = DOCUMENT.toDomainWithDescription("기술 면접");
+	private final Application application = NAVER_APPLICATION.toDomain(List.of(firstProcess, secondProcess),
+		firstProcess);
 	@Autowired
 	private ApplicationRepository applicationRepository;
 	@Autowired
@@ -39,11 +42,6 @@ class ApplicationPersistenceCommandAdapterTest {
 	private ApplicationPersistenceCommandAdapter applicationPersistenceCommandAdapter;
 	@Autowired
 	private EntityManager entityManager;
-
-	private final Process firstProcess = TO_APPLY.toDomainWithDescription("코딩테스트");
-	private final Process secondProcess = DOCUMENT.toDomainWithDescription("기술 면접");
-	private final Application application = NAVER_APPLICATION.toDomain(List.of(firstProcess, secondProcess),
-		firstProcess);
 
 	@DisplayName("save 메서드는")
 	@Nested

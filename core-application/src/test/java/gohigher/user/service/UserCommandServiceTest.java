@@ -1,4 +1,4 @@
-package gohigher.usecase;
+package gohigher.user.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +19,6 @@ import gohigher.user.User;
 import gohigher.user.auth.Provider;
 import gohigher.user.port.out.UserPersistenceCommandPort;
 import gohigher.user.port.out.UserPersistenceQueryPort;
-import gohigher.user.usecase.UserCommandService;
 
 @DisplayName("OAuth2CommandService 클래스의")
 @ExtendWith(MockitoExtension.class)
