@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +26,7 @@ import jakarta.persistence.EntityManager;
 
 @DisplayName("ApplicationPersistenceCommandAdapter 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@SpringBootTest
-@Transactional
+@DataJpaTest
 class ApplicationPersistenceCommandAdapterTest {
 
 	private static final Long USER_ID = 1L;
@@ -34,14 +34,23 @@ class ApplicationPersistenceCommandAdapterTest {
 	private final Process secondProcess = DOCUMENT.toDomainWithDescription("기술 면접");
 	private final Application application = NAVER_APPLICATION.toDomain(List.of(firstProcess, secondProcess),
 		firstProcess);
+
 	@Autowired
 	private ApplicationRepository applicationRepository;
+
 	@Autowired
 	private ApplicationProcessRepository applicationProcessRepository;
-	@Autowired
+
 	private ApplicationPersistenceCommandAdapter applicationPersistenceCommandAdapter;
+
 	@Autowired
 	private EntityManager entityManager;
+
+	@BeforeEach
+	void setUp() {
+		applicationPersistenceCommandAdapter =
+			new ApplicationPersistenceCommandAdapter(applicationRepository, applicationProcessRepository);
+	}
 
 	@DisplayName("save 메서드는")
 	@Nested

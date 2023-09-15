@@ -14,8 +14,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationProcessJpaEntity;
@@ -26,8 +25,7 @@ import gohigher.common.ProcessType;
 
 @DisplayName("ApplicationProcessPersistenceQueryAdapter 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@SpringBootTest
-@Transactional
+@DataJpaTest
 class ApplicationProcessPersistenceQueryAdapterTest {
 
 	private static final long USER_ID = 1L;
@@ -38,8 +36,12 @@ class ApplicationProcessPersistenceQueryAdapterTest {
 	@Autowired
 	private ApplicationProcessRepository applicationProcessRepository;
 
-	@Autowired
 	private ApplicationProcessPersistenceQueryAdapter applicationProcessPersistenceQueryAdapter;
+
+	@BeforeEach
+	void setUp() {
+		applicationProcessPersistenceQueryAdapter = new ApplicationProcessPersistenceQueryAdapter(applicationProcessRepository);
+	}
 
 	@DisplayName("findByApplicationIdAndProcessType 메서드는")
 	@Nested
