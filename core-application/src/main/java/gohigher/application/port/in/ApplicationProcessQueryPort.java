@@ -6,5 +6,6 @@ import gohigher.common.ProcessType;
 
 public interface ApplicationProcessQueryPort {
 
-	List<ApplicationProcessByProcessTypeResponse> findByApplicationIdAndProcessType(Long applicationId, ProcessType processType);
+	List<ApplicationProcessByProcessTypeResponse> findByApplicationIdAndProcessType(Long userId, Long applicationId,
+		ProcessType processType);
 }
