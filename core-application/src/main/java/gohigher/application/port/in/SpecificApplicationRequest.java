@@ -32,7 +32,7 @@ public class SpecificApplicationRequest {
 			.map(SpecificApplicationProcessRequest::toDomain)
 			.toList();
 		return new Application(null, companyName, team, location, contact, duty, position, jobDescription, workType,
-			EmploymentType.from(employmentType), careerRequirement, requiredCapability, preferredQualification, null,
+			EmploymentType.from(employmentType), careerRequirement, requiredCapability, preferredQualification,
 			processes, url, processes.get(0));
 	}
 }

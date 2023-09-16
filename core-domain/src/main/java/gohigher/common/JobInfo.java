@@ -1,6 +1,5 @@
 package gohigher.common;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Getter;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
  * duty                   직무
  * position				  포지션
  * processes              전형 단계
- * deadline               전형 마감일(상시면 해당 년의 마지막 날로 설정)
  * jobDescription         주요 업무
  * requiredCapability     필수 역량
  * url                    공고 URL
@@ -41,7 +39,6 @@ public abstract class JobInfo {
 	protected final String careerRequirement;
 	protected final String requiredCapability;
 	protected final String preferredQualification;
-	protected final LocalDateTime deadline;
 	protected final List<Process> processes;
 	protected final String url;
 }

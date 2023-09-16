@@ -14,8 +14,7 @@ public class ApplicationFixtureConverter {
 			application.getLocation(), application.getContact(), application.getDuty(), application.getPosition(),
 			application.getJobDescription(), application.getWorkType(), application.getEmploymentType(),
 			application.getCareerRequirement(), application.getRequiredCapability(),
-			application.getPreferredQualification(), application.getDeadline(), application.getUrl(), 0,
-			new ArrayList<>(), null, false);
+			application.getPreferredQualification(), application.getUrl(), 0, new ArrayList<>(), null, false);
 	}
 
 	public static ApplicationProcessJpaEntity convertToApplicationProcessEntity(
