@@ -34,10 +34,7 @@ public class ApplicationResponse {
 			.map(ProcessResponse::from)
 			.toList();
 
-		int currentProcessOrder = IntStream.range(0, application.getProcesses().size())
-			.filter(i -> application.getProcesses().get(i).equals(application.getCurrentProcess()))
-			.findFirst()
-			.orElse(-1);
+		int currentProcessOrder = findCurrentProcessOrder(application);
 
 		return new ApplicationResponse(
 			application.getId(),
@@ -57,5 +54,12 @@ public class ApplicationResponse {
 			currentProcessOrder,
 			application.getUrl()
 		);
+	}
+
+	private static int findCurrentProcessOrder(Application application) {
+		return IntStream.range(0, application.getProcesses().size())
+			.filter(i -> application.getProcesses().get(i).equals(application.getCurrentProcess()))
+			.findFirst()
+			.orElse(-1);
 	}
 }

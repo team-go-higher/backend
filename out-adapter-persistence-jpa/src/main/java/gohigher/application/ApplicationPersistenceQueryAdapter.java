@@ -25,10 +25,8 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 
 	@Override
 	public Optional<Application> findByIdAndUserId(Long id, Long userId) {
-		Optional<ApplicationJpaEntity> applicationJpaEntity = applicationRepository.findByIdAndUserIdWithProcess(id,
-			userId);
-
-		return applicationJpaEntity.map(ApplicationJpaEntity::toDomain);
+		return applicationRepository.findByIdAndUserIdWithProcess(id, userId)
+			.map(ApplicationJpaEntity::toDomain);
 	}
 
 	@Override
