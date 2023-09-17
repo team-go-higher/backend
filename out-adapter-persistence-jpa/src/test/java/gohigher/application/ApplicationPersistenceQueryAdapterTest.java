@@ -53,7 +53,7 @@ class ApplicationPersistenceQueryAdapterTest {
 				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId,
 					NAVER_APPLICATION.toDomain());
 				given(applicationRepository.findByIdAndUserIdWithProcess(applicationId, userId))
-					.willReturn(Optional.ofNullable(naverApplication));
+					.willReturn(Optional.of(naverApplication));
 			}
 
 			@DisplayName("Optional로 감싸진 Application객체를 반환한다.")
