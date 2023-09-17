@@ -4,7 +4,6 @@ import static gohigher.application.ApplicationErrorCode.*;
 import static gohigher.application.ApplicationFixture.*;
 import static gohigher.application.ProcessFixture.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
@@ -47,9 +46,9 @@ class ApplicationQueryServiceTest {
 
 		private final long userId = 1L;
 
-		@DisplayName("조회하는 지원서가 존재하지 않을 경우")
+		@DisplayName("존재하는 지원서를 조회할 경우")
 		@Nested
-		class Context_with_schedules {
+		class Context_with_exist_application {
 
 			private final long applicationId = 1L;
 
@@ -60,10 +59,11 @@ class ApplicationQueryServiceTest {
 					.willReturn(Optional.of(naverApplication));
 			}
 
-			@DisplayName("예외가 발생한다.")
+			@DisplayName("예외가 발생하지 않는다.")
 			@Test
-			void it_with_exist_application() {
-				assertDoesNotThrow(() -> applicationQueryService.findById(userId, applicationId));
+			void it_does_not_throws_exception() {
+				assertThatCode(() -> applicationQueryService.findById(userId, applicationId))
+					.doesNotThrowAnyException();
 			}
 		}
 
