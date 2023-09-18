@@ -106,12 +106,12 @@ public class ApplicationJpaEntity {
 
 		if (currentProcessOrder == 0) {
 			return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
-				employmentType, careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
+				employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
 				null);
 		}
 
 		return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
-			employmentType, careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
+			employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
 			processes.get(currentProcessOrder));
 	}
 

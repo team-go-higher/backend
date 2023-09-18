@@ -16,14 +16,12 @@ public class AuthConfig implements WebMvcConfigurer {
 	private static final String SPLIT_REGEX = ",";
 
 	private final List<HandlerMethodArgumentResolver> resolvers;
-	private final String[] allowedOrigin;
+	private final String allowedOrigin;
 
 	public AuthConfig(List<HandlerMethodArgumentResolver> resolvers,
-		@Value("${cors-config.allowed-origin}") String allowedOrigin,
-		@Value("${cors-config.local-origin}") String localOrigin) {
+		@Value("${cors-config.allowed-origin}") String allowedOrigin) {
 		this.resolvers = resolvers;
-		this.allowedOrigin = new String[] {allowedOrigin, localOrigin};
-
+		this.allowedOrigin = allowedOrigin;
 	}
 
 	@Override

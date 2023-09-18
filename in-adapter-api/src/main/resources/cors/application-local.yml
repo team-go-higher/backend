@@ -1,0 +1,2 @@
+cors-config:
+  allowed-origin: 'http://localhost:3000'

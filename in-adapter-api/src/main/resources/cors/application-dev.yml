@@ -1,3 +1,2 @@
 cors-config:
-  local-origin: 'http://localhost:3000'
   allowed-origin: 'https://dev.gohigher.site'
