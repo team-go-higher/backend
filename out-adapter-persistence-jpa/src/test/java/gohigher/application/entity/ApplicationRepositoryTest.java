@@ -313,11 +313,11 @@ class ApplicationRepositoryTest {
 	@Nested
 	class Describe_findCurrentProcessByUserId {
 
-		@DisplayName("사용자 아이디를 이용하여 조회할 때")
+		@DisplayName("유효한 어플리케이션이 있을 경우")
 		@Nested
 		class Context_with_user_id {
 
-			@DisplayName("현재 프로세스 정보들을 반환한다")
+			@DisplayName("어플리케이션의 현재 프로세스 정보들을 반환한다")
 			@Test
 			void it_return_application_current_processes() {
 				// given
@@ -337,11 +337,11 @@ class ApplicationRepositoryTest {
 			}
 		}
 
-		@DisplayName("삭제된 어플리케이션이 저장되어 있을 때")
+		@DisplayName("삭제된 어플리케이션이 있을 경우")
 		@Nested
 		class Context_contain_deleted_is_true {
 
-			@DisplayName("반환값에 포함되지 않는다")
+			@DisplayName("반환값에 포함하지 않는다")
 			@Test
 			void it_not_return() {
 				// given
