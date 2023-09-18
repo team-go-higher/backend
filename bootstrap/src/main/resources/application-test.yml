@@ -1,0 +1,6 @@
+spring:
+  config:
+    import:
+      - persistence/application-local.yml
+      - jwt/application-local.yml
+      - auth/application-test.yml
