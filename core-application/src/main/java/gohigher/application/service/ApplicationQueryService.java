@@ -81,7 +81,8 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<CurrentProcess> currentProcesses) {
 		Map<ProcessType, List<CurrentProcess>> groupedProcesses = groupByProcessType(currentProcesses);
-		return groupedProcesses.entrySet().stream()
+		return groupedProcesses.entrySet()
+			.stream()
 			.map(process -> KanbanApplicationResponse.from(process.getKey().name(), process.getValue()))
 			.toList();
 	}
