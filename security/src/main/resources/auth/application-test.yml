@@ -1,0 +1,13 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            redirect_uri: ENC(VU4oKqGyFVcJUoUPahypP/c22ddURBwnubjUQUz1ylKtuebH7EDccQyS6ChYbwrBmDLmWFMHccTpZEaU4BrsSOEwcWUtVzKy)
+          kakao:
+            redirect-uri: ENC(SicOYRhzq9SPvT460/64gBqPVHC9uOf4elR3aeQxYIyakstqXI69C5xWKJ6Ua2faOjsUDI9LuCI/IsJC2oT7Vw==)
+
+oauth2:
+  success:
+    redirect_uri: 'http://localhost:3000'
