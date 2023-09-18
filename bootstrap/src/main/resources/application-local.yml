@@ -4,3 +4,4 @@ spring:
       - persistence/application-local.yml
       - jwt/application-local.yml
       - auth/application-local.yml
+      - cors/application-local.yml

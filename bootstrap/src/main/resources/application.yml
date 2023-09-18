@@ -7,7 +7,6 @@ spring:
       - auth/application.yml
       - jwt/application.yml
       - persistence/application.yml
-      - cors/application.yml
 
 jasypt:
   encryptor:
