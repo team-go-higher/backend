@@ -14,11 +14,9 @@ public class KanbanApplicationResponse {
 	private final List<KanbanApplicationDetailResponse> applications;
 
 	public static KanbanApplicationResponse from(String processType, List<CurrentProcess> currentProcesses) {
-		return new KanbanApplicationResponse(
-			processType,
-			currentProcesses.stream()
-				.map(KanbanApplicationDetailResponse::from)
-				.toList()
-		);
+		List<KanbanApplicationDetailResponse> applicationDetailResponses = currentProcesses.stream()
+			.map(KanbanApplicationDetailResponse::from)
+			.toList();
+		return new KanbanApplicationResponse(processType, applicationDetailResponses);
 	}
 }
