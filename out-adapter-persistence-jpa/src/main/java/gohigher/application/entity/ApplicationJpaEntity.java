@@ -52,7 +52,7 @@ public class ApplicationJpaEntity {
 	private String requiredCapability;
 	private String preferredQualification;
 	private String url;
-	private int currentProcessOrder;
+	private Integer currentProcessOrder;
 
 	@OneToMany(mappedBy = "application")
 	private List<ApplicationProcessJpaEntity> processes;
@@ -92,6 +92,27 @@ public class ApplicationJpaEntity {
 		}
 
 		processes.add(process);
+	}
+
+	public void changeToDelete() {
+		this.deleted = true;
+	}
+
+	public Application toDomain() {
+		List<Process> processes = this.processes.stream()
+			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))
+			.map(ApplicationProcessJpaEntity::toDomain)
+			.toList();
+
+		if (currentProcessOrder == 0) {
+			return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
+				employmentType, careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
+				null);
+		}
+
+		return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
+			employmentType, careerRequirement, requiredCapability, preferredQualification, deadline, processes, url,
+			processes.get(currentProcessOrder));
 	}
 
 	public Application toCalenderDomain() {

@@ -7,13 +7,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.Application;
+import gohigher.application.ApplicationErrorCode;
 import gohigher.application.port.in.ApplicationQueryPort;
+import gohigher.application.port.in.ApplicationResponse;
 import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.in.ProcessResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
+import gohigher.global.exception.GoHigherException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -22,6 +25,14 @@ import lombok.RequiredArgsConstructor;
 public class ApplicationQueryService implements ApplicationQueryPort {
 
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
+
+	@Override
+	public ApplicationResponse findById(Long userId, Long applicationId) {
+		Application application = applicationPersistenceQueryPort.findByIdAndUserId(applicationId, userId)
+			.orElseThrow(() -> new GoHigherException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
+
+		return ApplicationResponse.from(application);
+	}
 
 	@Override
 	public List<CalendarApplicationResponse> findByMonth(CalendarApplicationRequest request) {

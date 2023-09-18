@@ -2,6 +2,7 @@ package gohigher.application.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,6 +11,13 @@ import org.springframework.data.jpa.repository.Query;
 public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntity, Long> {
 
 	boolean existsByIdAndUserId(Long id, Long userId);
+
+	@Query("SELECT a FROM ApplicationJpaEntity a "
+		+ "LEFT JOIN FETCH a.processes p "
+		+ "WHERE a.id = :id "
+		+ "AND a.userId = :userId "
+		+ "AND a.deleted = false")
+	Optional<ApplicationJpaEntity> findByIdAndUserIdWithProcess(Long id, Long userId);
 
 	@Modifying
 	@Query("UPDATE ApplicationJpaEntity a "

@@ -1,5 +1,6 @@
 package gohigher.application.service;
 
+import static gohigher.application.ApplicationErrorCode.*;
 import static gohigher.application.ApplicationFixture.*;
 import static gohigher.application.ProcessFixture.*;
 import static org.assertj.core.api.Assertions.*;
@@ -7,6 +8,7 @@ import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +38,54 @@ class ApplicationQueryServiceTest {
 	@BeforeEach
 	void setUp() {
 		applicationQueryService = new ApplicationQueryService(applicationPersistenceQueryPort);
+	}
+
+	@DisplayName("findById 메서드는")
+	@Nested
+	class Describe_findById {
+
+		private final long userId = 1L;
+
+		@DisplayName("존재하는 지원서를 조회할 경우")
+		@Nested
+		class Context_with_exist_application {
+
+			private final long applicationId = 1L;
+
+			@BeforeEach
+			void setUp() {
+				Application naverApplication = NAVER_APPLICATION.toDomain();
+				given(applicationPersistenceQueryPort.findByIdAndUserId(applicationId, userId))
+					.willReturn(Optional.of(naverApplication));
+			}
+
+			@DisplayName("예외가 발생하지 않는다.")
+			@Test
+			void it_does_not_throws_exception() {
+				assertThatCode(() -> applicationQueryService.findById(userId, applicationId))
+					.doesNotThrowAnyException();
+			}
+		}
+
+		@DisplayName("조회하는 지원서가 존재하지 않을 경우")
+		@Nested
+		class Context_with_not_exist_application {
+
+			private final long notExistApplicationId = 1L;
+
+			@BeforeEach
+			void setUp() {
+				given(applicationPersistenceQueryPort.findByIdAndUserId(notExistApplicationId, userId))
+					.willReturn(Optional.empty());
+			}
+
+			@DisplayName("예외가 발생한다.")
+			@Test
+			void it_throws_exception() {
+				assertThatThrownBy(() -> applicationQueryService.findById(userId, notExistApplicationId))
+					.hasMessage(APPLICATION_NOT_FOUND.getMessage());
+			}
+		}
 	}
 
 	@DisplayName("findByIdAndMonth 메서드는")
