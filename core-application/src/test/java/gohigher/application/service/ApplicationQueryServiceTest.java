@@ -185,10 +185,12 @@ class ApplicationQueryServiceTest {
 			void it_return_application_processes() {
 				// given
 				Long userId = 1L;
-				ProcessType processType = ProcessType.TO_APPLY;
 
-				Application application = NAVER_APPLICATION.toDomain();
+				ProcessType processType = ProcessType.TO_APPLY;
+				Process process = new Process(processType, "설명", LocalDateTime.now());
+				Application application = NAVER_APPLICATION.toDomain(List.of(process), process);
 				List<Application> applications = List.of(application);
+
 				given(applicationPersistenceQueryPort.findCurrentProcessByUserId(userId)).willReturn(applications);
 
 				// when
@@ -197,7 +199,7 @@ class ApplicationQueryServiceTest {
 				// then
 				Optional<String> processes = response.stream()
 					.map(KanbanApplicationResponse::getProcessType)
-					.filter(process -> process.equals(processType.name()))
+					.filter(it -> it.equals(processType.name()))
 					.findFirst();
 				assertThat(processes).isNotEmpty();
 			}

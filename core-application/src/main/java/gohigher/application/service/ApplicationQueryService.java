@@ -80,17 +80,10 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	}
 
 	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<Application> applications) {
-		List<Application> replacedApplications = replaceNullToApplyType(applications);
-		Map<ProcessType, List<Application>> groupedApplications = groupByProcessType(replacedApplications);
+		Map<ProcessType, List<Application>> groupedApplications = groupByProcessType(applications);
 		return groupedApplications.entrySet()
 			.stream()
 			.map(process -> KanbanApplicationResponse.from(process.getKey().name(), process.getValue()))
-			.toList();
-	}
-
-	private List<Application> replaceNullToApplyType(List<Application> applications) {
-		return applications.stream()
-			.map(Application::replaceNullToApplyType)
 			.toList();
 	}
 

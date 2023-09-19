@@ -17,12 +17,4 @@ public class Process {
 	public Process(ProcessType type, String description, LocalDateTime schedule) {
 		this(null, type, description, schedule);
 	}
-
-	public boolean hasType(ProcessType type) {
-		return this.type == type;
-	}
-
-	public static Process toApply() {
-		return new Process(null, ProcessType.TO_APPLY, null, null);
-	}
 }
