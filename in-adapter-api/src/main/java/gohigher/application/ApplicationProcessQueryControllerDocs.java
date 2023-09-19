@@ -3,7 +3,6 @@ package gohigher.application;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import gohigher.application.port.in.ApplicationProcessByProcessTypeRequest;
 import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;

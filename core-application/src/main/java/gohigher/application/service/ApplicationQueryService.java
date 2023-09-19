@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.Application;
-import gohigher.application.CurrentProcess;
 import gohigher.application.ApplicationErrorCode;
 import gohigher.application.port.in.ApplicationQueryPort;
 import gohigher.application.port.in.ApplicationResponse;
@@ -17,13 +16,11 @@ import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
-import gohigher.application.port.in.ProcessResponse;
-import gohigher.application.port.in.CalenderApplicationRequest;
-import gohigher.application.port.in.CalenderApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
+import gohigher.application.port.in.ProcessResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
-import gohigher.global.exception.GoHigherException;
 import gohigher.common.ProcessType;
+import gohigher.global.exception.GoHigherException;
 import lombok.RequiredArgsConstructor;
 
 @Service
