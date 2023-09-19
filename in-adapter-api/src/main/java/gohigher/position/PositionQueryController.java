@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class PositionQueryController {
+public class PositionQueryController implements PositionQueryControllerDocs {
 
 	private final PositionQueryPort positionQueryPort;
 
