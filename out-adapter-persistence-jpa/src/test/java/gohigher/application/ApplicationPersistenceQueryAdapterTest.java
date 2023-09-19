@@ -226,7 +226,7 @@ class ApplicationPersistenceQueryAdapterTest {
 				// given
 				Long userId = 1L;
 
-				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
+				ApplicationJpaEntity applicationJpaEntity = mock(ApplicationJpaEntity.class);
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
 				given(applicationRepository.findCurrentProcessByUserId(userId)).willReturn(applicationJpaEntities);
 
