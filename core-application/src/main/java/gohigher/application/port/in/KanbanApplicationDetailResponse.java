@@ -12,8 +12,8 @@ public class KanbanApplicationDetailResponse {
 
 	private final Long id;
 	private final String companyName;
-	private final String duty;
-	private final String detailedDuty;
+	private final String position;
+	private final String specificPosition;
 	private final String processDescription;
 	private final LocalDateTime schedule;
 
