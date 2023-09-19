@@ -11,9 +11,9 @@ public class ApplicationFixtureConverter {
 
 	public static ApplicationJpaEntity convertToApplicationEntity(Long userId, Application application) {
 		return new ApplicationJpaEntity(null, userId, application.getCompanyName(), application.getTeam(),
-			application.getLocation(), application.getContact(), application.getDuty(), application.getPosition(),
-			application.getJobDescription(), application.getWorkType(), application.getEmploymentType(),
-			application.getCareerRequirement(), application.getRequiredCapability(),
+			application.getLocation(), application.getContact(), application.getPosition(),
+			application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
+			application.getEmploymentType(), application.getCareerRequirement(), application.getRequiredCapability(),
 			application.getPreferredQualification(), application.getUrl(), 0, new ArrayList<>(), null, false);
 	}
 

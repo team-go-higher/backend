@@ -30,8 +30,8 @@ public class RecruitmentJpaEntity {
 	private String team;
 	private String location;
 	private String contact;
-	private String duty;
 	private String position;
+	private String specificPosition;
 	private String jobDescription;
 	private String workType;
 
