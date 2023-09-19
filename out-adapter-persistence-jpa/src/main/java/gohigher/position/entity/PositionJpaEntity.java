@@ -1,5 +1,6 @@
 package gohigher.position.entity;
 
+import gohigher.position.Position;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,4 +21,8 @@ public class PositionJpaEntity {
 	private Long id;
 
 	private String position;
+
+	public Position toDomain() {
+		return new Position(id, position);
+	}
 }
