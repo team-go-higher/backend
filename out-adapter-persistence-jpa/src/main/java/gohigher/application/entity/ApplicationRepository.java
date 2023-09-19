@@ -2,13 +2,10 @@ package gohigher.application.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
-import gohigher.application.dto.CurrentProcessDto;
 
 public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntity, Long> {
 
@@ -44,22 +41,10 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "AND p.schedule < :endOfDate")
 	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, LocalDateTime startOfDate, LocalDateTime endOfDate);
 
-	@Query(
-		value = "SELECT a.id, a.company_name, a.duty, a.detailed_duty, p.type, p.description, p.schedule "
-			+ "FROM application AS a "
-			+ "LEFT JOIN application_process AS p "
-			+ "ON a.id = p.application_id "
-			+ "AND a.current_process_order = p.orders "
-			+ "WHERE a.user_id = ?1 "
-			+ "AND a.deleted = false",
-		countQuery = "SELECT count(a.id) "
-			+ "FROM application AS a "
-			+ "LEFT JOIN application_process AS p "
-			+ "ON a.id = p.application_id "
-			+ "AND a.current_process_order = p.orders "
-			+ "WHERE a.user_id = ?1 "
-			+ "AND a.deleted = false",
-		nativeQuery = true
-	)
-	List<CurrentProcessDto> findCurrentProcessByUserId(Long userId);
+	@Query("SELECT a FROM ApplicationJpaEntity a "
+		+ "LEFT JOIN FETCH a.processes p "
+		+ "WHERE a.userId = :userId "
+		+ "AND (a.currentProcessOrder = null OR a.currentProcessOrder = p.order) "
+		+ "AND a.deleted = false")
+	List<ApplicationJpaEntity> findCurrentProcessByUserId(Long userId);
 }

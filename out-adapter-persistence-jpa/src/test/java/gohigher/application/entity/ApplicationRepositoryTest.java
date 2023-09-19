@@ -23,7 +23,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import gohigher.application.Application;
-import gohigher.application.dto.CurrentProcessDto;
 
 @DisplayName("ApplicationRepository 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -315,25 +314,66 @@ class ApplicationRepositoryTest {
 
 		@DisplayName("유효한 어플리케이션이 있을 경우")
 		@Nested
-		class Context_with_user_id {
+		class Context_exist_application {
 
-			@DisplayName("어플리케이션의 현재 프로세스 정보들을 반환한다")
+			@DisplayName("어플리케이션의 현재 프로세스를 반환한다")
 			@Test
-			void it_return_application_current_processes() {
+			void it_return_application_current_process() {
 				// given
 				Long userId = 1L;
 
-				int count = 2;
-				for (int i = 0; i < count; i++) {
-					ApplicationJpaEntity application = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
-					applicationRepository.save(application);
+				int applicationCount = 2;
+				int processCount = 3;
+				for (int i = 0; i < applicationCount; i++) {
+					Application application = NAVER_APPLICATION.toDomain();
+					ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId, application, 0);
+					applicationRepository.save(applicationJpaEntity);
+
+					for (int j = 0; j < processCount; j++) {
+						applicationProcessRepository.save(
+							convertToApplicationProcessEntity(applicationJpaEntity, DOCUMENT.toDomain(), j)
+						);
+					}
 				}
+				entityManager.clear();
 
 				// when
-				List<CurrentProcessDto> currentProcesses = applicationRepository.findCurrentProcessByUserId(userId);
+				List<ApplicationJpaEntity> applications = applicationRepository.findCurrentProcessByUserId(userId);
 
 				// then
-				assertThat(currentProcesses).hasSize(count);
+				assertAll(
+					() -> assertThat(applications).hasSize(applicationCount),
+					() -> assertThat(applications.get(0).getProcesses()).hasSize(1)
+				);
+			}
+		}
+
+		@DisplayName("프로세스가 없는 어플리케이션이 있을 경우")
+		@Nested
+		class Context_not_contains_process {
+
+			@DisplayName("프로세스 없이 어플리케이션을 반환한다")
+			@Test
+			void it_return_application_without_process() {
+				// given
+				Long userId = 1L;
+
+				int applicationCount = 2;
+				for (int i = 0; i < applicationCount; i++) {
+					Application application = NAVER_APPLICATION.toDomain();
+					ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId, application);
+					applicationRepository.save(applicationJpaEntity);
+				}
+				entityManager.clear();
+
+				// when
+				List<ApplicationJpaEntity> applications = applicationRepository.findCurrentProcessByUserId(userId);
+
+				// then
+				assertAll(
+					() -> assertThat(applications).hasSize(applicationCount),
+					() -> assertThat(applications.get(0).getProcesses()).hasSize(0)
+				);
 			}
 		}
 
@@ -354,10 +394,10 @@ class ApplicationRepositoryTest {
 				}
 
 				// when
-				List<CurrentProcessDto> currentProcesses = applicationRepository.findCurrentProcessByUserId(userId);
+				List<ApplicationJpaEntity> applications = applicationRepository.findCurrentProcessByUserId(userId);
 
 				// then
-				assertThat(currentProcesses).isEmpty();
+				assertThat(applications).isEmpty();
 			}
 		}
 
@@ -370,7 +410,7 @@ class ApplicationRepositoryTest {
 				application.getLocation(), application.getContact(), application.getDuty(), application.getDetailedDuty(),
 				application.getJobDescription(), application.getWorkType(), application.getEmploymentType(),
 				application.getCareerRequirement(), application.getRequiredCapability(), application.getPreferredQualification(),
-				application.getDeadline(), application.getUrl(), null, null, null, deleted
+				application.getUrl(), null, null, null, deleted
 			);
 		}
 	}

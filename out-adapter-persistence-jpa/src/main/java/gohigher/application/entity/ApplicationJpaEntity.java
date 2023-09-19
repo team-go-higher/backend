@@ -79,11 +79,15 @@ public class ApplicationJpaEntity {
 			application.getRequiredCapability(),
 			application.getPreferredQualification(),
 			application.getUrl(),
-			FIRST_PROCESS_ORDER,
+			null,
 			null,
 			null,
 			false
 		);
+	}
+
+	public void initCurrentProcess() {
+		currentProcessOrder = FIRST_PROCESS_ORDER;
 	}
 
 	public void addProcess(ApplicationProcessJpaEntity process) {
@@ -103,6 +107,7 @@ public class ApplicationJpaEntity {
 			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))
 			.map(ApplicationProcessJpaEntity::toDomain)
 			.toList();
+		Process currentProcess = getCurrentProcess(processes);
 
 		if (currentProcessOrder == 0) {
 			return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
@@ -112,7 +117,7 @@ public class ApplicationJpaEntity {
 
 		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
 			employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
-			processes.get(currentProcessOrder));
+			currentProcess);
 	}
 
 	public Application toCalenderDomain() {
@@ -124,5 +129,12 @@ public class ApplicationJpaEntity {
 		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
 			employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
 			null);
+	}
+
+	private Process getCurrentProcess(List<Process> processes) {
+		if (currentProcessOrder == null) {
+			return null;
+		}
+		return processes.get(currentProcessOrder);
 	}
 }

@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import gohigher.application.dto.CurrentProcessDto;
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
@@ -47,29 +46,21 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 		return convertToDomain(applicationJpaEntities);
 	}
 
+	@Override
+	public List<Application> findCurrentProcessByUserId(Long userId) {
+		List<ApplicationJpaEntity> applications = applicationRepository.findCurrentProcessByUserId(userId);
+		return convertToApplication(applications);
+	}
+
 	private List<Application> convertToDomain(List<ApplicationJpaEntity> applicationJpaEntities) {
 		return applicationJpaEntities.stream()
 			.map(ApplicationJpaEntity::toCalenderDomain)
 			.toList();
 	}
 
-	@Override
-	public List<CurrentProcess> findCurrentProcessByUserId(Long userId) {
-		List<CurrentProcessDto> currentProcesses = applicationRepository.findCurrentProcessByUserId(userId);
-		return currentProcesses.stream()
-			.map(this::convertToCurrentProcess)
+	private List<Application> convertToApplication(List<ApplicationJpaEntity> applications) {
+		return applications.stream()
+			.map(ApplicationJpaEntity::toDomain)
 			.toList();
-	}
-
-	private CurrentProcess convertToCurrentProcess(CurrentProcessDto currentProcessDto) {
-		return new CurrentProcess(
-			currentProcessDto.getId(),
-			currentProcessDto.getCompany_name(),
-			currentProcessDto.getDuty(),
-			currentProcessDto.getDetailed_duty(),
-			currentProcessDto.getType(),
-			currentProcessDto.getDescription(),
-			currentProcessDto.getSchedule()
-		);
 	}
 }

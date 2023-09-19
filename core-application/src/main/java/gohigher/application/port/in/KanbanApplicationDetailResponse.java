@@ -2,7 +2,7 @@ package gohigher.application.port.in;
 
 import java.time.LocalDateTime;
 
-import gohigher.application.CurrentProcess;
+import gohigher.application.Application;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -17,14 +17,14 @@ public class KanbanApplicationDetailResponse {
 	private final String processDescription;
 	private final LocalDateTime schedule;
 
-	public static KanbanApplicationDetailResponse from(CurrentProcess currentProcess) {
+	public static KanbanApplicationDetailResponse from(Application application) {
 		return new KanbanApplicationDetailResponse(
-			currentProcess.getId(),
-			currentProcess.getCompanyName(),
-			currentProcess.getDuty(),
-			currentProcess.getDetailedDuty(),
-			currentProcess.getDescription(),
-			currentProcess.getSchedule()
+			application.getId(),
+			application.getCompanyName(),
+			application.getDuty(),
+			application.getDetailedDuty(),
+			application.getCurrentProcess().getDescription(),
+			application.getCurrentProcess().getSchedule()
 		);
 	}
 }

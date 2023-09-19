@@ -22,8 +22,9 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 
 	@Override
 	public Long save(Long userId, Application application) {
-		ApplicationJpaEntity applicationJpaEntity =
-			applicationRepository.save(ApplicationJpaEntity.of(application, userId));
+		ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(ApplicationJpaEntity.of(application, userId));
+		applicationJpaEntity.initCurrentProcess();
+
 		List<Process> processes = application.getProcesses();
 		saveApplicationProcesses(applicationJpaEntity, processes);
 		return applicationJpaEntity.getId();

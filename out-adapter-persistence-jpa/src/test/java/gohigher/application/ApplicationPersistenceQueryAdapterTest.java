@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,11 +19,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import gohigher.application.dto.CurrentProcessDto;
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
-import gohigher.common.ProcessType;
-import lombok.RequiredArgsConstructor;
 
 @DisplayName("ApplicationPersistenceQueryAdapter 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -229,64 +225,16 @@ class ApplicationPersistenceQueryAdapterTest {
 			void it_return_current_process() {
 				// given
 				Long userId = 1L;
-				CurrentProcessDtoImpl currentProcessDto = new CurrentProcessDtoImpl(
-					1L, "회사명", "직무", "상세 직무", ProcessType.DOCUMENT, "서류전형", LocalDateTime.now()
-				);
-				List<CurrentProcessDto> currentProcessDtos = List.of(currentProcessDto);
-				given(applicationRepository.findCurrentProcessByUserId(userId)).willReturn(currentProcessDtos);
+
+				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
+				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
+				given(applicationRepository.findCurrentProcessByUserId(userId)).willReturn(applicationJpaEntities);
 
 				// when
-				List<CurrentProcess> currentProcesses = applicationPersistenceQueryAdapter.findCurrentProcessByUserId(userId);
+				List<Application> applications = applicationPersistenceQueryAdapter.findCurrentProcessByUserId(userId);
 
 				// then
-				assertThat(currentProcesses.size()).isEqualTo(currentProcessDtos.size());
-			}
-
-			@RequiredArgsConstructor
-			private class CurrentProcessDtoImpl implements CurrentProcessDto {
-
-				private final Long id;
-				private final String companyName;
-				private final String duty;
-				private final String detailedDuty;
-				private final ProcessType type;
-				private final String description;
-				private final LocalDateTime schedule;
-
-				@Override
-				public Long getId() {
-					return id;
-				}
-
-				@Override
-				public String getCompany_name() {
-					return companyName;
-				}
-
-				@Override
-				public String getDuty() {
-					return duty;
-				}
-
-				@Override
-				public String getDetailed_duty() {
-					return detailedDuty;
-				}
-
-				@Override
-				public ProcessType getType() {
-					return type;
-				}
-
-				@Override
-				public String getDescription() {
-					return description;
-				}
-
-				@Override
-				public LocalDateTime getSchedule() {
-					return schedule;
-				}
+				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
 			}
 		}
 	}

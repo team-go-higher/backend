@@ -62,8 +62,8 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	@Override
 	public List<KanbanApplicationResponse> findForKanban(Long userId) {
-		List<CurrentProcess> currentProcesses = applicationPersistenceQueryPort.findCurrentProcessByUserId(userId);
-		return createKanbanApplicationResponses(currentProcesses);
+		List<Application> applications = applicationPersistenceQueryPort.findCurrentProcessByUserId(userId);
+		return createKanbanApplicationResponses(applications);
 	}
 
 	private Stream<CalendarApplicationResponse> extractCalendarResponses(Application application) {
@@ -79,16 +79,23 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.map(processResponse -> DateApplicationResponse.of(application, processResponse));
 	}
 
-	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<CurrentProcess> currentProcesses) {
-		Map<ProcessType, List<CurrentProcess>> groupedProcesses = groupByProcessType(currentProcesses);
-		return groupedProcesses.entrySet()
+	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<Application> applications) {
+		List<Application> replacedApplications = replaceNullToApplyType(applications);
+		Map<ProcessType, List<Application>> groupedApplications = groupByProcessType(replacedApplications);
+		return groupedApplications.entrySet()
 			.stream()
 			.map(process -> KanbanApplicationResponse.from(process.getKey().name(), process.getValue()))
 			.toList();
 	}
 
-	private Map<ProcessType, List<CurrentProcess>> groupByProcessType(List<CurrentProcess> currentProcesses) {
-		return currentProcesses.stream()
-			.collect(Collectors.groupingBy(CurrentProcess::getType));
+	private List<Application> replaceNullToApplyType(List<Application> applications) {
+		return applications.stream()
+			.map(Application::replaceNullToApplyType)
+			.toList();
+	}
+
+	private Map<ProcessType, List<Application>> groupByProcessType(List<Application> applications) {
+		return applications.stream()
+			.collect(Collectors.groupingBy(application -> application.getCurrentProcess().getType()));
 	}
 }
