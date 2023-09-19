@@ -9,6 +9,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Position {
 
+	private final Long id;
 	private final String value;
-	private final List<SpecificPosition> specificPositions;
 }
