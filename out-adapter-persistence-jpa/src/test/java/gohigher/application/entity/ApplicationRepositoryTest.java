@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 
+import gohigher.common.Process;
 import gohigher.application.Application;
 
 @DisplayName("ApplicationRepository 클래스의")
@@ -303,6 +307,93 @@ class ApplicationRepositoryTest {
 					() -> assertThat(applicationJpaEntities).hasSize(2),
 					() -> assertThat(actualNaverApplication.getProcesses()).hasSize(expectedNaverProcessSize),
 					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(1)
+				);
+			}
+		}
+	}
+
+	@DisplayName("findByUserIdWithoutSchedule 메서드는")
+	@Nested
+	class Describe_findByUserIdWithoutSchedule {
+
+		@DisplayName("전형일이 작성되어 있지 않은 프로세스들이 있을 떄")
+		@Nested
+		class Context_exist_processes_without_schedule {
+
+			@DisplayName("해당 전형들을 포함한 어플리케이션을 반환한다")
+			@Test
+			void it_return_applications_with_process() {
+				// given
+				Long userId = 1L;
+				PageRequest pageRequest = PageRequest.of(0, 10);
+
+				int applicationCount = 1;
+				int processCount = 2;
+				for (int i = 0; i < applicationCount; i++) {
+					ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(
+						convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain())
+					);
+
+					for (int j = 0; j < processCount; j++) {
+						Process process = TO_APPLY.toDomainWithSchedule((LocalDateTime)null);
+						applicationProcessRepository.save(ApplicationProcessJpaEntity.of(
+							applicationJpaEntity, process, j
+						));
+					}
+
+					Process process = DOCUMENT.toDomainWithSchedule(LocalDateTime.now());
+					applicationProcessRepository.save(ApplicationProcessJpaEntity.of(
+						applicationJpaEntity, process, processCount
+					));
+				}
+				entityManager.clear();
+
+				// when
+				Slice<ApplicationJpaEntity> applications = applicationRepository.findByUserIdWithoutSchedule(userId, pageRequest);
+
+				// then
+				assertAll(
+					() -> assertThat(applications.getNumberOfElements()).isEqualTo(applicationCount),
+					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(processCount)
+				);
+			}
+		}
+
+		@DisplayName("전형일이 작성되어 있지 않으며, 현재 전형단계 이전의 프로세스들이 있을 때")
+		@Nested
+		class Context_exist_processes_before_current_process {
+
+			@DisplayName("해당 전형들을 제외한 어플리케이션이 반환된다")
+			@Test
+			void it_not_return() {
+				// given
+				Long userId = 1L;
+				PageRequest pageRequest = PageRequest.of(0, 10);
+
+				int applicationCount = 1;
+				int processCount = 2;
+				int currentProcessOrder = 1;
+				for (int i = 0; i < applicationCount; i++) {
+					ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(
+						convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain(), currentProcessOrder)
+					);
+
+					for (int j = 0; j < processCount; j++) {
+						Process process = TO_APPLY.toDomainWithSchedule((LocalDateTime)null);
+						applicationProcessRepository.save(ApplicationProcessJpaEntity.of(
+							applicationJpaEntity, process, j
+						));
+					}
+				}
+				entityManager.clear();
+
+				// when
+				Slice<ApplicationJpaEntity> applications = applicationRepository.findByUserIdWithoutSchedule(userId, pageRequest);
+
+				// then
+				assertAll(
+					() -> assertThat(applications.getNumberOfElements()).isEqualTo(applicationCount),
+					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(processCount - currentProcessOrder)
 				);
 			}
 		}
