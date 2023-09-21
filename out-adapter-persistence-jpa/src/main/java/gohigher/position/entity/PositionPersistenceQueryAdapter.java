@@ -21,4 +21,9 @@ public class PositionPersistenceQueryAdapter implements PositionPersistenceQuery
 			.map(PositionJpaEntity::toDomain)
 			.toList();
 	}
+
+	@Override
+	public boolean existsByValues(List<String> values) {
+		return positionRepository.existsByPositions(values);
+	}
 }
