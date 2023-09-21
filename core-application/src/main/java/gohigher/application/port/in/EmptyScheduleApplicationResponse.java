@@ -22,8 +22,8 @@ public class EmptyScheduleApplicationResponse {
 			application.getId(),
 			process.getId(),
 			application.getCompanyName(),
-			application.getDuty(),
 			application.getPosition(),
+			application.getSpecificPosition(),
 			process.getType().name(),
 			process.getDescription()
 		);
