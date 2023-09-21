@@ -1,10 +1,11 @@
-package gohigher.position.entity;
+package gohigher.position;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import gohigher.position.Position;
+import gohigher.position.entity.PositionJpaEntity;
+import gohigher.position.entity.PositionRepository;
 import gohigher.position.port.out.PositionPersistenceQueryPort;
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,6 @@ public class PositionPersistenceQueryAdapter implements PositionPersistenceQuery
 
 	@Override
 	public boolean existsByValues(List<String> values) {
-		return positionRepository.existsByPositions(values);
+		return positionRepository.existsAllByPositionIn(values);
 	}
 }
