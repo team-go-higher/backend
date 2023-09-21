@@ -46,7 +46,7 @@ class PositionCommandServiceTest {
 			@Test
 			void it_returns_ids_size_of_positions() {
 				// given
-				given(positionPersistenceQueryPort.existsByValues(positions)).willReturn(false);
+				given(positionPersistenceQueryPort.existsByValuesAndMadeByAdmin(positions)).willReturn(false);
 				List<Position> personalPositions = positions.stream()
 					.map(Position::new)
 					.toList();
@@ -63,7 +63,7 @@ class PositionCommandServiceTest {
 			@Test
 			void it_returns_error_if_existed_position_already() {
 				// given
-				given(positionPersistenceQueryPort.existsByValues(positions)).willReturn(true);
+				given(positionPersistenceQueryPort.existsByValuesAndMadeByAdmin(positions)).willReturn(true);
 
 				// when & then
 				assertThatThrownBy(() -> positionCommandService.savePersonalPositions(userId, positions))

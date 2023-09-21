@@ -33,7 +33,7 @@ public class PositionCommandService implements PositionCommandPort {
 	}
 
 	private void validateAlreadyExistedPosition(List<String> positions) {
-		if (positionPersistenceQueryPort.existsByValues(positions)) {
+		if (positionPersistenceQueryPort.existsByValuesAndMadeByAdmin(positions)) {
 			throw new GoHigherException(PositionErrorCode.EXIST_ALREADY_POSITION);
 		}
 	}

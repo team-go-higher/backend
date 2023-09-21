@@ -8,5 +8,5 @@ public interface PositionPersistenceQueryPort {
 
 	List<Position> findAllMadeByAdmin();
 
-	boolean existsByValues(List<String> values);
+	boolean existsByValuesAndMadeByAdmin(List<String> values);
 }

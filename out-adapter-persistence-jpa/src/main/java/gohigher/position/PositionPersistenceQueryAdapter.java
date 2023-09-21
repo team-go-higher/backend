@@ -24,7 +24,7 @@ public class PositionPersistenceQueryAdapter implements PositionPersistenceQuery
 	}
 
 	@Override
-	public boolean existsByValues(List<String> values) {
+	public boolean existsByValuesAndMadeByAdmin(List<String> values) {
 		return positionRepository.existsAllByPositionInAndMadeByAdminIsTrue(values);
 	}
 }

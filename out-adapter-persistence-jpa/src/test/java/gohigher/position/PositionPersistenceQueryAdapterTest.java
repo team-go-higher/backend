@@ -58,7 +58,8 @@ class PositionPersistenceQueryAdapterTest {
 			@Test
 			void it_returns_true_when_existed_position() {
 				// when & then
-				assertThat(positionPersistenceQueryAdapter.existsByValues(List.of(designer.getValue(), pm.getValue())))
+				assertThat(positionPersistenceQueryAdapter.existsByValuesAndMadeByAdmin(
+					List.of(designer.getValue(), pm.getValue())))
 					.isTrue();
 			}
 
@@ -66,7 +67,7 @@ class PositionPersistenceQueryAdapterTest {
 			@Test
 			void it_returns_false_when_not_existed_position() {
 				// when & then
-				assertThat(positionPersistenceQueryAdapter.existsByValues(List.of(pm.getValue())))
+				assertThat(positionPersistenceQueryAdapter.existsByValuesAndMadeByAdmin(List.of(pm.getValue())))
 					.isFalse();
 			}
 		}
