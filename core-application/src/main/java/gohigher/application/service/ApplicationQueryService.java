@@ -17,6 +17,9 @@ import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
+import gohigher.application.port.in.EmptyScheduleApplicationResponse;
+import gohigher.application.port.in.PagingRequest;
+import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.ProcessResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.ProcessType;
@@ -55,6 +58,11 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 		return applications.stream()
 			.flatMap(this::extractDateApplicationResponses)
 			.toList();
+	}
+
+	@Override
+	public List<PagingResponse<EmptyScheduleApplicationResponse>> findWithoutSchedule(PagingRequest request) {
+		return null;
 	}
 
 	@Override
