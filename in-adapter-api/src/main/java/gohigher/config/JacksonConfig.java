@@ -1,6 +1,7 @@
 package gohigher.config;
 
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ public class JacksonConfig {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
 		return builder -> {
+			builder.timeZone(TimeZone.getTimeZone("Asia/Seoul"));
 			builder.serializers(new LocalDateTimeSerializer(formatter));
 			builder.deserializers(new LocalDateTimeDeserializer(formatter));
 		};
