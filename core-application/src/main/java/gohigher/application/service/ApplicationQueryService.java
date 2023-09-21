@@ -24,6 +24,7 @@ import gohigher.application.port.in.ProcessResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.ProcessType;
 import gohigher.global.exception.GoHigherException;
+import gohigher.pagination.port.in.PagingParameters;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -61,14 +62,29 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	}
 
 	@Override
-	public List<PagingResponse<EmptyScheduleApplicationResponse>> findWithoutSchedule(PagingRequest request) {
-		return null;
+	public PagingResponse<EmptyScheduleApplicationResponse> findWithoutSchedule(Long userId, PagingRequest request) {
+		PagingParameters pagingParameters = new PagingParameters(request.getPage(), request.getSize());
+		List<EmptyScheduleApplicationResponse> responses = findByUserIdWithoutSchedule(userId, pagingParameters);
+		return new PagingResponse<>(
+			responses.size(),
+			pagingParameters.getPage(),
+			pagingParameters.getSize(),
+			responses
+		);
 	}
 
 	@Override
 	public List<KanbanApplicationResponse> findForKanban(Long userId) {
 		List<Application> applications = applicationPersistenceQueryPort.findOnlyWithCurrentProcessByUserId(userId);
 		return createKanbanApplicationResponses(applications);
+	}
+
+	private List<EmptyScheduleApplicationResponse> findByUserIdWithoutSchedule(Long userId, PagingParameters pagingParameters) {
+		return applicationPersistenceQueryPort.findByUserIdWithoutSchedule(userId, pagingParameters)
+			.getContent()
+			.stream()
+			.flatMap(this::extractEmptyScheduleApplicationResponse)
+			.toList();
 	}
 
 	private Stream<CalendarApplicationResponse> extractCalendarResponses(Application application) {
@@ -82,6 +98,12 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.stream()
 			.map(ProcessResponse::from)
 			.map(processResponse -> DateApplicationResponse.of(application, processResponse));
+	}
+
+	private Stream<EmptyScheduleApplicationResponse> extractEmptyScheduleApplicationResponse(Application application) {
+		return application.getProcesses()
+			.stream()
+			.map(process -> EmptyScheduleApplicationResponse.of(application, process));
 	}
 
 	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<Application> applications) {

@@ -4,6 +4,7 @@ import static gohigher.application.ApplicationErrorCode.*;
 import static gohigher.application.ApplicationFixture.*;
 import static gohigher.application.ProcessFixture.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
@@ -18,15 +19,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.SliceImpl;
 
 import gohigher.application.Application;
 import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.port.in.EmptyScheduleApplicationResponse;
+import gohigher.application.port.in.PagingRequest;
+import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.Process;
+import gohigher.pagination.port.in.SliceContainer;
 import gohigher.common.ProcessType;
 
 @DisplayName("ApplicationQueryService 클래스의")
@@ -165,6 +171,45 @@ class ApplicationQueryServiceTest {
 
 				// then
 				assertThat(responses).hasSize(naverProcesses.size() + kakaoProcesses.size());
+			}
+		}
+	}
+
+	@DisplayName("findWithoutSchedule 메서드는")
+	@Nested
+	class Describe_findWithoutSchedule {
+
+		@DisplayName("전형일이 작성되어 있지 않은 프로세스들이 있을 떄")
+		@Nested
+		class Context_exist_processes_without_schedule {
+
+			@DisplayName("해당 전형들을 포함한 어플리케이션을 반환한다")
+			@Test
+			void it_return_applications_with_process() {
+				// given
+				Long userId = 1L;
+
+				int page = 1;
+				int size = 10;
+				PagingRequest request = new PagingRequest(page, size);
+
+				Process process = TO_APPLY.toDomain();
+				List<Application> applications = List.of(NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
+				SliceImpl<Application> applicationSlice = new SliceImpl<>(applications);
+				SliceContainer<Application> applicationSliceContainer = new SliceContainer<>(applicationSlice);
+				given(applicationPersistenceQueryPort.findByUserIdWithoutSchedule(eq(userId), any()))
+					.willReturn(applicationSliceContainer);
+
+				// when
+				PagingResponse<EmptyScheduleApplicationResponse> response = applicationQueryService.findWithoutSchedule(userId, request);
+
+				// then
+				assertAll(
+					() -> assertThat(response.getPage()).isEqualTo(page),
+					() -> assertThat(response.getSize()).isEqualTo(size),
+					() -> assertThat(response.getCount()).isEqualTo(response.getContent().size()),
+					() -> assertThat(response.getContent()).hasSize(applications.size())
+				);
 			}
 		}
 	}

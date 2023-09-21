@@ -40,14 +40,21 @@ public enum ApplicationFixture {
 	private final String url;
 
 	public Application toDomain() {
-		return new Builder(this).toDomain();
+		return new Builder(this).toDomain(null);
 	}
 
 	public Application toDomain(List<Process> processes, Process currentProcess) {
 		return new Builder(this)
 			.processes(processes)
 			.currentProcess(currentProcess)
-			.toDomain();
+			.toDomain(null);
+	}
+
+	public Application toPersistedDomain(long id, List<Process> processes, Process currentProcess) {
+		return new Builder(this)
+			.processes(processes)
+			.currentProcess(currentProcess)
+			.toDomain(id);
 	}
 
 	@NoArgsConstructor
@@ -96,8 +103,8 @@ public enum ApplicationFixture {
 			return this;
 		}
 
-		public Application toDomain() {
-			return new Application(null, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
+		public Application toDomain(Long id) {
+			return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
 				employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
 				currentProcess);
 		}
