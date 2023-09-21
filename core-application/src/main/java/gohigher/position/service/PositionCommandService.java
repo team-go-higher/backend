@@ -26,6 +26,7 @@ public class PositionCommandService implements PositionCommandPort {
 		validateAlreadyExistedPosition(positions);
 
 		List<Position> personalPositions = positions.stream()
+			.distinct()
 			.map(Position::new)
 			.toList();
 
