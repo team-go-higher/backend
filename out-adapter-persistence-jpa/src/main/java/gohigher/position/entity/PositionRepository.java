@@ -8,5 +8,5 @@ public interface PositionRepository extends JpaRepository<PositionJpaEntity, Lon
 
 	List<PositionJpaEntity> findByMadeByAdmin(boolean madeByAdmin);
 
-	boolean existsAllByPositionIn(List<String> positions);
+	boolean existsAllByPositionInAndMadeByAdminIsTrue(List<String> positions);
 }
