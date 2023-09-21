@@ -2,8 +2,6 @@ package gohigher.application.port.in;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
 import lombok.Getter;
@@ -17,7 +15,6 @@ public class SimpleApplicationProcessRequest {
 
 	private String description;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime schedule;
 
 	public ProcessType getType() {
