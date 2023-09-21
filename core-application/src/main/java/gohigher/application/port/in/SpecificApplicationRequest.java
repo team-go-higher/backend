@@ -16,8 +16,8 @@ public class SpecificApplicationRequest {
 	private String team;
 	private String location;
 	private String contact;
-	private String duty;
 	private String position;
+	private String specificPosition;
 	private String jobDescription;
 	private String workType;
 	private String employmentType;
@@ -31,7 +31,7 @@ public class SpecificApplicationRequest {
 		List<Process> processes = this.processes.stream()
 			.map(SpecificApplicationProcessRequest::toDomain)
 			.toList();
-		return new Application(null, companyName, team, location, contact, duty, position, jobDescription, workType,
+		return new Application(null, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
 			EmploymentType.from(employmentType), careerRequirement, requiredCapability, preferredQualification,
 			processes, url, processes.get(0));
 	}

@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
  * id					  데이터 id
  * companyName            회사명
  * team					  부서
- * duty                   직무
- * position				  포지션
+ * position               직무
+ * specificPosition		  세부직무
  * processes              전형 단계
  * jobDescription         주요 업무
  * requiredCapability     필수 역량
@@ -31,8 +31,8 @@ public abstract class JobInfo {
 	protected final String team;
 	protected final String location;
 	protected final String contact;
-	protected final String duty;
 	protected final String position;
+	protected final String specificPosition;
 	protected final String jobDescription;
 	protected final String workType;
 	protected final EmploymentType employmentType;

@@ -41,8 +41,8 @@ public class ApplicationJpaEntity {
 	private String team;
 	private String location;
 	private String contact;
-	private String duty;
 	private String position;
+	private String specificPosition;
 	private String jobDescription;
 	private String workType;
 
@@ -70,8 +70,8 @@ public class ApplicationJpaEntity {
 			application.getTeam(),
 			application.getLocation(),
 			application.getContact(),
-			application.getDuty(),
 			application.getPosition(),
+			application.getSpecificPosition(),
 			application.getJobDescription(),
 			application.getWorkType(),
 			application.getEmploymentType(),
@@ -105,12 +105,12 @@ public class ApplicationJpaEntity {
 			.toList();
 
 		if (currentProcessOrder == 0) {
-			return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
+			return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
 				employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
 				null);
 		}
 
-		return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
+		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
 			employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
 			processes.get(currentProcessOrder));
 	}
@@ -121,7 +121,7 @@ public class ApplicationJpaEntity {
 			.map(ApplicationProcessJpaEntity::toDomain)
 			.toList();
 
-		return new Application(id, companyName, team, location, contact, duty, position, jobDescription, workType,
+		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
 			employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
 			null);
 	}

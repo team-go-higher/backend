@@ -16,8 +16,8 @@ public class ApplicationResponse {
 	private final String team;
 	private final String location;
 	private final String contact;
-	private final String duty;
 	private final String position;
+	private final String specificPosition;
 	private final String jobDescription;
 	private final String workType;
 	private final String employmentType;
@@ -42,8 +42,8 @@ public class ApplicationResponse {
 			application.getTeam(),
 			application.getLocation(),
 			application.getContact(),
-			application.getDuty(),
 			application.getPosition(),
+			application.getSpecificPosition(),
 			application.getJobDescription(),
 			application.getWorkType(),
 			application.getEmploymentType().name(),

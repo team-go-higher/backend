@@ -13,13 +13,13 @@ public class SimpleApplicationRequest {
 	private String companyName;
 
 	@NotBlank(message = "JOB_INFO_003||직무가 입력되지 않았습니다.")
-	private String duty;
+	private String position;
 
 	private String url;
 
 	private SimpleApplicationProcessRequest currentProcess;
 
 	public Application toDomain() {
-		return Application.simple(companyName, duty, url, currentProcess.toDomain());
+		return Application.simple(companyName, position, url, currentProcess.toDomain());
 	}
 }
