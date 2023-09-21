@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
+import gohigher.pagination.PagingParameters;
+import gohigher.pagination.SliceContainer;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -44,6 +46,14 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 		List<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findByUserIdAndDate(userId,
 			startOfDate, endOfDate);
 		return convertToDomain(applicationJpaEntities);
+	}
+
+	@Override
+	public SliceContainer<Application> findByUserIdWithoutSchedule(Long userId, PagingParameters pagingParameters) {
+		return new SliceContainer<>(
+			applicationRepository.findByUserIdWithoutSchedule(userId, pagingParameters.toPageable())
+			.map(ApplicationJpaEntity::toDomain)
+		);
 	}
 
 	@Override

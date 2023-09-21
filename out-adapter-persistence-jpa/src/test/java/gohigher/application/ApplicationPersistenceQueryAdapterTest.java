@@ -18,9 +18,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
+import gohigher.pagination.PagingParameters;
+import gohigher.pagination.SliceContainer;
 
 @DisplayName("ApplicationPersistenceQueryAdapter 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -211,6 +215,37 @@ class ApplicationPersistenceQueryAdapterTest {
 		}
 	}
 
+	@DisplayName("findByUserIdWithoutSchedule 메서드는")
+	@Nested
+	class Describe_findByUserIdWithoutSchedule {
+
+		@DisplayName("전형일이 작성되어 있지 않은 프로세스들이 있을 떄")
+		@Nested
+		class Context_exist_processes_without_schedule {
+
+			@DisplayName("해당 전형들을 포함한 어플리케이션을 반환한다")
+			@Test
+			void it_return_applications_with_process() {
+				// given
+				Long userId = 1L;
+				PagingParameters pagingParameters = new PagingParameters(1, 10);
+
+				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
+				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
+				given(applicationRepository.findByUserIdWithoutSchedule(userId, pagingParameters.toPageable()))
+					.willReturn(new SliceImpl<>(applicationJpaEntities));
+
+				// when
+				SliceContainer<Application> applicationsInSliceContainer =
+					applicationPersistenceQueryAdapter.findByUserIdWithoutSchedule(userId, pagingParameters);
+
+				// then
+				Slice<Application> applications = applicationsInSliceContainer.getContent();
+				assertThat(applications.getNumberOfElements()).isEqualTo(applicationJpaEntities.size());
+			}
+		}
+	}
+
 	@DisplayName("findOnlyWithCurrentProcessByUserId 메서드는")
 	@Nested
 	class Describe_findOnlyWithCurrentProcessByUserId {
@@ -237,4 +272,3 @@ class ApplicationPersistenceQueryAdapterTest {
 			}
 		}
 	}
-}
