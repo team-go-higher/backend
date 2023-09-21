@@ -88,7 +88,20 @@ public interface ApplicationQueryControllerDocs {
 
 	@Operation(summary = "전형일이 작성되어 있지 않은 지원서 목록 조회")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "전형일이 작성되어 있지 않은 지원서 목록 조회 성공")
+		@ApiResponse(responseCode = "200", description = "전형일이 작성되어 있지 않은 지원서 목록 조회 성공"),
+		@ApiResponse(responseCode = "400", description = "잘못된 page 값임", content = @Content(
+			examples = {
+				@ExampleObject(name = "잘못된 page 값임", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "PAGINATION_001",
+						"message": "page 는 1 이상이어야 합니다."
+					},
+					"data": null
+					}
+					""")
+			}))
 	})
 	ResponseEntity<GohigherResponse<PagingResponse<EmptyScheduleApplicationResponse>>> findWithoutSchedule(
 		@Login Long userId, @ModelAttribute PagingRequest request);
