@@ -10,11 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SimpleApplicationRequest {
 
-	@NotNull(message = "JOB_INFO_002||회사명이 입력되지 않았습니다.")
 	@NotBlank(message = "JOB_INFO_002||회사명이 입력되지 않았습니다.")
 	private String companyName;
 
-	@NotNull(message = "JOB_INFO_003||직무가 입력되지 않았습니다.")
 	@NotBlank(message = "JOB_INFO_003||직무가 입력되지 않았습니다.")
 	private String position;
 
