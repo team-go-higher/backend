@@ -1,4 +1,4 @@
-package gohigher.pagination;
+package gohigher.pagination.port.in;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

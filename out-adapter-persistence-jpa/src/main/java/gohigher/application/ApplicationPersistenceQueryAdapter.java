@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
-import gohigher.pagination.PagingParameters;
-import gohigher.pagination.SliceContainer;
+import gohigher.pagination.port.in.PagingParameters;
+import gohigher.pagination.port.in.SliceContainer;
 import lombok.RequiredArgsConstructor;
 
 @Component

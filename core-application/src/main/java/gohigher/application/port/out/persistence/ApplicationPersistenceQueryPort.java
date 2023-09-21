@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import gohigher.application.Application;
-import gohigher.pagination.PagingParameters;
-import gohigher.pagination.SliceContainer;
+import gohigher.pagination.port.in.PagingParameters;
+import gohigher.pagination.port.in.SliceContainer;
 
 public interface ApplicationPersistenceQueryPort {
 

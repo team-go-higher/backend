@@ -23,8 +23,8 @@ import org.springframework.data.domain.SliceImpl;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
-import gohigher.pagination.PagingParameters;
-import gohigher.pagination.SliceContainer;
+import gohigher.pagination.port.in.PagingParameters;
+import gohigher.pagination.port.in.SliceContainer;
 
 @DisplayName("ApplicationPersistenceQueryAdapter 클래스의")
 @ExtendWith(MockitoExtension.class)
