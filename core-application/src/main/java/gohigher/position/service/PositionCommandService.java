@@ -29,7 +29,7 @@ public class PositionCommandService implements PositionCommandPort {
 			.map(Position::new)
 			.toList();
 
-		return positionPersistenceCommandPort.saveAll(userId, personalPositions);
+		return positionPersistenceCommandPort.saveAll(personalPositions);
 	}
 
 	private void validateAlreadyExistedPosition(List<String> positions) {

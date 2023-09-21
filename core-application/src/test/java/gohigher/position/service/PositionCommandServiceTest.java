@@ -50,7 +50,7 @@ class PositionCommandServiceTest {
 				List<Position> personalPositions = positions.stream()
 					.map(Position::new)
 					.toList();
-				given(positionPersistenceCommandPort.saveAll(userId, personalPositions)).willReturn(List.of(1L, 2L));
+				given(positionPersistenceCommandPort.saveAll(personalPositions)).willReturn(List.of(1L, 2L));
 
 				// when
 				List<Long> personalPositionIds = positionCommandService.savePersonalPositions(userId, positions);

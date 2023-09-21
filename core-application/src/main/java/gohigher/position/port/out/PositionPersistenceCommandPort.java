@@ -6,5 +6,5 @@ import gohigher.position.Position;
 
 public interface PositionPersistenceCommandPort {
 
-	List<Long> saveAll(Long userId, List<Position> positions);
+	List<Long> saveAll(List<Position> positions);
 }
