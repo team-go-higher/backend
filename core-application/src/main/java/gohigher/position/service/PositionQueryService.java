@@ -1,7 +1,6 @@
 package gohigher.position.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,7 @@ public class PositionQueryService implements PositionQueryPort {
 
 	@Override
 	public List<PositionResponse> findPositions() {
-		return positionPersistenceQueryPort.findAll()
+		return positionPersistenceQueryPort.findAllMadeByAdmin()
 			.stream()
 			.map(PositionResponse::from)
 			.toList();

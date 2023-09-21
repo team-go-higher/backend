@@ -6,5 +6,5 @@ import gohigher.position.Position;
 
 public interface PositionPersistenceQueryPort {
 
-	List<Position> findAll();
+	List<Position> findAllMadeByAdmin();
 }

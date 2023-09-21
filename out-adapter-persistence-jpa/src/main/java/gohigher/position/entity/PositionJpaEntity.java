@@ -22,6 +22,8 @@ public class PositionJpaEntity {
 
 	private String position;
 
+	private Boolean madeByAdmin;
+
 	public Position toDomain() {
 		return new Position(id, position);
 	}

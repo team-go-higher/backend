@@ -15,8 +15,8 @@ public class PositionPersistenceQueryAdapter implements PositionPersistenceQuery
 	private final PositionRepository positionRepository;
 
 	@Override
-	public List<Position> findAll() {
-		return positionRepository.findAll()
+	public List<Position> findAllMadeByAdmin() {
+		return positionRepository.findByMadeByAdmin(true)
 			.stream()
 			.map(PositionJpaEntity::toDomain)
 			.toList();
