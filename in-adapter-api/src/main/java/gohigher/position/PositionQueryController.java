@@ -18,7 +18,7 @@ public class PositionQueryController implements PositionQueryControllerDocs {
 	private final PositionQueryPort positionQueryPort;
 
 	@GetMapping("/v1/positions")
-	public ResponseEntity<GohigherResponse<List<PositionResponse>>> getPositions() {
+	public ResponseEntity<GohigherResponse<List<PositionResponse>>> findPositions() {
 		List<PositionResponse> response = positionQueryPort.findPositions();
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}

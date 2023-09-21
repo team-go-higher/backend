@@ -15,5 +15,5 @@ public interface PositionQueryControllerDocs {
 
 	@Operation(summary = "직무 전체 조회")
 	@ApiResponse(responseCode = "200", description = "조회 성공")
-	ResponseEntity<GohigherResponse<List<PositionResponse>>> getPositions();
+	ResponseEntity<GohigherResponse<List<PositionResponse>>> findPositions();
 }
