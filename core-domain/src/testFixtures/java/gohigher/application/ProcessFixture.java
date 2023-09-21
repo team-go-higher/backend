@@ -39,4 +39,8 @@ public enum ProcessFixture {
 	public Process toDomainWithDescription(String description) {
 		return new Process(null, this.getType(), description, this.getSchedule());
 	}
+
+	public Process toPersistedDomain(long id) {
+		return new Process(id, this.getType(), this.getDescription(), this.getSchedule());
+	}
 }

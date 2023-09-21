@@ -9,7 +9,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmptyScheduleApplicationResponse {
 
-	private final long id;
+	private final long applicationId;
+	private final long processId;
 	private final String companyName;
 	private final String position;
 	private final String specificPosition;
@@ -19,6 +20,7 @@ public class EmptyScheduleApplicationResponse {
 	public static EmptyScheduleApplicationResponse of(Application application, Process process) {
 		return new EmptyScheduleApplicationResponse(
 			application.getId(),
+			process.getId(),
 			application.getCompanyName(),
 			application.getDuty(),
 			application.getPosition(),

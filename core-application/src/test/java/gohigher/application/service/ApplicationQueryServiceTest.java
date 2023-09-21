@@ -193,7 +193,7 @@ class ApplicationQueryServiceTest {
 				int size = 10;
 				PagingRequest request = new PagingRequest(page, size);
 
-				Process process = TO_APPLY.toDomain();
+				Process process = TO_APPLY.toPersistedDomain(1);
 				List<Application> applications = List.of(NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
 				SliceImpl<Application> applicationSlice = new SliceImpl<>(applications);
 				SliceContainer<Application> applicationSliceContainer = new SliceContainer<>(applicationSlice);
