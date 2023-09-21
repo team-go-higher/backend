@@ -1,5 +1,7 @@
 package gohigher.exception;
 
+import static gohigher.global.exception.GlobalErrorCode.*;
+
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -7,6 +9,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 import gohigher.controller.response.ErrorResponse;
 import gohigher.controller.response.GohigherResponse;
@@ -41,6 +45,14 @@ public class ControllerAdvice {
 			errorCodeAndMessage[METHOD_ARGUMENT_NOT_VALID_EXCEPTION_MESSAGE_INDEX]
 		);
 		return ResponseEntity.badRequest().body(errorResponse);
+	}
+
+	@ExceptionHandler(InvalidFormatException.class)
+	public ResponseEntity<GohigherResponse<Void>> handleInvalidFormatException(InvalidFormatException e) {
+		GohigherResponse<Void> response = GohigherResponse.fail(INVALID_DATE_FORMAT.getErrorCode(),
+			INVALID_DATE_FORMAT.getMessage());
+
+		return ResponseEntity.badRequest().body(response);
 	}
 
 	@ExceptionHandler(Exception.class)
