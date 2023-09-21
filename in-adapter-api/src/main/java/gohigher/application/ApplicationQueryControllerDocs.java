@@ -3,13 +3,16 @@ package gohigher.application;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import gohigher.application.port.in.ApplicationResponse;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationResponse;
-import gohigher.application.port.in.KanbanApplicationResponse;
+import gohigher.application.port.in.EmptyScheduleApplicationResponse;
+import gohigher.application.port.in.PagingRequest;
+import gohigher.application.port.in.PagingResponse;
 import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -82,6 +85,13 @@ public interface ApplicationQueryControllerDocs {
 	})
 	ResponseEntity<GohigherResponse<List<DateApplicationResponse>>> findByDate(
 		@Parameter(hidden = true) Long userId, @RequestParam String date);
+
+	@Operation(summary = "전형일이 작성되어 있지 않은 지원서 목록 조회")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "전형일이 작성되어 있지 않은 지원서 목록 조회 성공")
+	})
+	ResponseEntity<GohigherResponse<PagingResponse<EmptyScheduleApplicationResponse>>> findWithoutSchedule(
+		@Login Long userId, @ModelAttribute PagingRequest request);
 
 	@Operation(summary = "칸반 지원서 목록 조회")
 	@ApiResponses(

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,9 @@ import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.port.in.EmptyScheduleApplicationResponse;
+import gohigher.application.port.in.PagingRequest;
+import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
@@ -47,6 +51,14 @@ public class ApplicationQueryController implements ApplicationQueryControllerDoc
 		@RequestParam String date) {
 		DateApplicationRequest dateApplicationRequest = new DateApplicationRequest(userId, date);
 		List<DateApplicationResponse> response = applicationQueryPort.findByDate(dateApplicationRequest);
+		return ResponseEntity.ok(GohigherResponse.success(response));
+	}
+
+	@GetMapping("/empty-schedule")
+	public ResponseEntity<GohigherResponse<PagingResponse<EmptyScheduleApplicationResponse>>> findWithoutSchedule(
+		@Login Long userId, @ModelAttribute PagingRequest request
+	) {
+		PagingResponse<EmptyScheduleApplicationResponse> response = applicationQueryPort.findWithoutSchedule(userId, request);
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
 
