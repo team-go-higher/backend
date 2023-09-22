@@ -21,8 +21,8 @@ public class KanbanApplicationDetailResponse {
 		return new KanbanApplicationDetailResponse(
 			application.getId(),
 			application.getCompanyName(),
-			application.getDuty(),
-			application.getDetailedDuty(),
+			application.getPosition(),
+			application.getSpecificPosition(),
 			application.getCurrentProcess().getDescription(),
 			application.getCurrentProcess().getSchedule()
 		);

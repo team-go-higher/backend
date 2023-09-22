@@ -99,30 +99,30 @@ public class ApplicationJpaEntity {
 	}
 
 	public Application toDomain() {
-		List<Process> processes = this.processes.stream()
-			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))
-			.map(ApplicationProcessJpaEntity::toDomain)
-			.toList();
-
-		if (currentProcessOrder == 0) {
-			return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
-				employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
-				null);
-		}
-
-		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
-			employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
-			processes.get(currentProcessOrder));
+		List<Process> processes = getProcessList();
+		return createApplication(processes, processes.get(currentProcessOrder));
 	}
 
 	public Application toCalenderDomain() {
-		List<Process> processes = this.processes.stream()
+		List<Process> processes = getProcessList();
+		return createApplication(processes, null);
+	}
+
+	public Application toKanbanDomain() {
+		List<Process> processes = getProcessList();
+		return createApplication(processes, processes.get(FIRST_PROCESS_ORDER));
+	}
+
+	private List<Process> getProcessList() {
+		return processes.stream()
 			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))
 			.map(ApplicationProcessJpaEntity::toDomain)
 			.toList();
+	}
 
-		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
-			employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
-			null);
+	private Application createApplication(List<Process> processes, Process currentProcess) {
+		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription,
+			workType, employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
+			currentProcess);
 	}
 }

@@ -386,10 +386,10 @@ class ApplicationRepositoryTest {
 			Application application = NAVER_APPLICATION.toDomain();
 			return new ApplicationJpaEntity(
 				application.getId(), userId, application.getCompanyName(), application.getTeam(),
-				application.getLocation(), application.getContact(), application.getDuty(), application.getDetailedDuty(),
-				application.getJobDescription(), application.getWorkType(), application.getEmploymentType(),
-				application.getCareerRequirement(), application.getRequiredCapability(), application.getPreferredQualification(),
-				application.getUrl(), 0, null, null, deleted
+				application.getLocation(), application.getContact(), application.getPosition(),
+				application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
+				application.getEmploymentType(), application.getCareerRequirement(), application.getRequiredCapability(),
+				application.getPreferredQualification(), application.getUrl(), 0, null, null, deleted
 			);
 		}
 	}

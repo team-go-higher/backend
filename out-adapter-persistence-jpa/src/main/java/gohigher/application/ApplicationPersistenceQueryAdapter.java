@@ -49,7 +49,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	@Override
 	public List<Application> findOnlyWithCurrentProcessByUserId(Long userId) {
 		List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(userId);
-		return convertToApplication(applications);
+		return convertToKanbanApplication(applications);
 	}
 
 	private List<Application> convertToDomain(List<ApplicationJpaEntity> applicationJpaEntities) {
@@ -58,9 +58,9 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 			.toList();
 	}
 
-	private List<Application> convertToApplication(List<ApplicationJpaEntity> applications) {
+	private List<Application> convertToKanbanApplication(List<ApplicationJpaEntity> applications) {
 		return applications.stream()
-			.map(ApplicationJpaEntity::toDomain)
+			.map(ApplicationJpaEntity::toKanbanDomain)
 			.toList();
 	}
 }
