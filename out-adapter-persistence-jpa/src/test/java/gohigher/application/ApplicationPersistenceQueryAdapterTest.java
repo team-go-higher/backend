@@ -212,9 +212,9 @@ class ApplicationPersistenceQueryAdapterTest {
 		}
 	}
 
-	@DisplayName("findCurrentProcessByUserId 메서드는")
+	@DisplayName("findOnlyWithCurrentProcessByUserId 메서드는")
 	@Nested
-	class Describe_findCurrentProcessByUserId {
+	class Describe_findOnlyWithCurrentProcessByUserId {
 
 		@DisplayName("사용자 아이디를 이용하여 조회할 때")
 		@Nested
@@ -228,10 +228,10 @@ class ApplicationPersistenceQueryAdapterTest {
 
 				ApplicationJpaEntity applicationJpaEntity = mock(ApplicationJpaEntity.class);
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
-				given(applicationRepository.findCurrentProcessByUserId(userId)).willReturn(applicationJpaEntities);
+				given(applicationRepository.findOnlyWithCurrentProcessByUserId(userId)).willReturn(applicationJpaEntities);
 
 				// when
-				List<Application> applications = applicationPersistenceQueryAdapter.findCurrentProcessByUserId(userId);
+				List<Application> applications = applicationPersistenceQueryAdapter.findOnlyWithCurrentProcessByUserId(userId);
 
 				// then
 				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());

@@ -188,7 +188,7 @@ class ApplicationQueryServiceTest {
 				Application application = NAVER_APPLICATION.toDomain(List.of(process), process);
 				List<Application> applications = List.of(application);
 
-				given(applicationPersistenceQueryPort.findCurrentProcessByUserId(userId)).willReturn(applications);
+				given(applicationPersistenceQueryPort.findOnlyWithCurrentProcessByUserId(userId)).willReturn(applications);
 
 				// when
 				List<KanbanApplicationResponse> response = applicationQueryService.findForKanban(userId);

@@ -59,7 +59,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	@Override
 	public List<KanbanApplicationResponse> findForKanban(Long userId) {
-		List<Application> applications = applicationPersistenceQueryPort.findCurrentProcessByUserId(userId);
+		List<Application> applications = applicationPersistenceQueryPort.findOnlyWithCurrentProcessByUserId(userId);
 		return createKanbanApplicationResponses(applications);
 	}
 

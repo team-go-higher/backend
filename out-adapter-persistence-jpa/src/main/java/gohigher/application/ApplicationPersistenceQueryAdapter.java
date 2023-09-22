@@ -47,8 +47,8 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	}
 
 	@Override
-	public List<Application> findCurrentProcessByUserId(Long userId) {
-		List<ApplicationJpaEntity> applications = applicationRepository.findCurrentProcessByUserId(userId);
+	public List<Application> findOnlyWithCurrentProcessByUserId(Long userId) {
+		List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(userId);
 		return convertToApplication(applications);
 	}
 

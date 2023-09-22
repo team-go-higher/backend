@@ -308,9 +308,9 @@ class ApplicationRepositoryTest {
 		}
 	}
 
-	@DisplayName("findCurrentProcessByUserId 메서드는")
+	@DisplayName("findOnlyWithCurrentProcessByUserId 메서드는")
 	@Nested
-	class Describe_findCurrentProcessByUserId {
+	class Describe_findOnlyWithCurrentProcessByUserId {
 
 		@DisplayName("유효한 어플리케이션이 있을 경우")
 		@Nested
@@ -328,7 +328,7 @@ class ApplicationRepositoryTest {
 				entityManager.clear();
 
 				// when
-				List<ApplicationJpaEntity> applications = applicationRepository.findCurrentProcessByUserId(userId);
+				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(userId);
 
 				// then
 				assertAll(
@@ -373,7 +373,7 @@ class ApplicationRepositoryTest {
 				}
 
 				// when
-				List<ApplicationJpaEntity> applications = applicationRepository.findCurrentProcessByUserId(userId);
+				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(userId);
 
 				// then
 				assertThat(applications).isEmpty();
