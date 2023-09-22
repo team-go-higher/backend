@@ -5,6 +5,7 @@ import static gohigher.application.ApplicationErrorCode.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import gohigher.application.Application;
 import gohigher.application.port.in.ApplicationCommandPort;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRequest;
@@ -12,6 +13,7 @@ import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
+import gohigher.common.Process;
 import gohigher.global.exception.GoHigherException;
 import lombok.RequiredArgsConstructor;
 
@@ -26,12 +28,24 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 
 	@Override
 	public void applySimply(Long userId, SimpleApplicationRequest request) {
-		applicationPersistenceCommandPort.save(userId, request.toDomain());
+		Application application = request.toDomain();
+		assignAllProcessOrder(application);
+		applicationPersistenceCommandPort.save(userId, application);
 	}
 
 	@Override
 	public long applySpecifically(Long userId, SpecificApplicationRequest request) {
-		return applicationPersistenceCommandPort.save(userId, request.toDomain());
+		Application application = request.toDomain();
+		assignAllProcessOrder(application);
+		return applicationPersistenceCommandPort.save(userId, application);
+	}
+
+	private void assignAllProcessOrder(Application application) {
+		int nextOrder = 1;
+		for (Process process : application.getProcesses()) {
+			process.assignOrder(nextOrder);
+			nextOrder++;
+		}
 	}
 
 	@Override
