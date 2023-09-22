@@ -65,7 +65,6 @@ class ApplicationPersistenceCommandAdapterTest {
 			void it_save_application_with_processes() {
 				// when
 				Long applicationId = applicationPersistenceCommandAdapter.save(USER_ID, application);
-				entityManager.flush();
 				entityManager.clear();
 
 				// then
