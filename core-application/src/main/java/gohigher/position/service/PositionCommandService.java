@@ -9,6 +9,7 @@ import gohigher.global.exception.GoHigherException;
 import gohigher.position.Position;
 import gohigher.position.PositionErrorCode;
 import gohigher.position.port.in.PositionCommandPort;
+import gohigher.position.port.out.DesiredPositionPersistenceCommandPort;
 import gohigher.position.port.out.PositionPersistenceCommandPort;
 import gohigher.position.port.out.PositionPersistenceQueryPort;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class PositionCommandService implements PositionCommandPort {
 
 	private final PositionPersistenceCommandPort positionPersistenceCommandPort;
 	private final PositionPersistenceQueryPort positionPersistenceQueryPort;
+	private final DesiredPositionPersistenceCommandPort desiredPositionPersistenceCommandPort;
 
 	@Override
 	public List<Long> savePersonalPositions(Long userId, List<String> positions) {
@@ -31,6 +33,11 @@ public class PositionCommandService implements PositionCommandPort {
 			.toList();
 
 		return positionPersistenceCommandPort.saveAll(personalPositions);
+	}
+
+	@Override
+	public void saveDesiredPositions(Long userId, List<Long> positionIds) {
+		desiredPositionPersistenceCommandPort.saveDesiredPositions(userId, positionIds);
 	}
 
 	private void validateAlreadyExistedPosition(List<String> positions) {

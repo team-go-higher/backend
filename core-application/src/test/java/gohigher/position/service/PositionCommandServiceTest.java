@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import gohigher.global.exception.GoHigherException;
 import gohigher.position.Position;
+import gohigher.position.port.out.DesiredPositionPersistenceCommandPort;
 import gohigher.position.port.out.PositionPersistenceCommandPort;
 import gohigher.position.port.out.PositionPersistenceQueryPort;
 
@@ -28,6 +29,9 @@ class PositionCommandServiceTest {
 	@Mock
 	private PositionPersistenceQueryPort positionPersistenceQueryPort;
 
+	@Mock
+	private DesiredPositionPersistenceCommandPort desiredPositionPersistenceCommandPort;
+
 	@InjectMocks
 	private PositionCommandService positionCommandService;
 
@@ -39,7 +43,7 @@ class PositionCommandServiceTest {
 		@Nested
 		class Context_request_new_positions {
 
-			Long userId = 1L;
+			private final Long userId = 1L;
 
 			@DisplayName("position들을 저장하고 n개의 id를 반환한다.")
 			@Test
@@ -74,7 +78,7 @@ class PositionCommandServiceTest {
 
 				// when
 				List<Long> personalPositionIds = positionCommandService.savePersonalPositions(userId, positions);
-				
+
 				// then
 				assertThat(personalPositionIds).hasSize(personalPositions.size());
 			}
@@ -89,6 +93,30 @@ class PositionCommandServiceTest {
 				// when & then
 				assertThatThrownBy(() -> positionCommandService.savePersonalPositions(userId, positions))
 					.isInstanceOf(GoHigherException.class).hasMessage("목록에 존재하는 포지션입니다.");
+			}
+		}
+	}
+
+	@DisplayName("saveDesiredPositions 메서드는")
+	@Nested
+	class Describe_saveDesiredPosition {
+
+		@DisplayName("n개의 position의 ID를 받으면")
+		@Nested
+		class Context_input_position_ids {
+
+			private final Long userId = 1L;
+			private final List<Long> positionIds = List.of(1L, 2L);
+
+			@DisplayName("desiredPositons을 저장한다.")
+			@Test
+			void it_void_after_save_desiredPositions() {
+				// given
+				doNothing().when(desiredPositionPersistenceCommandPort).saveDesiredPositions(userId, positionIds);
+
+				// when & then
+				assertThatNoException().isThrownBy(
+					() -> positionCommandService.saveDesiredPositions(userId, positionIds));
 			}
 		}
 	}
