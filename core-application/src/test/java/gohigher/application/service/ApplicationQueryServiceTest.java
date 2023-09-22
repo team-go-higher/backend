@@ -171,13 +171,13 @@ class ApplicationQueryServiceTest {
 
 	@DisplayName("findForKanban 메서드는")
 	@Nested
-	class Discribe_findForKanban {
+	class Describe_findForKanban {
 
 		@DisplayName("사용자 아이디에 해당하는 지원서 목록이 있을 때")
 		@Nested
 		class Context_with_user_id {
 
-			@DisplayName("일정 정보를 반환한다")
+			@DisplayName("지원서들의 현재 전형 정보를 반환한다")
 			@Test
 			void it_return_application_processes() {
 				// given
