@@ -28,15 +28,4 @@ public class Application extends JobInfo {
 		return new Application(null, companyName, null, null, null, position, null, null,
 			null, null, null, null, null, List.of(process), url, process);
 	}
-
-	public Application replaceNullToApplyType() {
-		Process nowCurrentProcess = currentProcess;
-		if (nowCurrentProcess == null) {
-			nowCurrentProcess = Process.toApply();
-		}
-		return new Application(
-			id, companyName, team, location, contact, position, specificPosition, jobDescription, workType, employmentType,
-			careerRequirement, requiredCapability, preferredQualification, processes, url, nowCurrentProcess
-		);
-	}
 }
