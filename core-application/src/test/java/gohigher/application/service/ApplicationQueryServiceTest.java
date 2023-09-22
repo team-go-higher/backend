@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +24,10 @@ import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.Process;
+import gohigher.common.ProcessType;
 
 @DisplayName("ApplicationQueryService 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -162,6 +165,40 @@ class ApplicationQueryServiceTest {
 
 				// then
 				assertThat(responses).hasSize(naverProcesses.size() + kakaoProcesses.size());
+			}
+		}
+	}
+
+	@DisplayName("findForKanban 메서드는")
+	@Nested
+	class Describe_findForKanban {
+
+		@DisplayName("사용자 아이디에 해당하는 지원서 목록이 있을 때")
+		@Nested
+		class Context_with_user_id {
+
+			@DisplayName("지원서들의 현재 전형 정보를 반환한다")
+			@Test
+			void it_return_application_processes() {
+				// given
+				Long userId = 1L;
+
+				ProcessType processType = ProcessType.TO_APPLY;
+				Process process = new Process(processType, "설명", LocalDateTime.now());
+				Application application = NAVER_APPLICATION.toDomain(List.of(process), process);
+				List<Application> applications = List.of(application);
+
+				given(applicationPersistenceQueryPort.findOnlyWithCurrentProcessByUserId(userId)).willReturn(applications);
+
+				// when
+				List<KanbanApplicationResponse> response = applicationQueryService.findForKanban(userId);
+
+				// then
+				Optional<String> processes = response.stream()
+					.map(KanbanApplicationResponse::getProcessType)
+					.filter(it -> it.equals(processType.name()))
+					.findFirst();
+				assertThat(processes).isNotEmpty();
 			}
 		}
 	}

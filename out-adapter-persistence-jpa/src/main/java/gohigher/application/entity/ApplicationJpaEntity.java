@@ -52,7 +52,7 @@ public class ApplicationJpaEntity {
 	private String requiredCapability;
 	private String preferredQualification;
 	private String url;
-	private Integer currentProcessOrder;
+	private int currentProcessOrder;
 
 	@OneToMany(mappedBy = "application")
 	private List<ApplicationProcessJpaEntity> processes;
