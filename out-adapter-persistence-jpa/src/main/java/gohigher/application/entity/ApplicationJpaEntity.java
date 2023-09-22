@@ -101,7 +101,7 @@ public class ApplicationJpaEntity {
 
 	public Application toDomain() {
 		List<Process> processes = getProcessList();
-		return createApplication(processes, processes.get(currentProcessOrder));
+		return createApplication(processes, findCurrentProcess(processes));
 	}
 
 	public Application toCalenderDomain() {
@@ -111,7 +111,14 @@ public class ApplicationJpaEntity {
 
 	public Application toKanbanDomain() {
 		List<Process> processes = getProcessList();
-		return createApplication(processes, processes.get(FIRST_PROCESS_ORDER));
+		return createApplication(processes, findCurrentProcess(processes));
+	}
+
+	private Process findCurrentProcess(List<Process> processes) {
+		return processes.stream()
+			.filter(process -> process.getOrder() == currentProcessOrder)
+			.findAny()
+			.orElse(null);
 	}
 
 	private List<Process> getProcessList() {
