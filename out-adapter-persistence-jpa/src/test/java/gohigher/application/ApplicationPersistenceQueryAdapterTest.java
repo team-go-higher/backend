@@ -50,8 +50,8 @@ class ApplicationPersistenceQueryAdapterTest {
 
 			@BeforeEach
 			void setUp() {
-				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId,
-					NAVER_APPLICATION.toDomain());
+				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
+				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication, TEST.toDomain(), 1));
 				given(applicationRepository.findByIdAndUserIdWithProcess(applicationId, userId))
 					.willReturn(Optional.of(naverApplication));
 			}
@@ -59,8 +59,7 @@ class ApplicationPersistenceQueryAdapterTest {
 			@DisplayName("Optional로 감싸진 Application객체를 반환한다.")
 			@Test
 			void it_return_application_wrapped_by_optional() {
-				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(applicationId,
-					userId);
+				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(applicationId, userId);
 
 				assertThat(actual).isNotEmpty();
 			}
