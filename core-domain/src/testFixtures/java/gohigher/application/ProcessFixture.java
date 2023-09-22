@@ -32,6 +32,10 @@ public enum ProcessFixture {
 		return new Process(null, this.getType(), this.getDescription(), this.getSchedule(), this.order);
 	}
 
+	public Process toDomainWithoutOrder() {
+		return new Process(null, this.getType(), this.getDescription(), this.getSchedule(), null);
+	}
+
 	public Process toDomainWithSchedule(LocalDateTime schedule) {
 		return new Process(null, this.getType(), this.getDescription(), schedule);
 	}
