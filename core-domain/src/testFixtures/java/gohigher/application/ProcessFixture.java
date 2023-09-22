@@ -37,7 +37,7 @@ public enum ProcessFixture {
 	}
 
 	public Process toDomainWithSchedule(LocalDateTime schedule) {
-		return new Process(null, this.getType(), this.getDescription(), schedule);
+		return new Process(null, this.getType(), this.getDescription(), schedule, order);
 	}
 
 	public Process toDomainWithSchedule(LocalDate date) {
