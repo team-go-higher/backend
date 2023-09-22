@@ -321,14 +321,15 @@ class ApplicationRepositoryTest {
 			void it_return_application_current_process() {
 				// given
 				Long userId = 1L;
-				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId,
-					NAVER_APPLICATION.toDomain());
+				ApplicationJpaEntity naverApplication = applicationRepository.save(
+					convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain()));
 
 				applicationProcessRepository.save(
 					convertToApplicationProcessEntity(naverApplication, TO_APPLY.toDomain()));
 
 				applicationProcessRepository.save(
 					convertToApplicationProcessEntity(naverApplication, DOCUMENT.toDomain()));
+				entityManager.clear();
 
 				// when
 				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(

@@ -39,6 +39,10 @@ public abstract class JobInfo {
 	protected final String careerRequirement;
 	protected final String requiredCapability;
 	protected final String preferredQualification;
-	protected final List<Process> processes;
+	protected final Processes processes;
 	protected final String url;
+
+	public List<Process> getProcesses() {
+		return processes.getValues();
+	}
 }

@@ -16,7 +16,11 @@ public class Process {
 	private final String description;
 	private final LocalDateTime schedule;
 
-	private int order;
+	private Integer order;
+
+	public Process(ProcessType type, String description, LocalDateTime schedule, int order) {
+		this(null, type, description, schedule, order);
+	}
 
 	public Process(ProcessType type, String description, LocalDateTime schedule) {
 		this(null, type, description, schedule);

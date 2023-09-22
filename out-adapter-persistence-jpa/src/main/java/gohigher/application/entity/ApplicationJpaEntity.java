@@ -6,6 +6,7 @@ import java.util.List;
 import gohigher.application.Application;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
+import gohigher.common.Processes;
 import gohigher.recruitment.entity.RecruitmentJpaEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -122,7 +123,7 @@ public class ApplicationJpaEntity {
 
 	private Application createApplication(List<Process> processes, Process currentProcess) {
 		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription,
-			workType, employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
-			currentProcess);
+			workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
+			new Processes(processes), url, currentProcess);
 	}
 }

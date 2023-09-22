@@ -5,6 +5,7 @@ import java.util.List;
 
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
+import gohigher.common.Processes;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -97,9 +98,9 @@ public enum ApplicationFixture {
 		}
 
 		public Application toDomain() {
-			return new Application(null, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
-				employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
-				currentProcess);
+			return new Application(null, companyName, team, location, contact, position, specificPosition,
+				jobDescription, workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
+				Processes.initiallyFrom(processes), url, currentProcess);
 		}
 	}
 }
