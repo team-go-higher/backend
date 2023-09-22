@@ -19,8 +19,12 @@ public class UserCommandService implements UserCommandPort {
 	private final UserPersistenceCommandPort userPersistenceCommandPort;
 
 	@Override
-	public User login(String email, Provider provider) {
+	public User signIn(String email, Provider provider) {
 		return userPersistenceQueryPort.findByEmail(email)
-			.orElseGet(() -> userPersistenceCommandPort.save(User.join(email, provider)));
+			.orElseGet(() -> signUp(email, provider));
+	}
+
+	private User signUp(String email, Provider provider) {
+		return userPersistenceCommandPort.save(User.joinAsGuest(email, provider));
 	}
 }

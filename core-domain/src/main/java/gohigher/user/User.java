@@ -15,7 +15,7 @@ public class User {
 	private final Role role;
 	private final Provider provider;
 
-	public static User join(String email, Provider provider) {
+	public static User joinAsGuest(String email, Provider provider) {
 		return new User(email, Role.GUEST, provider);
 	}
 }

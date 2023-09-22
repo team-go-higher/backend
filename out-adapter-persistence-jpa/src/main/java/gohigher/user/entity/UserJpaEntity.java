@@ -42,7 +42,7 @@ public class UserJpaEntity {
 		return new UserJpaEntity(user.getEmail(), user.getRole(), user.getProvider());
 	}
 
-	public User convert() {
+	public User toDomain() {
 		return new User(id, email, role, provider);
 	}
 }

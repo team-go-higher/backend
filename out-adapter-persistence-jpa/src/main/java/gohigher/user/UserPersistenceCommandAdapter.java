@@ -16,6 +16,6 @@ public class UserPersistenceCommandAdapter implements UserPersistenceCommandPort
 	@Override
 	public User save(User user) {
 		final UserJpaEntity savedUser = userRepository.save(UserJpaEntity.from(user));
-		return savedUser.convert();
+		return savedUser.toDomain();
 	}
 }
