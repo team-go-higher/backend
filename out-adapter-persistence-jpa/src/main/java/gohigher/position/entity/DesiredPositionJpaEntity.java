@@ -29,4 +29,9 @@ public class DesiredPositionJpaEntity {
 	@ManyToOne
 	@JoinColumn(name = "position_id")
 	private PositionJpaEntity position;
+
+	public DesiredPositionJpaEntity(UserJpaEntity user, PositionJpaEntity position) {
+		this.user = user;
+		this.position = position;
+	}
 }

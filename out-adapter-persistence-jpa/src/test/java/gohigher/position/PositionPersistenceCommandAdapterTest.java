@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import gohigher.position.entity.PositionRepository;
+import jakarta.persistence.EntityManager;
 
 @DisplayName("PositionPersistenceCommandAdapter 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -21,6 +22,9 @@ class PositionPersistenceCommandAdapterTest {
 
 	@Autowired
 	private PositionRepository positionRepository;
+
+	@Autowired
+	private EntityManager entityManager;
 
 	private PositionPersistenceCommandAdapter positionPersistenceCommandAdapter;
 
