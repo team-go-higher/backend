@@ -22,7 +22,7 @@ public class ApplicationFixtureConverter {
 	}
 
 	public static ApplicationProcessJpaEntity convertToApplicationProcessEntity(
-		ApplicationJpaEntity applicationJpaEntity, Process process, int order) {
-		return ApplicationProcessJpaEntity.of(applicationJpaEntity, process, order);
+		ApplicationJpaEntity applicationJpaEntity, Process process) {
+		return ApplicationProcessJpaEntity.of(applicationJpaEntity, process);
 	}
 }

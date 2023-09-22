@@ -50,8 +50,9 @@ class ApplicationPersistenceQueryAdapterTest {
 
 			@BeforeEach
 			void setUp() {
-				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
-				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication, TEST.toDomain(), 1));
+				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId,
+					NAVER_APPLICATION.toDomain());
+				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication, TEST.toDomain()));
 				given(applicationRepository.findByIdAndUserIdWithProcess(applicationId, userId))
 					.willReturn(Optional.of(naverApplication));
 			}
@@ -59,7 +60,8 @@ class ApplicationPersistenceQueryAdapterTest {
 			@DisplayName("Optional로 감싸진 Application객체를 반환한다.")
 			@Test
 			void it_return_application_wrapped_by_optional() {
-				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(applicationId, userId);
+				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(applicationId,
+					userId);
 
 				assertThat(actual).isNotEmpty();
 			}
@@ -106,13 +108,13 @@ class ApplicationPersistenceQueryAdapterTest {
 			void setUp() {
 				naverApplication = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
 				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication,
-					TEST.toDomainWithSchedule(LocalDate.of(year, month, 11)), 1));
+					TEST.toDomainWithSchedule(LocalDate.of(year, month, 11))));
 				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication,
-					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 20)), 1));
+					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 20))));
 
 				kakaoApplication = convertToApplicationEntity(userId, KAKAO_APPLICATION.toDomain());
 				kakaoApplication.addProcess(convertToApplicationProcessEntity(kakaoApplication,
-					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11)), 1));
+					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11))));
 
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(naverApplication, kakaoApplication);
 
@@ -123,7 +125,8 @@ class ApplicationPersistenceQueryAdapterTest {
 			@DisplayName("일정 정보가 담긴 지원서를 반환한다.")
 			@Test
 			void it_return_application_with_processes() {
-				List<Application> response = applicationPersistenceQueryAdapter.findByUserIdAndMonth(userId, year, month);
+				List<Application> response = applicationPersistenceQueryAdapter.findByUserIdAndMonth(userId, year,
+					month);
 
 				Application actualNaverApplication = findApplication(response, naverApplication);
 				Application actualKakaoApplication = findApplication(response, kakaoApplication);
@@ -164,13 +167,13 @@ class ApplicationPersistenceQueryAdapterTest {
 			void setUp() {
 				naverApplication = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
 				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication,
-					TEST.toDomainWithSchedule(date), 1));
+					TEST.toDomainWithSchedule(date)));
 				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication,
-					INTERVIEW.toDomainWithSchedule(date), 2));
+					INTERVIEW.toDomainWithSchedule(date)));
 
 				kakaoApplication = convertToApplicationEntity(userId, KAKAO_APPLICATION.toDomain());
 				kakaoApplication.addProcess(convertToApplicationProcessEntity(kakaoApplication,
-					INTERVIEW.toDomainWithSchedule(date), 1));
+					INTERVIEW.toDomainWithSchedule(date)));
 
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(naverApplication, kakaoApplication);
 
@@ -227,10 +230,12 @@ class ApplicationPersistenceQueryAdapterTest {
 
 				ApplicationJpaEntity applicationJpaEntity = mock(ApplicationJpaEntity.class);
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
-				given(applicationRepository.findOnlyWithCurrentProcessByUserId(userId)).willReturn(applicationJpaEntities);
+				given(applicationRepository.findOnlyWithCurrentProcessByUserId(userId)).willReturn(
+					applicationJpaEntities);
 
 				// when
-				List<Application> applications = applicationPersistenceQueryAdapter.findOnlyWithCurrentProcessByUserId(userId);
+				List<Application> applications = applicationPersistenceQueryAdapter.findOnlyWithCurrentProcessByUserId(
+					userId);
 
 				// then
 				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
