@@ -1,21 +1,31 @@
 package gohigher.user.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import gohigher.position.Position;
+import gohigher.position.entity.DesiredPositionJpaEntity;
+import gohigher.position.entity.PositionJpaEntity;
 import gohigher.user.Role;
 import gohigher.user.User;
 import gohigher.user.auth.Provider;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class UserJpaEntity {
@@ -32,10 +42,11 @@ public class UserJpaEntity {
 	@Enumerated(EnumType.STRING)
 	private Provider provider;
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<DesiredPositionJpaEntity> desiredPositions;
+
 	public UserJpaEntity(String email, Role role, Provider provider) {
-		this.email = email;
-		this.role = role;
-		this.provider = provider;
+		this(null, email, role, provider, new ArrayList<>());
 	}
 
 	public static UserJpaEntity from(User user) {
@@ -43,6 +54,11 @@ public class UserJpaEntity {
 	}
 
 	public User toDomain() {
-		return new User(id, email, role, provider);
+		List<Position> positions = desiredPositions.stream()
+			.map(DesiredPositionJpaEntity::getPosition)
+			.map(PositionJpaEntity::toDomain)
+			.toList();
+
+		return new User(id, email, role, provider, new ArrayList<>(positions));
 	}
 }

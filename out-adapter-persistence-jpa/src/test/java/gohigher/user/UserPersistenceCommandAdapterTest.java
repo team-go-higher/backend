@@ -44,11 +44,11 @@ class UserPersistenceCommandAdapterTest {
 			void success() {
 				// given
 				String email = "test@email.com";
-				UserJpaEntity userJpaEntity = new UserJpaEntity(email, Role.USER, Provider.GOOGLE);
+				UserJpaEntity userJpaEntity = new UserJpaEntity(email, Role.GUEST, Provider.GOOGLE);
 				given(userRepository.save(any())).willReturn(userJpaEntity);
 
 				// when
-				User savedUser = userPersistenceCommandAdapter.save(new User(email, Role.USER, Provider.GOOGLE));
+				User savedUser = userPersistenceCommandAdapter.save(User.joinAsGuest(email, Provider.GOOGLE));
 
 				// then
 				assertAll(
