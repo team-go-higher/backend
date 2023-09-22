@@ -324,17 +324,7 @@ class ApplicationRepositoryTest {
 
 				int applicationCount = 2;
 				int processCount = 3;
-				for (int i = 0; i < applicationCount; i++) {
-					Application application = NAVER_APPLICATION.toDomain();
-					ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId, application);
-					applicationRepository.save(applicationJpaEntity);
-
-					for (int j = 0; j < processCount; j++) {
-						applicationProcessRepository.save(
-							convertToApplicationProcessEntity(applicationJpaEntity, DOCUMENT.toDomain(), j)
-						);
-					}
-				}
+				saveApplicationWithProcesses(userId, applicationCount, processCount);
 				entityManager.clear();
 
 				// when
@@ -345,6 +335,24 @@ class ApplicationRepositoryTest {
 					() -> assertThat(applications).hasSize(applicationCount),
 					() -> assertThat(applications.get(0).getProcesses()).hasSize(1)
 				);
+			}
+
+			private void saveApplicationWithProcesses(Long userId, int applicationCount, int processCount) {
+				for (int i = 0; i < applicationCount; i++) {
+					Application application = NAVER_APPLICATION.toDomain();
+					ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId, application);
+					applicationRepository.save(applicationJpaEntity);
+
+					saveApplicationProcesses(processCount, applicationJpaEntity);
+				}
+			}
+
+			private void saveApplicationProcesses(int processCount, ApplicationJpaEntity applicationJpaEntity) {
+				for (int j = 0; j < processCount; j++) {
+					applicationProcessRepository.save(
+						convertToApplicationProcessEntity(applicationJpaEntity, DOCUMENT.toDomain(), j)
+					);
+				}
 			}
 		}
 
