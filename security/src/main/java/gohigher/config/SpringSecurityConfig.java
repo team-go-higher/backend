@@ -5,6 +5,7 @@ import static org.springframework.security.config.Customizer.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -47,10 +48,11 @@ public class SpringSecurityConfig {
 		http.csrf(CsrfConfigurer::disable)
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth ->
-				auth.requestMatchers(tokenRequestUri + "/**", "/api-docs", "/swagger-ui/**",
-					"/v3/api-docs/swagger-config",
-					"/v3/api-docs"
-				).permitAll()
+				auth.requestMatchers(HttpMethod.OPTIONS).permitAll()
+					.requestMatchers(tokenRequestUri + "/**", "/api-docs", "/swagger-ui/**",
+						"/v3/api-docs/swagger-config",
+						"/v3/api-docs"
+					).permitAll()
 					.anyRequest().authenticated()
 			)
 			.httpBasic(withDefaults());
