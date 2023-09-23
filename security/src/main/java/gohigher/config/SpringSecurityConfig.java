@@ -50,8 +50,7 @@ public class SpringSecurityConfig {
 			.authorizeHttpRequests(auth ->
 				auth.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 					.requestMatchers(tokenRequestUri + "/**", "/api-docs", "/swagger-ui/**",
-						"/v3/api-docs/swagger-config",
-						"/v3/api-docs"
+						"/v3/api-docs/swagger-config", "/v3/api-docs"
 					).permitAll()
 					.anyRequest().authenticated()
 			)
