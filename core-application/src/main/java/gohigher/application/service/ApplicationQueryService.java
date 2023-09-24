@@ -1,6 +1,8 @@
 package gohigher.application.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
@@ -14,8 +16,10 @@ import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.in.ProcessResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
+import gohigher.common.ProcessType;
 import gohigher.global.exception.GoHigherException;
 import lombok.RequiredArgsConstructor;
 
@@ -53,6 +57,12 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.toList();
 	}
 
+	@Override
+	public List<KanbanApplicationResponse> findForKanban(Long userId) {
+		List<Application> applications = applicationPersistenceQueryPort.findOnlyWithCurrentProcessByUserId(userId);
+		return createKanbanApplicationResponses(applications);
+	}
+
 	private Stream<CalendarApplicationResponse> extractCalendarResponses(Application application) {
 		return application.getProcesses()
 			.stream()
@@ -64,5 +74,18 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.stream()
 			.map(ProcessResponse::from)
 			.map(processResponse -> DateApplicationResponse.of(application, processResponse));
+	}
+
+	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<Application> applications) {
+		Map<ProcessType, List<Application>> groupedApplications = groupByProcessType(applications);
+		return groupedApplications.entrySet()
+			.stream()
+			.map(process -> KanbanApplicationResponse.from(process.getKey().name(), process.getValue()))
+			.toList();
+	}
+
+	private Map<ProcessType, List<Application>> groupByProcessType(List<Application> applications) {
+		return applications.stream()
+			.collect(Collectors.groupingBy(application -> application.getCurrentProcess().getType()));
 	}
 }

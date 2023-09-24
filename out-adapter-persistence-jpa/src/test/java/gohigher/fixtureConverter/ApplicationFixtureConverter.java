@@ -6,7 +6,10 @@ import gohigher.application.Application;
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationProcessJpaEntity;
 import gohigher.common.Process;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplicationFixtureConverter {
 
 	public static ApplicationJpaEntity convertToApplicationEntity(Long userId, Application application) {
@@ -14,7 +17,8 @@ public class ApplicationFixtureConverter {
 			application.getLocation(), application.getContact(), application.getPosition(),
 			application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
 			application.getEmploymentType(), application.getCareerRequirement(), application.getRequiredCapability(),
-			application.getPreferredQualification(), application.getUrl(), 0, new ArrayList<>(), null, false);
+			application.getPreferredQualification(), application.getUrl(),
+			0, new ArrayList<>(), null, false);
 	}
 
 	public static ApplicationProcessJpaEntity convertToApplicationProcessEntity(

@@ -50,8 +50,8 @@ class ApplicationPersistenceQueryAdapterTest {
 
 			@BeforeEach
 			void setUp() {
-				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId,
-					NAVER_APPLICATION.toDomain());
+				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
+				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication, TEST.toDomain(), 1));
 				given(applicationRepository.findByIdAndUserIdWithProcess(applicationId, userId))
 					.willReturn(Optional.of(naverApplication));
 			}
@@ -59,8 +59,7 @@ class ApplicationPersistenceQueryAdapterTest {
 			@DisplayName("Optional로 감싸진 Application객체를 반환한다.")
 			@Test
 			void it_return_application_wrapped_by_optional() {
-				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(applicationId,
-					userId);
+				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(applicationId, userId);
 
 				assertThat(actual).isNotEmpty();
 			}
@@ -91,6 +90,7 @@ class ApplicationPersistenceQueryAdapterTest {
 	@DisplayName("findByUserIdAndMonth 메서드는")
 	@Nested
 	class Describe_findByUserIdAndMonth {
+
 		private final long userId = 1L;
 		private final int year = 2023;
 		private final int month = 9;
@@ -123,18 +123,10 @@ class ApplicationPersistenceQueryAdapterTest {
 			@DisplayName("일정 정보가 담긴 지원서를 반환한다.")
 			@Test
 			void it_return_application_with_processes() {
-				List<Application> response = applicationPersistenceQueryAdapter.findByUserIdAndMonth(userId, year,
-					month);
+				List<Application> response = applicationPersistenceQueryAdapter.findByUserIdAndMonth(userId, year, month);
 
-				Application actualNaverApplication = response.stream()
-					.filter(it -> it.getCompanyName().equals(naverApplication.getCompanyName()))
-					.findAny()
-					.orElseThrow();
-
-				Application actualKakaoApplication = response.stream()
-					.filter(it -> it.getCompanyName().equals(kakaoApplication.getCompanyName()))
-					.findAny()
-					.orElseThrow();
+				Application actualNaverApplication = findApplication(response, naverApplication);
+				Application actualKakaoApplication = findApplication(response, kakaoApplication);
 
 				assertAll(
 					() -> assertThat(response).hasSize(2), // naverApplication, kakaoApplication
@@ -143,6 +135,13 @@ class ApplicationPersistenceQueryAdapterTest {
 					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(
 						kakaoApplication.getProcesses().size())
 				);
+			}
+
+			private Application findApplication(List<Application> response, ApplicationJpaEntity application) {
+				return response.stream()
+					.filter(it -> it.getCompanyName().equals(application.getCompanyName()))
+					.findAny()
+					.orElseThrow();
 			}
 		}
 	}
@@ -208,6 +207,33 @@ class ApplicationPersistenceQueryAdapterTest {
 					() -> assertThat(actualNaverApplication.getProcesses()).hasSize(2),
 					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(1)
 				);
+			}
+		}
+	}
+
+	@DisplayName("findOnlyWithCurrentProcessByUserId 메서드는")
+	@Nested
+	class Describe_findOnlyWithCurrentProcessByUserId {
+
+		@DisplayName("사용자 아이디를 이용하여 조회할 때")
+		@Nested
+		class Context_with_user_id {
+
+			@DisplayName("현재 프로세스 정보를 반환한다")
+			@Test
+			void it_return_current_process() {
+				// given
+				Long userId = 1L;
+
+				ApplicationJpaEntity applicationJpaEntity = mock(ApplicationJpaEntity.class);
+				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
+				given(applicationRepository.findOnlyWithCurrentProcessByUserId(userId)).willReturn(applicationJpaEntities);
+
+				// when
+				List<Application> applications = applicationPersistenceQueryAdapter.findOnlyWithCurrentProcessByUserId(userId);
+
+				// then
+				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
 			}
 		}
 	}

@@ -9,4 +9,6 @@ public interface ApplicationQueryPort {
 	List<CalendarApplicationResponse> findByMonth(CalendarApplicationRequest request);
 
 	List<DateApplicationResponse> findByDate(DateApplicationRequest request);
+
+	List<KanbanApplicationResponse> findForKanban(Long userId);
 }

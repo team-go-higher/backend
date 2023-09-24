@@ -22,6 +22,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import gohigher.application.Application;
+
 @DisplayName("ApplicationRepository 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
@@ -206,8 +208,8 @@ class ApplicationRepositoryTest {
 			}
 		}
 
-		@Nested
 		@DisplayName("한 달에 동일한 공고의 일정이 2개가 있으면")
+		@Nested
 		class Context_with_application_that_has_two_processes {
 
 			private final List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
@@ -227,8 +229,8 @@ class ApplicationRepositoryTest {
 				entityManager.clear();
 			}
 
-			@Test
 			@DisplayName("2개의 과정을 모두 담은 하나의 지원 공고를 반환한다.")
+			@Test
 			void it_return_application_with_two_processes() {
 				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndMonth(userId, year, month);
 				List<ApplicationProcessJpaEntity> actual = response.get(0).getProcesses();
@@ -303,6 +305,92 @@ class ApplicationRepositoryTest {
 					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(1)
 				);
 			}
+		}
+	}
+
+	@DisplayName("findOnlyWithCurrentProcessByUserId 메서드는")
+	@Nested
+	class Describe_findOnlyWithCurrentProcessByUserId {
+
+		@DisplayName("유효한 어플리케이션이 있을 경우")
+		@Nested
+		class Context_exist_application {
+
+			@DisplayName("어플리케이션의 현재 프로세스를 반환한다")
+			@Test
+			void it_return_application_current_process() {
+				// given
+				Long userId = 1L;
+
+				int applicationCount = 2;
+				int processCount = 3;
+				saveApplicationWithProcesses(userId, applicationCount, processCount);
+				entityManager.clear();
+
+				// when
+				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(userId);
+
+				// then
+				assertAll(
+					() -> assertThat(applications).hasSize(applicationCount),
+					() -> assertThat(applications.get(0).getProcesses()).hasSize(1)
+				);
+			}
+
+			private void saveApplicationWithProcesses(Long userId, int applicationCount, int processCount) {
+				for (int i = 0; i < applicationCount; i++) {
+					Application application = NAVER_APPLICATION.toDomain();
+					ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId, application);
+					applicationRepository.save(applicationJpaEntity);
+
+					saveApplicationProcesses(processCount, applicationJpaEntity);
+				}
+			}
+
+			private void saveApplicationProcesses(int processCount, ApplicationJpaEntity applicationJpaEntity) {
+				for (int j = 0; j < processCount; j++) {
+					applicationProcessRepository.save(
+						convertToApplicationProcessEntity(applicationJpaEntity, DOCUMENT.toDomain(), j)
+					);
+				}
+			}
+		}
+
+		@DisplayName("삭제된 어플리케이션이 있을 경우")
+		@Nested
+		class Context_contain_deleted_is_true {
+
+			@DisplayName("반환값에 포함하지 않는다")
+			@Test
+			void it_not_return() {
+				// given
+				Long userId = 1L;
+
+				int count = 2;
+				for (int i = 0; i < count; i++) {
+					ApplicationJpaEntity application = createDeletedApplication(userId);
+					applicationRepository.save(application);
+				}
+
+				// when
+				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(userId);
+
+				// then
+				assertThat(applications).isEmpty();
+			}
+		}
+
+		private ApplicationJpaEntity createDeletedApplication(Long userId) {
+			boolean deleted = true;
+
+			Application application = NAVER_APPLICATION.toDomain();
+			return new ApplicationJpaEntity(
+				application.getId(), userId, application.getCompanyName(), application.getTeam(),
+				application.getLocation(), application.getContact(), application.getPosition(),
+				application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
+				application.getEmploymentType(), application.getCareerRequirement(), application.getRequiredCapability(),
+				application.getPreferredQualification(), application.getUrl(), 0, null, null, deleted
+			);
 		}
 	}
 }

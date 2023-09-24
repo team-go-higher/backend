@@ -46,9 +46,21 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 		return convertToDomain(applicationJpaEntities);
 	}
 
+	@Override
+	public List<Application> findOnlyWithCurrentProcessByUserId(Long userId) {
+		List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(userId);
+		return convertToKanbanApplication(applications);
+	}
+
 	private List<Application> convertToDomain(List<ApplicationJpaEntity> applicationJpaEntities) {
 		return applicationJpaEntities.stream()
 			.map(ApplicationJpaEntity::toCalenderDomain)
+			.toList();
+	}
+
+	private List<Application> convertToKanbanApplication(List<ApplicationJpaEntity> applications) {
+		return applications.stream()
+			.map(ApplicationJpaEntity::toKanbanDomain)
 			.toList();
 	}
 }

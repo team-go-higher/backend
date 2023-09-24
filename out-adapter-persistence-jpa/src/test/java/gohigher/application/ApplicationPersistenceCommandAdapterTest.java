@@ -56,21 +56,23 @@ class ApplicationPersistenceCommandAdapterTest {
 	@Nested
 	class Describe_Save {
 
-		@DisplayName("전형 단계들을 포함한 지원서를 저장하려고 할 때,")
+		@DisplayName("전형 단계들을 포함한 지원서를 저장하려고 할 때")
 		@Nested
-		class UpdateCurrentProcessOrderWithId {
+		class Context_save_with_processes {
 
-			@DisplayName("정상적으로 저장할 수 있다.")
+			@DisplayName("정상적으로 저장할 수 있다")
 			@Test
-			void updateCurrentProcessOrder() {
-				//when
-				applicationPersistenceCommandAdapter.save(USER_ID, application);
+			void it_save_application_with_processes() {
+				// when
+				Long applicationId = applicationPersistenceCommandAdapter.save(USER_ID, application);
+				entityManager.clear();
 
-				//then
-				List<ApplicationProcessJpaEntity> applicationProcesses = applicationProcessRepository.findAll();
+				// then
+				ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(applicationId).get();
 				assertAll(
-					() -> assertThat(applicationProcesses).hasSize(2),
-					() -> assertThat(applicationProcesses).extracting("order", "description")
+					() -> assertThat(applicationJpaEntity.getProcesses()).hasSize(application.getProcesses().size()),
+					() -> assertThat(applicationJpaEntity.getCurrentProcessOrder()).isEqualTo(0),
+					() -> assertThat(applicationJpaEntity.getProcesses()).extracting("order", "description")
 						.contains(
 							tuple(0, FIRST_PROCESS_DESCRIPTION),
 							tuple(1, SECOND_PROCESS_DESCRIPTION)
