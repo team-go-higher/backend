@@ -9,6 +9,7 @@ import gohigher.application.port.in.ApplicationCommandPort;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
+import gohigher.application.port.in.SpecificApplicationUpdateRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
@@ -40,6 +41,11 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 		validateNotFound(userId, applicationId);
 		validateProcessNotFound(request.getProcessId());
 		applicationPersistenceCommandPort.updateCurrentProcessOrder(applicationId, request.getProcessId());
+	}
+
+	@Override
+	public void updateSpecifically(Long userId, SpecificApplicationUpdateRequest request) {
+
 	}
 
 	private void validateNotFound(Long userId, Long applicationId) {

@@ -7,4 +7,6 @@ public interface ApplicationCommandPort {
 	long applySpecifically(Long userId, SpecificApplicationRequest request);
 
 	void updateCurrentProcess(Long userId, CurrentProcessUpdateRequest request);
+
+	void updateSpecifically(Long userId, SpecificApplicationUpdateRequest request);
 }

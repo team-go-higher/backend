@@ -15,6 +15,7 @@ public enum JobInfoErrorCode implements ErrorCode {
 	PROCESS_TYPE_BLANK(400, "JOB_INFO_005", "전형 단계가 입력되지 않았습니다."),
 	PROCESS_DESCRIPTION_BLANK(400, "JOB_INFO_006", "세부 전형이 입력되지 않았습니다."),
 	PROCESS_SCHEDULE_NULL(400, "JOB_INFO_007", "전형 일정이 입력되지 않았습니다."),
+	APPLICATION_INFO_NULL(400, "JOB_INFO_008", "지원서 정보가 입력되지 않았습니다."),
 	;
 
 	private final int statusCode;
