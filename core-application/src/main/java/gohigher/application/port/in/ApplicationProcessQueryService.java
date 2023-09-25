@@ -1,6 +1,7 @@
 package gohigher.application.port.in;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import gohigher.application.ApplicationErrorCode;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
+import gohigher.common.ProcessType;
 import gohigher.global.exception.GoHigherException;
 import lombok.RequiredArgsConstructor;
 
@@ -21,10 +23,12 @@ public class ApplicationProcessQueryService implements ApplicationProcessQueryPo
 
 	@Override
 	public List<ApplicationProcessByProcessTypeResponse> findByApplicationIdAndProcessType(Long userId,
-		ApplicationProcessByProcessTypeRequest request) {
-		validateAuthorizationOfUser(userId, request.getApplicationId());
-		return applicationProcessPersistenceQueryPort.findByApplicationIdAndProcessType(
-				request.getApplicationId(), request.getProcessType())
+		Long applicationId, ProcessType processType) {
+		if (Objects.isNull(applicationId)) {
+			throw new GoHigherException(ApplicationErrorCode.APPLICATION_ID_NULL);
+		}
+		validateAuthorizationOfUser(userId, applicationId);
+		return applicationProcessPersistenceQueryPort.findByApplicationIdAndProcessType(applicationId, processType)
 			.stream()
 			.map(ApplicationProcessByProcessTypeResponse::from)
 			.toList();

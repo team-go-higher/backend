@@ -32,11 +32,12 @@ class ApplicationProcessQueryServiceTest {
 	@Nested
 	class Describe_FindByApplicationIdAndProcessType {
 
+		private final Long userId = 2L;
+
 		@DisplayName("id와 userId가 일치하는 지원서가 없는 경우에")
 		@Nested
 		class Context_NonExistent_Application_By_Id_And_User_Id {
 
-			private final Long userId = 2L;
 			private final Long applicationId = 3L;
 
 			@BeforeEach
@@ -48,13 +49,27 @@ class ApplicationProcessQueryServiceTest {
 			@DisplayName("예외를 발생시킨다.")
 			@Test
 			void it_Throws_Application_Not_Found_Exception() {
-				//given
-				ApplicationProcessByProcessTypeRequest request =
-					new ApplicationProcessByProcessTypeRequest(applicationId, TEST);
 				//when then
 				assertThatThrownBy(() ->
-					applicationProcessQueryService.findByApplicationIdAndProcessType(userId, request))
+					applicationProcessQueryService.findByApplicationIdAndProcessType(userId, applicationId, TEST))
 					.hasMessage(APPLICATION_NOT_FOUND.getMessage());
+			}
+		}
+
+		@DisplayName("지원서의 id가 null인 경우에")
+		@Nested
+		class Context_NonExistent_ApplicationId_Null {
+
+			@DisplayName("예외를 발생시킨다.")
+			@Test
+			void it_Throws_Application_Not_Found_Exception() {
+				//given
+				Long applicationId = null;
+
+				//when then
+				assertThatThrownBy(() ->
+					applicationProcessQueryService.findByApplicationIdAndProcessType(userId, applicationId, TEST))
+					.hasMessage(APPLICATION_ID_NULL.getMessage());
 			}
 		}
 	}
