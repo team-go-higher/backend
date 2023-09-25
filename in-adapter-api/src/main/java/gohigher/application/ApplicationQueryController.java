@@ -56,8 +56,7 @@ public class ApplicationQueryController implements ApplicationQueryControllerDoc
 
 	@GetMapping("/empty-schedule")
 	public ResponseEntity<GohigherResponse<PagingResponse<EmptyScheduleApplicationResponse>>> findWithoutSchedule(
-		@Login Long userId, @ModelAttribute PagingRequest request
-	) {
+		@Login Long userId, @ModelAttribute PagingRequest request) {
 		PagingResponse<EmptyScheduleApplicationResponse> response = applicationQueryPort.findWithoutSchedule(userId, request);
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
