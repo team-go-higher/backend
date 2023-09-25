@@ -54,7 +54,8 @@ class ApplicationPersistenceQueryAdapterTest {
 
 			@BeforeEach
 			void setUp() {
-				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
+				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId,
+					NAVER_APPLICATION.toDomain());
 				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication, TEST.toDomain(), 1));
 				given(applicationRepository.findByIdAndUserIdWithProcess(applicationId, userId))
 					.willReturn(Optional.of(naverApplication));
@@ -63,7 +64,8 @@ class ApplicationPersistenceQueryAdapterTest {
 			@DisplayName("Optional로 감싸진 Application객체를 반환한다.")
 			@Test
 			void it_return_application_wrapped_by_optional() {
-				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(applicationId, userId);
+				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(applicationId,
+					userId);
 
 				assertThat(actual).isNotEmpty();
 			}
@@ -127,7 +129,8 @@ class ApplicationPersistenceQueryAdapterTest {
 			@DisplayName("일정 정보가 담긴 지원서를 반환한다.")
 			@Test
 			void it_return_application_with_processes() {
-				List<Application> response = applicationPersistenceQueryAdapter.findByUserIdAndMonth(userId, year, month);
+				List<Application> response = applicationPersistenceQueryAdapter.findByUserIdAndMonth(userId, year,
+					month);
 
 				Application actualNaverApplication = findApplication(response, naverApplication);
 				Application actualKakaoApplication = findApplication(response, kakaoApplication);
@@ -230,7 +233,8 @@ class ApplicationPersistenceQueryAdapterTest {
 				Long userId = 1L;
 				PagingParameters pagingParameters = new PagingParameters(1, 10);
 
-				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
+				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId,
+					NAVER_APPLICATION.toDomain());
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
 				given(applicationRepository.findByUserIdWithoutSchedule(userId, pagingParameters.toPageable()))
 					.willReturn(new SliceImpl<>(applicationJpaEntities));
@@ -262,13 +266,16 @@ class ApplicationPersistenceQueryAdapterTest {
 
 				ApplicationJpaEntity applicationJpaEntity = mock(ApplicationJpaEntity.class);
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
-				given(applicationRepository.findOnlyWithCurrentProcessByUserId(userId)).willReturn(applicationJpaEntities);
+				given(applicationRepository.findOnlyWithCurrentProcessByUserId(userId)).willReturn(
+					applicationJpaEntities);
 
 				// when
-				List<Application> applications = applicationPersistenceQueryAdapter.findOnlyWithCurrentProcessByUserId(userId);
+				List<Application> applications = applicationPersistenceQueryAdapter.findOnlyWithCurrentProcessByUserId(
+					userId);
 
 				// then
 				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
 			}
 		}
 	}
+}

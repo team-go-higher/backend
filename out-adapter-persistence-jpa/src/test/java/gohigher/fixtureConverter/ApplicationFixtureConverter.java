@@ -35,5 +35,4 @@ public class ApplicationFixtureConverter {
 			application.getPreferredQualification(), application.getUrl(), currentProcessOrder, new ArrayList<>(),
 			null, false);
 	}
-	}
 }
