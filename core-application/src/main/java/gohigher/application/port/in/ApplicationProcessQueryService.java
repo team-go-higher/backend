@@ -23,10 +23,7 @@ public class ApplicationProcessQueryService implements ApplicationProcessQueryPo
 
 	@Override
 	public List<ApplicationProcessByProcessTypeResponse> findByApplicationIdAndProcessType(Long userId,
-		Long applicationId, ProcessType processType) {
-		if (Objects.isNull(applicationId)) {
-			throw new GoHigherException(ApplicationErrorCode.APPLICATION_ID_NULL);
-		}
+		long applicationId, ProcessType processType) {
 		validateAuthorizationOfUser(userId, applicationId);
 		return applicationProcessPersistenceQueryPort.findByApplicationIdAndProcessType(applicationId, processType)
 			.stream()

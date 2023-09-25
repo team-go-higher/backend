@@ -55,22 +55,5 @@ class ApplicationProcessQueryServiceTest {
 					.hasMessage(APPLICATION_NOT_FOUND.getMessage());
 			}
 		}
-
-		@DisplayName("지원서의 id가 null인 경우에")
-		@Nested
-		class Context_NonExistent_ApplicationId_Null {
-
-			@DisplayName("예외를 발생시킨다.")
-			@Test
-			void it_Throws_Application_Not_Found_Exception() {
-				//given
-				Long applicationId = null;
-
-				//when then
-				assertThatThrownBy(() ->
-					applicationProcessQueryService.findByApplicationIdAndProcessType(userId, applicationId, TEST))
-					.hasMessage(APPLICATION_ID_NULL.getMessage());
-			}
-		}
 	}
 }
