@@ -21,7 +21,7 @@ public class ApplicationProcessQueryController implements ApplicationProcessQuer
 
 	private final ApplicationProcessQueryPort applicationProcessQueryPort;
 
-	@GetMapping("/v1/applications/{applicationId}/processes?&processType={processType}")
+	@GetMapping("/v1/applications/{applicationId}/processes")
 	public ResponseEntity<GohigherResponse<List<ApplicationProcessByProcessTypeResponse>>> getApplicationProcessesByApplicationIdAndType(
 		@Login Long userId, @PathVariable long applicationId, @RequestParam ProcessType processType) {
 		List<ApplicationProcessByProcessTypeResponse> response =
