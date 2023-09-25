@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import gohigher.application.port.in.ApplicationProcessByProcessTypeRequest;
 import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;
 import gohigher.common.ProcessType;
 import gohigher.controller.response.GohigherResponse;
