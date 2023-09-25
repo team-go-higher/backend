@@ -32,6 +32,7 @@ public class SpecificApplicationUpdateRequest {
 	private String preferredQualification;
 	private List<SpecificApplicationUpdateProcessRequest> processes;
 	private String url;
+	private int currentProcessOrder;
 
 	public Application toDomain() {
 		List<Process> processes = this.processes.stream()
@@ -40,6 +41,6 @@ public class SpecificApplicationUpdateRequest {
 
 		return new Application(applicationId, companyName, team, location, contact, position, specificPosition,
 			jobDescription, workType, EmploymentType.from(employmentType), careerRequirement, requiredCapability,
-			preferredQualification, Processes.initiallyFrom(processes), url, processes.get(0));
+			preferredQualification, Processes.initiallyFrom(processes), url, processes.get(currentProcessOrder));
 	}
 }
