@@ -17,7 +17,7 @@ import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
-import gohigher.application.port.in.EmptyScheduleApplicationResponse;
+import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.ProcessResponse;
@@ -62,9 +62,9 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	}
 
 	@Override
-	public PagingResponse<EmptyScheduleApplicationResponse> findWithoutSchedule(Long userId, PagingRequest request) {
+	public PagingResponse<UnscheduledApplicationResponse> findUnscheduled(Long userId, PagingRequest request) {
 		PagingParameters pagingParameters = new PagingParameters(request.getPage(), request.getSize());
-		List<EmptyScheduleApplicationResponse> responses = findByUserIdWithoutSchedule(userId, pagingParameters);
+		List<UnscheduledApplicationResponse> responses = findUnscheduledByUserId(userId, pagingParameters);
 		return new PagingResponse<>(
 			responses.size(),
 			pagingParameters.getPage(),
@@ -79,11 +79,11 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 		return createKanbanApplicationResponses(applications);
 	}
 
-	private List<EmptyScheduleApplicationResponse> findByUserIdWithoutSchedule(Long userId, PagingParameters pagingParameters) {
-		return applicationPersistenceQueryPort.findByUserIdWithoutSchedule(userId, pagingParameters)
+	private List<UnscheduledApplicationResponse> findUnscheduledByUserId(Long userId, PagingParameters pagingParameters) {
+		return applicationPersistenceQueryPort.findUnscheduledByUserId(userId, pagingParameters)
 			.getContent()
 			.stream()
-			.flatMap(this::extractEmptyScheduleApplicationResponse)
+			.flatMap(this::extractUnscheduledApplicationResponse)
 			.toList();
 	}
 
@@ -100,10 +100,10 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.map(processResponse -> DateApplicationResponse.of(application, processResponse));
 	}
 
-	private Stream<EmptyScheduleApplicationResponse> extractEmptyScheduleApplicationResponse(Application application) {
+	private Stream<UnscheduledApplicationResponse> extractUnscheduledApplicationResponse(Application application) {
 		return application.getProcesses()
 			.stream()
-			.map(process -> EmptyScheduleApplicationResponse.of(application, process));
+			.map(process -> UnscheduledApplicationResponse.of(application, process));
 	}
 
 	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<Application> applications) {

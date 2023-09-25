@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import gohigher.application.port.in.ApplicationResponse;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationResponse;
-import gohigher.application.port.in.EmptyScheduleApplicationResponse;
+import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
@@ -104,7 +104,7 @@ public interface ApplicationQueryControllerDocs {
 					""")
 			}))
 	})
-	ResponseEntity<GohigherResponse<PagingResponse<EmptyScheduleApplicationResponse>>> findWithoutSchedule(
+	ResponseEntity<GohigherResponse<PagingResponse<UnscheduledApplicationResponse>>> findUnscheduled(
 		@Login Long userId, @ModelAttribute PagingRequest request);
 
 	@Operation(summary = "칸반 지원서 목록 조회")

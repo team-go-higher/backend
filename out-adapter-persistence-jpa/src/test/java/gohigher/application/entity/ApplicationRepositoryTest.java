@@ -312,9 +312,9 @@ class ApplicationRepositoryTest {
 		}
 	}
 
-	@DisplayName("findByUserIdWithoutSchedule 메서드는")
+	@DisplayName("findUnscheduledByUserId 메서드는")
 	@Nested
-	class Describe_findByUserIdWithoutSchedule {
+	class Describe_findUnscheduledByUserId {
 
 		@DisplayName("전형일이 작성되어 있지 않은 프로세스들이 있을 떄")
 		@Nested
@@ -349,7 +349,7 @@ class ApplicationRepositoryTest {
 				entityManager.clear();
 
 				// when
-				Slice<ApplicationJpaEntity> applications = applicationRepository.findByUserIdWithoutSchedule(userId, pageRequest);
+				Slice<ApplicationJpaEntity> applications = applicationRepository.findUnscheduledByUserId(userId, pageRequest);
 
 				// then
 				assertAll(
@@ -388,7 +388,7 @@ class ApplicationRepositoryTest {
 				entityManager.clear();
 
 				// when
-				Slice<ApplicationJpaEntity> applications = applicationRepository.findByUserIdWithoutSchedule(userId, pageRequest);
+				Slice<ApplicationJpaEntity> applications = applicationRepository.findUnscheduledByUserId(userId, pageRequest);
 
 				// then
 				assertAll(

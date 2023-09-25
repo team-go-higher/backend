@@ -26,7 +26,7 @@ import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
-import gohigher.application.port.in.EmptyScheduleApplicationResponse;
+import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
@@ -175,9 +175,9 @@ class ApplicationQueryServiceTest {
 		}
 	}
 
-	@DisplayName("findWithoutSchedule 메서드는")
+	@DisplayName("findUnscheduled 메서드는")
 	@Nested
-	class Describe_findWithoutSchedule {
+	class Describe_findUnscheduled {
 
 		@DisplayName("전형일이 작성되어 있지 않은 프로세스들이 있을 떄")
 		@Nested
@@ -197,11 +197,11 @@ class ApplicationQueryServiceTest {
 				List<Application> applications = List.of(NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
 				SliceImpl<Application> applicationSlice = new SliceImpl<>(applications);
 				SliceContainer<Application> applicationSliceContainer = new SliceContainer<>(applicationSlice);
-				given(applicationPersistenceQueryPort.findByUserIdWithoutSchedule(eq(userId), any()))
+				given(applicationPersistenceQueryPort.findUnscheduledByUserId(eq(userId), any()))
 					.willReturn(applicationSliceContainer);
 
 				// when
-				PagingResponse<EmptyScheduleApplicationResponse> response = applicationQueryService.findWithoutSchedule(userId, request);
+				PagingResponse<UnscheduledApplicationResponse> response = applicationQueryService.findUnscheduled(userId, request);
 
 				// then
 				assertAll(

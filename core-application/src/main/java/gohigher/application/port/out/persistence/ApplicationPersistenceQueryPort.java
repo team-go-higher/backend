@@ -18,7 +18,7 @@ public interface ApplicationPersistenceQueryPort {
 
 	List<Application> findByUserIdAndDate(Long userId, LocalDate date);
 
-	SliceContainer<Application> findByUserIdWithoutSchedule(Long userId, PagingParameters pagingParameters);
+	SliceContainer<Application> findUnscheduledByUserId(Long userId, PagingParameters pagingParameters);
 
 	List<Application> findOnlyWithCurrentProcessByUserId(Long userId);
 }

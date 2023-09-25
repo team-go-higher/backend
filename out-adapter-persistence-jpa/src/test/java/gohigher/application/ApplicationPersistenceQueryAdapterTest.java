@@ -218,9 +218,9 @@ class ApplicationPersistenceQueryAdapterTest {
 		}
 	}
 
-	@DisplayName("findByUserIdWithoutSchedule 메서드는")
+	@DisplayName("findUnscheduledByUserId 메서드는")
 	@Nested
-	class Describe_findByUserIdWithoutSchedule {
+	class Describe_findUnscheduledByUserId {
 
 		@DisplayName("전형일이 작성되어 있지 않은 프로세스들이 있을 떄")
 		@Nested
@@ -236,12 +236,12 @@ class ApplicationPersistenceQueryAdapterTest {
 				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId,
 					NAVER_APPLICATION.toDomain());
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
-				given(applicationRepository.findByUserIdWithoutSchedule(userId, pagingParameters.toPageable()))
+				given(applicationRepository.findUnscheduledByUserId(userId, pagingParameters.toPageable()))
 					.willReturn(new SliceImpl<>(applicationJpaEntities));
 
 				// when
 				SliceContainer<Application> applicationsInSliceContainer =
-					applicationPersistenceQueryAdapter.findByUserIdWithoutSchedule(userId, pagingParameters);
+					applicationPersistenceQueryAdapter.findUnscheduledByUserId(userId, pagingParameters);
 
 				// then
 				Slice<Application> applications = applicationsInSliceContainer.getContent();

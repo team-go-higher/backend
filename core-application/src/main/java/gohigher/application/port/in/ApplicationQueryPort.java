@@ -10,7 +10,7 @@ public interface ApplicationQueryPort {
 
 	List<DateApplicationResponse> findByDate(DateApplicationRequest request);
 
-	PagingResponse<EmptyScheduleApplicationResponse> findWithoutSchedule(Long userId, PagingRequest request);
+	PagingResponse<UnscheduledApplicationResponse> findUnscheduled(Long userId, PagingRequest request);
 
 	List<KanbanApplicationResponse> findForKanban(Long userId);
 }

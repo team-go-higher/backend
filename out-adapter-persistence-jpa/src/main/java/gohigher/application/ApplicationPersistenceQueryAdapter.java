@@ -49,9 +49,9 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	}
 
 	@Override
-	public SliceContainer<Application> findByUserIdWithoutSchedule(Long userId, PagingParameters pagingParameters) {
+	public SliceContainer<Application> findUnscheduledByUserId(Long userId, PagingParameters pagingParameters) {
 		return new SliceContainer<>(
-			applicationRepository.findByUserIdWithoutSchedule(userId, pagingParameters.toPageable())
+			applicationRepository.findUnscheduledByUserId(userId, pagingParameters.toPageable())
 			.map(ApplicationJpaEntity::toCalenderDomain)
 		);
 	}

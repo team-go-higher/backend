@@ -16,7 +16,7 @@ import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
-import gohigher.application.port.in.EmptyScheduleApplicationResponse;
+import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
@@ -54,10 +54,10 @@ public class ApplicationQueryController implements ApplicationQueryControllerDoc
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
 
-	@GetMapping("/empty-schedule")
-	public ResponseEntity<GohigherResponse<PagingResponse<EmptyScheduleApplicationResponse>>> findWithoutSchedule(
+	@GetMapping("/unscheduled")
+	public ResponseEntity<GohigherResponse<PagingResponse<UnscheduledApplicationResponse>>> findUnscheduled(
 		@Login Long userId, @ModelAttribute PagingRequest request) {
-		PagingResponse<EmptyScheduleApplicationResponse> response = applicationQueryPort.findWithoutSchedule(userId, request);
+		PagingResponse<UnscheduledApplicationResponse> response = applicationQueryPort.findUnscheduled(userId, request);
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
 

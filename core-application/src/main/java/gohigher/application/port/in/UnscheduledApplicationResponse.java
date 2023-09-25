@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class EmptyScheduleApplicationResponse {
+public class UnscheduledApplicationResponse {
 
 	private final long applicationId;
 	private final long processId;
@@ -17,8 +17,8 @@ public class EmptyScheduleApplicationResponse {
 	private final String processType;
 	private final String processDescription;
 
-	public static EmptyScheduleApplicationResponse of(Application application, Process process) {
-		return new EmptyScheduleApplicationResponse(
+	public static UnscheduledApplicationResponse of(Application application, Process process) {
+		return new UnscheduledApplicationResponse(
 			application.getId(),
 			process.getId(),
 			application.getCompanyName(),
