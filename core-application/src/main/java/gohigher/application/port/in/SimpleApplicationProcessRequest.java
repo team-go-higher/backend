@@ -22,10 +22,6 @@ public class SimpleApplicationProcessRequest {
 	@NotNull(message = "JOB_INFO_007||전형 일정이 입력되지 않았습니다.")
 	private LocalDateTime schedule;
 
-	public ProcessType getType() {
-		return ProcessType.from(type);
-	}
-
 	public Process toDomain() {
 		return new Process(null, ProcessType.from(type), description, schedule);
 	}
