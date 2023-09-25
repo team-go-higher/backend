@@ -21,7 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
-import gohigher.pagination.port.in.PagingParameters;
 
 @DisplayName("ApplicationPersistenceQueryAdapter 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -228,17 +227,18 @@ class ApplicationPersistenceQueryAdapterTest {
 			void it_return_applications_with_process() {
 				// given
 				Long userId = 1L;
-				PagingParameters pagingParameters = new PagingParameters(1, 10);
+				int page = 1;
+				int size = 10;
 
 				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId,
 					NAVER_APPLICATION.toDomain());
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
-				given(applicationRepository.findUnscheduledByUserId(userId, pagingParameters.toPageable()))
+				given(applicationRepository.findUnscheduledByUserId(eq(userId), any()))
 					.willReturn(applicationJpaEntities);
 
 				// when
 				List<Application> applications =
-					applicationPersistenceQueryAdapter.findUnscheduledByUserId(userId, pagingParameters);
+					applicationPersistenceQueryAdapter.findUnscheduledByUserId(userId, page, size);
 
 				// then
 				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());

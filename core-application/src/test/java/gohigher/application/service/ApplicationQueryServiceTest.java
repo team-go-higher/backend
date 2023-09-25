@@ -193,7 +193,7 @@ class ApplicationQueryServiceTest {
 
 				Process process = TO_APPLY.toPersistedDomain(1);
 				List<Application> applications = List.of(NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
-				given(applicationPersistenceQueryPort.findUnscheduledByUserId(eq(userId), any()))
+				given(applicationPersistenceQueryPort.findUnscheduledByUserId(userId, page, size))
 					.willReturn(applications);
 
 				// when

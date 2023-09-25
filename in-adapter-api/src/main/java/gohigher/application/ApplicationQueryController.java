@@ -22,6 +22,7 @@ import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -56,7 +57,7 @@ public class ApplicationQueryController implements ApplicationQueryControllerDoc
 
 	@GetMapping("/unscheduled")
 	public ResponseEntity<GohigherResponse<PagingResponse<UnscheduledApplicationResponse>>> findUnscheduled(
-		@Login Long userId, @ModelAttribute PagingRequest request) {
+		@Login Long userId, @Valid @ModelAttribute PagingRequest request) {
 		PagingResponse<UnscheduledApplicationResponse> response = applicationQueryPort.findUnscheduled(userId, request);
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}

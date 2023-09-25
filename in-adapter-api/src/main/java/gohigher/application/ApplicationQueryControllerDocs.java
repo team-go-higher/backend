@@ -90,7 +90,7 @@ public interface ApplicationQueryControllerDocs {
 	@Operation(summary = "전형일이 작성되어 있지 않은 지원서 목록 조회")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "전형일이 작성되어 있지 않은 지원서 목록 조회 성공"),
-		@ApiResponse(responseCode = "400", description = "잘못된 page 값임", content = @Content(
+		@ApiResponse(responseCode = "400", description = "page 또는 size 의 범위가 잘못됨", content = @Content(
 			examples = {
 				@ExampleObject(name = "잘못된 page 값임", value = """
 					{
@@ -98,6 +98,16 @@ public interface ApplicationQueryControllerDocs {
 					"error": {
 						"code": "PAGINATION_001",
 						"message": "page 는 1 이상이어야 합니다."
+					},
+					"data": null
+					}
+					"""),
+				@ExampleObject(name = "잘못된 size 값임", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "PAGINATION_002",
+						"message": "size 는 1 이상이어야 합니다."
 					},
 					"data": null
 					}

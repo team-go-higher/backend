@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import gohigher.application.Application;
-import gohigher.pagination.port.in.PagingParameters;
 
 public interface ApplicationPersistenceQueryPort {
 
@@ -17,7 +16,7 @@ public interface ApplicationPersistenceQueryPort {
 
 	List<Application> findByUserIdAndDate(Long userId, LocalDate date);
 
-	List<Application> findUnscheduledByUserId(Long userId, PagingParameters pagingParameters);
+	List<Application> findUnscheduledByUserId(Long userId, int page, int size);
 
 	List<Application> findOnlyWithCurrentProcessByUserId(Long userId);
 }
