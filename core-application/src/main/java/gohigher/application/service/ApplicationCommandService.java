@@ -49,7 +49,7 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 	}
 
 	private void validateNotFound(Long userId, Long applicationId) {
-		if (!applicationPersistenceQueryPort.existsByIdAndUserId(userId, applicationId)) {
+		if (!applicationPersistenceQueryPort.existsByIdAndUserId(applicationId, userId)) {
 			throw new GoHigherException(APPLICATION_NOT_FOUND);
 		}
 	}
