@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import gohigher.application.port.in.ApplicationProcessByProcessTypeRequest;
 import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;
+import gohigher.common.ProcessType;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -62,5 +63,5 @@ public interface ApplicationProcessQueryControllerDocs {
 		}
 	)
 	ResponseEntity<GohigherResponse<List<ApplicationProcessByProcessTypeResponse>>> getApplicationProcessesByApplicationIdAndType(
-		@Parameter(hidden = true) Long userId, @Parameter(hidden = true) ApplicationProcessByProcessTypeRequest request);
+		@Parameter(hidden = true) Long userId, Long applicationId, ProcessType processType);
 }
