@@ -12,6 +12,7 @@ import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;
 import gohigher.application.port.in.ApplicationProcessQueryPort;
 import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -22,7 +23,7 @@ public class ApplicationProcessQueryController implements ApplicationProcessQuer
 
 	@GetMapping("/v1/applications/processes?applicationId={applicationId}&processType={processType}")
 	public ResponseEntity<GohigherResponse<List<ApplicationProcessByProcessTypeResponse>>> getApplicationProcessesByApplicationIdAndType(
-		@Login Long userId, @ModelAttribute ApplicationProcessByProcessTypeRequest request) {
+		@Login Long userId, @ModelAttribute @Valid ApplicationProcessByProcessTypeRequest request) {
 		List<ApplicationProcessByProcessTypeResponse> response =
 			applicationProcessQueryPort.findByApplicationIdAndProcessType(userId, request);
 		return ResponseEntity.ok(GohigherResponse.success(response));
