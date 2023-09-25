@@ -43,7 +43,38 @@ public interface ApplicationCommandControllerDocs {
 					},
 					"data": null
 					}
-					""")}))})
+					"""),
+				@ExampleObject(name = "전형 단계 입력되지 않음", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "JOB_INFO_005",
+						"message": "전형 단계가 입력되지 않았습니다."
+					},
+					"data": null
+					}
+					"""),
+				@ExampleObject(name = "세부 전형 입력되지 않음", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "JOB_INFO_006",
+						"message": "세부 전형이 입력되지 않았습니다."
+					},
+					"data": null
+					}
+					"""),
+				@ExampleObject(name = "전형 일정 입력되지 않음", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "JOB_INFO_007",
+						"message": "전형 일정이 입력되지 않았습니다."
+					},
+					"data": null
+					}
+					""")
+			}))})
 	ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Parameter(hidden = true) Long userId,
 		@RequestBody SimpleApplicationRequest request);
 
@@ -54,6 +85,26 @@ public interface ApplicationCommandControllerDocs {
 				headers = @Header(name = "Location", description = "/applications/{applicationId}")),
 			@ApiResponse(responseCode = "400", description = "상세 지원서 등록 실패", content = @Content(
 				examples = {
+					@ExampleObject(name = "회사명 입력되지 않음", value = """
+						{
+						"success": false,
+						"error": {
+							"code": "JOB_INFO_002",
+							"message": "회사명이 입력되지 않았습니다."
+						},
+						"data": null
+						}
+						"""),
+					@ExampleObject(name = "직무 입력되지 않음", value = """
+						{
+						"success": false,
+						"error": {
+							"code": "JOB_INFO_003",
+							"message": "직무가 입력되지 않았습니다."
+						},
+						"data": null
+						}
+						"""),
 					@ExampleObject(name = "유효하지 않은 전형 단계", value = """
 						{
 						"success": false,
