@@ -81,7 +81,6 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	private List<UnscheduledApplicationResponse> findUnscheduledByUserId(Long userId, PagingParameters pagingParameters) {
 		return applicationPersistenceQueryPort.findUnscheduledByUserId(userId, pagingParameters)
-			.getContent()
 			.stream()
 			.flatMap(this::extractUnscheduledApplicationResponse)
 			.toList();

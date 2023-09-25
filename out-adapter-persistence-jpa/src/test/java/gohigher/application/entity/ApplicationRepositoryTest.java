@@ -23,7 +23,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 
 import gohigher.common.Process;
 import gohigher.application.Application;
@@ -349,12 +348,12 @@ class ApplicationRepositoryTest {
 				entityManager.clear();
 
 				// when
-				Slice<ApplicationJpaEntity> applications = applicationRepository.findUnscheduledByUserId(userId, pageRequest);
+				List<ApplicationJpaEntity> applications = applicationRepository.findUnscheduledByUserId(userId, pageRequest);
 
 				// then
 				assertAll(
-					() -> assertThat(applications.getNumberOfElements()).isEqualTo(applicationCount),
-					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(processCount)
+					() -> assertThat(applications.size()).isEqualTo(applicationCount),
+					() -> assertThat(applications.get(0).getProcesses()).hasSize(processCount)
 				);
 			}
 		}
@@ -388,12 +387,12 @@ class ApplicationRepositoryTest {
 				entityManager.clear();
 
 				// when
-				Slice<ApplicationJpaEntity> applications = applicationRepository.findUnscheduledByUserId(userId, pageRequest);
+				List<ApplicationJpaEntity> applications = applicationRepository.findUnscheduledByUserId(userId, pageRequest);
 
 				// then
 				assertAll(
-					() -> assertThat(applications.getNumberOfElements()).isEqualTo(applicationCount),
-					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(processCount - currentProcessOrder)
+					() -> assertThat(applications.size()).isEqualTo(applicationCount),
+					() -> assertThat(applications.get(0).getProcesses()).hasSize(processCount - currentProcessOrder)
 				);
 			}
 		}

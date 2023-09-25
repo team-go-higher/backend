@@ -11,7 +11,6 @@ import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.pagination.port.in.PagingParameters;
-import gohigher.pagination.port.in.SliceContainer;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -49,11 +48,11 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	}
 
 	@Override
-	public SliceContainer<Application> findUnscheduledByUserId(Long userId, PagingParameters pagingParameters) {
-		return new SliceContainer<>(
-			applicationRepository.findUnscheduledByUserId(userId, pagingParameters.toPageable())
+	public List<Application> findUnscheduledByUserId(Long userId, PagingParameters pagingParameters) {
+		return applicationRepository.findUnscheduledByUserId(userId, pagingParameters.toPageable())
+			.stream()
 			.map(ApplicationJpaEntity::toCalenderDomain)
-		);
+			.toList();
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -50,7 +49,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "AND a.currentProcessOrder <= p.order "
 		+ "AND p.schedule = null "
 		+ "AND a.deleted = false")
-	Slice<ApplicationJpaEntity> findUnscheduledByUserId(Long userId, Pageable pageable);
+	List<ApplicationJpaEntity> findUnscheduledByUserId(Long userId, Pageable pageable);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "

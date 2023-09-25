@@ -18,13 +18,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.pagination.port.in.PagingParameters;
-import gohigher.pagination.port.in.SliceContainer;
 
 @DisplayName("ApplicationPersistenceQueryAdapter 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -237,15 +234,14 @@ class ApplicationPersistenceQueryAdapterTest {
 					NAVER_APPLICATION.toDomain());
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
 				given(applicationRepository.findUnscheduledByUserId(userId, pagingParameters.toPageable()))
-					.willReturn(new SliceImpl<>(applicationJpaEntities));
+					.willReturn(applicationJpaEntities);
 
 				// when
-				SliceContainer<Application> applicationsInSliceContainer =
+				List<Application> applications =
 					applicationPersistenceQueryAdapter.findUnscheduledByUserId(userId, pagingParameters);
 
 				// then
-				Slice<Application> applications = applicationsInSliceContainer.getContent();
-				assertThat(applications.getNumberOfElements()).isEqualTo(applicationJpaEntities.size());
+				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
 			}
 		}
 	}

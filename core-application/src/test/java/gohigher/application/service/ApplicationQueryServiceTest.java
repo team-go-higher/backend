@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.SliceImpl;
 
 import gohigher.application.Application;
 import gohigher.application.port.in.CalendarApplicationRequest;
@@ -32,7 +31,6 @@ import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.Process;
-import gohigher.pagination.port.in.SliceContainer;
 import gohigher.common.ProcessType;
 
 @DisplayName("ApplicationQueryService 클래스의")
@@ -195,10 +193,8 @@ class ApplicationQueryServiceTest {
 
 				Process process = TO_APPLY.toPersistedDomain(1);
 				List<Application> applications = List.of(NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
-				SliceImpl<Application> applicationSlice = new SliceImpl<>(applications);
-				SliceContainer<Application> applicationSliceContainer = new SliceContainer<>(applicationSlice);
 				given(applicationPersistenceQueryPort.findUnscheduledByUserId(eq(userId), any()))
-					.willReturn(applicationSliceContainer);
+					.willReturn(applications);
 
 				// when
 				PagingResponse<UnscheduledApplicationResponse> response = applicationQueryService.findUnscheduled(userId, request);
