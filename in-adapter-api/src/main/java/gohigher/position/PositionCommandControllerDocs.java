@@ -29,6 +29,18 @@ public interface PositionCommandControllerDocs {
 					},
 					"data": null
 					}
+					""")})),
+		@ApiResponse(responseCode = "400", description = "Request에 List가 둘 다 비어있을 경우", content = @Content(
+			examples = {
+				@ExampleObject(name = "직무가 이미 게시되어 있음", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "GLOBAL_011",
+						"message": "빈 입력값입니다."
+					},
+					"data": null
+					}
 					""")}))})
 	ResponseEntity<Void> saveDesiredPositions(@Parameter(hidden = true) Long userId,
 		@RequestBody DesiredPositionRequest request);
