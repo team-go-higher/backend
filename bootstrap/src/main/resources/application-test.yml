@@ -1,7 +1,7 @@
 spring:
   config:
     import:
-      - persistence/application-local.yml
+      - persistence/application-test.yml
       - jwt/application-local.yml
       - auth/application-test.yml
       - cors/application-local.yml
