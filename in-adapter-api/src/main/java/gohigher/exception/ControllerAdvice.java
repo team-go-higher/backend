@@ -16,7 +16,7 @@ import gohigher.global.exception.GoHigherException;
 @RestControllerAdvice
 public class ControllerAdvice {
 
-	private static final String METHOD_ARGUMENT_NOT_VALID_EXCEPTION_MESSAGE_CODE_DELIMITER = "||";
+	private static final String METHOD_ARGUMENT_NOT_VALID_EXCEPTION_MESSAGE_CODE_DELIMITER = "\\|\\|";
 	private static final int METHOD_ARGUMENT_NOT_VALID_EXCEPTION_ERROR_INDEX = 0;
 	private static final int METHOD_ARGUMENT_NOT_VALID_EXCEPTION_MESSAGE_INDEX = 1;
 
