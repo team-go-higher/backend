@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import gohigher.application.Application;
+import gohigher.common.EmploymentType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -46,7 +47,7 @@ public class ApplicationResponse {
 			application.getSpecificPosition(),
 			application.getJobDescription(),
 			application.getWorkType(),
-			application.getEmploymentType().name(),
+			getEmploymentType(application),
 			application.getCareerRequirement(),
 			application.getRequiredCapability(),
 			application.getPreferredQualification(),
@@ -61,5 +62,10 @@ public class ApplicationResponse {
 			.filter(i -> application.getProcesses().get(i).equals(application.getCurrentProcess()))
 			.findFirst()
 			.orElse(-1);
+	}
+
+	private static String getEmploymentType(Application application) {
+		EmploymentType employmentType = application.getEmploymentType();
+		return employmentType == null ? null : employmentType.name();
 	}
 }
