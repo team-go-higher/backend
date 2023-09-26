@@ -221,22 +221,22 @@ public interface ApplicationCommandControllerDocs {
 			@ApiResponse(responseCode = "200", description = "지원서 상세 업데이트 성공"),
 			@ApiResponse(responseCode = "400", description = "지원서 상세 업데이트 실패", content = @Content(
 				examples = {
-					@ExampleObject(name = "유효하지 않은 전형 단계", value = """
+					@ExampleObject(name = "회사명 입력되지 않음", value = """
 						{
 						"success": false,
 						"error": {
-							"code": "JOB_INFO_001",
-							"message": "유효하지 않은 전형 단계입니다."
+							"code": "JOB_INFO_002",
+							"message": "회사명이 입력되지 않았습니다."
 						},
 						"data": null
 						}
 						"""),
-					@ExampleObject(name = "유효하지 않은 고용 형태", value = """
+					@ExampleObject(name = "직무 입력되지 않음", value = """
 						{
 						"success": false,
 						"error": {
-							"code": "JOB_INFO_004",
-							"message": "유효하지 않은 고용 형태입니다."
+							"code": "JOB_INFO_003",
+							"message": "직무가 입력되지 않았습니다."
 						},
 						"data": null
 						}
