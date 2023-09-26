@@ -41,4 +41,15 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 	public void updateCurrentProcessOrder(long id, long processId) {
 		applicationRepository.updateCurrentProcessOrder(id, processId);
 	}
+
+	@Override
+	public void update(Application application) {
+		ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(application.getId())
+			.orElseThrow();
+
+		applicationJpaEntity.update(application);
+		applicationProcessRepository.deleteByApplicationId(application.getId());
+		List<Process> processes = application.getProcesses();
+		saveApplicationProcesses(applicationJpaEntity, processes);
+	}
 }

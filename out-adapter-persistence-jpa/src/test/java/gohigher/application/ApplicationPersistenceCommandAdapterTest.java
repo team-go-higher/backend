@@ -118,4 +118,59 @@ class ApplicationPersistenceCommandAdapterTest {
 			}
 		}
 	}
+
+	@DisplayName("update 메서드는")
+	@Nested
+	class Describe_update {
+
+		@DisplayName("지원서 정보와 전형 과정이 변경된 정보일 경우")
+		@Nested
+		class Context_with_changed_application_and_process {
+
+			private long applicationId;
+			private Application applicationToUpdate;
+			private Process firstProcessToUpdate;
+			private Process secondProcessToUpdate;
+
+			@BeforeEach
+			void setUp() {
+				ApplicationJpaEntity applicationJpaEntity =
+					applicationRepository.save(ApplicationJpaEntity.of(application, USER_ID));
+				applicationId = applicationJpaEntity.getId();
+				applicationProcessRepository.save(ApplicationProcessJpaEntity.of(applicationJpaEntity, firstProcess));
+				applicationProcessRepository.save(ApplicationProcessJpaEntity.of(applicationJpaEntity, secondProcess));
+
+				firstProcessToUpdate = TEST.toDomain();
+				secondProcessToUpdate = INTERVIEW.toDomain();
+				applicationToUpdate = COUPANG_APPLICATION.builder()
+					.id(applicationId)
+					.processes(List.of(firstProcessToUpdate, secondProcessToUpdate))
+					.currentProcess(firstProcessToUpdate)
+					.toDomain();
+			}
+
+			@DisplayName("정상적으로 값들을 변경한다.")
+			@Test
+			void it_update_all_data() {
+				// when
+				applicationPersistenceCommandAdapter.update(applicationToUpdate);
+				entityManager.flush();
+				entityManager.clear();
+
+				// then
+				ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(applicationId).get();
+				assertAll(
+					() -> assertThat(applicationJpaEntity.getCompanyName()).isEqualTo(
+						COUPANG_APPLICATION.getCompanyName()),
+					() -> assertThat(applicationJpaEntity.getProcesses()).hasSize(
+						applicationToUpdate.getProcesses().size()),
+					() -> assertThat(applicationJpaEntity.getProcesses()).extracting("type", "description")
+						.contains(
+							tuple(firstProcessToUpdate.getType(), firstProcessToUpdate.getDescription()),
+							tuple(secondProcessToUpdate.getType(), secondProcessToUpdate.getDescription())
+						)
+				);
+			}
+		}
+	}
 }

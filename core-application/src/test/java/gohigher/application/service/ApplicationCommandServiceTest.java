@@ -193,7 +193,8 @@ class ApplicationCommandServiceTest {
 				applicationFixture.getRequiredCapability(),
 				applicationFixture.getPreferredQualification(),
 				processes,
-				applicationFixture.getUrl()
+				applicationFixture.getUrl(),
+				0
 			);
 		}
 	}
