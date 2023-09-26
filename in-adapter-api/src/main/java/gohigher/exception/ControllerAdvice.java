@@ -47,8 +47,8 @@ public class ControllerAdvice {
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<GohigherResponse<Void>> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-		GohigherResponse<Void> response = GohigherResponse.fail(INVALID_DATE_FORMAT.getErrorCode(),
-			INVALID_DATE_FORMAT.getMessage());
+		GohigherResponse<Void> response = GohigherResponse.fail(INVALID_JSON_FORMAT.getErrorCode(),
+			INVALID_JSON_FORMAT.getMessage());
 
 		return ResponseEntity.badRequest().body(response);
 	}
