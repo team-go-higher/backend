@@ -24,6 +24,7 @@ import gohigher.application.port.in.ProcessResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.ProcessType;
 import gohigher.global.exception.GoHigherException;
+import gohigher.pagination.PagingContainer;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -62,13 +63,10 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	@Override
 	public PagingResponse<UnscheduledApplicationResponse> findUnscheduled(Long userId, PagingRequest request) {
-		List<UnscheduledApplicationResponse> responses = findUnscheduledByUserId(userId, request.getPage(), request.getSize());
-		return new PagingResponse<>(
-			responses.size(),
-			request.getPage(),
-			request.getSize(),
-			responses
-		);
+		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findUnscheduledByUserId(
+			userId, request.getPage(), request.getSize());
+		List<UnscheduledApplicationResponse> responses = findUnscheduledByUserId(pagingContainer.getContent());
+		return new PagingResponse<>(pagingContainer.isLastPage(), responses);
 	}
 
 	@Override
@@ -77,9 +75,8 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 		return createKanbanApplicationResponses(applications);
 	}
 
-	private List<UnscheduledApplicationResponse> findUnscheduledByUserId(Long userId, int page, int size) {
-		return applicationPersistenceQueryPort.findUnscheduledByUserId(userId, page, size)
-			.stream()
+	private List<UnscheduledApplicationResponse> findUnscheduledByUserId(List<Application> applications) {
+		return applications.stream()
 			.flatMap(this::extractUnscheduledApplicationResponse)
 			.toList();
 	}

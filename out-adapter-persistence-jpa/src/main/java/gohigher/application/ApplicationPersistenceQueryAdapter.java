@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
+import gohigher.pagination.PagingContainer;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -48,11 +50,15 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	}
 
 	@Override
-	public List<Application> findUnscheduledByUserId(Long userId, int page, int size) {
-		return applicationRepository.findUnscheduledByUserId(userId, PageRequest.of(page - 1, size))
+	public PagingContainer<Application> findUnscheduledByUserId(Long userId, int page, int size) {
+		Slice<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findUnscheduledByUserId(userId,
+			PageRequest.of(page - 1, size));
+
+		List<Application> applications = applicationJpaEntities
 			.stream()
 			.map(ApplicationJpaEntity::toCalenderDomain)
 			.toList();
+		return new PagingContainer<>(applicationJpaEntities.hasNext(), applications);
 	}
 
 	@Override

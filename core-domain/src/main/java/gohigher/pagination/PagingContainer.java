@@ -1,4 +1,4 @@
-package gohigher.application.port.in;
+package gohigher.pagination;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class PagingResponse<E> {
+public class PagingContainer<E> {
 
 	private final boolean lastPage;
 	private final List<E> content;

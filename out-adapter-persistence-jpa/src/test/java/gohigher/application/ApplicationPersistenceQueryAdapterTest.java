@@ -23,6 +23,7 @@ import org.springframework.data.domain.SliceImpl;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
+import gohigher.pagination.PagingContainer;
 
 @DisplayName("ApplicationPersistenceQueryAdapter 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -240,11 +241,11 @@ class ApplicationPersistenceQueryAdapterTest {
 					.willReturn(applicationJpaEntitySlice);
 
 				// when
-				List<Application> applications =
-					applicationPersistenceQueryAdapter.findUnscheduledByUserId(userId, page, size);
+				PagingContainer<Application> applications = applicationPersistenceQueryAdapter.findUnscheduledByUserId(
+					userId, page, size);
 
 				// then
-				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
+				assertThat(applications.getContent().size()).isEqualTo(applicationJpaEntities.size());
 			}
 		}
 	}

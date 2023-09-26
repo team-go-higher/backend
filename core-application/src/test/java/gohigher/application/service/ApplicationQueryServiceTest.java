@@ -4,7 +4,6 @@ import static gohigher.application.ApplicationErrorCode.*;
 import static gohigher.application.ApplicationFixture.*;
 import static gohigher.application.ProcessFixture.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
@@ -32,6 +31,7 @@ import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
+import gohigher.pagination.PagingContainer;
 
 @DisplayName("ApplicationQueryService 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -194,18 +194,13 @@ class ApplicationQueryServiceTest {
 				Process process = TO_APPLY.toPersistedDomain(1);
 				List<Application> applications = List.of(NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
 				given(applicationPersistenceQueryPort.findUnscheduledByUserId(userId, page, size))
-					.willReturn(applications);
+					.willReturn(new PagingContainer<>(true, applications));
 
 				// when
 				PagingResponse<UnscheduledApplicationResponse> response = applicationQueryService.findUnscheduled(userId, request);
 
 				// then
-				assertAll(
-					() -> assertThat(response.getPage()).isEqualTo(page),
-					() -> assertThat(response.getSize()).isEqualTo(size),
-					() -> assertThat(response.getCount()).isEqualTo(response.getContent().size()),
-					() -> assertThat(response.getContent()).hasSize(applications.size())
-				);
+				assertThat(response.getContent()).hasSize(applications.size());
 			}
 		}
 	}
