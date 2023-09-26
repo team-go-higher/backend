@@ -110,7 +110,7 @@ public enum ApplicationFixture {
 		}
 
 		public Application toDomain() {
-			return new Application(null, companyName, team, location, contact, position, specificPosition,
+			return new Application(id, companyName, team, location, contact, position, specificPosition,
 				jobDescription, workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
 				Processes.initiallyFrom(processes), url, currentProcess);
 		}
