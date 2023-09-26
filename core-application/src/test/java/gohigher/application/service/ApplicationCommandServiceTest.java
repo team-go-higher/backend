@@ -136,7 +136,7 @@ class ApplicationCommandServiceTest {
 
 			@BeforeEach
 			void setUp() {
-				request = convertToRequest(applicationId, NAVER_APPLICATION, TO_APPLY, DOCUMENT, INTERVIEW);
+				request = convertToRequest(NAVER_APPLICATION, TO_APPLY, DOCUMENT, INTERVIEW);
 
 				when(applicationPersistenceQueryPort.existsByIdAndUserId(APPLICATION_ID, userId))
 					.thenReturn(true);
@@ -145,7 +145,7 @@ class ApplicationCommandServiceTest {
 			@DisplayName("정상적으로 업데이트를 수행한다.")
 			@Test
 			public void it_update_application() {
-				applicationCommandService.updateSpecifically(userId, request);
+				applicationCommandService.updateSpecifically(userId, applicationId, request);
 
 				verify(applicationPersistenceCommandPort).update(any());
 			}
@@ -157,7 +157,7 @@ class ApplicationCommandServiceTest {
 
 			@BeforeEach
 			void setUp() {
-				request = convertToRequest(applicationId, NAVER_APPLICATION, TO_APPLY, DOCUMENT, INTERVIEW);
+				request = convertToRequest(NAVER_APPLICATION, TO_APPLY, DOCUMENT, INTERVIEW);
 
 				when(applicationPersistenceQueryPort.existsByIdAndUserId(APPLICATION_ID, userId))
 					.thenReturn(false);
@@ -166,20 +166,20 @@ class ApplicationCommandServiceTest {
 			@DisplayName("예외를 발생시킨다.")
 			@Test
 			public void it_throws_exception() {
-				assertThatThrownBy(() -> applicationCommandService.updateSpecifically(applicationOwnerId, request))
+				assertThatThrownBy(
+					() -> applicationCommandService.updateSpecifically(applicationOwnerId, applicationId, request))
 					.hasMessage(APPLICATION_NOT_FOUND.getMessage());
 			}
 		}
 
-		private SpecificApplicationUpdateRequest convertToRequest(Long applicationId,
-			ApplicationFixture applicationFixture, ProcessFixture... processesFixtures) {
+		private SpecificApplicationUpdateRequest convertToRequest(ApplicationFixture applicationFixture,
+			ProcessFixture... processesFixtures) {
 			List<SpecificApplicationUpdateProcessRequest> processes = Arrays.stream(processesFixtures)
 				.map(p -> new SpecificApplicationUpdateProcessRequest(null, p.getType().name(), p.getDescription(),
 					p.getSchedule()))
 				.toList();
 
 			return new SpecificApplicationUpdateRequest(
-				applicationId,
 				applicationFixture.getCompanyName(),
 				applicationFixture.getTeam(),
 				applicationFixture.getLocation(),

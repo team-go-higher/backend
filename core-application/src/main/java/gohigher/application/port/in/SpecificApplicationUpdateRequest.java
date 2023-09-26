@@ -6,7 +6,6 @@ import gohigher.application.Application;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
 import gohigher.common.Processes;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SpecificApplicationUpdateRequest {
 
-	@NotBlank(message = "JOB_INFO_008||지원서 정보가 입력되지 않았습니다.")
-	private Long applicationId;
 	private String companyName;
 	private String team;
 	private String location;
@@ -34,7 +31,7 @@ public class SpecificApplicationUpdateRequest {
 	private String url;
 	private int currentProcessOrder;
 
-	public Application toDomain() {
+	public Application toDomain(long applicationId) {
 		List<Process> processes = this.processes.stream()
 			.map(SpecificApplicationUpdateProcessRequest::toDomain)
 			.toList();

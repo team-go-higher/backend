@@ -44,10 +44,10 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 	}
 
 	@Override
-	public void updateSpecifically(Long userId, SpecificApplicationUpdateRequest request) {
-		validateNotFound(userId, request.getApplicationId());
+	public void updateSpecifically(Long userId, long applicationId, SpecificApplicationUpdateRequest request) {
+		validateNotFound(userId, applicationId);
 
-		applicationPersistenceCommandPort.update(request.toDomain());
+		applicationPersistenceCommandPort.update(request.toDomain(applicationId));
 	}
 
 	private void validateNotFound(Long userId, Long applicationId) {
