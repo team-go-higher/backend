@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
@@ -233,8 +235,9 @@ class ApplicationPersistenceQueryAdapterTest {
 				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId,
 					NAVER_APPLICATION.toDomain());
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
+				Slice<ApplicationJpaEntity> applicationJpaEntitySlice = new SliceImpl<>(applicationJpaEntities);
 				given(applicationRepository.findUnscheduledByUserId(eq(userId), any()))
-					.willReturn(applicationJpaEntities);
+					.willReturn(applicationJpaEntitySlice);
 
 				// when
 				List<Application> applications =
