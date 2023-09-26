@@ -133,4 +133,21 @@ public class ApplicationJpaEntity {
 			workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
 			new Processes(processes), url, currentProcess);
 	}
+
+	public void update(Application application) {
+		this.companyName = application.getCompanyName();
+		this.team = application.getTeam();
+		this.location = application.getLocation();
+		this.contact = application.getContact();
+		this.position = application.getPosition();
+		this.specificPosition = application.getSpecificPosition();
+		this.jobDescription = application.getJobDescription();
+		this.workType = application.getWorkType();
+		this.employmentType = application.getEmploymentType();
+		this.careerRequirement = application.getCareerRequirement();
+		this.requiredCapability = application.getRequiredCapability();
+		this.preferredQualification = application.getPreferredQualification();
+		this.url = application.getUrl();
+		this.currentProcessOrder = application.getCurrentProcess().getOrder();
+	}
 }
