@@ -14,16 +14,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ApplicationFixture {
 
-	NAVER_APPLICATION("Naver", "파이낸셜", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
-		"", "", new ArrayList<>(), null, ""),
-	KAKAO_APPLICATION("KAKAO", "페이", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
-		"", "", new ArrayList<>(), null, ""),
-	LINE_APPLICATION("LINE", "메신저", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT, "",
-		"", "", new ArrayList<>(), null, ""),
-	COUPANG_APPLICATION("COUPANG", "로켓배송", "서울특별시 송파구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT,
+	NAVER_APPLICATION(null, "Naver", "파이낸셜", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "",
+		EmploymentType.PERMANENT, "", "", "", new ArrayList<>(), null, ""),
+	KAKAO_APPLICATION(null, "KAKAO", "페이", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT,
 		"", "", "", new ArrayList<>(), null, ""),
+	LINE_APPLICATION(null, "LINE", "메신저", "경기 성남시 분당구", "031-000-0000", "백엔드 개발", "", "", "", EmploymentType.PERMANENT,
+		"", "", "", new ArrayList<>(), null, ""),
+	COUPANG_APPLICATION(null, "COUPANG", "로켓배송", "서울특별시 송파구", "031-000-0000", "백엔드 개발", "", "", "",
+		EmploymentType.PERMANENT, "", "", "", new ArrayList<>(), null, ""),
 	;
 
+	private final Long id;
 	private final String companyName;
 	private final String team;
 	private final String location;
@@ -51,8 +52,13 @@ public enum ApplicationFixture {
 			.toDomain();
 	}
 
+	public Builder builder() {
+		return new Builder(this);
+	}
+
 	@NoArgsConstructor
 	public static class Builder {
+		private Long id;
 		private String companyName;
 		private String team;
 		private String location;
@@ -70,6 +76,7 @@ public enum ApplicationFixture {
 		private String url;
 
 		public Builder(ApplicationFixture application) {
+			this.id = application.getId();
 			this.companyName = application.getCompanyName();
 			this.team = application.getTeam();
 			this.location = application.getLocation();
@@ -85,6 +92,11 @@ public enum ApplicationFixture {
 			this.processes = application.getProcesses();
 			this.currentProcess = application.getCurrentProcess();
 			this.url = application.getUrl();
+		}
+
+		public Builder id(Long id) {
+			this.id = id;
+			return this;
 		}
 
 		public Builder processes(List<Process> processes) {
