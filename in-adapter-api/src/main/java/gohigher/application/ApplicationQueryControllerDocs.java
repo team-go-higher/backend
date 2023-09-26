@@ -10,7 +10,6 @@ import gohigher.application.port.in.ApplicationResponse;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
-import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +39,7 @@ public interface ApplicationQueryControllerDocs {
 					""")
 			}))
 	})
-	ResponseEntity<GohigherResponse<ApplicationResponse>> findById(@Login Long userId,
+	ResponseEntity<GohigherResponse<ApplicationResponse>> findById(@Parameter(hidden = true) Long userId,
 		@PathVariable Long applicationId);
 
 	@Operation(summary = "지원서 캘린더 월간 데이터 조회")
@@ -89,5 +88,6 @@ public interface ApplicationQueryControllerDocs {
 			@ApiResponse(responseCode = "200", description = "칸반 지원서 목록 조회 성공")
 		}
 	)
-	ResponseEntity<GohigherResponse<List<KanbanApplicationResponse>>> findForKanban(@Parameter(hidden = true) Long userId);
+	ResponseEntity<GohigherResponse<List<KanbanApplicationResponse>>> findForKanban(
+		@Parameter(hidden = true) Long userId);
 }

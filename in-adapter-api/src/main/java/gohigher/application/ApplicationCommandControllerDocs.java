@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
+import gohigher.application.port.in.SpecificApplicationUpdateRequest;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -162,4 +163,57 @@ public interface ApplicationCommandControllerDocs {
 				}))})
 	ResponseEntity<GohigherResponse<Void>> updateApplicationCurrentProcess(@Parameter(hidden = true) Long userId,
 		@RequestBody CurrentProcessUpdateRequest request);
+
+	@Operation(summary = "지원서 업데이트")
+	@ApiResponses(
+		value = {
+			@ApiResponse(responseCode = "200", description = "지원서 상세 업데이트 성공"),
+			@ApiResponse(responseCode = "400", description = "지원서 상세 업데이트 실패", content = @Content(
+				examples = {
+					@ExampleObject(name = "유효하지 않은 전형 단계", value = """
+						{
+						"success": false,
+						"error": {
+							"code": "JOB_INFO_001",
+							"message": "유효하지 않은 전형 단계입니다."
+						},
+						"data": null
+						}
+						"""),
+					@ExampleObject(name = "유효하지 않은 고용 형태", value = """
+						{
+						"success": false,
+						"error": {
+							"code": "JOB_INFO_004",
+							"message": "유효하지 않은 고용 형태입니다."
+						},
+						"data": null
+						}
+						"""),
+					@ExampleObject(name = "전형 단계 입력되지 않음", value = """
+						{
+						"success": false,
+						"error": {
+							"code": "JOB_INFO_005",
+							"message": "전형 단계가 입력되지 않았습니다."
+						},
+						"data": null
+						}
+						"""),
+					@ExampleObject(name = "세부 전형 입력되지 않음", value = """
+						{
+						"success": false,
+						"error": {
+							"code": "JOB_INFO_006",
+							"message": "세부 전형이 입력되지 않았습니다."
+						},
+						"data": null
+						}
+						""")
+				}
+			))
+		}
+	)
+	ResponseEntity<GohigherResponse<Void>> updateApplicationSpecifically(@Parameter(hidden = true) Long userId,
+		long applicationId, SpecificApplicationUpdateRequest request);
 }
