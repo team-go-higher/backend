@@ -15,7 +15,6 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework:spring-context'
-    implementation 'org.springframework.data:spring-data-commons'
 
     // database
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
