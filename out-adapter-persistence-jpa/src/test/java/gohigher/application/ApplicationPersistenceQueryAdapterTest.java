@@ -18,9 +18,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
+import gohigher.pagination.PagingContainer;
 
 @DisplayName("ApplicationPersistenceQueryAdapter 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -50,7 +53,8 @@ class ApplicationPersistenceQueryAdapterTest {
 
 			@BeforeEach
 			void setUp() {
-				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
+				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId,
+					NAVER_APPLICATION.toDomain());
 				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication, TEST.toDomain(), 1));
 				given(applicationRepository.findByIdAndUserIdWithProcess(applicationId, userId))
 					.willReturn(Optional.of(naverApplication));
@@ -59,7 +63,8 @@ class ApplicationPersistenceQueryAdapterTest {
 			@DisplayName("Optional로 감싸진 Application객체를 반환한다.")
 			@Test
 			void it_return_application_wrapped_by_optional() {
-				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(applicationId, userId);
+				Optional<Application> actual = applicationPersistenceQueryAdapter.findByIdAndUserId(applicationId,
+					userId);
 
 				assertThat(actual).isNotEmpty();
 			}
@@ -123,7 +128,8 @@ class ApplicationPersistenceQueryAdapterTest {
 			@DisplayName("일정 정보가 담긴 지원서를 반환한다.")
 			@Test
 			void it_return_application_with_processes() {
-				List<Application> response = applicationPersistenceQueryAdapter.findByUserIdAndMonth(userId, year, month);
+				List<Application> response = applicationPersistenceQueryAdapter.findByUserIdAndMonth(userId, year,
+					month);
 
 				Application actualNaverApplication = findApplication(response, naverApplication);
 				Application actualKakaoApplication = findApplication(response, kakaoApplication);
@@ -211,6 +217,39 @@ class ApplicationPersistenceQueryAdapterTest {
 		}
 	}
 
+	@DisplayName("findUnscheduledByUserId 메서드는")
+	@Nested
+	class Describe_findUnscheduledByUserId {
+
+		@DisplayName("전형일이 작성되어 있지 않은 프로세스들이 있을 떄")
+		@Nested
+		class Context_exist_processes_without_schedule {
+
+			@DisplayName("해당 전형들을 포함한 어플리케이션을 반환한다")
+			@Test
+			void it_return_applications_with_process() {
+				// given
+				Long userId = 1L;
+				int page = 1;
+				int size = 10;
+
+				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId,
+					NAVER_APPLICATION.toDomain());
+				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
+				Slice<ApplicationJpaEntity> applicationJpaEntitySlice = new SliceImpl<>(applicationJpaEntities);
+				given(applicationRepository.findUnscheduledByUserId(eq(userId), any()))
+					.willReturn(applicationJpaEntitySlice);
+
+				// when
+				PagingContainer<Application> applications = applicationPersistenceQueryAdapter.findUnscheduledByUserId(
+					userId, page, size);
+
+				// then
+				assertThat(applications.getContent().size()).isEqualTo(applicationJpaEntities.size());
+			}
+		}
+	}
+
 	@DisplayName("findOnlyWithCurrentProcessByUserId 메서드는")
 	@Nested
 	class Describe_findOnlyWithCurrentProcessByUserId {
@@ -227,10 +266,12 @@ class ApplicationPersistenceQueryAdapterTest {
 
 				ApplicationJpaEntity applicationJpaEntity = mock(ApplicationJpaEntity.class);
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
-				given(applicationRepository.findOnlyWithCurrentProcessByUserId(userId)).willReturn(applicationJpaEntities);
+				given(applicationRepository.findOnlyWithCurrentProcessByUserId(userId)).willReturn(
+					applicationJpaEntities);
 
 				// when
-				List<Application> applications = applicationPersistenceQueryAdapter.findOnlyWithCurrentProcessByUserId(userId);
+				List<Application> applications = applicationPersistenceQueryAdapter.findOnlyWithCurrentProcessByUserId(
+					userId);
 
 				// then
 				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
