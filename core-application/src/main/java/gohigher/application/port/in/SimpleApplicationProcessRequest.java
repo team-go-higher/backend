@@ -2,12 +2,9 @@ package gohigher.application.port.in;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,12 +20,7 @@ public class SimpleApplicationProcessRequest {
 	private String description;
 
 	@NotNull(message = "JOB_INFO_007||전형 일정이 입력되지 않았습니다.")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime schedule;
-
-	public ProcessType getType() {
-		return ProcessType.from(type);
-	}
 
 	public Process toDomain() {
 		return new Process(null, ProcessType.from(type), description, schedule);
