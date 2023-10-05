@@ -17,10 +17,14 @@ import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
+import gohigher.application.port.in.UnscheduledApplicationResponse;
+import gohigher.application.port.in.PagingRequest;
+import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.ProcessResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.ProcessType;
 import gohigher.global.exception.GoHigherException;
+import gohigher.pagination.PagingContainer;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -58,9 +62,23 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	}
 
 	@Override
+	public PagingResponse<UnscheduledApplicationResponse> findUnscheduled(Long userId, PagingRequest request) {
+		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findUnscheduledByUserId(
+			userId, request.getPage(), request.getSize());
+		List<UnscheduledApplicationResponse> responses = findUnscheduledByUserId(pagingContainer.getContent());
+		return new PagingResponse<>(pagingContainer.isLastPage(), responses);
+	}
+
+	@Override
 	public List<KanbanApplicationResponse> findForKanban(Long userId) {
 		List<Application> applications = applicationPersistenceQueryPort.findOnlyWithCurrentProcessByUserId(userId);
 		return createKanbanApplicationResponses(applications);
+	}
+
+	private List<UnscheduledApplicationResponse> findUnscheduledByUserId(List<Application> applications) {
+		return applications.stream()
+			.flatMap(this::extractUnscheduledApplicationResponse)
+			.toList();
 	}
 
 	private Stream<CalendarApplicationResponse> extractCalendarResponses(Application application) {
@@ -74,6 +92,12 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.stream()
 			.map(ProcessResponse::from)
 			.map(processResponse -> DateApplicationResponse.of(application, processResponse));
+	}
+
+	private Stream<UnscheduledApplicationResponse> extractUnscheduledApplicationResponse(Application application) {
+		return application.getProcesses()
+			.stream()
+			.map(process -> UnscheduledApplicationResponse.of(application, process));
 	}
 
 	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<Application> applications) {

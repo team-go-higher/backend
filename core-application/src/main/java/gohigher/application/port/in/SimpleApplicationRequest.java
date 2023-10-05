@@ -1,8 +1,8 @@
 package gohigher.application.port.in;
 
 import gohigher.application.Application;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +18,7 @@ public class SimpleApplicationRequest {
 
 	private String url;
 
+	@Valid
 	private SimpleApplicationProcessRequest currentProcess;
 
 	public Application toDomain() {

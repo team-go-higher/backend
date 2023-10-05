@@ -29,18 +29,30 @@ public enum ProcessFixture {
 	private final int order;
 
 	public Process toDomain() {
-		return new Process(null, this.getType(), this.getDescription(), this.getSchedule(), this.order);
+		return createProcess(null, type, description, schedule, order);
 	}
 
-	public Process toDomainWithoutOrder() {
-		return new Process(null, this.getType(), this.getDescription(), this.getSchedule(), null);
-	}
-
-	public Process toDomainWithSchedule(LocalDateTime schedule) {
-		return new Process(null, this.getType(), this.getDescription(), schedule, order);
+	public Process toDomainWithScheduleAndOrder(LocalDateTime schedule, int order) {
+		return createProcess(null, type, description, schedule, order);
 	}
 
 	public Process toDomainWithSchedule(LocalDate date) {
-		return toDomainWithSchedule(LocalDateTime.of(date, LocalTime.now()));
+		return createProcess(null, type, description, LocalDateTime.of(date, LocalTime.now()), order);
+	}
+
+	public Process toDomainWithoutOrder() {
+		return createProcess(null, type, description, schedule, 0);
+	}
+
+	public Process toDomainWithDescription(String description) {
+		return createProcess(null, type, description, schedule, order);
+	}
+
+	public Process toPersistedDomain(long id) {
+		return createProcess(id, type, description, schedule, order);
+	}
+
+	private Process createProcess(Long id, ProcessType type, String description, LocalDateTime schedule, int order) {
+		return new Process(id, type, description, schedule, order);
 	}
 }

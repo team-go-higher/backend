@@ -24,10 +24,14 @@ import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.port.in.UnscheduledApplicationResponse;
+import gohigher.application.port.in.PagingRequest;
+import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
+import gohigher.pagination.PagingContainer;
 
 @DisplayName("ApplicationQueryService 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -165,6 +169,38 @@ class ApplicationQueryServiceTest {
 
 				// then
 				assertThat(responses).hasSize(naverProcesses.size() + kakaoProcesses.size());
+			}
+		}
+	}
+
+	@DisplayName("findUnscheduled 메서드는")
+	@Nested
+	class Describe_findUnscheduled {
+
+		@DisplayName("전형일이 작성되어 있지 않은 프로세스들이 있을 떄")
+		@Nested
+		class Context_exist_processes_without_schedule {
+
+			@DisplayName("해당 전형들을 포함한 어플리케이션을 반환한다")
+			@Test
+			void it_return_applications_with_process() {
+				// given
+				Long userId = 1L;
+
+				int page = 1;
+				int size = 10;
+				PagingRequest request = new PagingRequest(page, size);
+
+				Process process = TO_APPLY.toPersistedDomain(1);
+				List<Application> applications = List.of(NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
+				given(applicationPersistenceQueryPort.findUnscheduledByUserId(userId, page, size))
+					.willReturn(new PagingContainer<>(true, applications));
+
+				// when
+				PagingResponse<UnscheduledApplicationResponse> response = applicationQueryService.findUnscheduled(userId, request);
+
+				// then
+				assertThat(response.getContent()).hasSize(applications.size());
 			}
 		}
 	}

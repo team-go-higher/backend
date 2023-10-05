@@ -18,9 +18,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
+import gohigher.pagination.PagingContainer;
 
 @DisplayName("ApplicationPersistenceQueryAdapter 클래스의")
 @ExtendWith(MockitoExtension.class)
@@ -210,6 +213,39 @@ class ApplicationPersistenceQueryAdapterTest {
 					() -> assertThat(actualNaverApplication.getProcesses()).hasSize(2),
 					() -> assertThat(actualKakaoApplication.getProcesses()).hasSize(1)
 				);
+			}
+		}
+	}
+
+	@DisplayName("findUnscheduledByUserId 메서드는")
+	@Nested
+	class Describe_findUnscheduledByUserId {
+
+		@DisplayName("전형일이 작성되어 있지 않은 프로세스들이 있을 떄")
+		@Nested
+		class Context_exist_processes_without_schedule {
+
+			@DisplayName("해당 전형들을 포함한 어플리케이션을 반환한다")
+			@Test
+			void it_return_applications_with_process() {
+				// given
+				Long userId = 1L;
+				int page = 1;
+				int size = 10;
+
+				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId,
+					NAVER_APPLICATION.toDomain());
+				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
+				Slice<ApplicationJpaEntity> applicationJpaEntitySlice = new SliceImpl<>(applicationJpaEntities);
+				given(applicationRepository.findUnscheduledByUserId(eq(userId), any()))
+					.willReturn(applicationJpaEntitySlice);
+
+				// when
+				PagingContainer<Application> applications = applicationPersistenceQueryAdapter.findUnscheduledByUserId(
+					userId, page, size);
+
+				// then
+				assertThat(applications.getContent().size()).isEqualTo(applicationJpaEntities.size());
 			}
 		}
 	}
