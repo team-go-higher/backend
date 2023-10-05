@@ -115,7 +115,7 @@ public interface ApplicationQueryControllerDocs {
 			}))
 	})
 	ResponseEntity<GohigherResponse<PagingResponse<UnscheduledApplicationResponse>>> findUnscheduled(
-		@Login Long userId, @ModelAttribute PagingRequest request);
+		@Parameter(hidden = true) @Login Long userId, @ModelAttribute PagingRequest request);
 
 	@Operation(summary = "칸반 지원서 목록 조회")
 	@ApiResponses(
