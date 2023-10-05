@@ -66,7 +66,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findUnscheduledByUserId(
 			userId, request.getPage(), request.getSize());
 		List<UnscheduledApplicationResponse> responses = findUnscheduledByUserId(pagingContainer.getContent());
-		return new PagingResponse<>(pagingContainer.isLastPage(), responses);
+		return new PagingResponse<>(pagingContainer.hasNext(), responses);
 	}
 
 	@Override
