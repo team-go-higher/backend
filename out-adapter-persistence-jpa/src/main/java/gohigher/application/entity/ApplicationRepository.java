@@ -47,7 +47,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
-		+ "AND a.currentProcessOrder <= p.order "
+		+ "AND a.currentProcessOrder = p.order "
 		+ "AND p.schedule = null "
 		+ "AND a.deleted = false")
 	Slice<ApplicationJpaEntity> findUnscheduledByUserId(Long userId, Pageable pageable);
