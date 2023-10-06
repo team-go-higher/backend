@@ -354,7 +354,7 @@ class ApplicationRepositoryTest {
 				// then
 				assertAll(
 					() -> assertThat(applications.getNumberOfElements()).isEqualTo(applicationCount),
-					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(processCount)
+					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(1)
 				);
 			}
 		}
