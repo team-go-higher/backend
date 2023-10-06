@@ -64,6 +64,8 @@ public class ApplicationJpaEntity {
 	private boolean deleted;
 
 	public static ApplicationJpaEntity of(Application application, Long userId) {
+		int currentProcessOrder = application.getProcesses()
+			.indexOf(application.getCurrentProcess());
 		return new ApplicationJpaEntity(null,
 			userId,
 			application.getCompanyName(),
@@ -79,7 +81,7 @@ public class ApplicationJpaEntity {
 			application.getRequiredCapability(),
 			application.getPreferredQualification(),
 			application.getUrl(),
-			FIRST_PROCESS_ORDER,
+			currentProcessOrder,
 			null,
 			null,
 			false
