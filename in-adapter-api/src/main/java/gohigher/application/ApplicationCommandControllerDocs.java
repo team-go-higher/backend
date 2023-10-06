@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
+import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.controller.response.GohigherResponse;
@@ -75,8 +76,8 @@ public interface ApplicationCommandControllerDocs {
 					}
 					""")
 			}))})
-	ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Parameter(hidden = true) Long userId,
-		@RequestBody SimpleApplicationRequest request);
+	ResponseEntity<GohigherResponse<SimpleApplicationRegisterResponse>> registerApplicationSimply(
+		@Parameter(hidden = true) Long userId, @RequestBody SimpleApplicationRequest request);
 
 	@Operation(summary = "지원서 상세등록")
 	@ApiResponses(
