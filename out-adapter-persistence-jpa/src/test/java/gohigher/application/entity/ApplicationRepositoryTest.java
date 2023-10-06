@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +24,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 
-import gohigher.common.Process;
 import gohigher.application.Application;
+import gohigher.common.Process;
 
 @DisplayName("ApplicationRepository 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -79,13 +78,13 @@ class ApplicationRepositoryTest {
 			@BeforeEach
 			void setUp() {
 				ApplicationProcessJpaEntity toApply = applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication, TO_APPLY.toDomain(), 1));
+					convertToApplicationProcessEntity(naverApplication, TO_APPLY.toDomain()));
 
 				ApplicationProcessJpaEntity test = applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication, TEST.toDomain(), 2));
+					convertToApplicationProcessEntity(naverApplication, TEST.toDomain()));
 
 				ApplicationProcessJpaEntity interview = applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication, INTERVIEW.toDomain(), 3));
+					convertToApplicationProcessEntity(naverApplication, INTERVIEW.toDomain()));
 
 				naverProcesses = List.of(toApply, test, interview);
 
@@ -155,13 +154,13 @@ class ApplicationRepositoryTest {
 					convertToApplicationEntity(otherUserId, NAVER_APPLICATION.toDomain()));
 
 				applicationProcessRepository.save(convertToApplicationProcessEntity(naverApplication,
-					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11)), 1));
+					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11))));
 
 				applicationProcessRepository.save(convertToApplicationProcessEntity(kakaoApplication,
-					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 20)), 1));
+					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 20))));
 
 				applicationProcessRepository.save(convertToApplicationProcessEntity(otherUserApplication,
-					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11)), 1));
+					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11))));
 			}
 
 			@DisplayName("특정 유저의 데이터만 반환한다.")
@@ -184,14 +183,14 @@ class ApplicationRepositoryTest {
 			void setUp() {
 				ApplicationProcessJpaEntity expectedProcess1 = applicationProcessRepository.save(
 					convertToApplicationProcessEntity(naverApplication,
-						TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11)), 1));
+						TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11))));
 
 				ApplicationProcessJpaEntity expectedProcess2 = applicationProcessRepository.save(
 					convertToApplicationProcessEntity(kakaoApplication,
-						TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 20)), 1));
+						TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 20))));
 
 				applicationProcessRepository.save(convertToApplicationProcessEntity(kakaoApplication,
-					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, otherMonth, 20)), 1));
+					TEST.toDomainWithSchedule(LocalDate.of(year, otherMonth, 20))));
 
 				expectedProcesses.addAll(List.of(expectedProcess1, expectedProcess2));
 
@@ -222,11 +221,11 @@ class ApplicationRepositoryTest {
 			void setUp() {
 				ApplicationProcessJpaEntity expectedProcess1 = applicationProcessRepository.save(
 					convertToApplicationProcessEntity(naverApplication,
-						TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11)), 1));
+						TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11))));
 
 				ApplicationProcessJpaEntity expectedProcess2 = applicationProcessRepository.save(
 					convertToApplicationProcessEntity(naverApplication,
-						DOCUMENT.toDomainWithSchedule(LocalDate.of(year, month, 20)), 1));
+						DOCUMENT.toDomainWithSchedule(LocalDate.of(year, month, 20))));
 
 				expectedProcesses.addAll(List.of(expectedProcess1, expectedProcess2));
 
@@ -269,10 +268,10 @@ class ApplicationRepositoryTest {
 			@BeforeEach
 			void setUp() {
 				applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication, DOCUMENT.toDomainWithSchedule(date), 1));
+					convertToApplicationProcessEntity(naverApplication, DOCUMENT.toDomainWithSchedule(date)));
 
 				applicationProcessRepository.save(
-					convertToApplicationProcessEntity(kakaoApplication, INTERVIEW.toDomainWithSchedule(date), 1));
+					convertToApplicationProcessEntity(kakaoApplication, INTERVIEW.toDomainWithSchedule(date)));
 
 				entityManager.clear();
 			}
@@ -283,7 +282,7 @@ class ApplicationRepositoryTest {
 			void it_returns_applications_with_proper_processes(long day) {
 				// given
 				applicationProcessRepository.save(convertToApplicationProcessEntity(naverApplication,
-					TEST.toDomainWithSchedule(date.plusDays(day)), 2));    // day = 0일 때는 반환할 전형이 추가
+					TEST.toDomainWithSchedule(date.plusDays(day))));    // day = 0일 때는 반환할 전형이 추가
 
 				// when
 				List<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findByUserIdAndDate(userId,
@@ -334,22 +333,21 @@ class ApplicationRepositoryTest {
 						convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain())
 					);
 
-					for (int j = 0; j < processCount; j++) {
-						Process process = TO_APPLY.toDomainWithSchedule((LocalDateTime)null);
+					for (int j = 1; j <= processCount; j++) {
+						Process process = TO_APPLY.toDomainWithScheduleAndOrder(null, j);
 						applicationProcessRepository.save(ApplicationProcessJpaEntity.of(
-							applicationJpaEntity, process, j
-						));
+							applicationJpaEntity, process));
 					}
 
-					Process process = DOCUMENT.toDomainWithSchedule(LocalDateTime.now());
+					Process process = DOCUMENT.toDomain();
 					applicationProcessRepository.save(ApplicationProcessJpaEntity.of(
-						applicationJpaEntity, process, processCount
-					));
+						applicationJpaEntity, process));
 				}
 				entityManager.clear();
 
 				// when
-				Slice<ApplicationJpaEntity> applications = applicationRepository.findUnscheduledByUserId(userId, pageRequest);
+				Slice<ApplicationJpaEntity> applications = applicationRepository.findUnscheduledByUserId(userId,
+					pageRequest);
 
 				// then
 				assertAll(
@@ -379,21 +377,22 @@ class ApplicationRepositoryTest {
 					);
 
 					for (int j = 0; j < processCount; j++) {
-						Process process = TO_APPLY.toDomainWithSchedule((LocalDateTime)null);
+						Process process = TO_APPLY.toDomainWithScheduleAndOrder(null, j);
 						applicationProcessRepository.save(ApplicationProcessJpaEntity.of(
-							applicationJpaEntity, process, j
-						));
+							applicationJpaEntity, process));
 					}
 				}
 				entityManager.clear();
 
 				// when
-				Slice<ApplicationJpaEntity> applications = applicationRepository.findUnscheduledByUserId(userId, pageRequest);
+				Slice<ApplicationJpaEntity> applications = applicationRepository.findUnscheduledByUserId(userId,
+					pageRequest);
 
 				// then
 				assertAll(
 					() -> assertThat(applications.getNumberOfElements()).isEqualTo(applicationCount),
-					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(processCount - currentProcessOrder)
+					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(
+						processCount - currentProcessOrder)
 				);
 			}
 		}
@@ -403,47 +402,31 @@ class ApplicationRepositoryTest {
 	@Nested
 	class Describe_findOnlyWithCurrentProcessByUserId {
 
-		@DisplayName("유효한 어플리케이션이 있을 경우")
+		@DisplayName("어플리케이션이 여러 채용 과정을 갖고 있어도")
 		@Nested
 		class Context_exist_application {
 
-			@DisplayName("어플리케이션의 현재 프로세스를 반환한다")
+			@DisplayName("현재 프로세스만을 반환한다")
 			@Test
 			void it_return_application_current_process() {
 				// given
 				Long userId = 1L;
+				ApplicationJpaEntity naverApplication = applicationRepository.save(
+					convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain()));
 
-				int applicationCount = 2;
-				int processCount = 3;
-				saveApplicationWithProcesses(userId, applicationCount, processCount);
+				applicationProcessRepository.save(
+					convertToApplicationProcessEntity(naverApplication, TO_APPLY.toDomain()));
+
+				applicationProcessRepository.save(
+					convertToApplicationProcessEntity(naverApplication, DOCUMENT.toDomain()));
 				entityManager.clear();
 
 				// when
-				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(userId);
+				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(
+					userId);
 
 				// then
-				assertAll(
-					() -> assertThat(applications).hasSize(applicationCount),
-					() -> assertThat(applications.get(0).getProcesses()).hasSize(1)
-				);
-			}
-
-			private void saveApplicationWithProcesses(Long userId, int applicationCount, int processCount) {
-				for (int i = 0; i < applicationCount; i++) {
-					Application application = NAVER_APPLICATION.toDomain();
-					ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId, application);
-					applicationRepository.save(applicationJpaEntity);
-
-					saveApplicationProcesses(processCount, applicationJpaEntity);
-				}
-			}
-
-			private void saveApplicationProcesses(int processCount, ApplicationJpaEntity applicationJpaEntity) {
-				for (int j = 0; j < processCount; j++) {
-					applicationProcessRepository.save(
-						convertToApplicationProcessEntity(applicationJpaEntity, DOCUMENT.toDomain(), j)
-					);
-				}
+				assertThat(applications.get(0).getProcesses()).hasSize(1);
 			}
 		}
 
@@ -464,7 +447,8 @@ class ApplicationRepositoryTest {
 				}
 
 				// when
-				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(userId);
+				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(
+					userId);
 
 				// then
 				assertThat(applications).isEmpty();
@@ -479,7 +463,8 @@ class ApplicationRepositoryTest {
 				application.getId(), userId, application.getCompanyName(), application.getTeam(),
 				application.getLocation(), application.getContact(), application.getPosition(),
 				application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
-				application.getEmploymentType(), application.getCareerRequirement(), application.getRequiredCapability(),
+				application.getEmploymentType(), application.getCareerRequirement(),
+				application.getRequiredCapability(),
 				application.getPreferredQualification(), application.getUrl(), 0, null, null, deleted
 			);
 		}

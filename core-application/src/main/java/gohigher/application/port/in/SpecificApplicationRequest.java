@@ -5,6 +5,7 @@ import java.util.List;
 import gohigher.application.Application;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
+import gohigher.common.Processes;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -38,9 +39,9 @@ public class SpecificApplicationRequest {
 		List<Process> processes = this.processes.stream()
 			.map(SpecificApplicationProcessRequest::toDomain)
 			.toList();
+
 		return new Application(null, companyName, team, location, contact, position, specificPosition, jobDescription,
-			workType,
-			EmploymentType.from(employmentType), careerRequirement, requiredCapability, preferredQualification,
-			processes, url, processes.get(0));
+			workType, EmploymentType.from(employmentType), careerRequirement, requiredCapability,
+			preferredQualification, Processes.initialFrom(processes), url, processes.get(0));
 	}
 }

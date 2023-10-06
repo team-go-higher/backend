@@ -27,11 +27,9 @@ import jakarta.persistence.EntityManager;
 @DataJpaTest
 class ApplicationPersistenceCommandAdapterTest {
 
-	private static final String FIRST_PROCESS_DESCRIPTION = "코딩테스트";
-	private static final String SECOND_PROCESS_DESCRIPTION = "기술면접";
 	private static final Long USER_ID = 1L;
-	private final Process firstProcess = TO_APPLY.toDomainWithDescription(FIRST_PROCESS_DESCRIPTION);
-	private final Process secondProcess = DOCUMENT.toDomainWithDescription(SECOND_PROCESS_DESCRIPTION);
+	private final Process firstProcess = TO_APPLY.toDomain();
+	private final Process secondProcess = DOCUMENT.toDomain();
 	private final Application application = NAVER_APPLICATION.toDomain(List.of(firstProcess, secondProcess),
 		firstProcess);
 
@@ -74,8 +72,8 @@ class ApplicationPersistenceCommandAdapterTest {
 					() -> assertThat(applicationJpaEntity.getCurrentProcessOrder()).isEqualTo(0),
 					() -> assertThat(applicationJpaEntity.getProcesses()).extracting("order", "description")
 						.contains(
-							tuple(0, FIRST_PROCESS_DESCRIPTION),
-							tuple(1, SECOND_PROCESS_DESCRIPTION)
+							tuple(firstProcess.getOrder(), firstProcess.getDescription()),
+							tuple(secondProcess.getOrder(), secondProcess.getDescription())
 						)
 				);
 			}
@@ -100,7 +98,7 @@ class ApplicationPersistenceCommandAdapterTest {
 					applicationRepository.save(ApplicationJpaEntity.of(application, USER_ID));
 				applicationId = applicationJpaEntity.getId();
 				ApplicationProcessJpaEntity secondProcessJpaEntity = applicationProcessRepository.save(
-					ApplicationProcessJpaEntity.of(applicationJpaEntity, secondProcess, 1));
+					ApplicationProcessJpaEntity.of(applicationJpaEntity, secondProcess));
 				applicationProcessId = secondProcessJpaEntity.getId();
 				expectedProcessOrder = secondProcessJpaEntity.getOrder();
 			}

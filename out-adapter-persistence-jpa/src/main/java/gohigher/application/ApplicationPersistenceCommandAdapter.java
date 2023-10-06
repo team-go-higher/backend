@@ -1,6 +1,5 @@
 package gohigher.application;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -22,7 +21,8 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 
 	@Override
 	public Long save(Long userId, Application application) {
-		ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(ApplicationJpaEntity.of(application, userId));
+		ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(
+			ApplicationJpaEntity.of(application, userId));
 
 		List<Process> processes = application.getProcesses();
 		saveApplicationProcesses(applicationJpaEntity, processes);
@@ -30,10 +30,10 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 	}
 
 	private void saveApplicationProcesses(ApplicationJpaEntity applicationJpaEntity, List<Process> processes) {
-		List<ApplicationProcessJpaEntity> applicationProcessJpaEntities = new ArrayList<>();
-		for (int i = 0; i < processes.size(); i++) {
-			applicationProcessJpaEntities.add(ApplicationProcessJpaEntity.of(applicationJpaEntity, processes.get(i), i));
-		}
+		List<ApplicationProcessJpaEntity> applicationProcessJpaEntities = processes.stream()
+			.map(process -> ApplicationProcessJpaEntity.of(applicationJpaEntity, process))
+			.toList();
+
 		applicationProcessRepository.saveAll(applicationProcessJpaEntities);
 	}
 

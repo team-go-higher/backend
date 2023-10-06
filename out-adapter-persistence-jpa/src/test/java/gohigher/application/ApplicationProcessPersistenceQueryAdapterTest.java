@@ -29,8 +29,6 @@ import gohigher.common.ProcessType;
 class ApplicationProcessPersistenceQueryAdapterTest {
 
 	private static final long USER_ID = 1L;
-	private static final String FIRST_PROCESS_DESCRIPTION = "코딩테스트";
-	private static final String SECOND_PROCESS_DESCRIPTION = "기술면접";
 
 	@Autowired
 	private ApplicationRepository applicationRepository;
@@ -42,7 +40,8 @@ class ApplicationProcessPersistenceQueryAdapterTest {
 
 	@BeforeEach
 	void setUp() {
-		applicationProcessPersistenceQueryAdapter = new ApplicationProcessPersistenceQueryAdapter(applicationProcessRepository);
+		applicationProcessPersistenceQueryAdapter = new ApplicationProcessPersistenceQueryAdapter(
+			applicationProcessRepository);
 	}
 
 	@DisplayName("findByApplicationIdAndProcessType 메서드는")
@@ -61,11 +60,11 @@ class ApplicationProcessPersistenceQueryAdapterTest {
 					convertToApplicationEntity(USER_ID, NAVER_APPLICATION.toDomain()));
 				applicationId = applicationJpaEntity.getId();
 				ApplicationProcessJpaEntity firstApplicationProcessJpaEntity =
-					convertToApplicationProcessEntity(applicationJpaEntity, DOCUMENT.toDomain(), 0);
-				ApplicationProcessJpaEntity thirdApplicationProcessJpaEntity = convertToApplicationProcessEntity(
-					applicationJpaEntity, ProcessFixture.TEST.toDomainWithDescription(FIRST_PROCESS_DESCRIPTION), 2);
+					convertToApplicationProcessEntity(applicationJpaEntity, DOCUMENT.toDomain());
 				ApplicationProcessJpaEntity secondApplicationProcessJpaEntity = convertToApplicationProcessEntity(
-					applicationJpaEntity, ProcessFixture.TEST.toDomainWithDescription(SECOND_PROCESS_DESCRIPTION), 1);
+					applicationJpaEntity, FIRST_INTERVIEW.toDomain());
+				ApplicationProcessJpaEntity thirdApplicationProcessJpaEntity = convertToApplicationProcessEntity(
+					applicationJpaEntity, SECOND_INTERVIEW.toDomain());
 				applicationProcessRepository.saveAll(List.of(firstApplicationProcessJpaEntity,
 					secondApplicationProcessJpaEntity, thirdApplicationProcessJpaEntity));
 			}
@@ -74,7 +73,7 @@ class ApplicationProcessPersistenceQueryAdapterTest {
 			@Test
 			void findByApplicationIdAndProcessType() {
 				//given
-				ProcessType type = ProcessType.TEST;
+				ProcessType type = ProcessType.INTERVIEW;
 
 				//when
 				List<Process> actual =
@@ -83,8 +82,8 @@ class ApplicationProcessPersistenceQueryAdapterTest {
 				//then
 				assertAll(
 					() -> assertThat(actual).hasSize(2),
-					() -> assertThat(actual.get(0).getDescription()).isEqualTo(SECOND_PROCESS_DESCRIPTION),
-					() -> assertThat(actual.get(1).getDescription()).isEqualTo(FIRST_PROCESS_DESCRIPTION)
+					() -> assertThat(actual.get(0).getDescription()).isEqualTo(FIRST_INTERVIEW.getDescription()),
+					() -> assertThat(actual.get(1).getDescription()).isEqualTo(SECOND_INTERVIEW.getDescription())
 				);
 			}
 		}

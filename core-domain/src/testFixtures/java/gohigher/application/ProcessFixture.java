@@ -13,38 +13,46 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ProcessFixture {
 
-	TO_APPLY(ProcessType.TO_APPLY, "", null),
-	DOCUMENT(ProcessType.DOCUMENT, "", LocalDateTime.now().plusDays(6)),
-	TEST(ProcessType.TEST, "", LocalDateTime.now().plusDays(10)),
-	INTERVIEW(ProcessType.INTERVIEW, "", LocalDateTime.now().plusDays(20)),
-	COMPLETE(ProcessType.COMPLETE, "", LocalDateTime.now().plusDays(40)),
+	TO_APPLY(ProcessType.TO_APPLY, "지원 예정", null, 1),
+	DOCUMENT(ProcessType.DOCUMENT, "서류 전형", LocalDateTime.now().plusDays(6), 2),
+	TEST(ProcessType.TEST, "시험", LocalDateTime.now().plusDays(10), 3),
+	CODING_TEST(ProcessType.TEST, "코딩테스트", LocalDateTime.now().plusDays(10), 4),
+	INTERVIEW(ProcessType.INTERVIEW, "면접 전형", LocalDateTime.now().plusDays(20), 5),
+	FIRST_INTERVIEW(ProcessType.INTERVIEW, "1차 기술 면접", LocalDateTime.now().plusDays(20), 6),
+	SECOND_INTERVIEW(ProcessType.INTERVIEW, "2차 통합 면접", LocalDateTime.now().plusDays(20), 7),
+	COMPLETE(ProcessType.COMPLETE, "종료", LocalDateTime.now().plusDays(40), 8),
 	;
 
 	private final ProcessType type;
 	private final String description;
 	private final LocalDateTime schedule;
+	private final int order;
 
 	public Process toDomain() {
-		return createProcess(null, type, description, schedule);
+		return createProcess(null, type, description, schedule, order);
 	}
 
-	public Process toDomainWithSchedule(LocalDateTime schedule) {
-		return createProcess(null, type, description, schedule);
+	public Process toDomainWithScheduleAndOrder(LocalDateTime schedule, int order) {
+		return createProcess(null, type, description, schedule, order);
 	}
 
 	public Process toDomainWithSchedule(LocalDate date) {
-		return toDomainWithSchedule(LocalDateTime.of(date, LocalTime.now()));
+		return createProcess(null, type, description, LocalDateTime.of(date, LocalTime.now()), order);
+	}
+
+	public Process toDomainWithoutOrder() {
+		return createProcess(null, type, description, schedule, 0);
 	}
 
 	public Process toDomainWithDescription(String description) {
-		return createProcess(null, type, description, schedule);
+		return createProcess(null, type, description, schedule, order);
 	}
 
 	public Process toPersistedDomain(long id) {
-		return createProcess(id, type, description, schedule);
+		return createProcess(id, type, description, schedule, order);
 	}
 
-	private Process createProcess(Long id, ProcessType type, String description, LocalDateTime schedule) {
-		return new Process(id, type, description, schedule);
+	private Process createProcess(Long id, ProcessType type, String description, LocalDateTime schedule, int order) {
+		return new Process(id, type, description, schedule, order);
 	}
 }
