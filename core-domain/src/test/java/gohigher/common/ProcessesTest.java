@@ -11,14 +11,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("Process 클래스의")
+@DisplayName("Processes 클래스의")
 class ProcessesTest {
 
 	@DisplayName("initiallyFrom 정적 팩터리 메소드는")
 	@Nested
 	class Describe_initiallyFrom {
 
-		@DisplayName("order가 할당되지 않은 Process들을 받을 경우")
+		@DisplayName("Process들을 받을 경우")
 		@Nested
 		class Context_with_processes_that_not_assigned_order {
 
