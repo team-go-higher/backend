@@ -20,6 +20,7 @@ import gohigher.application.entity.ApplicationProcessJpaEntity;
 import gohigher.application.entity.ApplicationProcessRepository;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.common.Process;
+import gohigher.common.ProcessType;
 import jakarta.persistence.EntityManager;
 
 @DisplayName("ApplicationPersistenceCommandAdapter 클래스의")
@@ -64,19 +65,13 @@ class ApplicationPersistenceCommandAdapterTest {
 			@Test
 			void it_save_application_with_processes() {
 				// when
-				Long applicationId = applicationPersistenceCommandAdapter.save(USER_ID, application);
-				entityManager.clear();
+				Application savedApplication = applicationPersistenceCommandAdapter.save(USER_ID, application);
 
 				// then
-				ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(applicationId).get();
 				assertAll(
-					() -> assertThat(applicationJpaEntity.getProcesses()).hasSize(application.getProcesses().size()),
-					() -> assertThat(applicationJpaEntity.getCurrentProcessOrder()).isEqualTo(0),
-					() -> assertThat(applicationJpaEntity.getProcesses()).extracting("order", "description")
-						.contains(
-							tuple(0, FIRST_PROCESS_DESCRIPTION),
-							tuple(1, SECOND_PROCESS_DESCRIPTION)
-						)
+					() -> assertThat(savedApplication.getProcesses()).hasSize(application.getProcesses().size()),
+					() -> assertThat(savedApplication.getProcesses()).extracting("type")
+						.containsExactly(ProcessType.TO_APPLY, ProcessType.DOCUMENT)
 				);
 			}
 		}
