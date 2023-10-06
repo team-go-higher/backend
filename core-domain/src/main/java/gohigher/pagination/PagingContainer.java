@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PagingContainer<E> {
 
-	private final boolean lastPage;
+	private final boolean hasNext;
 	private final List<E> content;
+
+	public boolean hasNext() {
+		return hasNext;
+	}
 }
