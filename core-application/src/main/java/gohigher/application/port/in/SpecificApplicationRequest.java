@@ -42,6 +42,6 @@ public class SpecificApplicationRequest {
 
 		return new Application(null, companyName, team, location, contact, position, specificPosition, jobDescription,
 			workType, EmploymentType.from(employmentType), careerRequirement, requiredCapability,
-			preferredQualification, Processes.initiallyFrom(processes), url, processes.get(0));
+			preferredQualification, Processes.initialFrom(processes), url, processes.get(0));
 	}
 }

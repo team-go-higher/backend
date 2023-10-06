@@ -13,7 +13,7 @@ public class Processes {
 
 	private final List<Process> values;
 
-	public static Processes initiallyFrom(List<Process> processes) {
+	public static Processes initialFrom(List<Process> processes) {
 		if (processes.isEmpty()) {
 			processes.add(DEFAULT_PROCESS);
 		}

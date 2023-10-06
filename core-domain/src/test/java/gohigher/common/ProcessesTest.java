@@ -31,7 +31,7 @@ class ProcessesTest {
 			@DisplayName("Order를 순차적으로 할당하며 생성한다.")
 			@Test
 			void it_returns_processes_that_assigned_order() {
-				Processes processes = Processes.initiallyFrom(input);
+				Processes processes = Processes.initialFrom(input);
 
 				assertAll(
 					() -> assertThat(processes.getValues().get(0).getOrder()).isEqualTo(1),
@@ -51,7 +51,7 @@ class ProcessesTest {
 			@DisplayName("지원예정 과정이 추가된 과정리스트를 반환한다.")
 			@Test
 			void it_returns_processes_with_default_process() {
-				Processes processes = Processes.initiallyFrom(input);
+				Processes processes = Processes.initialFrom(input);
 
 				assertAll(
 					() -> assertThat(processes.getValues()).hasSize(1),

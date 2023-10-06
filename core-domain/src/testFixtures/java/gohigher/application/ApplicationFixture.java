@@ -107,7 +107,7 @@ public enum ApplicationFixture {
 		public Application toDomain(Long id) {
 			return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription,
 				workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
-				Processes.initiallyFrom(processes), url, currentProcess);
+				Processes.initialFrom(processes), url, currentProcess);
 		}
 	}
 }
