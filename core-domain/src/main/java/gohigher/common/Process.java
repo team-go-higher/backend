@@ -25,10 +25,6 @@ public class Process {
 		this(null, type, description, schedule, order);
 	}
 
-	public Process(ProcessType type, String description, LocalDateTime schedule) {
-		this(null, type, description, schedule);
-	}
-
 	public void assignOrder(int order) {
 		this.order = order;
 	}
