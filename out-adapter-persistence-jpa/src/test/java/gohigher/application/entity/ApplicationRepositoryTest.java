@@ -333,7 +333,7 @@ class ApplicationRepositoryTest {
 						convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain())
 					);
 
-					for (int j = 0; j < processCount; j++) {
+					for (int j = 1; j <= processCount; j++) {
 						Process process = TO_APPLY.toDomainWithScheduleAndOrder(null, j);
 						applicationProcessRepository.save(ApplicationProcessJpaEntity.of(
 							applicationJpaEntity, process));

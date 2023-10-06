@@ -34,10 +34,10 @@ class ProcessesTest {
 				Processes processes = Processes.initiallyFrom(input);
 
 				assertAll(
-					() -> assertThat(processes.getValues().get(0).getOrder()).isEqualTo(0),
-					() -> assertThat(processes.getValues().get(1).getOrder()).isEqualTo(1),
-					() -> assertThat(processes.getValues().get(2).getOrder()).isEqualTo(2),
-					() -> assertThat(processes.getValues().get(3).getOrder()).isEqualTo(3)
+					() -> assertThat(processes.getValues().get(0).getOrder()).isEqualTo(1),
+					() -> assertThat(processes.getValues().get(1).getOrder()).isEqualTo(2),
+					() -> assertThat(processes.getValues().get(2).getOrder()).isEqualTo(3),
+					() -> assertThat(processes.getValues().get(3).getOrder()).isEqualTo(4)
 				);
 			}
 		}

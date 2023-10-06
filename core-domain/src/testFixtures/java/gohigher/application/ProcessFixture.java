@@ -13,14 +13,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ProcessFixture {
 
-	TO_APPLY(ProcessType.TO_APPLY, "지원 예정", null, 0),
-	DOCUMENT(ProcessType.DOCUMENT, "서류 전형", LocalDateTime.now().plusDays(6), 1),
-	TEST(ProcessType.TEST, "시험", LocalDateTime.now().plusDays(10), 2),
-	CODING_TEST(ProcessType.TEST, "코딩테스트", LocalDateTime.now().plusDays(10), 3),
-	INTERVIEW(ProcessType.INTERVIEW, "면접 전형", LocalDateTime.now().plusDays(20), 4),
-	FIRST_INTERVIEW(ProcessType.INTERVIEW, "1차 기술 면접", LocalDateTime.now().plusDays(20), 5),
-	SECOND_INTERVIEW(ProcessType.INTERVIEW, "2차 통합 면접", LocalDateTime.now().plusDays(20), 6),
-	COMPLETE(ProcessType.COMPLETE, "종료", LocalDateTime.now().plusDays(40), 7),
+	TO_APPLY(ProcessType.TO_APPLY, "지원 예정", null, 1),
+	DOCUMENT(ProcessType.DOCUMENT, "서류 전형", LocalDateTime.now().plusDays(6), 2),
+	TEST(ProcessType.TEST, "시험", LocalDateTime.now().plusDays(10), 3),
+	CODING_TEST(ProcessType.TEST, "코딩테스트", LocalDateTime.now().plusDays(10), 4),
+	INTERVIEW(ProcessType.INTERVIEW, "면접 전형", LocalDateTime.now().plusDays(20), 5),
+	FIRST_INTERVIEW(ProcessType.INTERVIEW, "1차 기술 면접", LocalDateTime.now().plusDays(20), 6),
+	SECOND_INTERVIEW(ProcessType.INTERVIEW, "2차 통합 면접", LocalDateTime.now().plusDays(20), 7),
+	COMPLETE(ProcessType.COMPLETE, "종료", LocalDateTime.now().plusDays(40), 8),
 	;
 
 	private final ProcessType type;
