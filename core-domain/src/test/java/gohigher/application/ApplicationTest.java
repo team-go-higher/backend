@@ -26,7 +26,7 @@ class ApplicationTest {
 		@Nested
 		class Context_Construction_With_ToApply_Or_Document_Process {
 
-			@DisplayName("동일한 전형일의 지원 예정과 서류 전형을 가지는 지원서를 반환한다.")
+			@DisplayName("동일한 전형일의 지원 예정과 서류 전형를 순서대로 가지는 지원서를 반환한다.")
 			@ParameterizedTest
 			@EnumSource(value = ProcessType.class, names = {"TO_APPLY", "DOCUMENT"})
 			void it_Returns_Application_With_ToApply_And_Document(ProcessType processType) {
@@ -41,7 +41,7 @@ class ApplicationTest {
 				assertAll(
 					() -> assertThat(processes).hasSize(2),
 					() -> assertThat(firstProcess.getSchedule()).isEqualTo(secondProcess.getSchedule()),
-					() -> assertThat(processesTypes).contains(DOCUMENT, TO_APPLY)
+					() -> assertThat(processesTypes).containsExactly(TO_APPLY, DOCUMENT)
 				);
 			}
 		}
