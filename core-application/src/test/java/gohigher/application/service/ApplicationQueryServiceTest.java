@@ -24,10 +24,10 @@ import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
-import gohigher.application.port.in.UnscheduledApplicationResponse;
+import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
-import gohigher.application.port.in.KanbanApplicationResponse;
+import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
@@ -192,12 +192,14 @@ class ApplicationQueryServiceTest {
 				PagingRequest request = new PagingRequest(page, size);
 
 				Process process = TO_APPLY.toPersistedDomain(1);
-				List<Application> applications = List.of(NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
+				List<Application> applications = List.of(
+					NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
 				given(applicationPersistenceQueryPort.findUnscheduledByUserId(userId, page, size))
 					.willReturn(new PagingContainer<>(true, applications));
 
 				// when
-				PagingResponse<UnscheduledApplicationResponse> response = applicationQueryService.findUnscheduled(userId, request);
+				PagingResponse<UnscheduledApplicationResponse> response = applicationQueryService.findUnscheduled(
+					userId, request);
 
 				// then
 				assertThat(response.getContent()).hasSize(applications.size());
@@ -220,11 +222,12 @@ class ApplicationQueryServiceTest {
 				Long userId = 1L;
 
 				ProcessType processType = ProcessType.TO_APPLY;
-				Process process = new Process(processType, "설명", LocalDateTime.now());
+				Process process = new Process(processType, "설명", LocalDateTime.now(), 1);
 				Application application = NAVER_APPLICATION.toDomain(List.of(process), process);
 				List<Application> applications = List.of(application);
 
-				given(applicationPersistenceQueryPort.findOnlyWithCurrentProcessByUserId(userId)).willReturn(applications);
+				given(applicationPersistenceQueryPort.findOnlyWithCurrentProcessByUserId(userId)).willReturn(
+					applications);
 
 				// when
 				List<KanbanApplicationResponse> response = applicationQueryService.findForKanban(userId);

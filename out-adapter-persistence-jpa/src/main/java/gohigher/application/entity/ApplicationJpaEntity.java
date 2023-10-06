@@ -6,6 +6,7 @@ import java.util.List;
 import gohigher.application.Application;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
+import gohigher.common.Processes;
 import gohigher.recruitment.entity.RecruitmentJpaEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -102,7 +103,7 @@ public class ApplicationJpaEntity {
 
 	public Application toDomain() {
 		List<Process> processes = getProcessList();
-		return createApplication(processes, processes.get(currentProcessOrder));
+		return createApplication(processes, findCurrentProcess(processes));
 	}
 
 	public Application toDomain(List<ApplicationProcessJpaEntity> applicationProcessJpaEntities) {
@@ -119,7 +120,14 @@ public class ApplicationJpaEntity {
 
 	public Application toKanbanDomain() {
 		List<Process> processes = getProcessList();
-		return createApplication(processes, processes.get(FIRST_PROCESS_ORDER));
+		return createApplication(processes, findCurrentProcess(processes));
+	}
+
+	private Process findCurrentProcess(List<Process> processes) {
+		return processes.stream()
+			.filter(process -> process.getOrder() == currentProcessOrder)
+			.findAny()
+			.orElse(null);
 	}
 
 	private List<Process> getProcessList() {
@@ -131,7 +139,7 @@ public class ApplicationJpaEntity {
 
 	private Application createApplication(List<Process> processes, Process currentProcess) {
 		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription,
-			workType, employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
-			currentProcess);
+			workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
+			new Processes(processes), url, currentProcess);
 	}
 }

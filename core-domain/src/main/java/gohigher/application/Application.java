@@ -7,6 +7,7 @@ import java.util.List;
 import gohigher.common.EmploymentType;
 import gohigher.common.JobInfo;
 import gohigher.common.Process;
+import gohigher.common.Processes;
 import lombok.Getter;
 
 /**
@@ -19,7 +20,7 @@ public class Application extends JobInfo {
 
 	public Application(Long id, String companyName, String team, String location, String contact, String position,
 		String specificPosition, String jobDescription, String workType, EmploymentType employmentType,
-		String careerRequirement, String requiredCapability, String preferredQualification, List<Process> processes,
+		String careerRequirement, String requiredCapability, String preferredQualification, Processes processes,
 		String url, Process currentProcess) {
 		super(id, companyName, team, location, contact, position, specificPosition, jobDescription, workType,
 			employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url);
@@ -29,7 +30,7 @@ public class Application extends JobInfo {
 	public static Application simple(String companyName, String position, String url, Process process) {
 		List<Process> processes = addAdditionalProcessIfNecessary(process);
 		return new Application(null, companyName, null, null, null, position, null, null,
-			null, null, null, null, null, processes, url, process);
+			null, null, null, null, null, Processes.initialFrom(processes), url, process);
 	}
 
 	private static List<Process> addAdditionalProcessIfNecessary(Process process) {

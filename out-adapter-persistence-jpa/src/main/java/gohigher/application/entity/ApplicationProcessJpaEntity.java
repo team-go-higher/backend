@@ -44,8 +44,8 @@ public class ApplicationProcessJpaEntity {
 	private LocalDateTime schedule;
 	private String description;
 
-	public static ApplicationProcessJpaEntity of(ApplicationJpaEntity application, Process process, int order) {
-		return new ApplicationProcessJpaEntity(process.getId(), application, process.getType(), order,
+	public static ApplicationProcessJpaEntity of(ApplicationJpaEntity application, Process process) {
+		return new ApplicationProcessJpaEntity(process.getId(), application, process.getType(), process.getOrder(),
 			process.getSchedule(), process.getDescription());
 	}
 
@@ -54,6 +54,6 @@ public class ApplicationProcessJpaEntity {
 	}
 
 	public Process toDomain() {
-		return new Process(id, type, description, schedule);
+		return new Process(id, type, description, schedule, order);
 	}
 }

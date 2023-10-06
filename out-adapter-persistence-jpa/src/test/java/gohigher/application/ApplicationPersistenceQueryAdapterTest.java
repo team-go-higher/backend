@@ -55,7 +55,7 @@ class ApplicationPersistenceQueryAdapterTest {
 			void setUp() {
 				ApplicationJpaEntity naverApplication = convertToApplicationEntity(userId,
 					NAVER_APPLICATION.toDomain());
-				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication, TEST.toDomain(), 1));
+				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication, TEST.toDomain()));
 				given(applicationRepository.findByIdAndUserIdWithProcess(applicationId, userId))
 					.willReturn(Optional.of(naverApplication));
 			}
@@ -111,13 +111,13 @@ class ApplicationPersistenceQueryAdapterTest {
 			void setUp() {
 				naverApplication = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
 				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication,
-					TEST.toDomainWithSchedule(LocalDate.of(year, month, 11)), 1));
+					TEST.toDomainWithSchedule(LocalDate.of(year, month, 11))));
 				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication,
-					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 20)), 1));
+					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 20))));
 
 				kakaoApplication = convertToApplicationEntity(userId, KAKAO_APPLICATION.toDomain());
 				kakaoApplication.addProcess(convertToApplicationProcessEntity(kakaoApplication,
-					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11)), 1));
+					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11))));
 
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(naverApplication, kakaoApplication);
 
@@ -170,13 +170,13 @@ class ApplicationPersistenceQueryAdapterTest {
 			void setUp() {
 				naverApplication = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
 				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication,
-					TEST.toDomainWithSchedule(date), 1));
+					TEST.toDomainWithSchedule(date)));
 				naverApplication.addProcess(convertToApplicationProcessEntity(naverApplication,
-					INTERVIEW.toDomainWithSchedule(date), 2));
+					INTERVIEW.toDomainWithSchedule(date)));
 
 				kakaoApplication = convertToApplicationEntity(userId, KAKAO_APPLICATION.toDomain());
 				kakaoApplication.addProcess(convertToApplicationProcessEntity(kakaoApplication,
-					INTERVIEW.toDomainWithSchedule(date), 1));
+					INTERVIEW.toDomainWithSchedule(date)));
 
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(naverApplication, kakaoApplication);
 

@@ -13,16 +13,17 @@ import lombok.NoArgsConstructor;
 public class ApplicationFixtureConverter {
 
 	public static ApplicationJpaEntity convertToApplicationEntity(Long userId, Application application) {
-		return createApplicationJpaEntity(userId, application, 0);
+		return createApplicationJpaEntity(userId, application, 1);
 	}
 
-	public static ApplicationJpaEntity convertToApplicationEntity(Long userId, Application application, int currentProcessOrder) {
+	public static ApplicationJpaEntity convertToApplicationEntity(Long userId, Application application,
+		int currentProcessOrder) {
 		return createApplicationJpaEntity(userId, application, currentProcessOrder);
 	}
 
 	public static ApplicationProcessJpaEntity convertToApplicationProcessEntity(
-		ApplicationJpaEntity applicationJpaEntity, Process process, int order) {
-		return ApplicationProcessJpaEntity.of(applicationJpaEntity, process, order);
+		ApplicationJpaEntity applicationJpaEntity, Process process) {
+		return ApplicationProcessJpaEntity.of(applicationJpaEntity, process);
 	}
 
 	private static ApplicationJpaEntity createApplicationJpaEntity(

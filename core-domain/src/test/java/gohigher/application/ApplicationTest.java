@@ -30,7 +30,7 @@ class ApplicationTest {
 			@ParameterizedTest
 			@EnumSource(value = ProcessType.class, names = {"TO_APPLY", "DOCUMENT"})
 			void it_Returns_Application_With_ToApply_And_Document(ProcessType processType) {
-				Process process = new Process(processType, "세부직무", LocalDateTime.now());
+				Process process = new Process(null, processType, "세부직무", LocalDateTime.now());
 
 				Application application = Application.simple("회사명", "포지션", "url", process);
 
@@ -54,7 +54,7 @@ class ApplicationTest {
 			@ParameterizedTest
 			@EnumSource(value = ProcessType.class, names = {"TEST", "INTERVIEW", "COMPLETE"})
 			void it_Returns_Application_With_Only_ProcessType(ProcessType processType) {
-				Process process = new Process(processType, "세부직무", LocalDateTime.now());
+				Process process = new Process(null, processType, "세부직무", LocalDateTime.now());
 
 				Application application = Application.simple("회사명", "포지션", "url", process);
 
