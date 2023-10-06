@@ -1,4 +1,4 @@
-package gohigher.application.port.in;
+package gohigher.application.service;
 
 import static gohigher.application.ApplicationErrorCode.*;
 import static gohigher.common.ProcessType.*;
