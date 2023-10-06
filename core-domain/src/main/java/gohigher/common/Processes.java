@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Processes {
 
-	public static final Process DEFAULT_PROCESS = new Process(ProcessType.TO_APPLY, "", null, 0);
+	public static final Process DEFAULT_PROCESS = new Process(ProcessType.TO_APPLY, "", null, 1);
 
 	private final List<Process> values;
 
@@ -24,7 +24,7 @@ public class Processes {
 	}
 
 	private static void assignNewOrder(List<Process> processes) {
-		int nextOrder = 0;
+		int nextOrder = 1;
 		for (Process process : processes) {
 			process.assignOrder(nextOrder);
 			nextOrder++;
