@@ -43,6 +43,6 @@ public abstract class JobInfo {
 	protected final String url;
 
 	public List<Process> getProcesses() {
-		return processes.getValues();
+		return processes.getOrderedValues();
 	}
 }

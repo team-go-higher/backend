@@ -1,6 +1,9 @@
 package gohigher.common;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,25 +12,41 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Processes {
 
-	public static final Process DEFAULT_PROCESS = new Process(ProcessType.TO_APPLY, "", null, 1);
+	private static final int INITIAL_ORDER = 1;
 
-	private final List<Process> values;
+	private final Map<ProcessType, List<Process>> values;
+
+	public static Processes of(List<Process> processes) {
+		return new Processes(groupingByProcessType(processes));
+	}
 
 	public static Processes initialFrom(List<Process> processes) {
-		if (processes.isEmpty()) {
-			processes.add(DEFAULT_PROCESS);
+		Map<ProcessType, List<Process>> values = groupingByProcessType(processes);
+
+		for (ProcessType processType : values.keySet()) {
+			assignNewOrder(values.get(processType));
 		}
 
-		assignNewOrder(processes);
+		return new Processes(values);
+	}
 
-		return new Processes(processes);
+	private static Map<ProcessType, List<Process>> groupingByProcessType(List<Process> processes) {
+		return processes.stream()
+			.collect(Collectors.groupingBy(Process::getType));
 	}
 
 	private static void assignNewOrder(List<Process> processes) {
-		int nextOrder = 1;
+		int nextOrder = INITIAL_ORDER;
 		for (Process process : processes) {
 			process.assignOrder(nextOrder);
 			nextOrder++;
 		}
+	}
+
+	public List<Process> getOrderedValues() {
+		return Arrays.stream(ProcessType.values())
+			.filter(values::containsKey)
+			.flatMap(processType -> values.get(processType).stream())
+			.collect(Collectors.toList());
 	}
 }

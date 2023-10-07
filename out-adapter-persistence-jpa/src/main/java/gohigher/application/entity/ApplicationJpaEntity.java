@@ -131,6 +131,6 @@ public class ApplicationJpaEntity {
 	private Application createApplication(List<Process> processes, Process currentProcess) {
 		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription,
 			workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
-			new Processes(processes), url, currentProcess);
+			Processes.of(processes), url, currentProcess);
 	}
 }
