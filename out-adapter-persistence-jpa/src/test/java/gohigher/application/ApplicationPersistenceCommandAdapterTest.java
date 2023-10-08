@@ -5,8 +5,6 @@ import static gohigher.application.ProcessFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,8 +28,7 @@ class ApplicationPersistenceCommandAdapterTest {
 	private static final Long USER_ID = 1L;
 	private final Process firstProcess = TO_APPLY.toDomain();
 	private final Process secondProcess = DOCUMENT.toDomain();
-	private final Application application = NAVER_APPLICATION.toDomain(List.of(firstProcess, secondProcess),
-		firstProcess);
+	private final Application application = NAVER_APPLICATION.toDomain(firstProcess, secondProcess);
 
 	@Autowired
 	private ApplicationRepository applicationRepository;
@@ -69,7 +66,6 @@ class ApplicationPersistenceCommandAdapterTest {
 				ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(applicationId).get();
 				assertAll(
 					() -> assertThat(applicationJpaEntity.getProcesses()).hasSize(application.getProcesses().size()),
-					() -> assertThat(applicationJpaEntity.getCurrentProcessOrder()).isEqualTo(0),
 					() -> assertThat(applicationJpaEntity.getProcesses()).extracting("order", "description")
 						.contains(
 							tuple(firstProcess.getOrder(), firstProcess.getDescription()),

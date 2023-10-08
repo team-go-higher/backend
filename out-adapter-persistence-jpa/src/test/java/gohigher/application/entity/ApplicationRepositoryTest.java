@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,47 +47,20 @@ class ApplicationRepositoryTest {
 	class Describe_findByIdAndUserIdWithProcess {
 
 		private final Long userId = 0L;
-
-		private ApplicationJpaEntity naverApplication;
-
-		@BeforeEach
-		void setUp() {
-			naverApplication = applicationRepository.save(
-				convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain()));
-		}
-
-		@DisplayName("등록된 전형 과정이 없을 경우에도")
-		@Nested
-		class Context_with_no_process {
-
-			@DisplayName("지원서를 반환한다.")
-			@Test
-			void it_returns_optional_empty() {
-				Optional<ApplicationJpaEntity> response = applicationRepository.findByIdAndUserIdWithProcess(
-					naverApplication.getId(), userId);
-
-				assertThat(response).isNotEmpty();
-			}
-		}
+		private ApplicationJpaEntity naverApplicationEntity;
 
 		@DisplayName("지원서가 여러 프로세스를 갖고 있을 경우")
 		@Nested
 		class Context_with_many_processes {
 
-			private List<ApplicationProcessJpaEntity> naverProcesses;
+			private List<ApplicationProcessJpaEntity> naverProcessEntities;
 
 			@BeforeEach
 			void setUp() {
-				ApplicationProcessJpaEntity toApply = applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication, TO_APPLY.toDomain()));
+				Application naverApplication = NAVER_APPLICATION.toDomain(TO_APPLY, DOCUMENT, TEST, INTERVIEW);
 
-				ApplicationProcessJpaEntity test = applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication, TEST.toDomain()));
-
-				ApplicationProcessJpaEntity interview = applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication, INTERVIEW.toDomain()));
-
-				naverProcesses = List.of(toApply, test, interview);
+				naverApplicationEntity = saveApplicationAndProcesses(userId, naverApplication);
+				naverProcessEntities = naverApplicationEntity.getProcesses();
 
 				entityManager.clear();
 			}
@@ -95,10 +69,12 @@ class ApplicationRepositoryTest {
 			@Test
 			void it_returns_application_with_processes() {
 				Optional<ApplicationJpaEntity> response = applicationRepository.findByIdAndUserIdWithProcess(
-					naverApplication.getId(), userId);
+					naverApplicationEntity.getId(), userId);
 
-				assertAll(() -> assertThat(response).isNotEmpty(),
-					() -> assertThat(response.get().getProcesses()).hasSize(naverProcesses.size()));
+				assertAll(
+					() -> assertThat(response).isNotEmpty(),
+					() -> assertThat(response.get().getProcesses()).hasSize(naverProcessEntities.size())
+				);
 			}
 		}
 
@@ -108,14 +84,17 @@ class ApplicationRepositoryTest {
 
 			@BeforeEach
 			void setUp() {
-				naverApplication.changeToDelete();
+				Application naverApplication = NAVER_APPLICATION.toDomain();
+				naverApplicationEntity = saveApplicationAndProcesses(userId, naverApplication);
+
+				naverApplicationEntity.changeToDelete();
 			}
 
 			@DisplayName("비어있는 결과를 반환한다.")
 			@Test
 			void it_returns_optional_empty() {
 				Optional<ApplicationJpaEntity> response = applicationRepository.findByIdAndUserIdWithProcess(
-					naverApplication.getId(), userId);
+					naverApplicationEntity.getId(), userId);
 
 				assertThat(response).isEmpty();
 			}
@@ -130,37 +109,28 @@ class ApplicationRepositoryTest {
 		private final int year = 2023;
 		private final int month = 9;
 
-		private ApplicationJpaEntity naverApplication;
-		private ApplicationJpaEntity kakaoApplication;
-
-		@BeforeEach
-		void setUp() {
-			naverApplication = applicationRepository.save(
-				convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain()));
-			kakaoApplication = applicationRepository.save(
-				convertToApplicationEntity(userId, KAKAO_APPLICATION.toDomain()));
-		}
+		private ApplicationJpaEntity naverApplicationEntity;
+		private ApplicationJpaEntity kakaoApplicationEntity;
 
 		@DisplayName("여러 유저의 공고가 존재하여도")
 		@Nested
 		class Context_with_many_user_applications {
 
 			private final Long otherUserId = -1L;
-			private ApplicationJpaEntity otherUserApplication;
 
 			@BeforeEach
 			void setUp() {
-				otherUserApplication = applicationRepository.save(
-					convertToApplicationEntity(otherUserId, NAVER_APPLICATION.toDomain()));
+				Application naverApplication = NAVER_APPLICATION.toDomain(
+					TEST.toDomainWithSchedule(LocalDate.of(year, month, 11)));
+				naverApplicationEntity = saveApplicationAndProcesses(userId, naverApplication);
 
-				applicationProcessRepository.save(convertToApplicationProcessEntity(naverApplication,
-					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11))));
+				Application kakoaApplication = KAKAO_APPLICATION.toDomain(
+					TEST.toDomainWithSchedule(LocalDate.of(year, month, 20)));
+				kakaoApplicationEntity = saveApplicationAndProcesses(userId, kakoaApplication);
 
-				applicationProcessRepository.save(convertToApplicationProcessEntity(kakaoApplication,
-					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 20))));
-
-				applicationProcessRepository.save(convertToApplicationProcessEntity(otherUserApplication,
-					TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11))));
+				Application otherUserApplication = COUPANG_APPLICATION.toDomain(
+					TEST.toDomainWithSchedule(LocalDate.of(year, month, 20)));
+				saveApplicationAndProcesses(otherUserId, otherUserApplication);
 			}
 
 			@DisplayName("특정 유저의 데이터만 반환한다.")
@@ -168,7 +138,7 @@ class ApplicationRepositoryTest {
 			void it_returns_only_data_for_a_specific_user() {
 				List<ApplicationJpaEntity> actual = applicationRepository.findByUserIdAndMonth(userId, year, month);
 
-				assertThat(actual).containsOnly(naverApplication, kakaoApplication);
+				assertThat(actual).containsOnly(naverApplicationEntity, kakaoApplicationEntity);
 			}
 		}
 
@@ -177,22 +147,18 @@ class ApplicationRepositoryTest {
 		class Context_with_many_schedules_for_several_months {
 
 			private final int otherMonth = 10;
-			private final List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
+			private int expectedNumOfProcesses;
 
 			@BeforeEach
 			void setUp() {
-				ApplicationProcessJpaEntity expectedProcess1 = applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication,
-						TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11))));
+				Application kakoaApplication = KAKAO_APPLICATION.toDomain(
+					TEST.toDomainWithSchedule(LocalDate.of(year, month, 10)),
+					FIRST_INTERVIEW.toDomainWithSchedule(LocalDate.of(year, month, 20)),
+					SECOND_INTERVIEW.toDomainWithSchedule(LocalDate.of(year, otherMonth, 20)));
+				kakaoApplicationEntity = saveApplicationAndProcesses(userId, kakoaApplication);
 
-				ApplicationProcessJpaEntity expectedProcess2 = applicationProcessRepository.save(
-					convertToApplicationProcessEntity(kakaoApplication,
-						TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 20))));
-
-				applicationProcessRepository.save(convertToApplicationProcessEntity(kakaoApplication,
-					TEST.toDomainWithSchedule(LocalDate.of(year, otherMonth, 20))));
-
-				expectedProcesses.addAll(List.of(expectedProcess1, expectedProcess2));
+				// TEST & FIRST_INTERVIEW
+				expectedNumOfProcesses = 2;
 
 				entityManager.clear();
 			}
@@ -207,7 +173,7 @@ class ApplicationRepositoryTest {
 					actualProcesses.addAll(application.getProcesses());
 				}
 
-				assertThat(actualProcesses).hasSize(expectedProcesses.size());
+				assertThat(actualProcesses).hasSize(expectedNumOfProcesses);
 			}
 		}
 
@@ -215,19 +181,17 @@ class ApplicationRepositoryTest {
 		@Nested
 		class Context_with_application_that_has_two_processes {
 
-			private final List<ApplicationProcessJpaEntity> expectedProcesses = new ArrayList<>();
+			private int expectedNumOfProcesses;
 
 			@BeforeEach
 			void setUp() {
-				ApplicationProcessJpaEntity expectedProcess1 = applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication,
-						TO_APPLY.toDomainWithSchedule(LocalDate.of(year, month, 11))));
+				Application naverApplication = NAVER_APPLICATION.toDomain(
+					TEST.toDomainWithSchedule(LocalDate.of(year, month, 11)),
+					INTERVIEW.toDomainWithSchedule(LocalDate.of(year, month, 20)));
+				naverApplicationEntity = saveApplicationAndProcesses(userId, naverApplication);
 
-				ApplicationProcessJpaEntity expectedProcess2 = applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication,
-						DOCUMENT.toDomainWithSchedule(LocalDate.of(year, month, 20))));
-
-				expectedProcesses.addAll(List.of(expectedProcess1, expectedProcess2));
+				// TEST & INTERVIEW
+				expectedNumOfProcesses = 2;
 
 				entityManager.clear();
 			}
@@ -238,7 +202,7 @@ class ApplicationRepositoryTest {
 				List<ApplicationJpaEntity> response = applicationRepository.findByUserIdAndMonth(userId, year, month);
 				List<ApplicationProcessJpaEntity> actual = response.get(0).getProcesses();
 
-				assertThat(actual).hasSize(expectedProcesses.size());
+				assertThat(actual).hasSize(expectedNumOfProcesses);
 			}
 		}
 	}
@@ -250,16 +214,8 @@ class ApplicationRepositoryTest {
 		private final Long userId = 1L;
 		private final LocalDate date = LocalDate.of(2023, 9, 13);
 
-		private ApplicationJpaEntity naverApplication;
-		private ApplicationJpaEntity kakaoApplication;
-
-		@BeforeEach
-		void setUp() {
-			naverApplication = applicationRepository.save(
-				convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain()));
-			kakaoApplication = applicationRepository.save(
-				convertToApplicationEntity(userId, KAKAO_APPLICATION.toDomain()));
-		}
+		private ApplicationJpaEntity naverApplicationEntity;
+		private ApplicationJpaEntity kakaoApplicationEntity;
 
 		@DisplayName("해당 일이 전형일인 지원 전형이 있으면")
 		@Nested
@@ -267,11 +223,11 @@ class ApplicationRepositoryTest {
 
 			@BeforeEach
 			void setUp() {
-				applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication, DOCUMENT.toDomainWithSchedule(date)));
+				Application naverApplication = NAVER_APPLICATION.toDomain(TEST.toDomainWithSchedule(date));
+				naverApplicationEntity = saveApplicationAndProcesses(userId, naverApplication);
 
-				applicationProcessRepository.save(
-					convertToApplicationProcessEntity(kakaoApplication, INTERVIEW.toDomainWithSchedule(date)));
+				Application kakoaApplication = KAKAO_APPLICATION.toDomain(TEST.toDomainWithSchedule(date));
+				kakaoApplicationEntity = saveApplicationAndProcesses(userId, kakoaApplication);
 
 				entityManager.clear();
 			}
@@ -281,7 +237,7 @@ class ApplicationRepositoryTest {
 			@ValueSource(longs = {0L, 1L})
 			void it_returns_applications_with_proper_processes(long day) {
 				// given
-				applicationProcessRepository.save(convertToApplicationProcessEntity(naverApplication,
+				applicationProcessRepository.save(convertToApplicationProcessEntity(naverApplicationEntity,
 					TEST.toDomainWithSchedule(date.plusDays(day))));    // day = 0일 때는 반환할 전형이 추가
 
 				// when
@@ -290,13 +246,13 @@ class ApplicationRepositoryTest {
 
 				ApplicationJpaEntity actualNaverApplication = applicationJpaEntities.stream()
 					.filter(applicationJpaEntity -> applicationJpaEntity.getCompanyName()
-						.equals(naverApplication.getCompanyName()))
+						.equals(naverApplicationEntity.getCompanyName()))
 					.findAny()
 					.orElseThrow();
 
 				ApplicationJpaEntity actualKakaoApplication = applicationJpaEntities.stream()
 					.filter(applicationJpaEntity -> applicationJpaEntity.getCompanyName()
-						.equals(kakaoApplication.getCompanyName()))
+						.equals(kakaoApplicationEntity.getCompanyName()))
 					.findAny()
 					.orElseThrow();
 
@@ -319,7 +275,7 @@ class ApplicationRepositoryTest {
 		@Nested
 		class Context_exist_processes_without_schedule {
 
-			@DisplayName("해당 전형들을 포함한 어플리케이션을 반환한다")
+			@DisplayName("전형일이 등록되어있지 않은 현재 전형만을 포함한 어플리케이션을 반환한다")
 			@Test
 			void it_return_applications_with_process() {
 				// given
@@ -327,21 +283,13 @@ class ApplicationRepositoryTest {
 				PageRequest pageRequest = PageRequest.of(0, 10);
 
 				int applicationCount = 1;
-				int processCount = 2;
 				for (int i = 0; i < applicationCount; i++) {
-					ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(
-						convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain())
+					Application naverApplication = NAVER_APPLICATION.toDomain(
+						TEST.toDomainWithSchedule((LocalDateTime)null),
+						FIRST_INTERVIEW.toDomainWithSchedule((LocalDateTime)null),
+						SECOND_INTERVIEW.toDomainWithSchedule((LocalDateTime)null)
 					);
-
-					for (int j = 1; j <= processCount; j++) {
-						Process process = TO_APPLY.toDomainWithScheduleAndOrder(null, j);
-						applicationProcessRepository.save(ApplicationProcessJpaEntity.of(
-							applicationJpaEntity, process));
-					}
-
-					Process process = DOCUMENT.toDomain();
-					applicationProcessRepository.save(ApplicationProcessJpaEntity.of(
-						applicationJpaEntity, process));
+					saveApplicationAndProcesses(userId, naverApplication);
 				}
 				entityManager.clear();
 
@@ -353,46 +301,6 @@ class ApplicationRepositoryTest {
 				assertAll(
 					() -> assertThat(applications.getNumberOfElements()).isEqualTo(applicationCount),
 					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(1)
-				);
-			}
-		}
-
-		@DisplayName("전형일이 작성되어 있지 않으며, 현재 전형단계 이전의 프로세스들이 있을 때")
-		@Nested
-		class Context_exist_processes_before_current_process {
-
-			@DisplayName("해당 전형들을 제외한 어플리케이션이 반환된다")
-			@Test
-			void it_not_return() {
-				// given
-				Long userId = 1L;
-				PageRequest pageRequest = PageRequest.of(0, 10);
-
-				int applicationCount = 1;
-				int processCount = 2;
-				int currentProcessOrder = 1;
-				for (int i = 0; i < applicationCount; i++) {
-					ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(
-						convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain(), currentProcessOrder)
-					);
-
-					for (int j = 0; j < processCount; j++) {
-						Process process = TO_APPLY.toDomainWithScheduleAndOrder(null, j);
-						applicationProcessRepository.save(ApplicationProcessJpaEntity.of(
-							applicationJpaEntity, process));
-					}
-				}
-				entityManager.clear();
-
-				// when
-				Slice<ApplicationJpaEntity> applications = applicationRepository.findUnscheduledByUserId(userId,
-					pageRequest);
-
-				// then
-				assertAll(
-					() -> assertThat(applications.getNumberOfElements()).isEqualTo(applicationCount),
-					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(
-						processCount - currentProcessOrder)
 				);
 			}
 		}
@@ -411,14 +319,8 @@ class ApplicationRepositoryTest {
 			void it_return_application_current_process() {
 				// given
 				Long userId = 1L;
-				ApplicationJpaEntity naverApplication = applicationRepository.save(
-					convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain()));
-
-				applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication, TO_APPLY.toDomain()));
-
-				applicationProcessRepository.save(
-					convertToApplicationProcessEntity(naverApplication, DOCUMENT.toDomain()));
+				Application naverApplication = NAVER_APPLICATION.toDomain(TO_APPLY, DOCUMENT);
+				saveApplicationAndProcesses(userId, naverApplication);
 				entityManager.clear();
 
 				// when
@@ -464,9 +366,24 @@ class ApplicationRepositoryTest {
 				application.getLocation(), application.getContact(), application.getPosition(),
 				application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
 				application.getEmploymentType(), application.getCareerRequirement(),
-				application.getRequiredCapability(),
-				application.getPreferredQualification(), application.getUrl(), 0, null, null, deleted
+				application.getRequiredCapability(), application.getPreferredQualification(), application.getUrl(),
+				application.getCurrentProcess().getType(), application.getCurrentProcess().getOrder(), null, null,
+				deleted
 			);
 		}
+	}
+
+	public ApplicationJpaEntity saveApplicationAndProcesses(Long userId, Application application) {
+		ApplicationJpaEntity applicationEntity = applicationRepository.save(
+			convertToApplicationEntity(userId, application));
+
+		for (Process process : application.getProcesses()) {
+			ApplicationProcessJpaEntity applicationProcessJpaEntity = applicationProcessRepository.save(
+				convertToApplicationProcessEntity(applicationEntity, process));
+
+			applicationEntity.addProcess(applicationProcessJpaEntity);
+		}
+
+		return applicationEntity;
 	}
 }

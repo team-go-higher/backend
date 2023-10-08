@@ -157,9 +157,9 @@ class ApplicationQueryServiceTest {
 			void it_return_processes() {
 				// given
 				List<Process> naverProcesses = List.of(this.interview);
-				Application naverApplication = NAVER_APPLICATION.toDomain(naverProcesses, null);
+				Application naverApplication = NAVER_APPLICATION.toDomain(naverProcesses, interview);
 				List<Process> kakaoProcesses = List.of(this.document);
-				Application kakaoApplication = KAKAO_APPLICATION.toDomain(kakaoProcesses, null);
+				Application kakaoApplication = KAKAO_APPLICATION.toDomain(kakaoProcesses, document);
 				given(applicationPersistenceQueryPort.findByUserIdAndDate(userId, date)).willReturn(
 					List.of(naverApplication, kakaoApplication));
 

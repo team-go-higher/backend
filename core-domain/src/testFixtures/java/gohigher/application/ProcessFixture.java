@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ProcessFixture {
 
-	TO_APPLY(ProcessType.TO_APPLY, "지원 예정", null, 1),
+	TO_APPLY(ProcessType.TO_APPLY, "지원 예정", LocalDateTime.now().plusDays(6), 1),
 	DOCUMENT(ProcessType.DOCUMENT, "서류 전형", LocalDateTime.now().plusDays(6), 2),
 	TEST(ProcessType.TEST, "시험", LocalDateTime.now().plusDays(10), 3),
 	CODING_TEST(ProcessType.TEST, "코딩테스트", LocalDateTime.now().plusDays(10), 4),
@@ -32,7 +32,7 @@ public enum ProcessFixture {
 		return createProcess(null, type, description, schedule, order);
 	}
 
-	public Process toDomainWithScheduleAndOrder(LocalDateTime schedule, int order) {
+	public Process toDomainWithSchedule(LocalDateTime schedule) {
 		return createProcess(null, type, description, schedule, order);
 	}
 
@@ -42,10 +42,6 @@ public enum ProcessFixture {
 
 	public Process toDomainWithoutOrder() {
 		return createProcess(null, type, description, schedule, 0);
-	}
-
-	public Process toDomainWithDescription(String description) {
-		return createProcess(null, type, description, schedule, order);
 	}
 
 	public Process toPersistedDomain(long id) {

@@ -56,17 +56,18 @@ class ApplicationProcessPersistenceQueryAdapterTest {
 
 			@BeforeEach
 			void setUp() {
+				Application application = NAVER_APPLICATION.toDomain(TEST, FIRST_INTERVIEW, SECOND_INTERVIEW);
 				ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(
-					convertToApplicationEntity(USER_ID, NAVER_APPLICATION.toDomain()));
+					convertToApplicationEntity(USER_ID, application));
+
+				for (Process process : application.getProcesses()) {
+					ApplicationProcessJpaEntity applicationProcessJpaEntity = applicationProcessRepository.save(
+						convertToApplicationProcessEntity(applicationJpaEntity, process));
+
+					applicationJpaEntity.addProcess(applicationProcessJpaEntity);
+				}
+
 				applicationId = applicationJpaEntity.getId();
-				ApplicationProcessJpaEntity firstApplicationProcessJpaEntity =
-					convertToApplicationProcessEntity(applicationJpaEntity, DOCUMENT.toDomain());
-				ApplicationProcessJpaEntity secondApplicationProcessJpaEntity = convertToApplicationProcessEntity(
-					applicationJpaEntity, FIRST_INTERVIEW.toDomain());
-				ApplicationProcessJpaEntity thirdApplicationProcessJpaEntity = convertToApplicationProcessEntity(
-					applicationJpaEntity, SECOND_INTERVIEW.toDomain());
-				applicationProcessRepository.saveAll(List.of(firstApplicationProcessJpaEntity,
-					secondApplicationProcessJpaEntity, thirdApplicationProcessJpaEntity));
 			}
 
 			@DisplayName("정상적으로 찾을 수 있어야 한다.")
