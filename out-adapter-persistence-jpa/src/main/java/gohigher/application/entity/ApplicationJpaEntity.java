@@ -6,6 +6,7 @@ import java.util.List;
 import gohigher.application.Application;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
+import gohigher.common.ProcessType;
 import gohigher.common.Processes;
 import gohigher.recruitment.entity.RecruitmentJpaEntity;
 import jakarta.persistence.Entity;
@@ -53,6 +54,9 @@ public class ApplicationJpaEntity {
 	private String requiredCapability;
 	private String preferredQualification;
 	private String url;
+
+	@Enumerated(value = EnumType.STRING)
+	private ProcessType currentProcessType;
 	private int currentProcessOrder;
 
 	@OneToMany(mappedBy = "application")
@@ -80,7 +84,8 @@ public class ApplicationJpaEntity {
 			application.getRequiredCapability(),
 			application.getPreferredQualification(),
 			application.getUrl(),
-			FIRST_PROCESS_ORDER,
+			application.getCurrentProcess().getType(),
+			application.getCurrentProcess().getOrder(),
 			null,
 			null,
 			false
@@ -116,6 +121,7 @@ public class ApplicationJpaEntity {
 
 	private Process findCurrentProcess(List<Process> processes) {
 		return processes.stream()
+			.filter(process -> process.getType() == currentProcessType)
 			.filter(process -> process.getOrder() == currentProcessOrder)
 			.findAny()
 			.orElse(null);

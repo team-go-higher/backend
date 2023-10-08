@@ -47,6 +47,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
+		+ "AND a.currentProcessType = p.type "
 		+ "AND a.currentProcessOrder = p.order "
 		+ "AND p.schedule = null "
 		+ "AND a.deleted = false")
@@ -55,6 +56,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
+		+ "AND a.currentProcessType = p.type "
 		+ "AND a.currentProcessOrder = p.order "
 		+ "AND a.deleted = false")
 	List<ApplicationJpaEntity> findOnlyWithCurrentProcessByUserId(Long userId);
