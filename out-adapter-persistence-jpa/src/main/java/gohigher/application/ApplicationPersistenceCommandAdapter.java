@@ -1,5 +1,7 @@
 package gohigher.application;
 
+import static gohigher.application.ApplicationErrorCode.*;
+
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -10,6 +12,7 @@ import gohigher.application.entity.ApplicationProcessRepository;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.common.Process;
+import gohigher.global.exception.GoHigherException;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -39,6 +42,11 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 
 	@Override
 	public void updateCurrentProcessOrder(long id, long processId) {
-		applicationRepository.updateCurrentProcessOrder(id, processId);
+		ApplicationJpaEntity application = applicationRepository.findById(id)
+			.orElseThrow(() -> new GoHigherException(APPLICATION_NOT_FOUND));
+		ApplicationProcessJpaEntity process = applicationProcessRepository.findById(processId)
+			.orElseThrow(() -> new GoHigherException(APPLICATION_PROCESS_NOT_FOUND));
+
+		application.updateCurrentProcess(process.getType(), process.getOrder());
 	}
 }

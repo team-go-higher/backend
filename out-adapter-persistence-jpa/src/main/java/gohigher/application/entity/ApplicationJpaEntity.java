@@ -139,4 +139,9 @@ public class ApplicationJpaEntity {
 			workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
 			Processes.of(processes), url, currentProcess);
 	}
+
+	public void updateCurrentProcess(ProcessType type, int order) {
+		currentProcessType = type;
+		currentProcessOrder = order;
+	}
 }
