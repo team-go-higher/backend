@@ -18,6 +18,5 @@ public class SimpleApplicationRegisterResponse {
 	public static SimpleApplicationRegisterResponse from(Application application) {
 		return new SimpleApplicationRegisterResponse(application.getId(), application.getCompanyName(),
 			application.getCurrentProcess().getSchedule(), application.getCurrentProcess().getDescription());
-
 	}
 }
