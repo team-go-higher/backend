@@ -2,6 +2,10 @@ package gohigher.application.port.in;
 
 import java.time.LocalDateTime;
 
+import gohigher.application.Application;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class SimpleApplicationRegisterResponse {
 
 	private final Long id;
@@ -9,11 +13,9 @@ public class SimpleApplicationRegisterResponse {
 	private final LocalDateTime currentProcessSchedule;
 	private final String currentProcessDescription;
 
-	public SimpleApplicationRegisterResponse(Long id, String companyName, LocalDateTime currentProcessSchedule,
-		String currentProcessDescription) {
-		this.id = id;
-		this.companyName = companyName;
-		this.currentProcessSchedule = currentProcessSchedule;
-		this.currentProcessDescription = currentProcessDescription;
+	public static SimpleApplicationRegisterResponse from(Application application) {
+		return new SimpleApplicationRegisterResponse(application.getId(), application.getCompanyName(),
+			application.getCurrentProcess().getSchedule(), application.getCurrentProcess().getDescription());
+
 	}
 }

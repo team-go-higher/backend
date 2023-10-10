@@ -29,8 +29,7 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 	@Override
 	public SimpleApplicationRegisterResponse applySimply(Long userId, SimpleApplicationRequest request) {
 		Application savedApplication = applicationPersistenceCommandPort.save(userId, request.toDomain());
-		return new SimpleApplicationRegisterResponse(savedApplication.getId(), savedApplication.getCompanyName(),
-			savedApplication.getCurrentProcess().getSchedule(), savedApplication.getCurrentProcess().getDescription());
+		return SimpleApplicationRegisterResponse.from(savedApplication);
 	}
 
 	@Override
