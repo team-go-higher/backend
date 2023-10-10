@@ -5,8 +5,10 @@ import static gohigher.application.ApplicationErrorCode.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import gohigher.application.Application;
 import gohigher.application.port.in.ApplicationCommandPort;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
+import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
@@ -25,13 +27,15 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
 
 	@Override
-	public void applySimply(Long userId, SimpleApplicationRequest request) {
-		applicationPersistenceCommandPort.save(userId, request.toDomain());
+	public SimpleApplicationRegisterResponse applySimply(Long userId, SimpleApplicationRequest request) {
+		Application savedApplication = applicationPersistenceCommandPort.save(userId, request.toDomain());
+		return SimpleApplicationRegisterResponse.from(savedApplication);
 	}
 
 	@Override
 	public long applySpecifically(Long userId, SpecificApplicationRequest request) {
-		return applicationPersistenceCommandPort.save(userId, request.toDomain());
+		return applicationPersistenceCommandPort.save(userId, request.toDomain())
+			.getId();
 	}
 
 	@Override

@@ -65,6 +65,7 @@ public class ApplicationJpaEntity {
 	private boolean deleted;
 
 	public static ApplicationJpaEntity of(Application application, Long userId) {
+		int currentProcessOrder = application.getCurrentProcess().getOrder();
 		return new ApplicationJpaEntity(null,
 			userId,
 			application.getCompanyName(),
@@ -80,7 +81,7 @@ public class ApplicationJpaEntity {
 			application.getRequiredCapability(),
 			application.getPreferredQualification(),
 			application.getUrl(),
-			FIRST_PROCESS_ORDER,
+			currentProcessOrder,
 			null,
 			null,
 			false
@@ -101,6 +102,13 @@ public class ApplicationJpaEntity {
 
 	public Application toDomain() {
 		List<Process> processes = getProcessList();
+		return createApplication(processes, findCurrentProcess(processes));
+	}
+
+	public Application toDomain(List<ApplicationProcessJpaEntity> applicationProcessJpaEntities) {
+		List<Process> processes = applicationProcessJpaEntities.stream()
+			.map(ApplicationProcessJpaEntity::toDomain)
+			.toList();
 		return createApplication(processes, findCurrentProcess(processes));
 	}
 

@@ -4,7 +4,7 @@ import gohigher.application.Application;
 
 public interface ApplicationPersistenceCommandPort {
 
-	Long save(Long userId, Application application);
+	Application save(Long userId, Application application);
 
 	void updateCurrentProcessOrder(long id, long processId);
 }

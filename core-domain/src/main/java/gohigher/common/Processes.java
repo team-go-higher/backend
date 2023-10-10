@@ -1,5 +1,7 @@
 package gohigher.common;
 
+import static gohigher.common.ProcessType.*;
+
 import java.util.List;
 
 import lombok.Getter;
@@ -21,6 +23,21 @@ public class Processes {
 		assignNewOrder(processes);
 
 		return new Processes(processes);
+	}
+
+	public static Processes initialFrom(Process process) {
+		List<Process> processes = addAdditionalProcessIfNecessary(process);
+		assignNewOrder(processes);
+		return new Processes(processes);
+	}
+
+	private static List<Process> addAdditionalProcessIfNecessary(Process process) {
+		if (process.isTypeOf(TO_APPLY)) {
+			return List.of(process, process.copyWithSameScheduleAndTypeOf(DOCUMENT));
+		} else if (process.isTypeOf(DOCUMENT)) {
+			return List.of(process.copyWithSameScheduleAndTypeOf(TO_APPLY), process);
+		}
+		return List.of(process);
 	}
 
 	private static void assignNewOrder(List<Process> processes) {

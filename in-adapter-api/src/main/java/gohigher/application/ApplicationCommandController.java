@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gohigher.application.port.in.ApplicationCommandPort;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
+import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.auth.support.Login;
@@ -26,10 +27,10 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 	private final ApplicationCommandPort applicationCommandPort;
 
 	@PostMapping("/simple")
-	public ResponseEntity<GohigherResponse<Void>> registerApplicationSimply(@Login Long userId,
-		@RequestBody @Valid SimpleApplicationRequest request) {
-		applicationCommandPort.applySimply(userId, request);
-		return ResponseEntity.ok(GohigherResponse.success(null));
+	public ResponseEntity<GohigherResponse<SimpleApplicationRegisterResponse>> registerApplicationSimply(
+		@Login Long userId, @RequestBody @Valid SimpleApplicationRequest request) {
+		SimpleApplicationRegisterResponse response = applicationCommandPort.applySimply(userId, request);
+		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
 
 	@PostMapping("/specific")
