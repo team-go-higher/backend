@@ -18,21 +18,9 @@ public interface PositionCommandControllerDocs {
 	@Operation(summary = "희망 직무 등록")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "204", description = "희망 직무 등록 성공"),
-		@ApiResponse(responseCode = "400", description = "희망 직무가 이미 게시된 직무 목록에 있음", content = @Content(
+		@ApiResponse(responseCode = "400", description = "Request에 List가 비어있을 경우", content = @Content(
 			examples = {
-				@ExampleObject(name = "직무가 이미 게시되어 있음", value = """
-					{
-					"success": false,
-					"error": {
-						"code": "POSITION_011",
-						"message": "목록에 존재하는 포지션입니다."
-					},
-					"data": null
-					}
-					""")})),
-		@ApiResponse(responseCode = "400", description = "Request에 List가 둘 다 비어있을 경우", content = @Content(
-			examples = {
-				@ExampleObject(name = "직무가 이미 게시되어 있음", value = """
+				@ExampleObject(name = "희망 직무가 비었음", value = """
 					{
 					"success": false,
 					"error": {

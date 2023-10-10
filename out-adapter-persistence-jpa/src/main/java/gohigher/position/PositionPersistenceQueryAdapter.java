@@ -16,15 +16,15 @@ public class PositionPersistenceQueryAdapter implements PositionPersistenceQuery
 	private final PositionRepository positionRepository;
 
 	@Override
-	public List<Position> findAllMadeByAdmin() {
-		return positionRepository.findByMadeByAdmin(true)
+	public List<Position> findAll() {
+		return positionRepository.findAll()
 			.stream()
 			.map(PositionJpaEntity::toDomain)
 			.toList();
 	}
 
 	@Override
-	public boolean existsByValuesAndMadeByAdmin(List<String> values) {
-		return positionRepository.existsAllByPositionInAndMadeByAdminIsTrue(values);
+	public boolean existsByIds(List<Long> positionIds) {
+		return positionRepository.existsAllByIdIn(positionIds);
 	}
 }

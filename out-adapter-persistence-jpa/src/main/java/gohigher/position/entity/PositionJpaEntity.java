@@ -22,11 +22,8 @@ public class PositionJpaEntity {
 
 	private String position;
 
-	private Boolean madeByAdmin;
-
-	public PositionJpaEntity(String position, Boolean madeByAdmin) {
+	public PositionJpaEntity(String position) {
 		this.position = position;
-		this.madeByAdmin = madeByAdmin;
 	}
 
 	public Position toDomain() {

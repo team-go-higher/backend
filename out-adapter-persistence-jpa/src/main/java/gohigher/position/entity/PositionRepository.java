@@ -6,7 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PositionRepository extends JpaRepository<PositionJpaEntity, Long> {
 
-	List<PositionJpaEntity> findByMadeByAdmin(boolean madeByAdmin);
-
-	boolean existsAllByPositionInAndMadeByAdminIsTrue(List<String> positions);
+	boolean existsAllByIdIn(List<Long> positionIds);
 }

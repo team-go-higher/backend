@@ -6,7 +6,7 @@ import gohigher.position.Position;
 
 public interface PositionPersistenceQueryPort {
 
-	List<Position> findAllMadeByAdmin();
+	List<Position> findAll();
 
-	boolean existsByValuesAndMadeByAdmin(List<String> values);
+	boolean existsByIds(List<Long> positionIds);
 }

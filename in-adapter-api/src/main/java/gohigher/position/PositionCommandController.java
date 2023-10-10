@@ -1,8 +1,5 @@
 package gohigher.position;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,25 +13,14 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class PositionCommandController {
+public class PositionCommandController implements PositionCommandControllerDocs {
 
 	private final PositionCommandPort positionCommandPort;
 
 	@PostMapping("/v1/desired-positions")
 	public ResponseEntity<Void> saveDesiredPositions(@Login Long userId,
 		@RequestBody @Valid DesiredPositionRequest request) {
-		List<Long> positionIds = new ArrayList<>();
-
-		if (!request.isExistedPositionIdsEmpty()) {
-			positionIds.addAll(request.getExistedPositionIds());
-		}
-
-		if (!request.isPersonalPositionsEmpty()) {
-			positionIds.addAll(positionCommandPort.savePersonalPositions(userId,
-				request.getPersonalPositions()));
-		}
-		positionCommandPort.saveDesiredPositions(userId, positionIds);
+		positionCommandPort.saveDesiredPositions(userId, request.getPositionIds());
 		return ResponseEntity.noContent().build();
 	}
-
 }

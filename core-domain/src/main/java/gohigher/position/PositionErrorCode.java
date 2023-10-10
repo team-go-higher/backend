@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PositionErrorCode implements ErrorCode {
 
-	EXIST_ALREADY_POSITION(400, "POSITION_011", "목록에 존재하는 포지션입니다."),
+	POSITION_NOT_EXISTS(400, "POSITION_001", "존재하지 않는 직무입니다."),
 	;
 
 	private final int statusCode;

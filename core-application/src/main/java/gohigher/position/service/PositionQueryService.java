@@ -19,7 +19,7 @@ public class PositionQueryService implements PositionQueryPort {
 
 	@Override
 	public List<PositionResponse> findPositions() {
-		return positionPersistenceQueryPort.findAllMadeByAdmin()
+		return positionPersistenceQueryPort.findAll()
 			.stream()
 			.map(PositionResponse::from)
 			.toList();

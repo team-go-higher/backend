@@ -3,6 +3,7 @@ package gohigher.position;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,24 +43,29 @@ class PositionPersistenceQueryAdapterTest {
 		Position designer = PositionFixture.DESIGNER.toDomain();
 		Position pm = PositionFixture.PROJECT_MANAGER.toDomain();
 
-		@BeforeEach
-		void setUp() {
-			PositionJpaEntity designerEntity = new PositionJpaEntity(designer.getValue(), true);
-			PositionJpaEntity developerEntity = new PositionJpaEntity(developer.getValue(), false);
-			positionRepository.saveAll(List.of(developerEntity, designerEntity));
-			entityManager.clear();
-		}
-
 		@DisplayName("position들을 입력받았을 때,")
 		@Nested
 		class Context_input_position {
+
+			List<Long> savedPositionIds;
+
+			@BeforeEach
+			void setUp() {
+				PositionJpaEntity designerEntity = new PositionJpaEntity(designer.getValue());
+				PositionJpaEntity developerEntity = new PositionJpaEntity(developer.getValue());
+				List<PositionJpaEntity> savedPositionJpaEntities = positionRepository.saveAll(
+					List.of(developerEntity, designerEntity));
+				savedPositionIds = savedPositionJpaEntities.stream()
+					.map(PositionJpaEntity::getId)
+					.collect(Collectors.toList());
+				entityManager.clear();
+			}
 
 			@DisplayName("동일한 position이 이미 있다면 true를 리턴한다.")
 			@Test
 			void it_returns_true_when_existed_position() {
 				// when & then
-				assertThat(positionPersistenceQueryAdapter.existsByValuesAndMadeByAdmin(
-					List.of(designer.getValue(), pm.getValue())))
+				assertThat(positionPersistenceQueryAdapter.existsByIds(savedPositionIds))
 					.isTrue();
 			}
 
@@ -67,7 +73,7 @@ class PositionPersistenceQueryAdapterTest {
 			@Test
 			void it_returns_false_when_not_existed_position() {
 				// when & then
-				assertThat(positionPersistenceQueryAdapter.existsByValuesAndMadeByAdmin(List.of(pm.getValue())))
+				assertThat(positionPersistenceQueryAdapter.existsByIds(List.of(0L)))
 					.isFalse();
 			}
 		}
