@@ -110,7 +110,7 @@ public class ApplicationJpaEntity {
 		List<Process> processes = applicationProcessJpaEntities.stream()
 			.map(ApplicationProcessJpaEntity::toDomain)
 			.toList();
-		return createApplication(processes, processes.get(currentProcessOrder));
+		return createApplication(processes, findCurrentProcess(processes));
 	}
 
 	public Application toCalenderDomain() {
