@@ -42,7 +42,7 @@ public class UserJpaEntity {
 	@Enumerated(EnumType.STRING)
 	private Provider provider;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<DesiredPositionJpaEntity> desiredPositions;
 
 	public UserJpaEntity(String email, Role role, Provider provider) {
