@@ -28,17 +28,7 @@ public class Application extends JobInfo {
 	}
 
 	public static Application simple(String companyName, String position, String url, Process process) {
-		List<Process> processes = addAdditionalProcessIfNecessary(process);
 		return new Application(null, companyName, null, null, null, position, null, null,
-			null, null, null, null, null, Processes.initialFrom(processes), url, process);
-	}
-
-	private static List<Process> addAdditionalProcessIfNecessary(Process process) {
-		if (process.isTypeOf(TO_APPLY)) {
-			return List.of(process, process.copyWithSameScheduleAndTypeOf(DOCUMENT));
-		} else if (process.isTypeOf(DOCUMENT)) {
-			return List.of(process.copyWithSameScheduleAndTypeOf(TO_APPLY), process);
-		}
-		return List.of(process);
+			null, null, null, null, null, Processes.initialFrom(process), url, process);
 	}
 }
