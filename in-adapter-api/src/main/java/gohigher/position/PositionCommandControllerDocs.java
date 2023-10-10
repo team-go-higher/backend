@@ -29,7 +29,32 @@ public interface PositionCommandControllerDocs {
 					},
 					"data": null
 					}
-					""")}))})
+					""")})),
+		@ApiResponse(responseCode = "400", description = "입력받은 positionIds에 중복이 있을 경우", content = @Content(
+			examples = {
+				@ExampleObject(name = "희망 직무에 중복이 있음", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "POSITION_012",
+						"message": "중복된 직무 ID를 입력받았습니다."
+					},
+					"data": null
+					}
+					""")})),
+		@ApiResponse(responseCode = "400", description = "입력받은 positionId가 존재하지 않을 경우", content = @Content(
+			examples = {
+				@ExampleObject(name = "존재하지 않는 직무를 희망함", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "POSITION_001",
+						"message": "존재하지 않는 직무입니다."
+					},
+					"data": null
+					}
+					""")}))
+	})
 	ResponseEntity<Void> saveDesiredPositions(@Parameter(hidden = true) Long userId,
 		@RequestBody DesiredPositionRequest request);
 }

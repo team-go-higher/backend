@@ -23,11 +23,18 @@ public class PositionCommandService implements PositionCommandPort {
 
 	@Override
 	public void saveDesiredPositions(Long userId, List<Long> positionIds) {
-		validateExistedPositions(positionIds);
 		List<Long> distinctPositionIds = positionIds.stream()
 			.distinct()
 			.collect(Collectors.toList());
+		validateDuplicatedPositionIds(positionIds, distinctPositionIds);
+		validateExistedPositions(distinctPositionIds);
 		desiredPositionPersistenceCommandPort.saveDesiredPositions(userId, distinctPositionIds);
+	}
+
+	private void validateDuplicatedPositionIds(List<Long> positionIds, List<Long> distinctPositionIds) {
+		if (distinctPositionIds.size() != positionIds.size()) {
+			throw new GoHigherException(PositionErrorCode.DUPLICATED_POSITION);
+		}
 	}
 
 	private void validateExistedPositions(List<Long> positions) {
