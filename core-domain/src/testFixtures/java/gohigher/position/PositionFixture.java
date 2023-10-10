@@ -9,7 +9,7 @@ public enum PositionFixture {
 
 	DEVELOPER("개발자"),
 	DESIGNER("디자이너"),
-	PROJECT_MANAGER("PN"),
+	PROJECT_MANAGER("PM"),
 	;
 
 	private final String value;

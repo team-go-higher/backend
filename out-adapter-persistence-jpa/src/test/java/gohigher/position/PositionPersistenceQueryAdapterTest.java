@@ -41,7 +41,6 @@ class PositionPersistenceQueryAdapterTest {
 
 		Position developer = PositionFixture.DEVELOPER.toDomain();
 		Position designer = PositionFixture.DESIGNER.toDomain();
-		Position pm = PositionFixture.PROJECT_MANAGER.toDomain();
 
 		@DisplayName("position들을 입력받았을 때,")
 		@Nested
