@@ -3,8 +3,10 @@ package gohigher.application.port.in;
 import java.time.LocalDateTime;
 
 import gohigher.application.Application;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public class SimpleApplicationRegisterResponse {
 
