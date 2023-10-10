@@ -24,8 +24,8 @@ public interface PositionCommandControllerDocs {
 					{
 					"success": false,
 					"error": {
-						"code": "GLOBAL_011",
-						"message": "빈 입력값입니다."
+						"code": "POSITION_011",
+						"message": "희망 직무 ID가 비어있습니다."
 					},
 					"data": null
 					}
