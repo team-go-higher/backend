@@ -2,6 +2,7 @@ package gohigher.user;
 
 import org.springframework.stereotype.Component;
 
+import gohigher.global.exception.GoHigherException;
 import gohigher.user.entity.UserJpaEntity;
 import gohigher.user.entity.UserRepository;
 import gohigher.user.port.out.UserPersistenceCommandPort;
@@ -17,5 +18,13 @@ public class UserPersistenceCommandAdapter implements UserPersistenceCommandPort
 	public User save(User user) {
 		final UserJpaEntity savedUser = userRepository.save(UserJpaEntity.from(user));
 		return savedUser.toDomain();
+	}
+
+	@Override
+	public void updateRole(Long userId, Role role) {
+		UserJpaEntity user = userRepository.findById(userId)
+			.orElseThrow(() -> new GoHigherException(UserErrorCode.USER_NOT_EXISTS));
+
+		user.updateRole(role);
 	}
 }

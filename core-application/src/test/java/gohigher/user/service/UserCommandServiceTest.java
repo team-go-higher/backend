@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import gohigher.user.User;
 import gohigher.user.auth.Provider;
+import gohigher.user.port.in.DesiredPositionCommandPort;
 import gohigher.user.port.out.UserPersistenceCommandPort;
 import gohigher.user.port.out.UserPersistenceQueryPort;
 
@@ -29,11 +30,15 @@ class UserCommandServiceTest {
 	@Mock
 	private UserPersistenceCommandPort userPersistenceCommandPort;
 
+	@Mock
+	private DesiredPositionCommandPort desiredPositionCommandPort;
+
 	private UserCommandService userCommandService;
 
 	@BeforeEach
 	void setUp() {
-		userCommandService = new UserCommandService(userPersistenceQueryPort, userPersistenceCommandPort);
+		userCommandService = new UserCommandService(userPersistenceQueryPort, userPersistenceCommandPort,
+			desiredPositionCommandPort);
 	}
 
 	@DisplayName("login 메서드는")

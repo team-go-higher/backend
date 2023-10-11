@@ -12,8 +12,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "직무")
-public interface DesiredPositionCommandControllerDocs {
+@Tag(name = "사용자")
+public interface UserCommandControllerDocs {
 
 	@Operation(summary = "희망 직무 등록")
 	@ApiResponses(value = {

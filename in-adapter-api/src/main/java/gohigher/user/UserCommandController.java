@@ -6,21 +6,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import gohigher.auth.support.Login;
-import gohigher.user.port.in.DesiredPositionCommandPort;
 import gohigher.user.port.in.DesiredPositionRequest;
+import gohigher.user.port.in.UserCommandPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class DesiredPositionCommandController implements DesiredPositionCommandControllerDocs {
+public class UserCommandController implements UserCommandControllerDocs {
 
-	private final DesiredPositionCommandPort desiredPositionCommandPort;
+	private final UserCommandPort userCommandPort;
 
 	@PostMapping("/v1/desired-positions")
 	public ResponseEntity<Void> saveDesiredPositions(@Login Long userId,
 		@RequestBody @Valid DesiredPositionRequest request) {
-		desiredPositionCommandPort.saveDesiredPositions(userId, request.getPositionIds());
+		userCommandPort.updateGuestToUser(userId, request);
 		return ResponseEntity.noContent().build();
 	}
 }

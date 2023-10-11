@@ -84,4 +84,8 @@ public class UserJpaEntity {
 			.map(PositionJpaEntity::toDomain)
 			.collect(Collectors.toList());
 	}
+
+	public void updateRole(Role role) {
+		this.role = role;
+	}
 }
