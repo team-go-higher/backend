@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
+import gohigher.common.ProcessType;
 import gohigher.pagination.PagingContainer;
 import lombok.RequiredArgsConstructor;
 
@@ -54,8 +55,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 		Slice<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findUnscheduledByUserId(userId,
 			PageRequest.of(page - 1, size));
 
-		List<Application> applications = applicationJpaEntities
-			.stream()
+		List<Application> applications = applicationJpaEntities.stream()
 			.map(ApplicationJpaEntity::toCalenderDomain)
 			.toList();
 		return new PagingContainer<>(applicationJpaEntities.hasNext(), applications);
@@ -65,6 +65,17 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	public List<Application> findOnlyWithCurrentProcessByUserId(Long userId) {
 		List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(userId);
 		return convertToKanbanApplication(applications);
+	}
+
+	@Override
+	public PagingContainer<Application> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType, int page, int size) {
+		Slice<ApplicationJpaEntity> applicationJpaEntities =
+			applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType, PageRequest.of(page - 1, size));
+
+		List<Application> applications = applicationJpaEntities.stream()
+			.map(ApplicationJpaEntity::toKanbanDomain)
+			.toList();
+		return new PagingContainer<>(applicationJpaEntities.hasNext(), applications);
 	}
 
 	private List<Application> convertToDomain(List<ApplicationJpaEntity> applicationJpaEntities) {

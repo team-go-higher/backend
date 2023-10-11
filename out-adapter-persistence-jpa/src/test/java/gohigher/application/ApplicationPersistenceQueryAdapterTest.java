@@ -23,6 +23,7 @@ import org.springframework.data.domain.SliceImpl;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
+import gohigher.common.ProcessType;
 import gohigher.pagination.PagingContainer;
 
 @DisplayName("ApplicationPersistenceQueryAdapter 클래스의")
@@ -275,6 +276,40 @@ class ApplicationPersistenceQueryAdapterTest {
 
 				// then
 				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
+			}
+		}
+	}
+
+	@DisplayName("findOnlyCurrentProcessByUserIdAndProcessType 메서드는")
+	@Nested
+	class Describe_findOnlyCurrentProcessByUserIdAndProcessType {
+
+		@DisplayName("사용자 아이디와 프로세스 타입을 이용하여 조회할 때")
+		@Nested
+		class Context_with_user_id_and_process_type {
+
+			@DisplayName("현재 프로세스 정보를 반환한다")
+			@Test
+			void it_return_current_process() {
+				// given
+				Long userId = 1L;
+				ProcessType processType = ProcessType.TO_APPLY;
+				int page = 1;
+				int size = 10;
+
+				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain());
+				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
+				Slice<ApplicationJpaEntity> applicationJpaEntitySlice = new SliceImpl<>(applicationJpaEntities);
+				given(applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(eq(userId), eq(processType), any()))
+					.willReturn(applicationJpaEntitySlice);
+
+				// when
+				PagingContainer<Application> applications =
+					applicationPersistenceQueryAdapter.findOnlyCurrentProcessByUserIdAndProcessType(
+						userId, processType, page, size);
+
+				// then
+				assertThat(applications.getContent().size()).isEqualTo(applicationJpaEntities.size());
 			}
 		}
 	}
