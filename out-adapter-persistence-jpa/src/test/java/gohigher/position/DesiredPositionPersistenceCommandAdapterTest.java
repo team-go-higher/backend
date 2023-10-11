@@ -3,6 +3,7 @@ package gohigher.position;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,17 +62,22 @@ class DesiredPositionPersistenceCommandAdapterTest {
 		@Nested
 		class Context_input_positionIds {
 
+			private static final int MAIN_POSITION_IDX = 0;
 			Long userId;
-			List<Long> positionIds;
+			Long mainPositionId;
+			List<Long> subPositionIds;
 
 			@BeforeEach
 			void setUp() {
 				UserJpaEntity savedAzpi = userRepository.save(azpi);
 				List<PositionJpaEntity> savedPosition = positionRepository.saveAll(List.of(developer, designer));
 				userId = savedAzpi.getId();
-				positionIds = savedPosition.stream()
+				List<Long> positionIds = savedPosition.stream()
 					.map(PositionJpaEntity::getId)
-					.toList();
+					.collect(Collectors.toList());
+
+				mainPositionId = positionIds.remove(MAIN_POSITION_IDX);
+				subPositionIds = positionIds;
 				entityManager.clear();
 			}
 
@@ -80,7 +86,8 @@ class DesiredPositionPersistenceCommandAdapterTest {
 			void it_saves_user_desired_positions() {
 				// given & when & then
 				assertThatNoException().isThrownBy(
-					() -> desiredPositionPersistenceCommandAdapter.saveDesiredPositions(userId, positionIds));
+					() -> desiredPositionPersistenceCommandAdapter.saveDesiredPositions(userId, mainPositionId,
+						subPositionIds));
 			}
 		}
 	}

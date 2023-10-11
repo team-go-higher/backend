@@ -1,7 +1,5 @@
 package gohigher.user;
 
-import java.util.ArrayList;
-
 import gohigher.user.auth.Provider;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +16,6 @@ public enum UserFixture {
 	private final Provider provider;
 
 	public User toDomain() {
-		return new User(null, email, role, provider, new ArrayList<>());
+		return new User(null, email, role, provider, DesiredPositions.initializeForGuest());
 	}
 }

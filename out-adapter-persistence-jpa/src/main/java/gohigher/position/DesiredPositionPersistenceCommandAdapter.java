@@ -1,6 +1,7 @@
 package gohigher.position;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -24,15 +25,25 @@ public class DesiredPositionPersistenceCommandAdapter implements DesiredPosition
 	private final DesiredPositionRepository desiredPositionRepository;
 
 	@Override
-	public void saveDesiredPositions(Long userId, List<Long> positionIds) {
+	public void saveDesiredPositions(Long userId, Long mainPositionId, List<Long> subPositionIds) {
 		UserJpaEntity user = userRepository.findById(userId)
 			.orElseThrow(() -> new GoHigherException(UserErrorCode.USER_NOT_EXISTS));
 
-		List<PositionJpaEntity> positions = positionRepository.findAllById(positionIds);
+		PositionJpaEntity mainPosition = positionRepository.findById(mainPositionId)
+			.orElseThrow(() -> new GoHigherException(PositionErrorCode.POSITION_NOT_EXISTS));
+		List<PositionJpaEntity> subPositions = positionRepository.findAllById(subPositionIds);
 
-		List<DesiredPositionJpaEntity> desiredPositions = positions.stream()
-			.map(position -> new DesiredPositionJpaEntity(user, position))
-			.toList();
-		desiredPositionRepository.saveAll(desiredPositions);
+		desiredPositionRepository.saveAll(makeDesiredPositions(user, mainPosition, subPositions));
+	}
+
+	private List<DesiredPositionJpaEntity> makeDesiredPositions(UserJpaEntity user, PositionJpaEntity mainPosition,
+		List<PositionJpaEntity> subPositions) {
+		DesiredPositionJpaEntity mainDesiredPosition = new DesiredPositionJpaEntity(user, mainPosition, true);
+		List<DesiredPositionJpaEntity> desiredPositions = subPositions.stream()
+			.map(position -> new DesiredPositionJpaEntity(user, position, false))
+			.collect(Collectors.toList());
+
+		desiredPositions.add(mainDesiredPosition);
+		return desiredPositions;
 	}
 }

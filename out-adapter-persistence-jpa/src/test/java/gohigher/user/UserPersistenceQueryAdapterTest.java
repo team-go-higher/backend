@@ -44,7 +44,7 @@ class UserPersistenceQueryAdapterTest {
 			void success() {
 				// given
 				String email = "test@email.com";
-				UserJpaEntity userJpaEntity = new UserJpaEntity(email, Role.USER, Provider.GOOGLE);
+				UserJpaEntity userJpaEntity = new UserJpaEntity(email, Role.GUEST, Provider.GOOGLE);
 				given(userRepository.findByEmail(email)).willReturn(Optional.of(userJpaEntity));
 
 				// when
@@ -88,7 +88,7 @@ class UserPersistenceQueryAdapterTest {
 			void success() {
 				// given
 				Long id = 1L;
-				UserJpaEntity userJpaEntity = new UserJpaEntity("test@email.com", Role.USER, Provider.GOOGLE);
+				UserJpaEntity userJpaEntity = new UserJpaEntity("test@email.com", Role.GUEST, Provider.GOOGLE);
 				given(userRepository.findById(id)).willReturn(Optional.of(userJpaEntity));
 
 				// when

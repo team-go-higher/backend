@@ -31,8 +31,11 @@ public class DesiredPositionJpaEntity {
 	@JoinColumn(name = "position_id")
 	private PositionJpaEntity position;
 
-	public DesiredPositionJpaEntity(UserJpaEntity user, PositionJpaEntity position) {
+	private Boolean isMain;
+
+	public DesiredPositionJpaEntity(UserJpaEntity user, PositionJpaEntity position, boolean isMain) {
 		this.user = user;
 		this.position = position;
+		this.isMain = isMain;
 	}
 }

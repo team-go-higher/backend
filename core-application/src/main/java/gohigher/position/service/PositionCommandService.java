@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PositionCommandService implements PositionCommandPort {
 
+	private static final int MAIN_POSITION_IDX = 0;
+
 	private final PositionPersistenceQueryPort positionPersistenceQueryPort;
 	private final DesiredPositionPersistenceCommandPort desiredPositionPersistenceCommandPort;
 
@@ -28,7 +30,9 @@ public class PositionCommandService implements PositionCommandPort {
 			.collect(Collectors.toList());
 		validateDuplicatedPositionIds(positionIds, distinctPositionIds);
 		validateExistedPositions(distinctPositionIds);
-		desiredPositionPersistenceCommandPort.saveDesiredPositions(userId, distinctPositionIds);
+
+		Long mainDesiredPositionId = extractMainPositionId(positionIds);
+		desiredPositionPersistenceCommandPort.saveDesiredPositions(userId, mainDesiredPositionId, distinctPositionIds);
 	}
 
 	private void validateDuplicatedPositionIds(List<Long> positionIds, List<Long> distinctPositionIds) {
@@ -41,5 +45,13 @@ public class PositionCommandService implements PositionCommandPort {
 		if (!positionPersistenceQueryPort.existsByIds(positions)) {
 			throw new GoHigherException(PositionErrorCode.POSITION_NOT_EXISTS);
 		}
+	}
+
+	private Long extractMainPositionId(List<Long> positionIds) {
+		if (positionIds.isEmpty()) {
+			throw new GoHigherException(PositionErrorCode.POSITION_NOT_EXISTS);
+		}
+
+		return positionIds.remove(MAIN_POSITION_IDX);
 	}
 }

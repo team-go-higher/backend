@@ -3,6 +3,7 @@ package gohigher.position.service;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -38,14 +39,15 @@ class PositionCommandServiceTest {
 		class Context_input_position_ids {
 
 			private final Long userId = 1L;
-			private final List<Long> positionIds = List.of(1L, 2L);
+			private final List<Long> positionIds = new ArrayList<>(List.of(1L, 2L));
 
 			@DisplayName("desiredPositions를 저장한다.")
 			@Test
 			void it_void_after_save_desiredPositions() {
 				// given
-				when(positionPersistenceQueryPort.existsByIds(positionIds)).thenReturn(true);
-				doNothing().when(desiredPositionPersistenceCommandPort).saveDesiredPositions(userId, positionIds);
+				when(positionPersistenceQueryPort.existsByIds(anyList())).thenReturn(true);
+				doNothing().when(desiredPositionPersistenceCommandPort)
+					.saveDesiredPositions(anyLong(), anyLong(), anyList());
 
 				// when & then
 				assertThatNoException().isThrownBy(

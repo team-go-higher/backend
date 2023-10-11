@@ -2,12 +2,16 @@ package gohigher.user.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import gohigher.global.exception.GoHigherException;
 import gohigher.position.Position;
 import gohigher.position.entity.DesiredPositionJpaEntity;
 import gohigher.position.entity.PositionJpaEntity;
+import gohigher.user.DesiredPositions;
 import gohigher.user.Role;
 import gohigher.user.User;
+import gohigher.user.UserErrorCode;
 import gohigher.user.auth.Provider;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -55,11 +59,30 @@ public class UserJpaEntity {
 	}
 
 	public User toDomain() {
-		List<Position> positions = desiredPositions.stream()
+		if (role.equals(Role.GUEST)) {
+			return new User(id, email, role, provider, DesiredPositions.initializeForGuest());
+		}
+
+		Position mainPosition = extractMainPosition();
+		List<Position> subPositions = extractSubPositions();
+
+		return new User(id, email, role, provider, new DesiredPositions(mainPosition, subPositions));
+	}
+
+	private Position extractMainPosition() {
+		return desiredPositions.stream()
+			.filter(DesiredPositionJpaEntity::getIsMain)
+			.findFirst()
+			.orElseThrow(() -> new GoHigherException(UserErrorCode.MAIN_POSITION_NOT_EXISTS))
+			.getPosition()
+			.toDomain();
+	}
+
+	private List<Position> extractSubPositions() {
+		return desiredPositions.stream()
+			.filter(desiredPositionJpaEntity -> !desiredPositionJpaEntity.getIsMain())
 			.map(DesiredPositionJpaEntity::getPosition)
 			.map(PositionJpaEntity::toDomain)
-			.toList();
-
-		return new User(id, email, role, provider, new ArrayList<>(positions));
+			.collect(Collectors.toList());
 	}
 }
