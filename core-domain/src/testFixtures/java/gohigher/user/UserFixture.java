@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum UserFixture {
 
-	AZPI("azpi@email.com", Role.USER, Provider.GOOGLE),
+	AZPI("azpi@email.com", Role.GUEST, Provider.GOOGLE),
 	;
 
 	private final String email;
