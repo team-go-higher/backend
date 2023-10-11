@@ -1,8 +1,8 @@
-package gohigher.position.port.in;
+package gohigher.user.port.in;
 
 import java.util.List;
 
-public interface PositionCommandPort {
+public interface DesiredPositionCommandPort {
 
 	void saveDesiredPositions(Long userId, List<Long> positionIds);
 }

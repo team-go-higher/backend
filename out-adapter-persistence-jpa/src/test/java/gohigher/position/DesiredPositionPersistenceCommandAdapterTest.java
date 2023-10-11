@@ -15,10 +15,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import gohigher.fixtureConverter.PositionFixtureConverter;
 import gohigher.fixtureConverter.UserFixtureConvertor;
-import gohigher.position.entity.DesiredPositionRepository;
 import gohigher.position.entity.PositionJpaEntity;
 import gohigher.position.entity.PositionRepository;
+import gohigher.user.DesiredPositionPersistenceCommandAdapter;
 import gohigher.user.UserFixture;
+import gohigher.user.entity.DesiredPositionRepository;
 import gohigher.user.entity.UserJpaEntity;
 import gohigher.user.entity.UserRepository;
 import jakarta.persistence.EntityManager;

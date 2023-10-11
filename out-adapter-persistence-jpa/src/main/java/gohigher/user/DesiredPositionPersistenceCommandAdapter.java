@@ -1,4 +1,4 @@
-package gohigher.position;
+package gohigher.user;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,14 +6,14 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import gohigher.global.exception.GoHigherException;
-import gohigher.position.entity.DesiredPositionJpaEntity;
-import gohigher.position.entity.DesiredPositionRepository;
+import gohigher.position.PositionErrorCode;
 import gohigher.position.entity.PositionJpaEntity;
 import gohigher.position.entity.PositionRepository;
-import gohigher.position.port.out.DesiredPositionPersistenceCommandPort;
-import gohigher.user.UserErrorCode;
+import gohigher.user.entity.DesiredPositionJpaEntity;
+import gohigher.user.entity.DesiredPositionRepository;
 import gohigher.user.entity.UserJpaEntity;
 import gohigher.user.entity.UserRepository;
+import gohigher.user.port.out.DesiredPositionPersistenceCommandPort;
 import lombok.RequiredArgsConstructor;
 
 @Component

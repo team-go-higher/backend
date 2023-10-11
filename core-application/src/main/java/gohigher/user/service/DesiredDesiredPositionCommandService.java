@@ -1,4 +1,4 @@
-package gohigher.position.service;
+package gohigher.user.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,15 +8,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.global.exception.GoHigherException;
 import gohigher.position.PositionErrorCode;
-import gohigher.position.port.in.PositionCommandPort;
-import gohigher.position.port.out.DesiredPositionPersistenceCommandPort;
 import gohigher.position.port.out.PositionPersistenceQueryPort;
+import gohigher.user.port.in.DesiredPositionCommandPort;
+import gohigher.user.port.out.DesiredPositionPersistenceCommandPort;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PositionCommandService implements PositionCommandPort {
+public class DesiredDesiredPositionCommandService implements DesiredPositionCommandPort {
 
 	private static final int MAIN_POSITION_IDX = 0;
 

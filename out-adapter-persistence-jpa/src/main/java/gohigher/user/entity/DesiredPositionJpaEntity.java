@@ -1,6 +1,6 @@
-package gohigher.position.entity;
+package gohigher.user.entity;
 
-import gohigher.user.entity.UserJpaEntity;
+import gohigher.position.entity.PositionJpaEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

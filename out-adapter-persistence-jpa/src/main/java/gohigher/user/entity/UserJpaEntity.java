@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import gohigher.global.exception.GoHigherException;
 import gohigher.position.Position;
-import gohigher.position.entity.DesiredPositionJpaEntity;
 import gohigher.position.entity.PositionJpaEntity;
 import gohigher.user.DesiredPositions;
 import gohigher.user.Role;

@@ -1,9 +1,9 @@
-package gohigher.position;
+package gohigher.user;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import gohigher.position.port.in.DesiredPositionRequest;
+import gohigher.user.port.in.DesiredPositionRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "직무")
-public interface PositionCommandControllerDocs {
+public interface DesiredPositionCommandControllerDocs {
 
 	@Operation(summary = "희망 직무 등록")
 	@ApiResponses(value = {

@@ -1,4 +1,4 @@
-package gohigher.position.entity;
+package gohigher.user.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

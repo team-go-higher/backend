@@ -1,4 +1,4 @@
-package gohigher.position.service;
+package gohigher.user.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -14,12 +14,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import gohigher.position.port.out.DesiredPositionPersistenceCommandPort;
 import gohigher.position.port.out.PositionPersistenceQueryPort;
+import gohigher.user.port.out.DesiredPositionPersistenceCommandPort;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("PositionCommandService 클래스의")
-class PositionCommandServiceTest {
+class DesiredPositionCommandServiceTest {
 
 	@Mock
 	private PositionPersistenceQueryPort positionPersistenceQueryPort;
@@ -28,7 +28,7 @@ class PositionCommandServiceTest {
 	private DesiredPositionPersistenceCommandPort desiredPositionPersistenceCommandPort;
 
 	@InjectMocks
-	private PositionCommandService positionCommandService;
+	private DesiredDesiredPositionCommandService desiredPositionCommandService;
 
 	@DisplayName("saveDesiredPositions 메서드는")
 	@Nested
@@ -51,7 +51,7 @@ class PositionCommandServiceTest {
 
 				// when & then
 				assertThatNoException().isThrownBy(
-					() -> positionCommandService.saveDesiredPositions(userId, positionIds));
+					() -> desiredPositionCommandService.saveDesiredPositions(userId, positionIds));
 			}
 		}
 	}

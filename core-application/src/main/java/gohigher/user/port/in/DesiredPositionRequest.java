@@ -1,4 +1,4 @@
-package gohigher.position.port.in;
+package gohigher.user.port.in;
 
 import java.util.List;
 
