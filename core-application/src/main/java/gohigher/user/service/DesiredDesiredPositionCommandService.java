@@ -1,6 +1,5 @@
 package gohigher.user.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,19 +25,19 @@ public class DesiredDesiredPositionCommandService implements DesiredPositionComm
 
 	@Override
 	public void saveDesiredPositions(Long userId, List<Long> positionIds) {
+		validateDuplicatedPositionIds(positionIds);
+		validateExistedPositions(positionIds);
+
+		Long mainDesiredPositionId = extractMainPositionId(positionIds);
+		desiredPositionPersistenceCommandPort.saveDesiredPositions(userId, mainDesiredPositionId,
+			positionIds);
+	}
+
+	private void validateDuplicatedPositionIds(List<Long> positionIds) {
 		List<Long> distinctPositionIds = positionIds.stream()
 			.distinct()
 			.collect(Collectors.toList());
-		validateDuplicatedPositionIds(positionIds, distinctPositionIds);
-		validateExistedPositions(distinctPositionIds);
 
-		Long mainDesiredPositionId = extractMainPositionId(positionIds);
-		List<Long> subDesiredPositionIds = new ArrayList<>(distinctPositionIds);
-		desiredPositionPersistenceCommandPort.saveDesiredPositions(userId, mainDesiredPositionId,
-			subDesiredPositionIds);
-	}
-
-	private void validateDuplicatedPositionIds(List<Long> positionIds, List<Long> distinctPositionIds) {
 		if (distinctPositionIds.size() != positionIds.size()) {
 			throw new GoHigherException(PositionErrorCode.DUPLICATED_POSITION);
 		}
