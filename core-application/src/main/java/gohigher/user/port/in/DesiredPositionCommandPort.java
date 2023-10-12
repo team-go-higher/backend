@@ -5,4 +5,6 @@ import java.util.List;
 public interface DesiredPositionCommandPort {
 
 	void saveDesiredPositions(Long userId, List<Long> positionIds);
+
+	void assignMainDesiredPosition(Long userId, Long mainPositionId);
 }

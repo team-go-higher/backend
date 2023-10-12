@@ -46,8 +46,7 @@ class DesiredPositionCommandServiceTest {
 			void it_void_after_save_desiredPositions() {
 				// given
 				when(positionPersistenceQueryPort.existsByIds(anyList())).thenReturn(true);
-				doNothing().when(desiredPositionPersistenceCommandPort)
-					.saveDesiredPositions(anyLong(), anyLong(), anyList());
+				doNothing().when(desiredPositionPersistenceCommandPort).saveDesiredPositions(anyLong(), anyList());
 
 				// when & then
 				assertThatNoException().isThrownBy(

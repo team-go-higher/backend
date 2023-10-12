@@ -12,7 +12,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class DesiredPositionRequest {
 
+	private static final int MAIN_POSITION_IDX = 0;
+
 	private List<Long> positionIds;
+
+	public Long getMainPositionId() {
+		return positionIds.get(MAIN_POSITION_IDX);
+	}
 
 	@AssertFalse(message = "POSITION_011||희망 직무 ID가 비어있습니다.")
 	public boolean isEmptyInput() {

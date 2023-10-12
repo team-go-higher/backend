@@ -42,7 +42,7 @@ public interface UserCommandControllerDocs {
 					"data": null
 					}
 					""")})),
-		@ApiResponse(responseCode = "400", description = "입력받은 positionId가 존재하지 않을 경우", content = @Content(
+		@ApiResponse(responseCode = "404", description = "입력받은 positionId가 존재하지 않을 경우", content = @Content(
 			examples = {
 				@ExampleObject(name = "존재하지 않는 직무를 희망함", value = """
 					{
@@ -50,6 +50,18 @@ public interface UserCommandControllerDocs {
 					"error": {
 						"code": "POSITION_001",
 						"message": "존재하지 않는 직무입니다."
+					},
+					"data": null
+					}
+					""")})),
+		@ApiResponse(responseCode = "400", description = "게스트가 아닌 경우", content = @Content(
+			examples = {
+				@ExampleObject(name = "존재하지 않는 직무를 희망함", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "USER_002",
+						"message": "게스트가 아닙니다."
 					},
 					"data": null
 					}

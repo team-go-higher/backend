@@ -24,12 +24,21 @@ public class DesiredPositionPersistenceCommandAdapter implements DesiredPosition
 	private final DesiredPositionRepository desiredPositionRepository;
 
 	@Override
-	public void saveDesiredPositions(Long userId, Long mainPositionId, List<Long> positionIds) {
+	public void saveDesiredPositions(Long userId, List<Long> positionIds) {
 		UserJpaEntity user = userRepository.findById(userId)
 			.orElseThrow(() -> new GoHigherException(UserErrorCode.USER_NOT_EXISTS));
 
 		savePositions(positionIds, user);
-		assignMainPosition(mainPositionId, user);
+	}
+
+	@Override
+	public void assignMainPosition(Long userId, Long mainPositionId) {
+		UserJpaEntity user = userRepository.findById(userId)
+			.orElseThrow(() -> new GoHigherException(UserErrorCode.USER_NOT_EXISTS));
+		DesiredPositionJpaEntity desiredPosition = desiredPositionRepository.findByUserIdAndPositionId(
+			user.getId(), mainPositionId)
+			.orElseThrow(() -> new GoHigherException(UserErrorCode.DESIRED_POSITION_NOT_EXISTS));
+		desiredPosition.assignMain();
 	}
 
 	private void savePositions(List<Long> positionIds, UserJpaEntity user) {
@@ -37,12 +46,5 @@ public class DesiredPositionPersistenceCommandAdapter implements DesiredPosition
 		desiredPositionRepository.saveAll(subPositions.stream()
 			.map(position -> new DesiredPositionJpaEntity(user, position, false))
 			.collect(Collectors.toList()));
-	}
-
-	private void assignMainPosition(Long mainPositionId, UserJpaEntity user) {
-		DesiredPositionJpaEntity desiredPosition = desiredPositionRepository.findByUserIdAndPositionId(
-			user.getId(), mainPositionId)
-			.orElseThrow(() -> new GoHigherException(UserErrorCode.DESIRED_POSITION_NOT_EXISTS));
-		desiredPosition.assignMain();
 	}
 }

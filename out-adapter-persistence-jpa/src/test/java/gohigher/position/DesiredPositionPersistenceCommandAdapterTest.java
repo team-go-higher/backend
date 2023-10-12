@@ -63,9 +63,7 @@ class DesiredPositionPersistenceCommandAdapterTest {
 		@Nested
 		class Context_input_positionIds {
 
-			private static final int MAIN_POSITION_IDX = 0;
 			Long userId;
-			Long mainPositionId;
 			List<Long> positionIds;
 
 			@BeforeEach
@@ -76,8 +74,6 @@ class DesiredPositionPersistenceCommandAdapterTest {
 				positionIds = savedPosition.stream()
 					.map(PositionJpaEntity::getId)
 					.collect(Collectors.toList());
-
-				mainPositionId = positionIds.get(MAIN_POSITION_IDX);
 				entityManager.clear();
 			}
 
@@ -86,8 +82,7 @@ class DesiredPositionPersistenceCommandAdapterTest {
 			void it_saves_user_desired_positions() {
 				// given & when & then
 				assertThatNoException().isThrownBy(
-					() -> desiredPositionPersistenceCommandAdapter.saveDesiredPositions(userId, mainPositionId,
-						positionIds));
+					() -> desiredPositionPersistenceCommandAdapter.saveDesiredPositions(userId, positionIds));
 			}
 		}
 	}

@@ -21,10 +21,10 @@ public class UserPersistenceCommandAdapter implements UserPersistenceCommandPort
 	}
 
 	@Override
-	public void updateRole(Long userId, Role role) {
-		UserJpaEntity user = userRepository.findById(userId)
+	public void updateRole(User user) {
+		UserJpaEntity userEntity = userRepository.findById(user.getId())
 			.orElseThrow(() -> new GoHigherException(UserErrorCode.USER_NOT_EXISTS));
 
-		user.updateRole(role);
+		userEntity.updateRole(user.getRole());
 	}
 }

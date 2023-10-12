@@ -19,4 +19,12 @@ public class User {
 	public static User joinAsGuest(String email, Provider provider) {
 		return new User(email, Role.GUEST, provider, DesiredPositions.initializeForGuest());
 	}
+
+	public boolean hasRole(Role role) {
+		return this.role.equals(role);
+	}
+
+	public User changeRole(Role role) {
+		return new User(this.id, this.email, role, this.provider, this.desiredPositions);
+	}
 }

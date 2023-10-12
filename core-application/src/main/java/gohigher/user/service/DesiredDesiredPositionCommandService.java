@@ -17,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DesiredDesiredPositionCommandService implements DesiredPositionCommandPort {
 
-	private static final int MAIN_POSITION_IDX = 0;
-
 	private final PositionPersistenceQueryPort positionPersistenceQueryPort;
 	private final DesiredPositionPersistenceCommandPort desiredPositionPersistenceCommandPort;
 
@@ -27,8 +25,12 @@ public class DesiredDesiredPositionCommandService implements DesiredPositionComm
 		validateDuplicatedPositionIds(positionIds);
 		validateExistedPositions(positionIds);
 
-		Long mainDesiredPositionId = extractMainPositionId(positionIds);
-		desiredPositionPersistenceCommandPort.saveDesiredPositions(userId, mainDesiredPositionId, positionIds);
+		desiredPositionPersistenceCommandPort.saveDesiredPositions(userId, positionIds);
+	}
+
+	@Override
+	public void assignMainDesiredPosition(Long userId, Long mainPositionId) {
+		desiredPositionPersistenceCommandPort.assignMainPosition(userId, mainPositionId);
 	}
 
 	private void validateDuplicatedPositionIds(List<Long> positionIds) {
@@ -45,13 +47,5 @@ public class DesiredDesiredPositionCommandService implements DesiredPositionComm
 		if (!positionPersistenceQueryPort.existsByIds(positions)) {
 			throw new GoHigherException(PositionErrorCode.POSITION_NOT_EXISTS);
 		}
-	}
-
-	private Long extractMainPositionId(List<Long> positionIds) {
-		if (positionIds.isEmpty()) {
-			throw new GoHigherException(PositionErrorCode.EMPTY_INPUT_POSITION_ID);
-		}
-
-		return positionIds.get(MAIN_POSITION_IDX);
 	}
 }
