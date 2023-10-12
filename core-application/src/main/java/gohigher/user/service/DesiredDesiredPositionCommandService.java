@@ -1,7 +1,6 @@
 package gohigher.user.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +34,7 @@ public class DesiredDesiredPositionCommandService implements DesiredPositionComm
 	private void validateDuplicatedPositionIds(List<Long> positionIds) {
 		List<Long> distinctPositionIds = positionIds.stream()
 			.distinct()
-			.collect(Collectors.toList());
+			.toList();
 
 		if (distinctPositionIds.size() != positionIds.size()) {
 			throw new GoHigherException(PositionErrorCode.DUPLICATED_POSITION);
