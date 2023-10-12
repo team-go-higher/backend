@@ -18,7 +18,7 @@ import gohigher.position.port.out.PositionPersistenceQueryPort;
 import gohigher.user.port.out.DesiredPositionPersistenceCommandPort;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("PositionCommandService 클래스의")
+@DisplayName("DesiredPositionCommandServiceTest 클래스의")
 class DesiredPositionCommandServiceTest {
 
 	@Mock
