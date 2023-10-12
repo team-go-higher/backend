@@ -38,4 +38,8 @@ public class DesiredPositionJpaEntity {
 		this.position = position;
 		this.isMain = isMain;
 	}
+
+	public void assignMain() {
+		this.isMain = true;
+	}
 }

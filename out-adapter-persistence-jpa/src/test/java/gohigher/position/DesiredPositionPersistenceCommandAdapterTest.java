@@ -66,19 +66,18 @@ class DesiredPositionPersistenceCommandAdapterTest {
 			private static final int MAIN_POSITION_IDX = 0;
 			Long userId;
 			Long mainPositionId;
-			List<Long> subPositionIds;
+			List<Long> positionIds;
 
 			@BeforeEach
 			void setUp() {
 				UserJpaEntity savedAzpi = userRepository.save(azpi);
 				List<PositionJpaEntity> savedPosition = positionRepository.saveAll(List.of(developer, designer));
 				userId = savedAzpi.getId();
-				List<Long> positionIds = savedPosition.stream()
+				positionIds = savedPosition.stream()
 					.map(PositionJpaEntity::getId)
 					.collect(Collectors.toList());
 
-				mainPositionId = positionIds.remove(MAIN_POSITION_IDX);
-				subPositionIds = positionIds;
+				mainPositionId = positionIds.get(MAIN_POSITION_IDX);
 				entityManager.clear();
 			}
 
@@ -88,7 +87,7 @@ class DesiredPositionPersistenceCommandAdapterTest {
 				// given & when & then
 				assertThatNoException().isThrownBy(
 					() -> desiredPositionPersistenceCommandAdapter.saveDesiredPositions(userId, mainPositionId,
-						subPositionIds));
+						positionIds));
 			}
 		}
 	}

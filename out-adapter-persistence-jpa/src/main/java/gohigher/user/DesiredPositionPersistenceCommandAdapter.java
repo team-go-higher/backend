@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import gohigher.global.exception.GoHigherException;
-import gohigher.position.PositionErrorCode;
 import gohigher.position.entity.PositionJpaEntity;
 import gohigher.position.entity.PositionRepository;
 import gohigher.user.entity.DesiredPositionJpaEntity;
@@ -25,25 +24,25 @@ public class DesiredPositionPersistenceCommandAdapter implements DesiredPosition
 	private final DesiredPositionRepository desiredPositionRepository;
 
 	@Override
-	public void saveDesiredPositions(Long userId, Long mainPositionId, List<Long> subPositionIds) {
+	public void saveDesiredPositions(Long userId, Long mainPositionId, List<Long> positionIds) {
 		UserJpaEntity user = userRepository.findById(userId)
 			.orElseThrow(() -> new GoHigherException(UserErrorCode.USER_NOT_EXISTS));
 
-		PositionJpaEntity mainPosition = positionRepository.findById(mainPositionId)
-			.orElseThrow(() -> new GoHigherException(PositionErrorCode.POSITION_NOT_EXISTS));
-		List<PositionJpaEntity> subPositions = positionRepository.findAllById(subPositionIds);
-
-		desiredPositionRepository.saveAll(makeDesiredPositions(user, mainPosition, subPositions));
+		savePositions(positionIds, user);
+		assignMainPosition(mainPositionId, user);
 	}
 
-	private List<DesiredPositionJpaEntity> makeDesiredPositions(UserJpaEntity user, PositionJpaEntity mainPosition,
-		List<PositionJpaEntity> subPositions) {
-		DesiredPositionJpaEntity mainDesiredPosition = new DesiredPositionJpaEntity(user, mainPosition, true);
-		List<DesiredPositionJpaEntity> desiredPositions = subPositions.stream()
+	private void savePositions(List<Long> positionIds, UserJpaEntity user) {
+		List<PositionJpaEntity> subPositions = positionRepository.findAllById(positionIds);
+		desiredPositionRepository.saveAll(subPositions.stream()
 			.map(position -> new DesiredPositionJpaEntity(user, position, false))
-			.collect(Collectors.toList());
+			.collect(Collectors.toList()));
+	}
 
-		desiredPositions.add(mainDesiredPosition);
-		return desiredPositions;
+	private void assignMainPosition(Long mainPositionId, UserJpaEntity user) {
+		DesiredPositionJpaEntity desiredPosition = desiredPositionRepository.findByUserIdAndPositionId(
+			user.getId(), mainPositionId)
+			.orElseThrow(() -> new GoHigherException(UserErrorCode.DESIRED_POSITION_NOT_EXISTS));
+		desiredPosition.assignMain();
 	}
 }

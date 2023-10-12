@@ -29,8 +29,7 @@ public class DesiredDesiredPositionCommandService implements DesiredPositionComm
 		validateExistedPositions(positionIds);
 
 		Long mainDesiredPositionId = extractMainPositionId(positionIds);
-		desiredPositionPersistenceCommandPort.saveDesiredPositions(userId, mainDesiredPositionId,
-			positionIds);
+		desiredPositionPersistenceCommandPort.saveDesiredPositions(userId, mainDesiredPositionId, positionIds);
 	}
 
 	private void validateDuplicatedPositionIds(List<Long> positionIds) {
@@ -54,6 +53,6 @@ public class DesiredDesiredPositionCommandService implements DesiredPositionComm
 			throw new GoHigherException(PositionErrorCode.EMPTY_INPUT_POSITION_ID);
 		}
 
-		return positionIds.remove(MAIN_POSITION_IDX);
+		return positionIds.get(MAIN_POSITION_IDX);
 	}
 }
