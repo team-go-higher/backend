@@ -32,7 +32,7 @@ class DesiredPositionCommandServiceTest {
 
 	@DisplayName("saveDesiredPositions 메서드는")
 	@Nested
-	class Describe_saveDesiredPosition {
+	class Describe_saveDesiredPositions {
 
 		@DisplayName("n개의 position의 ID를 받으면")
 		@Nested
