@@ -19,4 +19,3 @@ public class DesiredPositionRequest {
 		return CollectionUtils.isEmpty(positionIds);
 	}
 }
-
