@@ -1,4 +1,4 @@
-package gohigher.application.port.in;
+package gohigher.application.service;
 
 import java.util.List;
 import java.util.Objects;
@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.ApplicationErrorCode;
+import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;
+import gohigher.application.port.in.ApplicationProcessQueryPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
 import gohigher.common.ProcessType;

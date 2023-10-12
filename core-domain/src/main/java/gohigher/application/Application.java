@@ -1,5 +1,7 @@
 package gohigher.application;
 
+import static gohigher.common.ProcessType.*;
+
 import java.util.List;
 
 import gohigher.common.EmploymentType;
@@ -27,6 +29,6 @@ public class Application extends JobInfo {
 
 	public static Application simple(String companyName, String position, String url, Process process) {
 		return new Application(null, companyName, null, null, null, position, null, null,
-			null, null, null, null, null, Processes.initialFrom(List.of(process)), url, process);
+			null, null, null, null, null, Processes.initialFrom(process), url, process);
 	}
 }

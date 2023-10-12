@@ -109,6 +109,13 @@ public class ApplicationJpaEntity {
 		return createApplication(processes, findCurrentProcess(processes));
 	}
 
+	public Application toDomain(List<ApplicationProcessJpaEntity> applicationProcessJpaEntities) {
+		List<Process> processes = applicationProcessJpaEntities.stream()
+			.map(ApplicationProcessJpaEntity::toDomain)
+			.toList();
+		return createApplication(processes, findCurrentProcess(processes));
+	}
+
 	public Application toCalenderDomain() {
 		List<Process> processes = getProcessList();
 		return createApplication(processes, null);

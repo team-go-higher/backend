@@ -28,4 +28,12 @@ public class Process {
 	public void assignOrder(int order) {
 		this.order = order;
 	}
+
+	public boolean isTypeOf(ProcessType type) {
+		return this.type == type;
+	}
+
+	public Process copyWithSameScheduleAndTypeOf(ProcessType type) {
+		return new Process(id, type, description, schedule);
+	}
 }

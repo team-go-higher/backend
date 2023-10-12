@@ -59,18 +59,16 @@ class ApplicationPersistenceCommandAdapterTest {
 			@Test
 			void it_save_application_with_processes() {
 				// when
-				Long applicationId = applicationPersistenceCommandAdapter.save(USER_ID, application);
+				Application savedApplication = applicationPersistenceCommandAdapter.save(USER_ID, application);
 				entityManager.clear();
 
 				// then
-				ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(applicationId).get();
+				ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(savedApplication.getId())
+					.get();
 				assertAll(
 					() -> assertThat(applicationJpaEntity.getProcesses()).hasSize(application.getProcesses().size()),
-					() -> assertThat(applicationJpaEntity.getProcesses()).extracting("order", "description")
-						.contains(
-							tuple(firstProcess.getOrder(), firstProcess.getDescription()),
-							tuple(secondProcess.getOrder(), secondProcess.getDescription())
-						)
+					() -> assertThat(applicationJpaEntity.getProcesses()).extracting("type")
+						.containsExactly(firstProcess.getType(), secondProcess.getType())
 				);
 			}
 		}
