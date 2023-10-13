@@ -252,34 +252,6 @@ class ApplicationPersistenceQueryAdapterTest {
 		}
 	}
 
-	@DisplayName("findOnlyCurrentProcessByUserId 메서드는")
-	@Nested
-	class Describe_findOnlyCurrentProcessByUserId {
-
-		@DisplayName("사용자 아이디를 이용하여 조회할 때")
-		@Nested
-		class Context_with_user_id {
-
-			@DisplayName("현재 프로세스 정보를 반환한다")
-			@Test
-			void it_return_current_process() {
-				// given
-				Long userId = 1L;
-
-				ApplicationJpaEntity applicationJpaEntity = mock(ApplicationJpaEntity.class);
-				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
-				given(applicationRepository.findOnlyWithCurrentProcessByUserId(userId)).willReturn(
-					applicationJpaEntities);
-
-				// when
-				List<Application> applications = applicationPersistenceQueryAdapter.findOnlyCurrentProcessByUserId(userId);
-
-				// then
-				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
-			}
-		}
-	}
-
 	@DisplayName("findOnlyCurrentProcessByUserIdAndProcessType 메서드는")
 	@Nested
 	class Describe_findOnlyCurrentProcessByUserIdAndProcessType {

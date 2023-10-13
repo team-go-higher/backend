@@ -84,7 +84,7 @@ class ApplicationRepositoryTest {
 		@Nested
 		class Context_with_deleted_application {
 
-			@BeforeEach
+			@BeforeEachs
 			void setUp() {
 				Application naverApplication = NAVER_APPLICATION.toDomain();
 				naverApplicationEntity = saveApplicationAndProcesses(userId, naverApplication);
@@ -308,72 +308,6 @@ class ApplicationRepositoryTest {
 		}
 	}
 
-	@DisplayName("findOnlyWithCurrentProcessByUserId 메서드는")
-	@Nested
-	class Describe_findOnlyWithCurrentProcessByUserId {
-
-		@DisplayName("어플리케이션이 여러 채용 과정을 갖고 있어도")
-		@Nested
-		class Context_exist_application {
-
-			@DisplayName("현재 프로세스만을 반환한다")
-			@Test
-			void it_return_application_current_process() {
-				// given
-				Long userId = 1L;
-				Application naverApplication = NAVER_APPLICATION.toDomain(TO_APPLY, DOCUMENT);
-				saveApplicationAndProcesses(userId, naverApplication);
-				entityManager.clear();
-
-				// when
-				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(
-					userId);
-
-				// then
-				assertThat(applications.get(0).getProcesses()).hasSize(1);
-			}
-		}
-
-		@DisplayName("삭제된 어플리케이션이 있을 경우")
-		@Nested
-		class Context_contain_deleted_is_true {
-
-			@DisplayName("반환값에 포함하지 않는다")
-			@Test
-			void it_not_return() {
-				// given
-				Long userId = 1L;
-
-				int count = 2;
-				for (int i = 0; i < count; i++) {
-					ApplicationJpaEntity application = createDeletedApplication(userId);
-					applicationRepository.save(application);
-				}
-
-				// when
-				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(
-					userId);
-
-				// then
-				assertThat(applications).isEmpty();
-			}
-		}
-
-		private ApplicationJpaEntity createDeletedApplication(Long userId) {
-			boolean deleted = true;
-
-			Application application = NAVER_APPLICATION.toDomain();
-			return new ApplicationJpaEntity(
-				application.getId(), userId, application.getCompanyName(), application.getTeam(),
-				application.getLocation(), application.getContact(), application.getPosition(),
-				application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
-				application.getEmploymentType(), application.getCareerRequirement(),
-				application.getRequiredCapability(), application.getPreferredQualification(), application.getUrl(),
-				null, null, deleted
-			);
-		}
-	}
-
 	@DisplayName("findOnlyCurrentProcessByUserIdAndProcessType 메서드는")
 	@Nested
 	class Describe_findOnlyCurrentProcessByUserIdAndProcessType {
@@ -426,6 +360,8 @@ class ApplicationRepositoryTest {
 			void it_not_return() {
 				// given
 				Long userId = 1L;
+				ProcessType processType = ProcessType.TO_APPLY;
+				Pageable pageable = PageRequest.of(0, 10);
 
 				int count = 2;
 				for (int i = 0; i < count; i++) {
@@ -434,8 +370,8 @@ class ApplicationRepositoryTest {
 				}
 
 				// when
-				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(
-					userId);
+				Slice<ApplicationJpaEntity> applications =
+					applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType, pageable);
 
 				// then
 				assertThat(applications).isEmpty();
