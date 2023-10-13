@@ -20,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenceQueryPort {
 
+	private static final int DIFFERENCES_PAGES_AND_DB_INDEX = 1;
+
 	private final ApplicationRepository applicationRepository;
 
 	@Override
@@ -53,7 +55,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	@Override
 	public PagingContainer<Application> findUnscheduledByUserId(Long userId, int page, int size) {
 		Slice<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findUnscheduledByUserId(userId,
-			PageRequest.of(page - 1, size));
+			PageRequest.of(page - DIFFERENCES_PAGES_AND_DB_INDEX, size));
 
 		List<Application> applications = applicationJpaEntities.stream()
 			.map(ApplicationJpaEntity::toCalenderDomain)
@@ -70,7 +72,8 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	@Override
 	public PagingContainer<Application> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType, int page, int size) {
 		Slice<ApplicationJpaEntity> applicationJpaEntities =
-			applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType, PageRequest.of(page - 1, size));
+			applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType,
+				PageRequest.of(page - DIFFERENCES_PAGES_AND_DB_INDEX, size));
 
 		List<Application> applications = applicationJpaEntities.stream()
 			.map(ApplicationJpaEntity::toKanbanDomain)
