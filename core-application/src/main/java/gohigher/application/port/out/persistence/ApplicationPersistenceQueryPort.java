@@ -20,7 +20,7 @@ public interface ApplicationPersistenceQueryPort {
 
 	PagingContainer<Application> findUnscheduledByUserId(Long userId, int page, int size);
 
-	List<Application> findOnlyWithCurrentProcessByUserId(Long userId);
+	List<Application> findOnlyCurrentProcessByUserId(Long userId);
 
 	PagingContainer<Application> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType, int page, int size);
 }

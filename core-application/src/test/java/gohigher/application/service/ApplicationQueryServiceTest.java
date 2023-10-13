@@ -227,7 +227,7 @@ class ApplicationQueryServiceTest {
 				Application application = NAVER_APPLICATION.toDomain(List.of(process), process);
 				List<Application> applications = List.of(application);
 
-				given(applicationPersistenceQueryPort.findOnlyWithCurrentProcessByUserId(userId)).willReturn(
+				given(applicationPersistenceQueryPort.findOnlyCurrentProcessByUserId(userId)).willReturn(
 					applications);
 
 				// when

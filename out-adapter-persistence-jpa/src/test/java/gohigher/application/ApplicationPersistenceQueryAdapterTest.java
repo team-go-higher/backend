@@ -252,9 +252,9 @@ class ApplicationPersistenceQueryAdapterTest {
 		}
 	}
 
-	@DisplayName("findOnlyWithCurrentProcessByUserId 메서드는")
+	@DisplayName("findOnlyCurrentProcessByUserId 메서드는")
 	@Nested
-	class Describe_findOnlyWithCurrentProcessByUserId {
+	class Describe_findOnlyCurrentProcessByUserId {
 
 		@DisplayName("사용자 아이디를 이용하여 조회할 때")
 		@Nested
@@ -272,8 +272,7 @@ class ApplicationPersistenceQueryAdapterTest {
 					applicationJpaEntities);
 
 				// when
-				List<Application> applications = applicationPersistenceQueryAdapter.findOnlyWithCurrentProcessByUserId(
-					userId);
+				List<Application> applications = applicationPersistenceQueryAdapter.findOnlyCurrentProcessByUserId(userId);
 
 				// then
 				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
