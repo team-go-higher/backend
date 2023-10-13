@@ -25,6 +25,7 @@ import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
+import gohigher.application.port.in.KanbanByProcessApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.UnscheduledApplicationResponse;
@@ -195,7 +196,7 @@ class ApplicationQueryServiceTest {
 				List<Application> applications = List.of(
 					NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
 				given(applicationPersistenceQueryPort.findUnscheduledByUserId(userId, page, size))
-					.willReturn(new PagingContainer<>(true, applications));
+					.willReturn(new PagingContainer<>(false, applications));
 
 				// when
 				PagingResponse<UnscheduledApplicationResponse> response = applicationQueryService.findUnscheduled(
@@ -238,6 +239,41 @@ class ApplicationQueryServiceTest {
 					.filter(it -> it.equals(processType.name()))
 					.findFirst();
 				assertThat(processes).isNotEmpty();
+			}
+		}
+	}
+
+	@DisplayName("findForKanbanByProcess 메서드는")
+	@Nested
+	class Describe_findForKanbanByProcess {
+
+		@DisplayName("사용자 아이디와 프로세스 타입에 해당하는 지원서 목록이 있을 때")
+		@Nested
+		class Context_with_user_id_and_process_type {
+
+			@DisplayName("지원서들의 현재 전형 정보를 반환한다")
+			@Test
+			void it_return_application_processes() {
+				// given
+				Long userId = 1L;
+
+				int page = 1;
+				int size = 10;
+				PagingRequest request = new PagingRequest(page, size);
+				ProcessType processType = ProcessType.TO_APPLY;
+
+				Process process = TO_APPLY.toPersistedDomain(1);
+				List<Application> applications = List.of(
+					NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
+				given(applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType,
+					page, size)).willReturn(new PagingContainer<>(false, applications));
+
+				// when
+				PagingResponse<KanbanByProcessApplicationResponse> response = applicationQueryService.findForKanbanByProcess(
+					userId, processType, request);
+
+				// then
+				assertThat(response.getContent()).hasSize(applications.size());
 			}
 		}
 	}

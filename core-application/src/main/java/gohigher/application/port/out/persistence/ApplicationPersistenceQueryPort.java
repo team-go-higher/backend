@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import gohigher.application.Application;
+import gohigher.common.ProcessType;
 import gohigher.pagination.PagingContainer;
 
 public interface ApplicationPersistenceQueryPort {
@@ -20,4 +21,6 @@ public interface ApplicationPersistenceQueryPort {
 	PagingContainer<Application> findUnscheduledByUserId(Long userId, int page, int size);
 
 	List<Application> findOnlyWithCurrentProcessByUserId(Long userId);
+
+	PagingContainer<Application> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType, int page, int size);
 }

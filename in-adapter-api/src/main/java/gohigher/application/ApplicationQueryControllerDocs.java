@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import gohigher.application.port.in.ApplicationResponse;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.port.in.KanbanByProcessApplicationResponse;
 import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
 import gohigher.auth.support.Login;
+import gohigher.common.ProcessType;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -124,4 +126,35 @@ public interface ApplicationQueryControllerDocs {
 		}
 	)
 	ResponseEntity<GohigherResponse<List<KanbanApplicationResponse>>> findForKanban(@Parameter(hidden = true) Long userId);
+
+	@Operation(summary = "칸반 전형별 지원서 목록 조회")
+	@ApiResponses(
+		value = {
+			@ApiResponse(responseCode = "200", description = "칸반 전형별 지원서 목록 조회 성공"),
+			@ApiResponse(responseCode = "400", description = "page 또는 size 의 범위가 잘못됨", content = @Content(
+				examples = {
+					@ExampleObject(name = "잘못된 page 값임", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "PAGINATION_001",
+						"message": "page 는 1 이상이어야 합니다."
+					},
+					"data": null
+					}
+					"""),
+					@ExampleObject(name = "잘못된 size 값임", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "PAGINATION_002",
+						"message": "size 는 1 이상이어야 합니다."
+					},
+					"data": null
+					}
+					""")
+			}))
+	})
+	ResponseEntity<GohigherResponse<PagingResponse<KanbanByProcessApplicationResponse>>> findForKanbanByProcess(
+		@Parameter(hidden = true) Long userId, @PathVariable ProcessType processType, @ModelAttribute PagingRequest request);
 }

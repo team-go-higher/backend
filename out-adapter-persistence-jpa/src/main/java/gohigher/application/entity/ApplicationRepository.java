@@ -9,6 +9,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import gohigher.common.ProcessType;
+
 public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntity, Long> {
 
 	boolean existsByIdAndUserId(Long id, Long userId);
@@ -50,4 +52,13 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "AND p.isCurrent = true "
 		+ "AND a.deleted = false")
 	List<ApplicationJpaEntity> findOnlyWithCurrentProcessByUserId(Long userId);
+
+	@Query("SELECT a FROM ApplicationJpaEntity a "
+		+ "JOIN FETCH a.processes p "
+		+ "WHERE a.userId = :userId "
+		+ "AND p.isCurrent = true "
+		+ "AND p.type = :processType "
+		+ "AND a.deleted = false")
+	Slice<ApplicationJpaEntity> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType,
+		Pageable pageable);
 }
