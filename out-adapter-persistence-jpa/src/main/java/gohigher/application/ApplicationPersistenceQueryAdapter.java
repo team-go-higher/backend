@@ -14,6 +14,7 @@ import gohigher.application.entity.ApplicationRepository;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.common.ProcessType;
 import gohigher.pagination.PagingContainer;
+import gohigher.pagination.domain.PageRequestGeneration;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -55,7 +56,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	@Override
 	public PagingContainer<Application> findUnscheduledByUserId(Long userId, int page, int size) {
 		Slice<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findUnscheduledByUserId(userId,
-			PageRequest.of(page - DIFFERENCES_PAGES_AND_DB_INDEX, size));
+			PageRequestGeneration.of(page, size));
 
 		List<Application> applications = applicationJpaEntities.stream()
 			.map(ApplicationJpaEntity::toCalenderDomain)
@@ -73,7 +74,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	public PagingContainer<Application> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType, int page, int size) {
 		Slice<ApplicationJpaEntity> applicationJpaEntities =
 			applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType,
-				PageRequest.of(page - DIFFERENCES_PAGES_AND_DB_INDEX, size));
+				PageRequestGeneration.of(page, size));
 
 		List<Application> applications = applicationJpaEntities.stream()
 			.map(ApplicationJpaEntity::toKanbanDomain)
