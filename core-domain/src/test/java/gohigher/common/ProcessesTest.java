@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import gohigher.application.ProcessFixture;
+
 @DisplayName("Processes 클래스의")
 class ProcessesTest {
 
@@ -146,6 +148,33 @@ class ProcessesTest {
 					() -> assertThat(processes.keySet()).hasSize(1),
 					() -> assertThat(processes.get(processType)).contains(process)
 				);
+			}
+		}
+	}
+
+	@DisplayName("getOrderedValues 메소드는")
+	@Nested
+	class Describe_getOrderedValues {
+
+		@DisplayName("여러 전형을 갖고 있을 경우")
+		@Nested
+		class Context_with_many_processes {
+
+			private final Process toApply = ProcessFixture.TO_APPLY.toDomainWithoutOrder();
+			private final Process document = ProcessFixture.DOCUMENT.toDomainWithoutOrder();
+			private final Process test1 = TEST.toDomainWithoutOrder();
+			private final Process test2 = CODING_TEST.toDomainWithoutOrder();
+			private final Process interview1 = FIRST_INTERVIEW.toDomainWithoutOrder();
+			private final Process interview2 = SECOND_INTERVIEW.toDomainWithoutOrder();
+			private final List<Process> input = List.of(toApply, document, test1, test2, interview1, interview2);
+
+			@DisplayName("ProccessType과 Order에 따라 정렬된 전형들을 반환한다.")
+			@Test
+			void it_returns_sorted_values() {
+				Processes processes = Processes.initialFrom(input);
+				List<Process> sortedProcesses = processes.getSortedValues();
+
+				assertThat(sortedProcesses).containsOnly(toApply, document, test1, test2, interview1, interview2);
 			}
 		}
 	}

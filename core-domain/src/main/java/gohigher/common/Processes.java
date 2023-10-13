@@ -71,7 +71,7 @@ public class Processes {
 		}
 	}
 
-	public List<Process> getOrderedValues() {
+	public List<Process> getSortedValues() {
 		return Arrays.stream(ProcessType.values())
 			.filter(values::containsKey)
 			.flatMap(processType -> values.get(processType).stream())
