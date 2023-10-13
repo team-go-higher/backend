@@ -43,7 +43,7 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 		Long applicationId = request.getApplicationId();
 		validateNotFound(userId, applicationId);
 		validateProcessNotFound(request.getProcessId());
-		applicationPersistenceCommandPort.updateCurrentProcessOrder(applicationId, request.getProcessId());
+		applicationPersistenceCommandPort.updateCurrentProcessOrder(applicationId, userId, request.getProcessId());
 	}
 
 	private void validateNotFound(Long userId, Long applicationId) {

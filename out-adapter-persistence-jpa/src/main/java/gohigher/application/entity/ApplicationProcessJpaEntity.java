@@ -55,6 +55,14 @@ public class ApplicationProcessJpaEntity {
 		this.application = application;
 	}
 
+	public void changeToCurrentProcess() {
+		isCurrent = true;
+	}
+
+	public void changeToNonCurrentProcess() {
+		isCurrent = false;
+	}
+
 	public Process toDomain() {
 		return new Process(id, type, description, schedule, order);
 	}

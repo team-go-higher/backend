@@ -82,41 +82,40 @@ class ApplicationPersistenceCommandAdapterTest {
 		@Nested
 		class UpdateCurrentProcessOrderWithId {
 
-			long applicationId;
-			long applicationProcessId;
-			ApplicationProcessJpaEntity expectedProcess;
+			private long applicationId;
+			private long secondProcessId;
+			private ApplicationProcessJpaEntity firstProcessJpaEntity;
+			private ApplicationProcessJpaEntity secondProcessJpaEntity;
 
 			@BeforeEach
 			void setUp() {
 				ApplicationJpaEntity applicationJpaEntity =
 					applicationRepository.save(ApplicationJpaEntity.of(application, USER_ID));
 				applicationId = applicationJpaEntity.getId();
-				ApplicationProcessJpaEntity firstProcessJpaEntity = applicationProcessRepository.save(
+
+				firstProcessJpaEntity = applicationProcessRepository.save(
 					ApplicationProcessJpaEntity.of(applicationJpaEntity, firstProcess, true));
-				ApplicationProcessJpaEntity secondProcessJpaEntity = applicationProcessRepository.save(
+				applicationJpaEntity.addProcess(firstProcessJpaEntity);
+
+				secondProcessJpaEntity = applicationProcessRepository.save(
 					ApplicationProcessJpaEntity.of(applicationJpaEntity, secondProcess, false));
-				applicationProcessId = secondProcessJpaEntity.getId();
-				expectedProcess = secondProcessJpaEntity;
+				applicationJpaEntity.addProcess(secondProcessJpaEntity);
+
+				secondProcessId = secondProcessJpaEntity.getId();
 			}
 
-			// @DisplayName("정상적으로 변경할 수 있다.")
-			// @Test
-			// void updateCurrentProcessOrder() {
-			// 	//when
-			// 	applicationPersistenceCommandAdapter.updateCurrentProcessOrder(applicationId, applicationProcessId);
-			//
-			// 	//then
-			// 	entityManager.flush();
-			// 	entityManager.clear();
-			//
-			// 	ApplicationJpaEntity updatedApplication = applicationRepository.findById(applicationId)
-			// 		.get();
-			//
-			// 	assertAll(
-			// 		() -> assertThat(updatedApplication.getCurrentProcessType()).isEqualTo(expectedProcess.getType()),
-			// 		() -> assertThat(updatedApplication.getCurrentProcessOrder()).isEqualTo(expectedProcess.getOrder())
-			// 	);
-			// }
+			@DisplayName("정상적으로 변경할 수 있다.")
+			@Test
+			void updateCurrentProcessOrder() {
+				//when
+				applicationPersistenceCommandAdapter.updateCurrentProcessOrder(applicationId, USER_ID, secondProcessId);
+
+				//then
+				assertAll(
+					() -> assertThat(firstProcessJpaEntity.isCurrent()).isFalse(),
+					() -> assertThat(secondProcessJpaEntity.isCurrent()).isTrue()
+				);
+			}
 		}
 	}
 }

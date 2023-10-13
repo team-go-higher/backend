@@ -6,5 +6,5 @@ public interface ApplicationPersistenceCommandPort {
 
 	Application save(Long userId, Application application);
 
-	void updateCurrentProcessOrder(long id, long processId);
+	void updateCurrentProcessOrder(long id, long userId, long processId);
 }

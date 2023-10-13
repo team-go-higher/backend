@@ -150,7 +150,7 @@ class ApplicationQueryServiceTest {
 		class Context_with_schedules {
 
 			Process interview = INTERVIEW.toDomainWithSchedule(date);
-			Process document = DOCUMENT.toDomainWithSchedule(date);
+			Process test = TEST.toDomainWithSchedule(date);
 
 			@DisplayName("일정 정보를 반환한다.")
 			@Test
@@ -158,8 +158,8 @@ class ApplicationQueryServiceTest {
 				// given
 				List<Process> naverProcesses = List.of(this.interview);
 				Application naverApplication = NAVER_APPLICATION.toDomain(naverProcesses, interview);
-				List<Process> kakaoProcesses = List.of(this.document);
-				Application kakaoApplication = KAKAO_APPLICATION.toDomain(kakaoProcesses, document);
+				List<Process> kakaoProcesses = List.of(this.test);
+				Application kakaoApplication = KAKAO_APPLICATION.toDomain(kakaoProcesses, test);
 				given(applicationPersistenceQueryPort.findByUserIdAndDate(userId, date)).willReturn(
 					List.of(naverApplication, kakaoApplication));
 
@@ -191,7 +191,7 @@ class ApplicationQueryServiceTest {
 				int size = 10;
 				PagingRequest request = new PagingRequest(page, size);
 
-				Process process = TO_APPLY.toPersistedDomain(1);
+				Process process = TEST.toPersistedDomain(1);
 				List<Application> applications = List.of(
 					NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
 				given(applicationPersistenceQueryPort.findUnscheduledByUserId(userId, page, size))
