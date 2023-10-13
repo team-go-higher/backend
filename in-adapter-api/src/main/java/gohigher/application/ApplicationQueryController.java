@@ -65,8 +65,9 @@ public class ApplicationQueryController implements ApplicationQueryControllerDoc
 	}
 
 	@GetMapping("/kanban")
-	public ResponseEntity<GohigherResponse<List<KanbanApplicationResponse>>> findForKanban(@Login Long userId) {
-		List<KanbanApplicationResponse> response = applicationQueryPort.findForKanban(userId);
+	public ResponseEntity<GohigherResponse<List<KanbanApplicationResponse>>> findForKanban(@Login Long userId,
+		@Valid @ModelAttribute PagingRequest request) {
+		List<KanbanApplicationResponse> response = applicationQueryPort.findForKanban(userId, request);
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
 

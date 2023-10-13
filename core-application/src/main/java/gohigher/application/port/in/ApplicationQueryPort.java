@@ -14,7 +14,7 @@ public interface ApplicationQueryPort {
 
 	PagingResponse<UnscheduledApplicationResponse> findUnscheduled(Long userId, PagingRequest request);
 
-	List<KanbanApplicationResponse> findForKanban(Long userId);
+	List<KanbanApplicationResponse> findForKanban(Long userId, PagingRequest request);
 
 	PagingResponse<KanbanByProcessApplicationResponse> findForKanbanByProcess(Long userId, ProcessType processType,
 		PagingRequest request);

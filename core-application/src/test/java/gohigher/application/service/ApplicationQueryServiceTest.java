@@ -221,6 +221,9 @@ class ApplicationQueryServiceTest {
 			void it_return_application_processes() {
 				// given
 				Long userId = 1L;
+				int page = 1;
+				int size = 10;
+				PagingRequest request = new PagingRequest(page, size);
 
 				ProcessType processType = ProcessType.TO_APPLY;
 				Process process = new Process(processType, "설명", LocalDateTime.now(), 1);
@@ -231,7 +234,7 @@ class ApplicationQueryServiceTest {
 					applications);
 
 				// when
-				List<KanbanApplicationResponse> response = applicationQueryService.findForKanban(userId);
+				List<KanbanApplicationResponse> response = applicationQueryService.findForKanban(userId, request);
 
 				// then
 				Optional<String> processes = response.stream()
