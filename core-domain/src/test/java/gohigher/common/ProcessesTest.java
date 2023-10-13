@@ -72,8 +72,10 @@ class ProcessesTest {
 				List<Process> interviewProcesses = processes.getValues().get(ProcessType.INTERVIEW);
 
 				assertAll(
+					() -> assertThat(testProcesses).containsExactly(test1, test2),
 					() -> assertThat(testProcesses.get(0).getOrder()).isEqualTo(1),
 					() -> assertThat(testProcesses.get(1).getOrder()).isEqualTo(2),
+					() -> assertThat(interviewProcesses).containsExactly(interview1, interview2),
 					() -> assertThat(interviewProcesses.get(0).getOrder()).isEqualTo(1),
 					() -> assertThat(interviewProcesses.get(1).getOrder()).isEqualTo(2)
 				);
