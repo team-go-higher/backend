@@ -62,7 +62,8 @@ class ApplicationProcessPersistenceQueryAdapterTest {
 
 				for (Process process : application.getProcesses()) {
 					ApplicationProcessJpaEntity applicationProcessJpaEntity = applicationProcessRepository.save(
-						convertToApplicationProcessEntity(applicationJpaEntity, process));
+						convertToApplicationProcessEntity(applicationJpaEntity, process,
+							application.getCurrentProcess()));
 
 					applicationJpaEntity.addProcess(applicationProcessJpaEntity);
 				}

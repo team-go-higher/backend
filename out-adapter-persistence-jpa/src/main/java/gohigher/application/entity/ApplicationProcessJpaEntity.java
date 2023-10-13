@@ -44,9 +44,11 @@ public class ApplicationProcessJpaEntity {
 	private LocalDateTime schedule;
 	private String description;
 
-	public static ApplicationProcessJpaEntity of(ApplicationJpaEntity application, Process process) {
+	private boolean isCurrent;
+
+	public static ApplicationProcessJpaEntity of(ApplicationJpaEntity application, Process process, boolean isCurrent) {
 		return new ApplicationProcessJpaEntity(process.getId(), application, process.getType(), process.getOrder(),
-			process.getSchedule(), process.getDescription());
+			process.getSchedule(), process.getDescription(), isCurrent);
 	}
 
 	public void assignApplication(ApplicationJpaEntity application) {

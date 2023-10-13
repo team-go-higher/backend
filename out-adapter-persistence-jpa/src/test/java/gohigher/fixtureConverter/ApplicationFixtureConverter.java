@@ -22,12 +22,16 @@ public class ApplicationFixtureConverter {
 			application.getLocation(), application.getContact(), application.getPosition(),
 			application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
 			application.getEmploymentType(), application.getCareerRequirement(), application.getRequiredCapability(),
-			application.getPreferredQualification(), application.getUrl(), application.getCurrentProcess().getType(),
-			application.getCurrentProcess().getOrder(), new ArrayList<>(), null, false);
+			application.getPreferredQualification(), application.getUrl(), new ArrayList<>(), null, false);
 	}
 
 	public static ApplicationProcessJpaEntity convertToApplicationProcessEntity(
-		ApplicationJpaEntity applicationJpaEntity, Process process) {
-		return ApplicationProcessJpaEntity.of(applicationJpaEntity, process);
+		ApplicationJpaEntity applicationJpaEntity, Process process, boolean isCurrent) {
+		return ApplicationProcessJpaEntity.of(applicationJpaEntity, process, isCurrent);
+	}
+
+	public static ApplicationProcessJpaEntity convertToApplicationProcessEntity(
+		ApplicationJpaEntity applicationJpaEntity, Process process, Process currentProcess) {
+		return convertToApplicationProcessEntity(applicationJpaEntity, process, currentProcess == process);
 	}
 }

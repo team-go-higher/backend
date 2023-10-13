@@ -238,7 +238,7 @@ class ApplicationRepositoryTest {
 			void it_returns_applications_with_proper_processes(long day) {
 				// given
 				applicationProcessRepository.save(convertToApplicationProcessEntity(naverApplicationEntity,
-					TEST.toDomainWithSchedule(date.plusDays(day))));    // day = 0일 때는 반환할 전형이 추가
+					TEST.toDomainWithSchedule(date.plusDays(day)), true));    // day = 0일 때는 반환할 전형이 추가
 
 				// when
 				List<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findByUserIdAndDate(userId,
@@ -367,8 +367,7 @@ class ApplicationRepositoryTest {
 				application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
 				application.getEmploymentType(), application.getCareerRequirement(),
 				application.getRequiredCapability(), application.getPreferredQualification(), application.getUrl(),
-				application.getCurrentProcess().getType(), application.getCurrentProcess().getOrder(), null, null,
-				deleted
+				null, null, deleted
 			);
 		}
 	}
@@ -379,7 +378,8 @@ class ApplicationRepositoryTest {
 
 		for (Process process : application.getProcesses()) {
 			ApplicationProcessJpaEntity applicationProcessJpaEntity = applicationProcessRepository.save(
-				convertToApplicationProcessEntity(applicationEntity, process));
+				convertToApplicationProcessEntity(applicationEntity, process,
+					application.getCurrentProcess() == process));
 
 			applicationEntity.addProcess(applicationProcessJpaEntity);
 		}

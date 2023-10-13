@@ -1,13 +1,15 @@
 package gohigher.application.entity;
 
-import java.util.Comparator;
+import static gohigher.application.ApplicationErrorCode.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import gohigher.application.Application;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
-import gohigher.common.ProcessType;
 import gohigher.common.Processes;
+import gohigher.global.exception.GoHigherException;
 import gohigher.recruitment.entity.RecruitmentJpaEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -32,8 +34,6 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ApplicationJpaEntity {
 
-	private static final int FIRST_PROCESS_ORDER = 0;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -55,12 +55,8 @@ public class ApplicationJpaEntity {
 	private String preferredQualification;
 	private String url;
 
-	@Enumerated(value = EnumType.STRING)
-	private ProcessType currentProcessType;
-	private int currentProcessOrder;
-
 	@OneToMany(mappedBy = "application")
-	private List<ApplicationProcessJpaEntity> processes;
+	private List<ApplicationProcessJpaEntity> processes = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "recruitment_id")
@@ -84,9 +80,7 @@ public class ApplicationJpaEntity {
 			application.getRequiredCapability(),
 			application.getPreferredQualification(),
 			application.getUrl(),
-			application.getCurrentProcess().getType(),
-			application.getCurrentProcess().getOrder(),
-			null,
+			new ArrayList<>(),
 			null,
 			false
 		);
@@ -127,16 +121,20 @@ public class ApplicationJpaEntity {
 	}
 
 	private Process findCurrentProcess(List<Process> processes) {
-		return processes.stream()
-			.filter(process -> process.getType() == currentProcessType)
-			.filter(process -> process.getOrder() == currentProcessOrder)
+		ApplicationProcessJpaEntity currentProcess = getProcesses().stream()
+			.filter(ApplicationProcessJpaEntity::isCurrent)
 			.findAny()
-			.orElse(null);
+			.orElseThrow(() -> new GoHigherException(CURRENT_PROCESS_NOT_FOUND));
+
+		return processes.stream()
+			.filter(process -> process.getType() == currentProcess.getType())
+			.filter(process -> process.getOrder() == currentProcess.getOrder())
+			.findAny()
+			.orElseThrow(() -> new GoHigherException(CURRENT_PROCESS_NOT_FOUND));
 	}
 
 	private List<Process> getProcessList() {
 		return processes.stream()
-			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))
 			.map(ApplicationProcessJpaEntity::toDomain)
 			.toList();
 	}
@@ -147,8 +145,8 @@ public class ApplicationJpaEntity {
 			Processes.of(processes), url, currentProcess);
 	}
 
-	public void updateCurrentProcess(ProcessType type, int order) {
-		currentProcessType = type;
-		currentProcessOrder = order;
-	}
+	// public void updateCurrentProcess(ProcessType type, int order) {
+	// 	currentProcessType = type;
+	// 	currentProcessOrder = order;
+	// }
 }

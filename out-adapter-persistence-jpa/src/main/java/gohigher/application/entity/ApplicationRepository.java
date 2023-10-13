@@ -39,8 +39,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
-		+ "AND a.currentProcessType = p.type "
-		+ "AND a.currentProcessOrder = p.order "
+		+ "AND p.isCurrent = true "
 		+ "AND p.schedule = null "
 		+ "AND a.deleted = false")
 	Slice<ApplicationJpaEntity> findUnscheduledByUserId(Long userId, Pageable pageable);
@@ -48,8 +47,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
-		+ "AND a.currentProcessType = p.type "
-		+ "AND a.currentProcessOrder = p.order "
+		+ "AND p.isCurrent = true "
 		+ "AND a.deleted = false")
 	List<ApplicationJpaEntity> findOnlyWithCurrentProcessByUserId(Long userId);
 }
