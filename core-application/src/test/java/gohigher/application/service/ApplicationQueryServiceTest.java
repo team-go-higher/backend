@@ -216,7 +216,7 @@ class ApplicationQueryServiceTest {
 		@Nested
 		class Context_with_user_id {
 
-			@DisplayName("지원서들의 현재 전형 정보를 반환한다")
+			@DisplayName("모든 전형 지원서 목록의 현재 전형 정보를 반환한다")
 			@Test
 			void it_return_application_processes() {
 				// given
@@ -226,12 +226,12 @@ class ApplicationQueryServiceTest {
 				PagingRequest request = new PagingRequest(page, size);
 
 				ProcessType processType = ProcessType.TO_APPLY;
-				Process process = new Process(processType, "설명", LocalDateTime.now(), 1);
+				Process process = TO_APPLY.toDomain();
 				Application application = NAVER_APPLICATION.toDomain(List.of(process), process);
 				List<Application> applications = List.of(application);
 
-				given(applicationPersistenceQueryPort.findOnlyCurrentProcessByUserId(userId)).willReturn(
-					applications);
+				given(applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(eq(userId), any(),
+					eq(page), eq(size))).willReturn(new PagingContainer<>(false, applications));
 
 				// when
 				List<KanbanApplicationResponse> response = applicationQueryService.findForKanban(userId, request);
