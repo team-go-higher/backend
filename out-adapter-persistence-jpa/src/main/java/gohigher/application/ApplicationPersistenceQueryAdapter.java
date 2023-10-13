@@ -21,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenceQueryPort {
 
-	private static final int DIFFERENCES_PAGES_AND_DB_INDEX = 1;
-
 	private final ApplicationRepository applicationRepository;
 
 	@Override
