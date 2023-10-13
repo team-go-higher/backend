@@ -22,10 +22,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 import gohigher.application.Application;
 import gohigher.common.Process;
+import gohigher.common.ProcessType;
 
 @DisplayName("ApplicationRepository 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -467,6 +469,88 @@ class ApplicationRepositoryTest {
 				application.getRequiredCapability(),
 				application.getPreferredQualification(), application.getUrl(), 0, null, null, deleted
 			);
+		}
+	}
+
+	@DisplayName("findOnlyCurrentProcessByUserIdAndProcessType 메서드는")
+	@Nested
+	class Describe_findOnlyCurrentProcessByUserIdAndProcessType {
+
+		@DisplayName("현재 진행중인 상태이며 특정 타입의 프로세스를 가지는 어플리케이션이 있을 경우")
+		@Nested
+		class Context_exist_current_process_and_process_type {
+
+			@DisplayName("해당 어플리케이션을 반환한다")
+			@Test
+			void it_return() {
+				// given
+				Long userId = 1L;
+				ProcessType processType = ProcessType.TO_APPLY;
+				Pageable pageable = PageRequest.of(0, 10);
+
+				int applicationCount = 1;
+				for (int i = 0; i < applicationCount; i++) {
+					ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(
+						convertToApplicationEntity(userId, NAVER_APPLICATION.toDomain())
+					);
+
+					applicationProcessRepository.save(
+						convertToApplicationProcessEntity(applicationJpaEntity, TO_APPLY.toDomain()));
+					applicationProcessRepository.save(
+						convertToApplicationProcessEntity(applicationJpaEntity, DOCUMENT.toDomain()));
+				}
+				entityManager.clear();
+
+				// when
+				Slice<ApplicationJpaEntity> applications =
+					applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType, pageable);
+
+				// then
+				assertAll(
+					() -> assertThat(applications.getNumberOfElements()).isEqualTo(applicationCount),
+					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(1),
+					() -> assertThat(applications.getContent().get(0).getProcesses().get(0).getType()).isEqualTo(processType)
+				);
+			}
+		}
+
+		@DisplayName("어플리케이션이 삭제되었을 경우")
+		@Nested
+		class Context_contain_deleted_is_true {
+
+			@DisplayName("반환값에 포함하지 않는다")
+			@Test
+			void it_not_return() {
+				// given
+				Long userId = 1L;
+
+				int count = 2;
+				for (int i = 0; i < count; i++) {
+					ApplicationJpaEntity application = createDeletedApplication(userId);
+					applicationRepository.save(application);
+				}
+
+				// when
+				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyWithCurrentProcessByUserId(
+					userId);
+
+				// then
+				assertThat(applications).isEmpty();
+			}
+
+			private ApplicationJpaEntity createDeletedApplication(Long userId) {
+				boolean deleted = true;
+
+				Application application = NAVER_APPLICATION.toDomain();
+				return new ApplicationJpaEntity(
+					application.getId(), userId, application.getCompanyName(), application.getTeam(),
+					application.getLocation(), application.getContact(), application.getPosition(),
+					application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
+					application.getEmploymentType(), application.getCareerRequirement(),
+					application.getRequiredCapability(),
+					application.getPreferredQualification(), application.getUrl(), 0, null, null, deleted
+				);
+			}
 		}
 	}
 }

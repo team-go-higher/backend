@@ -16,11 +16,13 @@ import gohigher.application.port.in.CalendarApplicationRequest;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
+import gohigher.application.port.in.KanbanByProcessApplicationResponse;
 import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.auth.support.Login;
+import gohigher.common.ProcessType;
 import gohigher.controller.response.GohigherResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +67,14 @@ public class ApplicationQueryController implements ApplicationQueryControllerDoc
 	@GetMapping("/kanban")
 	public ResponseEntity<GohigherResponse<List<KanbanApplicationResponse>>> findForKanban(@Login Long userId) {
 		List<KanbanApplicationResponse> response = applicationQueryPort.findForKanban(userId);
+		return ResponseEntity.ok(GohigherResponse.success(response));
+	}
+
+	@GetMapping("/kanban/processes/{processType}")
+	public ResponseEntity<GohigherResponse<PagingResponse<KanbanByProcessApplicationResponse>>> findForKanbanByProcess(
+		@Login Long userId, @PathVariable ProcessType processType, @Valid @ModelAttribute PagingRequest request) {
+		PagingResponse<KanbanByProcessApplicationResponse> response = applicationQueryPort.findForKanbanByProcess(
+			userId, processType, request);
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
 }
