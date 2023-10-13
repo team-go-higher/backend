@@ -10,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class KanbanApplicationDetailResponse {
 
-	private final Long id;
+	private final Long applicationId;
+	private final Long processId;
 	private final String companyName;
 	private final String position;
 	private final String specificPosition;
@@ -20,6 +21,7 @@ public class KanbanApplicationDetailResponse {
 	public static KanbanApplicationDetailResponse from(Application application) {
 		return new KanbanApplicationDetailResponse(
 			application.getId(),
+			application.getCurrentProcess().getId(),
 			application.getCompanyName(),
 			application.getPosition(),
 			application.getSpecificPosition(),
