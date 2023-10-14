@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class PageRequestGeneration {
+public class PageRequestGenerator {
 
 	private static final int DIFFERENCES_PAGES_AND_DB_INDEX = 1;
 
