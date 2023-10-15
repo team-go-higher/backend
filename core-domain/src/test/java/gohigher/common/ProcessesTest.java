@@ -154,9 +154,9 @@ class ProcessesTest {
 		}
 	}
 
-	@DisplayName("getOrderedValues 메소드는")
+	@DisplayName("getSortedValues 메소드는")
 	@Nested
-	class Describe_getOrderedValues {
+	class Describe_getSortedValues {
 
 		@DisplayName("여러 전형을 갖고 있을 경우")
 		@Nested
