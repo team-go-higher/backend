@@ -22,7 +22,7 @@ public class DesiredDesiredPositionCommandService implements DesiredPositionComm
 
 	@Override
 	public void saveDesiredPositions(Long userId, List<Long> positionIds) {
-		validateDuplicatedPositionIds(positionIds);
+		validateDistinctPositionIds(positionIds);
 		validateExistedPositions(positionIds);
 
 		desiredPositionPersistenceCommandPort.saveDesiredPositions(userId, positionIds);
@@ -33,7 +33,7 @@ public class DesiredDesiredPositionCommandService implements DesiredPositionComm
 		desiredPositionPersistenceCommandPort.assignMainPosition(userId, mainPositionId);
 	}
 
-	private void validateDuplicatedPositionIds(List<Long> positionIds) {
+	private void validateDistinctPositionIds(List<Long> positionIds) {
 		List<Long> distinctPositionIds = positionIds.stream()
 			.distinct()
 			.toList();
