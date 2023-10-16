@@ -78,10 +78,4 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 			.map(ApplicationJpaEntity::toCalenderDomain)
 			.toList();
 	}
-
-	private List<Application> convertToKanbanApplication(List<ApplicationJpaEntity> applications) {
-		return applications.stream()
-			.map(ApplicationJpaEntity::toKanbanDomain)
-			.toList();
-	}
 }
