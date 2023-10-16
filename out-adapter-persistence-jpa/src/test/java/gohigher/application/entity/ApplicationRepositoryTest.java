@@ -84,7 +84,7 @@ class ApplicationRepositoryTest {
 		@Nested
 		class Context_with_deleted_application {
 
-			@BeforeEachs
+			@BeforeEach
 			void setUp() {
 				Application naverApplication = NAVER_APPLICATION.toDomain();
 				naverApplicationEntity = saveApplicationAndProcesses(userId, naverApplication);
