@@ -108,7 +108,7 @@ class ApplicationCommandServiceTest {
 
 				//then
 				verify(applicationPersistenceCommandPort)
-					.updateCurrentProcessOrder(request.getApplicationId(), request.getProcessId());
+					.updateCurrentProcessOrder(request.getApplicationId(), userId, request.getProcessId());
 			}
 		}
 	}

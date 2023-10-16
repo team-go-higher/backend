@@ -1,6 +1,9 @@
 package gohigher.application;
 
+import static gohigher.application.ProcessFixture.*;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import gohigher.common.EmploymentType;
@@ -42,6 +45,19 @@ public enum ApplicationFixture {
 
 	public Application toDomain() {
 		return new Builder(this).toDomain(null);
+	}
+
+	public Application toDomain(Process... args) {
+		List<Process> processes = Arrays.stream(args).toList();
+		return toDomain(processes, processes.get(0));
+	}
+
+	public Application toDomain(ProcessFixture... args) {
+		List<Process> processes = Arrays.stream(args)
+			.map(ProcessFixture::toDomain)
+			.toList();
+
+		return toDomain(processes, processes.get(0));
 	}
 
 	public Application toDomain(List<Process> processes, Process currentProcess) {
@@ -105,6 +121,12 @@ public enum ApplicationFixture {
 		}
 
 		public Application toDomain(Long id) {
+			if (processes.isEmpty()) {
+				Process toApplyProcess = TO_APPLY.toDomain();
+				processes = List.of(toApplyProcess);
+				currentProcess = toApplyProcess;
+			}
+
 			return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription,
 				workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
 				Processes.initialFrom(processes), url, currentProcess);

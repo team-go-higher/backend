@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import gohigher.common.ProcessType;
@@ -22,13 +21,6 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "AND a.userId = :userId "
 		+ "AND a.deleted = false")
 	Optional<ApplicationJpaEntity> findByIdAndUserIdWithProcess(Long id, Long userId);
-
-	@Modifying
-	@Query("UPDATE ApplicationJpaEntity a "
-		+ "SET a.currentProcessOrder = "
-		+ "(SELECT ap.order FROM ApplicationProcessJpaEntity ap WHERE ap.id = :processId) "
-		+ "WHERE a.id = :id")
-	void updateCurrentProcessOrder(long id, long processId);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
@@ -49,7 +41,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
-		+ "AND a.currentProcessOrder = p.order "
+		+ "AND p.isCurrent = true "
 		+ "AND p.schedule = null "
 		+ "AND a.deleted = false")
 	Slice<ApplicationJpaEntity> findUnscheduledByUserId(Long userId, Pageable pageable);
@@ -57,15 +49,16 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
-		+ "AND a.currentProcessOrder = p.order "
+		+ "AND p.isCurrent = true "
 		+ "AND a.deleted = false")
 	List<ApplicationJpaEntity> findOnlyWithCurrentProcessByUserId(Long userId);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
-		+ "AND a.currentProcessOrder = p.order "
+		+ "AND p.isCurrent = true "
 		+ "AND p.type = :processType "
 		+ "AND a.deleted = false")
-	Slice<ApplicationJpaEntity> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType, Pageable pageable);
+	Slice<ApplicationJpaEntity> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType,
+		Pageable pageable);
 }

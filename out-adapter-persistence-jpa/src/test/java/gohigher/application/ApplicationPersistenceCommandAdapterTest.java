@@ -5,8 +5,6 @@ import static gohigher.application.ProcessFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,7 +18,6 @@ import gohigher.application.entity.ApplicationProcessJpaEntity;
 import gohigher.application.entity.ApplicationProcessRepository;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.common.Process;
-import gohigher.common.ProcessType;
 import jakarta.persistence.EntityManager;
 
 @DisplayName("ApplicationPersistenceCommandAdapter 클래스의")
@@ -31,8 +28,7 @@ class ApplicationPersistenceCommandAdapterTest {
 	private static final Long USER_ID = 1L;
 	private final Process firstProcess = TO_APPLY.toDomain();
 	private final Process secondProcess = DOCUMENT.toDomain();
-	private final Application application = NAVER_APPLICATION.toDomain(List.of(firstProcess, secondProcess),
-		firstProcess);
+	private final Application application = NAVER_APPLICATION.toDomain(firstProcess, secondProcess);
 
 	@Autowired
 	private ApplicationRepository applicationRepository;
@@ -64,12 +60,15 @@ class ApplicationPersistenceCommandAdapterTest {
 			void it_save_application_with_processes() {
 				// when
 				Application savedApplication = applicationPersistenceCommandAdapter.save(USER_ID, application);
+				entityManager.clear();
 
 				// then
+				ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(savedApplication.getId())
+					.get();
 				assertAll(
-					() -> assertThat(savedApplication.getProcesses()).hasSize(application.getProcesses().size()),
-					() -> assertThat(savedApplication.getProcesses()).extracting("type")
-						.containsExactly(ProcessType.TO_APPLY, ProcessType.DOCUMENT)
+					() -> assertThat(applicationJpaEntity.getProcesses()).hasSize(application.getProcesses().size()),
+					() -> assertThat(applicationJpaEntity.getProcesses()).extracting("type")
+						.containsExactly(firstProcess.getType(), secondProcess.getType())
 				);
 			}
 		}
@@ -83,33 +82,39 @@ class ApplicationPersistenceCommandAdapterTest {
 		@Nested
 		class UpdateCurrentProcessOrderWithId {
 
-			long applicationId;
-			long applicationProcessId;
-			long expectedProcessOrder;
+			private long applicationId;
+			private long secondProcessId;
+			private ApplicationProcessJpaEntity firstProcessJpaEntity;
+			private ApplicationProcessJpaEntity secondProcessJpaEntity;
 
 			@BeforeEach
 			void setUp() {
 				ApplicationJpaEntity applicationJpaEntity =
 					applicationRepository.save(ApplicationJpaEntity.of(application, USER_ID));
 				applicationId = applicationJpaEntity.getId();
-				ApplicationProcessJpaEntity secondProcessJpaEntity = applicationProcessRepository.save(
-					ApplicationProcessJpaEntity.of(applicationJpaEntity, secondProcess));
-				applicationProcessId = secondProcessJpaEntity.getId();
-				expectedProcessOrder = secondProcessJpaEntity.getOrder();
+
+				firstProcessJpaEntity = applicationProcessRepository.save(
+					ApplicationProcessJpaEntity.of(applicationJpaEntity, firstProcess, true));
+				applicationJpaEntity.addProcess(firstProcessJpaEntity);
+
+				secondProcessJpaEntity = applicationProcessRepository.save(
+					ApplicationProcessJpaEntity.of(applicationJpaEntity, secondProcess, false));
+				applicationJpaEntity.addProcess(secondProcessJpaEntity);
+
+				secondProcessId = secondProcessJpaEntity.getId();
 			}
 
 			@DisplayName("정상적으로 변경할 수 있다.")
 			@Test
 			void updateCurrentProcessOrder() {
 				//when
-				applicationPersistenceCommandAdapter.updateCurrentProcessOrder(applicationId, applicationProcessId);
+				applicationPersistenceCommandAdapter.updateCurrentProcessOrder(applicationId, USER_ID, secondProcessId);
 
 				//then
-				entityManager.clear();
-				int currentProcessOrder = applicationRepository.findById(applicationId)
-					.get()
-					.getCurrentProcessOrder();
-				assertThat(currentProcessOrder).isEqualTo(expectedProcessOrder);
+				assertAll(
+					() -> assertThat(firstProcessJpaEntity.isCurrent()).isFalse(),
+					() -> assertThat(secondProcessJpaEntity.isCurrent()).isTrue()
+				);
 			}
 		}
 	}

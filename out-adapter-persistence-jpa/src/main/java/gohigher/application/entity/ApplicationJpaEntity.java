@@ -1,12 +1,15 @@
 package gohigher.application.entity;
 
-import java.util.Comparator;
+import static gohigher.application.ApplicationErrorCode.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import gohigher.application.Application;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
 import gohigher.common.Processes;
+import gohigher.global.exception.GoHigherException;
 import gohigher.recruitment.entity.RecruitmentJpaEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -31,8 +34,6 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ApplicationJpaEntity {
 
-	private static final int FIRST_PROCESS_ORDER = 0;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -53,10 +54,9 @@ public class ApplicationJpaEntity {
 	private String requiredCapability;
 	private String preferredQualification;
 	private String url;
-	private int currentProcessOrder;
 
 	@OneToMany(mappedBy = "application")
-	private List<ApplicationProcessJpaEntity> processes;
+	private List<ApplicationProcessJpaEntity> processes = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "recruitment_id")
@@ -65,7 +65,6 @@ public class ApplicationJpaEntity {
 	private boolean deleted;
 
 	public static ApplicationJpaEntity of(Application application, Long userId) {
-		int currentProcessOrder = application.getCurrentProcess().getOrder();
 		return new ApplicationJpaEntity(null,
 			userId,
 			application.getCompanyName(),
@@ -81,8 +80,7 @@ public class ApplicationJpaEntity {
 			application.getRequiredCapability(),
 			application.getPreferredQualification(),
 			application.getUrl(),
-			currentProcessOrder,
-			null,
+			new ArrayList<>(),
 			null,
 			false
 		);
@@ -105,13 +103,6 @@ public class ApplicationJpaEntity {
 		return createApplication(processes, findCurrentProcess(processes));
 	}
 
-	public Application toDomain(List<ApplicationProcessJpaEntity> applicationProcessJpaEntities) {
-		List<Process> processes = applicationProcessJpaEntities.stream()
-			.map(ApplicationProcessJpaEntity::toDomain)
-			.toList();
-		return createApplication(processes, findCurrentProcess(processes));
-	}
-
 	public Application toCalenderDomain() {
 		List<Process> processes = getProcessList();
 		return createApplication(processes, null);
@@ -123,15 +114,20 @@ public class ApplicationJpaEntity {
 	}
 
 	private Process findCurrentProcess(List<Process> processes) {
-		return processes.stream()
-			.filter(process -> process.getOrder() == currentProcessOrder)
+		ApplicationProcessJpaEntity currentProcess = getProcesses().stream()
+			.filter(ApplicationProcessJpaEntity::isCurrent)
 			.findAny()
-			.orElse(null);
+			.orElseThrow(() -> new GoHigherException(CURRENT_PROCESS_NOT_FOUND));
+
+		return processes.stream()
+			.filter(process -> process.getType() == currentProcess.getType())
+			.filter(process -> process.getOrder() == currentProcess.getOrder())
+			.findAny()
+			.orElseThrow(() -> new GoHigherException(CURRENT_PROCESS_NOT_FOUND));
 	}
 
 	private List<Process> getProcessList() {
 		return processes.stream()
-			.sorted(Comparator.comparingInt(ApplicationProcessJpaEntity::getOrder))
 			.map(ApplicationProcessJpaEntity::toDomain)
 			.toList();
 	}
@@ -139,6 +135,6 @@ public class ApplicationJpaEntity {
 	private Application createApplication(List<Process> processes, Process currentProcess) {
 		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription,
 			workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
-			new Processes(processes), url, currentProcess);
+			Processes.of(processes), url, currentProcess);
 	}
 }
