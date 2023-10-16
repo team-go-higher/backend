@@ -14,7 +14,7 @@ public class KanbanApplicationResponse {
 	private final String processType;
 	private final PagingResponse<KanbanApplicationDetailResponse> applications;
 
-	public static KanbanApplicationResponse from(String processType, PagingContainer<Application> applications) {
+	public static KanbanApplicationResponse of(String processType, PagingContainer<Application> applications) {
 		List<KanbanApplicationDetailResponse> applicationDetailResponses = applications.getContent()
 			.stream()
 			.map(KanbanApplicationDetailResponse::from)

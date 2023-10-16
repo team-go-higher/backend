@@ -75,7 +75,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 		Map<ProcessType, PagingContainer<Application>> groupedApplications = groupForKanbanByProcess(userId, request);
 		return groupedApplications.entrySet()
 			.stream()
-			.map(entry -> KanbanApplicationResponse.from(entry.getKey().name(), entry.getValue()))
+			.map(entry -> KanbanApplicationResponse.of(entry.getKey().name(), entry.getValue()))
 			.toList();
 	}
 
