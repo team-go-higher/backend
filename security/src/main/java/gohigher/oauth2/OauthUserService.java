@@ -29,7 +29,7 @@ public class OauthUserService extends DefaultOAuth2UserService {
 		Provider provider = extractProvider(userRequest);
 		OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.createFor(provider, oAuth2User.getAttributes());
 
-		User loginUser = oAuth2CommandService.login(oAuth2UserInfo.getEmail(), provider);
+		User loginUser = oAuth2CommandService.signIn(oAuth2UserInfo.getEmail(), provider);
 		oAuth2UserInfo.setUserId(loginUser.getId());
 
 		return createOAuth2User(oAuth2UserInfo, loginUser);

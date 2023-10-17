@@ -14,9 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import gohigher.user.Role;
 import gohigher.user.User;
 import gohigher.user.auth.Provider;
+import gohigher.user.port.in.DesiredPositionCommandPort;
 import gohigher.user.port.out.UserPersistenceCommandPort;
 import gohigher.user.port.out.UserPersistenceQueryPort;
 
@@ -30,11 +30,15 @@ class UserCommandServiceTest {
 	@Mock
 	private UserPersistenceCommandPort userPersistenceCommandPort;
 
+	@Mock
+	private DesiredPositionCommandPort desiredPositionCommandPort;
+
 	private UserCommandService userCommandService;
 
 	@BeforeEach
 	void setUp() {
-		userCommandService = new UserCommandService(userPersistenceQueryPort, userPersistenceCommandPort);
+		userCommandService = new UserCommandService(userPersistenceQueryPort, userPersistenceCommandPort,
+			desiredPositionCommandPort);
 	}
 
 	@DisplayName("login 메서드는")
@@ -50,11 +54,11 @@ class UserCommandServiceTest {
 			void success() {
 				// given
 				String email = "test@gmail.com";
-				User user = new User(email, Role.USER, Provider.GOOGLE);
+				User user = User.joinAsGuest(email, Provider.GOOGLE);
 				given(userPersistenceQueryPort.findByEmail(email)).willReturn(Optional.of(user));
 
 				// when
-				User savedUser = userCommandService.login(email, Provider.GOOGLE);
+				User savedUser = userCommandService.signIn(email, Provider.GOOGLE);
 
 				// then
 				assertThat(savedUser).isEqualTo(user);
@@ -71,13 +75,13 @@ class UserCommandServiceTest {
 				// given
 				String email = "test@gmail.com";
 				Provider provider = Provider.GOOGLE;
-				User user = new User(email, Role.GUEST, Provider.GOOGLE);
+				User user = User.joinAsGuest(email, Provider.GOOGLE);
 
 				given(userPersistenceQueryPort.findByEmail(email)).willReturn(Optional.empty());
 				given(userPersistenceCommandPort.save(any())).willReturn(user);
 
 				// when
-				User savedUser = userCommandService.login(email, provider);
+				User savedUser = userCommandService.signIn(email, provider);
 
 				// then
 				assertAll(

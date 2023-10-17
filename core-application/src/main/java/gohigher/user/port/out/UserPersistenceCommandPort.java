@@ -5,4 +5,6 @@ import gohigher.user.User;
 public interface UserPersistenceCommandPort {
 
 	User save(User user);
+
+	void updateRole(User user);
 }

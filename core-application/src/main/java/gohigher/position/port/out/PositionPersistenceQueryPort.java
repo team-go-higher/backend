@@ -7,4 +7,6 @@ import gohigher.position.Position;
 public interface PositionPersistenceQueryPort {
 
 	List<Position> findAll();
+
+	boolean existsByIds(List<Long> positionIds);
 }

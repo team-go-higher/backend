@@ -22,6 +22,10 @@ public class PositionJpaEntity {
 
 	private String position;
 
+	public PositionJpaEntity(String position) {
+		this.position = position;
+	}
+
 	public Position toDomain() {
 		return new Position(id, position);
 	}

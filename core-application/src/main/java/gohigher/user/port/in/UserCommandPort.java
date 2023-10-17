@@ -5,5 +5,7 @@ import gohigher.user.auth.Provider;
 
 public interface UserCommandPort {
 
-	User login(String email, Provider provider);
+	User signIn(String email, Provider provider);
+
+	void updateGuestToUser(Long userId, DesiredPositionRequest request);
 }
