@@ -5,6 +5,8 @@ import static gohigher.application.ProcessFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -114,6 +116,70 @@ class ApplicationPersistenceCommandAdapterTest {
 				assertAll(
 					() -> assertThat(firstProcessJpaEntity.isCurrent()).isFalse(),
 					() -> assertThat(secondProcessJpaEntity.isCurrent()).isTrue()
+				);
+			}
+		}
+	}
+
+	@DisplayName("updateSimply 메서드는")
+	@Nested
+	class Describe_updateSimply {
+
+		@DisplayName("지원서 정보와 전형 과정이 변경된 정보일 경우")
+		@Nested
+		class Context_with_changed_application_and_process {
+
+			private long applicationId;
+			private Application applicationToUpdate;
+			private Long processId;
+			private String companyNameToUpdate = "new Naver";
+			private String potisionToUpdate = "new position";
+			private String urlToUpdate = "www.update.com";
+			private LocalDateTime scheduleToUpdate = LocalDateTime.now().plusDays(10);
+
+			@BeforeEach
+			void setUp() {
+				ApplicationJpaEntity applicationJpaEntity =
+					applicationRepository.save(ApplicationJpaEntity.of(application, USER_ID));
+				applicationId = applicationJpaEntity.getId();
+
+				ApplicationProcessJpaEntity firstProcessJpaEntity = applicationProcessRepository.save(
+					ApplicationProcessJpaEntity.of(applicationJpaEntity, firstProcess, true));
+				applicationJpaEntity.addProcess(firstProcessJpaEntity);
+
+				ApplicationProcessJpaEntity secondProcessJpaEntity = applicationProcessRepository.save(
+					ApplicationProcessJpaEntity.of(applicationJpaEntity, secondProcess, false));
+				applicationJpaEntity.addProcess(secondProcessJpaEntity);
+
+				processId = secondProcessJpaEntity.getId();
+
+				applicationToUpdate = applicationJpaEntity.toDomain();
+				applicationToUpdate.updateSimply(companyNameToUpdate, potisionToUpdate, urlToUpdate, processId,
+					scheduleToUpdate);
+
+				entityManager.flush();
+				entityManager.clear();
+			}
+
+			@DisplayName("정상적으로 값들을 변경한다.")
+			@Test
+			void it_update_all_data() {
+				// when
+				applicationPersistenceCommandAdapter.updateSimply(applicationId, processId, applicationToUpdate);
+				entityManager.flush();
+				entityManager.clear();
+
+				// then
+				ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(applicationId).get();
+				assertAll(
+					() -> assertThat(applicationJpaEntity.getCompanyName()).isEqualTo(companyNameToUpdate),
+					() -> assertThat(applicationJpaEntity.getPosition()).isEqualTo(potisionToUpdate),
+					() -> assertThat(applicationJpaEntity.getUrl()).isEqualTo(urlToUpdate),
+					() -> assertThat(applicationJpaEntity.getProcesses()).extracting("type", "schedule")
+						.contains(
+							tuple(firstProcess.getType(), firstProcess.getSchedule()),
+							tuple(secondProcess.getType(), scheduleToUpdate)
+						)
 				);
 			}
 		}
