@@ -17,12 +17,16 @@ public class Process {
 	private final Long id;
 	private final ProcessType type;
 	private final String description;
-	private final LocalDateTime schedule;
+	private LocalDateTime schedule;
 
 	private int order;
 
 	public Process(ProcessType type, String description, LocalDateTime schedule, int order) {
 		this(null, type, description, schedule, order);
+	}
+
+	public Process(Long id, ProcessType type, String description, LocalDateTime schedule) {
+		this(id, type, description, schedule, 0);
 	}
 
 	public void assignOrder(int order) {
@@ -35,5 +39,9 @@ public class Process {
 
 	public Process copyWithSameScheduleAndTypeOf(ProcessType type) {
 		return new Process(id, type, description, schedule);
+	}
+
+	public void updateSchedule(LocalDateTime schedule) {
+		this.schedule = schedule;
 	}
 }
