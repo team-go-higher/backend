@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import gohigher.application.port.in.ApplicationCommandPort;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
+import gohigher.application.port.in.SimpleApplicationUpdateRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
@@ -45,6 +47,13 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 	public ResponseEntity<GohigherResponse<Void>> updateApplicationCurrentProcess(@Login Long userId,
 		@RequestBody @Valid CurrentProcessUpdateRequest request) {
 		applicationCommandPort.updateCurrentProcess(userId, request);
+		return ResponseEntity.ok(GohigherResponse.success(null));
+	}
+
+	@PutMapping("/{applicationId}/simple")
+	public ResponseEntity<GohigherResponse<Void>> updateSimply(@Login Long userId, Long applicationId,
+		@RequestBody @Valid SimpleApplicationUpdateRequest request) {
+		applicationCommandPort.updateSimply(userId, applicationId, request);
 		return ResponseEntity.ok(GohigherResponse.success(null));
 	}
 }
