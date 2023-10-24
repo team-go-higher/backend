@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gohigher.application.Application;
+import gohigher.application.ApplicationErrorCode;
 import gohigher.application.port.in.ApplicationCommandPort;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
+import gohigher.application.port.in.SimpleApplicationUpdateRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
@@ -36,6 +38,18 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 	public long applySpecifically(Long userId, SpecificApplicationRequest request) {
 		return applicationPersistenceCommandPort.save(userId, request.toDomain())
 			.getId();
+	}
+
+	@Override
+	public void updateSimply(Long userId, Long applicationId, SimpleApplicationUpdateRequest request) {
+		Application application = applicationPersistenceQueryPort.findByIdAndUserId(applicationId, userId)
+			.orElseThrow(() -> new GoHigherException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
+
+		application.updateSimply(request.getCompanyName(), request.getPosition(), request.getUrl(),
+			request.getProcessId(),
+			request.getSchedule());
+
+		applicationPersistenceCommandPort.updateSimply(userId, applicationId, request.getProcessId(), application);
 	}
 
 	@Override
