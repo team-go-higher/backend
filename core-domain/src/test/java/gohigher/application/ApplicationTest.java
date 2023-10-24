@@ -42,7 +42,7 @@ class ApplicationTest {
 					() -> assertThat(naverApplication.getCompanyName()).isEqualTo(companyNameToUpdate),
 					() -> assertThat(naverApplication.getPosition()).isEqualTo(positionToUpdate),
 					() -> assertThat(naverApplication.getUrl()).isEqualTo(urlToUpdate),
-					() -> assertThat(naverApplication.getProcesses().get(0).getSchedule()).isEqualTo(schedule)
+					() -> assertThat(naverApplication.getProcessById(processId).getSchedule()).isEqualTo(schedule)
 				);
 			}
 		}

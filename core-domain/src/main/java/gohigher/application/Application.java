@@ -37,4 +37,8 @@ public class Application extends JobInfo {
 		this.position = position;
 		this.url = url;
 	}
+
+	public Process getProcessById(Long processId) {
+		return processes.getValueById(processId);
+	}
 }
