@@ -1,5 +1,6 @@
 package gohigher.common;
 
+import static gohigher.application.ApplicationErrorCode.*;
 import static gohigher.common.ProcessType.*;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import gohigher.global.exception.GoHigherException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -76,5 +78,13 @@ public class Processes {
 			.filter(values::containsKey)
 			.flatMap(processType -> values.get(processType).stream())
 			.collect(Collectors.toList());
+	}
+
+	public Process getValueById(Long id) {
+		return getSortedValues()
+			.stream()
+			.filter(process -> process.getId().equals(id))
+			.findAny()
+			.orElseThrow(() -> new GoHigherException(APPLICATION_PROCESS_NOT_FOUND));
 	}
 }
