@@ -49,7 +49,7 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 			request.getProcessId(),
 			request.getSchedule());
 
-		applicationPersistenceCommandPort.updateSimply(applicationId, request.getProcessId(), application);
+		applicationPersistenceCommandPort.updateSimply(request.getProcessId(), application);
 	}
 
 	@Override

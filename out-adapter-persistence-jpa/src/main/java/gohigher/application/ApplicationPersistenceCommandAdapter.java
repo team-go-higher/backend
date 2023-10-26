@@ -59,8 +59,8 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 	}
 
 	@Override
-	public void updateSimply(Long applicationId, Long processId, Application application) {
-		ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(applicationId)
+	public void updateSimply(Long processId, Application application) {
+		ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(application.getId())
 			.orElseThrow(() -> new GoHigherException(APPLICATION_NOT_FOUND));
 
 		applicationJpaEntity.update(application);

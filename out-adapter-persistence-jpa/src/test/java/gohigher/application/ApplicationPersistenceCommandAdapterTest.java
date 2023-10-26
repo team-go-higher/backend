@@ -165,7 +165,7 @@ class ApplicationPersistenceCommandAdapterTest {
 			@Test
 			void it_update_all_data() {
 				// when
-				applicationPersistenceCommandAdapter.updateSimply(applicationId, processId, applicationToUpdate);
+				applicationPersistenceCommandAdapter.updateSimply(processId, applicationToUpdate);
 				entityManager.flush();
 				entityManager.clear();
 
