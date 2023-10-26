@@ -4,7 +4,7 @@ spring:
     password: password
     url: jdbc:mysql://localhost:3306/gohigher?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
   jpa:
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: validate
     properties:
       hibernate:
         show_sql: true
