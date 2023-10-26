@@ -31,8 +31,7 @@ public class Application extends JobInfo {
 	}
 
 	public void updateSimply(String companyName, String position, String url, Long processId, LocalDateTime schedule) {
-		Process process = processes.getValueById(processId);
-		process.updateSchedule(schedule);
+		processes.updateSchedule(processId, schedule);
 		this.companyName = companyName;
 		this.position = position;
 		this.url = url;

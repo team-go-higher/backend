@@ -3,6 +3,7 @@ package gohigher.common;
 import static gohigher.application.ApplicationErrorCode.*;
 import static gohigher.common.ProcessType.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,6 +79,11 @@ public class Processes {
 			.filter(values::containsKey)
 			.flatMap(processType -> values.get(processType).stream())
 			.collect(Collectors.toList());
+	}
+
+	public void updateSchedule(Long processId, LocalDateTime schedule) {
+		Process process = getValueById(processId);
+		process.updateSchedule(schedule);
 	}
 
 	public Process getValueById(Long id) {

@@ -1,5 +1,6 @@
 package gohigher.common;
 
+import static gohigher.application.ProcessFixture.INTERVIEW;
 import static gohigher.application.ProcessFixture.TEST;
 import static gohigher.application.ProcessFixture.*;
 import static gohigher.common.ProcessType.DOCUMENT;
@@ -179,6 +180,33 @@ class ProcessesTest {
 				List<Process> sortedProcesses = processes.getSortedValues();
 
 				assertThat(sortedProcesses).containsOnly(toApply, document, test1, test2, interview1, interview2);
+			}
+		}
+	}
+
+	@DisplayName("updateSchedule 메소드는")
+	@Nested
+	class Describe_updateSchedule {
+
+		private final Long targetId = 1L;
+		private final LocalDateTime scheduleToUpdate = LocalDateTime.now().plusDays(10);
+
+		@DisplayName("조회하려는 id를 가진 Process 객체를 갖고 있을 경우")
+		@Nested
+		class Context_with_target_process {
+
+			private final Long otherId = 2L;
+			private final Process test = TEST.toPersistedDomain(targetId);
+			private final Process interview = INTERVIEW.toPersistedDomain(otherId);
+			Processes processes = Processes.initialFrom(List.of(test, interview));
+
+			@DisplayName("해당 객체를 반환한다")
+			@Test
+			void it_returns_process() {
+				processes.updateSchedule(targetId, scheduleToUpdate);
+
+				LocalDateTime actual = processes.getValueById(targetId).getSchedule();
+				assertThat(actual).isEqualTo(scheduleToUpdate);
 			}
 		}
 	}
