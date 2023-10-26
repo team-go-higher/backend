@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import gohigher.common.Process;
 
+@DisplayName("Application 클래스의")
 class ApplicationTest {
 
 	@DisplayName("updateSimply 메소드는")
