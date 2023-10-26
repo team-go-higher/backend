@@ -125,7 +125,7 @@ class ApplicationPersistenceCommandAdapterTest {
 	@Nested
 	class Describe_updateSimply {
 
-		@DisplayName("지원서 정보와 전형 과정이 변경된 정보일 경우")
+		@DisplayName("변경된 지원서 정보로")
 		@Nested
 		class Context_with_changed_application_and_process {
 
@@ -161,7 +161,7 @@ class ApplicationPersistenceCommandAdapterTest {
 				entityManager.clear();
 			}
 
-			@DisplayName("정상적으로 값들을 변경한다.")
+			@DisplayName("데이터를 업데이트한다.")
 			@Test
 			void it_update_all_data() {
 				// when
