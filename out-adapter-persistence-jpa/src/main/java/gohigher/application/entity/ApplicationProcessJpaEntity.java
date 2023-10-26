@@ -66,4 +66,11 @@ public class ApplicationProcessJpaEntity {
 	public Process toDomain() {
 		return new Process(id, type, description, schedule, order);
 	}
+
+	public void update(Process process) {
+		this.type = process.getType();
+		this.order = process.getOrder();
+		this.schedule = process.getSchedule();
+		this.description = process.getDescription();
+	}
 }
