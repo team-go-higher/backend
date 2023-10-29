@@ -80,7 +80,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	public PagingResponse<KanbanByProcessApplicationResponse> findForKanbanByProcess(Long userId, ProcessType processType,
 		PagingRequest request) {
 		PagingContainer<Application> pagingContainer =
-			applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType, request.getPage(), request.getSize());
+			applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
 
 		List<KanbanByProcessApplicationResponse> response = pagingContainer.getContent()
 			.stream()

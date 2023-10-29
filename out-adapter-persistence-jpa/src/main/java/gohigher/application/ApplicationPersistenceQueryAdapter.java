@@ -70,7 +70,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	}
 
 	@Override
-	public PagingContainer<Application> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType, int page, int size) {
+	public PagingContainer<Application> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType) {
 		Slice<ApplicationJpaEntity> applicationJpaEntities =
 			applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
 

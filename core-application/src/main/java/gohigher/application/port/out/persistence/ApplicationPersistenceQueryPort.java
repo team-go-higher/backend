@@ -22,5 +22,5 @@ public interface ApplicationPersistenceQueryPort {
 
 	List<Application> findOnlyWithCurrentProcessByUserId(Long userId);
 
-	PagingContainer<Application> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType, int page, int size);
+	PagingContainer<Application> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType);
 }

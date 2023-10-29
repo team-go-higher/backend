@@ -265,8 +265,8 @@ class ApplicationQueryServiceTest {
 				Process process = TO_APPLY.toPersistedDomain(1);
 				List<Application> applications = List.of(
 					NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
-				given(applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType,
-					page, size)).willReturn(new PagingContainer<>(false, applications));
+				given(applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType))
+					.willReturn(new PagingContainer<>(false, applications));
 
 				// when
 				PagingResponse<KanbanByProcessApplicationResponse> response = applicationQueryService.findForKanbanByProcess(
