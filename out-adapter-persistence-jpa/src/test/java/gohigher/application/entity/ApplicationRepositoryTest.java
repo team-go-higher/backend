@@ -403,14 +403,14 @@ class ApplicationRepositoryTest {
 				entityManager.clear();
 
 				// when
-				Slice<ApplicationJpaEntity> applications =
-					applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
+				List<ApplicationJpaEntity> applications = applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(
+					userId, processType);
 
 				// then
 				assertAll(
-					() -> assertThat(applications.getNumberOfElements()).isEqualTo(applicationCount),
-					() -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(1),
-					() -> assertThat(applications.getContent().get(0).getProcesses().get(0).getType()).isEqualTo(
+					() -> assertThat(applications.size()).isEqualTo(applicationCount),
+					() -> assertThat(applications.get(0).getProcesses()).hasSize(1),
+					() -> assertThat(applications.get(0).getProcesses().get(0).getType()).isEqualTo(
 						processType)
 				);
 			}

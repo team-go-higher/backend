@@ -71,12 +71,8 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 
 	@Override
 	public List<Application> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType) {
-		Slice<ApplicationJpaEntity> applicationJpaEntities =
-			applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
-
-		return applicationJpaEntities.stream()
-			.map(ApplicationJpaEntity::toKanbanDomain)
-			.toList();
+		List<ApplicationJpaEntity> applications = applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
+		return convertToKanbanApplication(applications);
 	}
 
 	private List<Application> convertToDomain(List<ApplicationJpaEntity> applicationJpaEntities) {
