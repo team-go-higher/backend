@@ -308,11 +308,11 @@ class ApplicationPersistenceQueryAdapterTest {
 					.willReturn(applicationJpaEntitySlice);
 
 				// when
-				PagingContainer<Application> applications =
+				List<Application> applications =
 					applicationPersistenceQueryAdapter.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
 
 				// then
-				assertThat(applications.getContent().size()).isEqualTo(applicationJpaEntities.size());
+				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
 			}
 		}
 	}

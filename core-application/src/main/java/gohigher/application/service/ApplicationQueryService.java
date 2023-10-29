@@ -78,10 +78,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	@Override
 	public List<KanbanByProcessApplicationResponse> findForKanbanByProcess(Long userId, ProcessType processType) {
-		PagingContainer<Application> pagingContainer =
-			applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
-
-		return pagingContainer.getContent()
+		return applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType)
 			.stream()
 			.map(KanbanByProcessApplicationResponse::from)
 			.toList();
