@@ -388,7 +388,6 @@ class ApplicationRepositoryTest {
 				// given
 				Long userId = 1L;
 				ProcessType processType = ProcessType.TO_APPLY;
-				Pageable pageable = PageRequest.of(0, 10);
 
 				int applicationCount = 1;
 				for (int i = 0; i < applicationCount; i++) {
@@ -405,7 +404,7 @@ class ApplicationRepositoryTest {
 
 				// when
 				Slice<ApplicationJpaEntity> applications =
-					applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType, pageable);
+					applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
 
 				// then
 				assertAll(

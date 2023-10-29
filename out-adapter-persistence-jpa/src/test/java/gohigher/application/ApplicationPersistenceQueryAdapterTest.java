@@ -306,8 +306,7 @@ class ApplicationPersistenceQueryAdapterTest {
 
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
 				Slice<ApplicationJpaEntity> applicationJpaEntitySlice = new SliceImpl<>(applicationJpaEntities);
-				given(applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(eq(userId), eq(processType),
-					any()))
+				given(applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(eq(userId), eq(processType)))
 					.willReturn(applicationJpaEntitySlice);
 
 				// when
