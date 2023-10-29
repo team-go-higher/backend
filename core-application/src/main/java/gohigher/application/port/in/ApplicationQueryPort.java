@@ -16,5 +16,5 @@ public interface ApplicationQueryPort {
 
 	List<KanbanApplicationResponse> findForKanban(Long userId);
 
-	PagingResponse<KanbanByProcessApplicationResponse> findForKanbanByProcess(Long userId, ProcessType processType);
+	List<KanbanByProcessApplicationResponse> findForKanbanByProcess(Long userId, ProcessType processType);
 }

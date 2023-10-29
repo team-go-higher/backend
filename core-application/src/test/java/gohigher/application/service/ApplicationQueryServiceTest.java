@@ -265,11 +265,11 @@ class ApplicationQueryServiceTest {
 					.willReturn(new PagingContainer<>(false, applications));
 
 				// when
-				PagingResponse<KanbanByProcessApplicationResponse> response =
-					applicationQueryService.findForKanbanByProcess(userId, processType);
+				List<KanbanByProcessApplicationResponse> responses = applicationQueryService.findForKanbanByProcess(
+					userId, processType);
 
 				// then
-				assertThat(response.getContent()).hasSize(applications.size());
+				assertThat(responses).hasSize(applications.size());
 			}
 		}
 	}

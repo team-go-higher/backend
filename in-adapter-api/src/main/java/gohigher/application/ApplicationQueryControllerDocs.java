@@ -132,6 +132,6 @@ public interface ApplicationQueryControllerDocs {
 		value = {
 			@ApiResponse(responseCode = "200", description = "칸반 전형별 지원서 목록 조회 성공")
 	})
-	ResponseEntity<GohigherResponse<PagingResponse<KanbanByProcessApplicationResponse>>> findForKanbanByProcess(
+	ResponseEntity<GohigherResponse<List<KanbanByProcessApplicationResponse>>> findForKanbanByProcess(
 		@Parameter(hidden = true) Long userId, @PathVariable ProcessType processType);
 }

@@ -71,9 +71,9 @@ public class ApplicationQueryController implements ApplicationQueryControllerDoc
 	}
 
 	@GetMapping("/kanban/processes/{processType}")
-	public ResponseEntity<GohigherResponse<PagingResponse<KanbanByProcessApplicationResponse>>> findForKanbanByProcess(
+	public ResponseEntity<GohigherResponse<List<KanbanByProcessApplicationResponse>>> findForKanbanByProcess(
 		@Login Long userId, @PathVariable ProcessType processType) {
-		PagingResponse<KanbanByProcessApplicationResponse> response = applicationQueryPort.findForKanbanByProcess(
+		List<KanbanByProcessApplicationResponse> response = applicationQueryPort.findForKanbanByProcess(
 			userId, processType);
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
