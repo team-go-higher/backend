@@ -77,8 +77,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	}
 
 	@Override
-	public PagingResponse<KanbanByProcessApplicationResponse> findForKanbanByProcess(Long userId, ProcessType processType,
-		PagingRequest request) {
+	public PagingResponse<KanbanByProcessApplicationResponse> findForKanbanByProcess(Long userId, ProcessType processType) {
 		PagingContainer<Application> pagingContainer =
 			applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
 

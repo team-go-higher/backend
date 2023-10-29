@@ -256,10 +256,6 @@ class ApplicationQueryServiceTest {
 			void it_return_application_processes() {
 				// given
 				Long userId = 1L;
-
-				int page = 1;
-				int size = 10;
-				PagingRequest request = new PagingRequest(page, size);
 				ProcessType processType = ProcessType.TO_APPLY;
 
 				Process process = TO_APPLY.toPersistedDomain(1);
@@ -269,8 +265,8 @@ class ApplicationQueryServiceTest {
 					.willReturn(new PagingContainer<>(false, applications));
 
 				// when
-				PagingResponse<KanbanByProcessApplicationResponse> response = applicationQueryService.findForKanbanByProcess(
-					userId, processType, request);
+				PagingResponse<KanbanByProcessApplicationResponse> response =
+					applicationQueryService.findForKanbanByProcess(userId, processType);
 
 				// then
 				assertThat(response.getContent()).hasSize(applications.size());
