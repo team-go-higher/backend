@@ -295,8 +295,6 @@ class ApplicationPersistenceQueryAdapterTest {
 				// given
 				Long userId = 1L;
 				ProcessType processType = ProcessType.TO_APPLY;
-				int page = 1;
-				int size = 10;
 
 				ApplicationJpaEntity applicationJpaEntity = convertToApplicationEntity(userId,
 					NAVER_APPLICATION.toDomain());
@@ -305,18 +303,15 @@ class ApplicationPersistenceQueryAdapterTest {
 				applicationJpaEntity.addProcess(applicationProcessJpaEntity);
 
 				List<ApplicationJpaEntity> applicationJpaEntities = List.of(applicationJpaEntity);
-				Slice<ApplicationJpaEntity> applicationJpaEntitySlice = new SliceImpl<>(applicationJpaEntities);
-				given(applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(eq(userId), eq(processType),
-					any()))
-					.willReturn(applicationJpaEntitySlice);
+				given(applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(eq(userId), eq(processType)))
+					.willReturn(applicationJpaEntities);
 
 				// when
-				PagingContainer<Application> applications =
-					applicationPersistenceQueryAdapter.findOnlyCurrentProcessByUserIdAndProcessType(
-						userId, processType, page, size);
+				List<Application> applications =
+					applicationPersistenceQueryAdapter.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
 
 				// then
-				assertThat(applications.getContent().size()).isEqualTo(applicationJpaEntities.size());
+				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
 			}
 		}
 	}

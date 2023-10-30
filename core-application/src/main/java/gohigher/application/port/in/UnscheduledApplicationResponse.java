@@ -10,22 +10,18 @@ import lombok.RequiredArgsConstructor;
 public class UnscheduledApplicationResponse {
 
 	private final long applicationId;
-	private final long processId;
 	private final String companyName;
 	private final String position;
 	private final String specificPosition;
-	private final String processType;
-	private final String processDescription;
+	private final ProcessResponse process;
 
 	public static UnscheduledApplicationResponse of(Application application, Process process) {
 		return new UnscheduledApplicationResponse(
 			application.getId(),
-			process.getId(),
 			application.getCompanyName(),
 			application.getPosition(),
 			application.getSpecificPosition(),
-			process.getType().name(),
-			process.getDescription()
+			ProcessResponse.from(process)
 		);
 	}
 }
