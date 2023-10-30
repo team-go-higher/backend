@@ -19,6 +19,6 @@ public class UnscheduledProcessRequest {
 	private String description;
 
 	public Process toDomain() {
-		return new Process(null, ProcessType.from(type), description, null);
+		return new Process(ProcessType.from(type), description, null);
 	}
 }

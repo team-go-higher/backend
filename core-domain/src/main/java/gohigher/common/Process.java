@@ -27,8 +27,8 @@ public class Process {
 		this(null, type, description, schedule, order);
 	}
 
-	public Process(Long id, ProcessType type, String description, LocalDateTime schedule) {
-		this(id, type, description, schedule, 0);
+	public Process(ProcessType type, String description, LocalDateTime schedule) {
+		this(null, type, description, schedule, 0);
 	}
 
 	public static Process makeFirstByType(ProcessType type, String description) {
@@ -37,14 +37,6 @@ public class Process {
 
 	public void assignOrder(int order) {
 		this.order = order;
-	}
-
-	public boolean isTypeOf(ProcessType type) {
-		return this.type == type;
-	}
-
-	public Process copyWithSameScheduleAndTypeOf(ProcessType type) {
-		return new Process(id, type, description, schedule);
 	}
 
 	public void updateSchedule(LocalDateTime schedule) {

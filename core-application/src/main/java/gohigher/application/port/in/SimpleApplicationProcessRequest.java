@@ -23,6 +23,6 @@ public class SimpleApplicationProcessRequest {
 	private LocalDateTime schedule;
 
 	public Process toDomain() {
-		return new Process(null, ProcessType.from(type), description, schedule);
+		return new Process(ProcessType.from(type), description, schedule);
 	}
 }
