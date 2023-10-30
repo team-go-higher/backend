@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;
-import gohigher.application.port.in.SimpleApplicationProcessRequest;
+import gohigher.application.port.in.UnscheduledProcessRequest;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -59,5 +59,5 @@ public interface ApplicationProcessCommandControllerDocs {
 	})
 	ResponseEntity<GohigherResponse<ApplicationProcessByProcessTypeResponse>> registerApplicationProcess(
 		@Parameter(hidden = true) Long userId, long applicationId,
-		@RequestBody SimpleApplicationProcessRequest request);
+		@RequestBody UnscheduledProcessRequest request);
 }

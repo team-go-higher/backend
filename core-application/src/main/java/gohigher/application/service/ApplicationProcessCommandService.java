@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import gohigher.application.ApplicationErrorCode;
 import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;
 import gohigher.application.port.in.ApplicationProcessCommandPort;
-import gohigher.application.port.in.SimpleApplicationProcessRequest;
+import gohigher.application.port.in.UnscheduledProcessRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
@@ -28,7 +28,7 @@ public class ApplicationProcessCommandService implements ApplicationProcessComma
 
 	@Override
 	public ApplicationProcessByProcessTypeResponse register(Long userId, long applicationId,
-		SimpleApplicationProcessRequest request) {
+		UnscheduledProcessRequest request) {
 		validateAuthorizationOfUser(userId, applicationId);
 
 		ProcessType type = ProcessType.valueOf(request.getType());

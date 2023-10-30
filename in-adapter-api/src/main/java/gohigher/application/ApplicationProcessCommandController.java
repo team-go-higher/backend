@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;
 import gohigher.application.port.in.ApplicationProcessCommandPort;
-import gohigher.application.port.in.SimpleApplicationProcessRequest;
+import gohigher.application.port.in.UnscheduledProcessRequest;
 import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
 import jakarta.validation.Valid;
@@ -23,7 +23,7 @@ public class ApplicationProcessCommandController implements ApplicationProcessCo
 	@PostMapping("/v1/applications/{applicationId}/processes")
 	public ResponseEntity<GohigherResponse<ApplicationProcessByProcessTypeResponse>> registerApplicationProcess(
 		@Login Long userId, @PathVariable long applicationId,
-		@Valid @RequestBody SimpleApplicationProcessRequest request) {
+		@Valid @RequestBody UnscheduledProcessRequest request) {
 		ApplicationProcessByProcessTypeResponse response = applicationProcessCommandPort.register(userId, applicationId,
 			request);
 		return ResponseEntity.ok(GohigherResponse.success(response));

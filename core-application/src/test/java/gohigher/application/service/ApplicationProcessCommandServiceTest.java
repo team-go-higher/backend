@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;
-import gohigher.application.port.in.SimpleApplicationProcessRequest;
+import gohigher.application.port.in.UnscheduledProcessRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
@@ -56,11 +56,11 @@ class ApplicationProcessCommandServiceTest {
 				when(applicationPersistenceQueryPort.existsByIdAndUserId(userId, applicationId)).thenReturn(true);
 				when(applicationProcessPersistenceQueryPort.findByApplicationIdAndProcessType(applicationId, interview))
 					.thenReturn(new ArrayList<>());
-				SimpleApplicationProcessRequest interviewRequest = new SimpleApplicationProcessRequest(interview.name(),
-					"1차 면접", null);
+				UnscheduledProcessRequest interviewRequest = new UnscheduledProcessRequest(interview.name(),
+					"1차 면접");
 				when(applicationProcessPersistenceCommandPort.save(anyLong(), any())).thenReturn(
 					new Process(1L, interview, interviewRequest.getDescription(),
-						interviewRequest.getSchedule(), 1));
+						null, 1));
 
 				// when
 				ApplicationProcessByProcessTypeResponse response = applicationProcessCommandService.register(userId,
