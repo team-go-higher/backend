@@ -99,7 +99,7 @@ class ProcessesTest {
 			@ParameterizedTest
 			@EnumSource(value = ProcessType.class, names = {"TO_APPLY", "DOCUMENT"})
 			void it_returns_processes_that_assigned_order(ProcessType processType) {
-				Process process = new Process(null, processType, "세부직무", LocalDateTime.now());
+				Process process = new Process(processType, "세부직무", LocalDateTime.now());
 				input.add(process);
 
 				Processes processes = Processes.initialFrom(input);
@@ -120,7 +120,7 @@ class ProcessesTest {
 			@ParameterizedTest
 			@EnumSource(value = ProcessType.class, names = {"TO_APPLY", "DOCUMENT"})
 			void it_returns_processes_with_to_apply_and_document(ProcessType processType) {
-				Process process = new Process(null, processType, "세부직무", LocalDateTime.now());
+				Process process = new Process(processType, "세부직무", LocalDateTime.now());
 
 				Processes actual = Processes.initialFrom(process);
 
@@ -144,7 +144,7 @@ class ProcessesTest {
 			@ParameterizedTest
 			@EnumSource(value = ProcessType.class, names = {"TEST", "INTERVIEW", "COMPLETE"})
 			void it_returns_processes_with_only_that_process(ProcessType processType) {
-				Process process = new Process(null, processType, "세부직무", LocalDateTime.now());
+				Process process = new Process(processType, "세부직무", LocalDateTime.now());
 
 				Processes actual = Processes.initialFrom(process);
 

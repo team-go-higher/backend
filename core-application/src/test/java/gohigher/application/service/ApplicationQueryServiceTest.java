@@ -223,7 +223,7 @@ class ApplicationQueryServiceTest {
 				Long userId = 1L;
 
 				ProcessType processType = ProcessType.TO_APPLY;
-				Process process = new Process(processType, "설명", LocalDateTime.now(), 1);
+				Process process = new Process(processType, "설명", LocalDateTime.now());
 				Application application = NAVER_APPLICATION.toDomain(List.of(process), process);
 				List<Application> applications = List.of(application);
 

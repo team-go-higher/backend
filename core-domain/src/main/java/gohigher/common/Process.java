@@ -21,12 +21,12 @@ public class Process {
 
 	private int order;
 
-	public Process(ProcessType type, String description, LocalDateTime schedule, int order) {
-		this(null, type, description, schedule, order);
-	}
-
 	public Process(Long id, ProcessType type, String description, LocalDateTime schedule) {
 		this(id, type, description, schedule, 0);
+	}
+
+	public Process(ProcessType type, String description, LocalDateTime schedule) {
+		this(null, type, description, schedule);
 	}
 
 	public void assignOrder(int order) {
