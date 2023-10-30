@@ -1,14 +1,11 @@
 package gohigher.common;
 
 import static gohigher.application.ApplicationErrorCode.*;
-import static gohigher.common.ProcessType.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import gohigher.global.exception.GoHigherException;
@@ -32,8 +29,8 @@ public class Processes {
 	}
 
 	public static Processes initialFrom(List<Process> processes) {
-		List<Process> adjustedProcesses = addAdditionalProcessIfNecessary(processes);
-		Map<ProcessType, List<Process>> values = groupingByProcessType(adjustedProcesses);
+		validateProcessesIsEmpty(processes);
+		Map<ProcessType, List<Process>> values = groupingByProcessType(processes);
 
 		for (ProcessType processType : values.keySet()) {
 			assignNewOrder(values.get(processType));
@@ -42,23 +39,10 @@ public class Processes {
 		return new Processes(values);
 	}
 
-	private static List<Process> addAdditionalProcessIfNecessary(List<Process> processes) {
-		Optional<Process> toApplyProcess = processes.stream()
-			.filter(process -> process.isTypeOf(TO_APPLY))
-			.findAny();
-
-		Optional<Process> documentProcess = processes.stream()
-			.filter(process -> process.isTypeOf(DOCUMENT))
-			.findAny();
-
-		List<Process> changedProcesses = new ArrayList<>(processes);
-		if (toApplyProcess.isPresent() && documentProcess.isEmpty()) {
-			changedProcesses.add(toApplyProcess.get().copyWithSameScheduleAndTypeOf(DOCUMENT));
-		} else if (toApplyProcess.isEmpty() && documentProcess.isPresent()) {
-			changedProcesses.add(documentProcess.get().copyWithSameScheduleAndTypeOf(TO_APPLY));
+	private static void validateProcessesIsEmpty(List<Process> processes) {
+		if (processes.isEmpty()) {
+			throw new GoHigherException(APPLICATION_PROCESS_NOT_EXIST);
 		}
-
-		return changedProcesses;
 	}
 
 	private static Map<ProcessType, List<Process>> groupingByProcessType(List<Process> processes) {
