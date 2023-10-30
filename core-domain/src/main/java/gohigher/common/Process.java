@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Process {
 
+	private static final int INIT_ORDER = 1;
+
 	private final Long id;
 	private final ProcessType type;
 	private final String description;
@@ -27,6 +29,10 @@ public class Process {
 
 	public Process(Long id, ProcessType type, String description, LocalDateTime schedule) {
 		this(id, type, description, schedule, 0);
+	}
+
+	public static Process makeFirstByType(ProcessType type, String description) {
+		return new Process(type, description, null, INIT_ORDER);
 	}
 
 	public void assignOrder(int order) {
