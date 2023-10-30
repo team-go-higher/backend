@@ -6,11 +6,11 @@ import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -33,13 +33,8 @@ class UserCommandServiceTest {
 	@Mock
 	private DesiredPositionCommandPort desiredPositionCommandPort;
 
+	@InjectMocks
 	private UserCommandService userCommandService;
-
-	@BeforeEach
-	void setUp() {
-		userCommandService = new UserCommandService(userPersistenceQueryPort, userPersistenceCommandPort,
-			desiredPositionCommandPort);
-	}
 
 	@DisplayName("login 메서드는")
 	@Nested

@@ -7,7 +7,7 @@ import gohigher.common.ProcessType;
 
 public interface ApplicationProcessPersistenceQueryPort {
 
-    boolean existsById(Long id);
+	boolean existsById(Long id);
 
-    List<Process> findByApplicationIdAndProcessType(Long applicationId, ProcessType processType);
+	List<Process> findByApplicationIdAndProcessType(Long applicationId, ProcessType processType);
 }

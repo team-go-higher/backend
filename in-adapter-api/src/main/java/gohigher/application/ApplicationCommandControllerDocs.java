@@ -65,16 +65,6 @@ public interface ApplicationCommandControllerDocs {
 					},
 					"data": null
 					}
-					"""),
-				@ExampleObject(name = "전형 일정 입력되지 않음", value = """
-					{
-					"success": false,
-					"error": {
-						"code": "JOB_INFO_007",
-						"message": "전형 일정이 입력되지 않았습니다."
-					},
-					"data": null
-					}
 					""")
 			}))})
 	ResponseEntity<GohigherResponse<SimpleApplicationRegisterResponse>> registerApplicationSimply(

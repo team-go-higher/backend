@@ -23,8 +23,10 @@ class ApplicationProcessQueryServiceTest {
 
 	@Mock
 	private ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
+
 	@Mock
 	private ApplicationProcessPersistenceQueryPort applicationProcessPersistenceQueryPort;
+
 	@InjectMocks
 	private ApplicationProcessQueryService applicationProcessQueryService;
 
