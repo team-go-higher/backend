@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class ApplicationProcessCommandController {
+public class ApplicationProcessCommandController implements ApplicationProcessCommandControllerDocs {
 
 	private final ApplicationProcessCommandPort applicationProcessCommandPort;
 
