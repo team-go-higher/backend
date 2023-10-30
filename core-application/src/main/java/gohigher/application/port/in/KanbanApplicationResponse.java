@@ -11,12 +11,14 @@ import lombok.RequiredArgsConstructor;
 public class KanbanApplicationResponse {
 
 	private final String processType;
-	private final List<KanbanApplicationDetailResponse> applications;
+	private final List<KanbanByProcessApplicationResponse> applications;
 
 	public static KanbanApplicationResponse from(String processType, List<Application> applications) {
-		List<KanbanApplicationDetailResponse> applicationDetailResponses = applications.stream()
-			.map(KanbanApplicationDetailResponse::from)
-			.toList();
-		return new KanbanApplicationResponse(processType, applicationDetailResponses);
+		return new KanbanApplicationResponse(
+			processType,
+			applications.stream()
+				.map(KanbanByProcessApplicationResponse::from)
+				.toList()
+		);
 	}
 }

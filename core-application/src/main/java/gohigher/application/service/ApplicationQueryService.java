@@ -77,16 +77,11 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	}
 
 	@Override
-	public PagingResponse<KanbanByProcessApplicationResponse> findForKanbanByProcess(Long userId, ProcessType processType,
-		PagingRequest request) {
-		PagingContainer<Application> pagingContainer =
-			applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType, request.getPage(), request.getSize());
-
-		List<KanbanByProcessApplicationResponse> response = pagingContainer.getContent()
+	public List<KanbanByProcessApplicationResponse> findForKanbanByProcess(Long userId, ProcessType processType) {
+		return applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType)
 			.stream()
 			.map(KanbanByProcessApplicationResponse::from)
 			.toList();
-		return new PagingResponse<>(pagingContainer.hasNext(), response);
 	}
 
 	private List<UnscheduledApplicationResponse> findUnscheduledByUserId(List<Application> applications) {

@@ -224,7 +224,7 @@ class ApplicationQueryServiceTest {
 
 				ProcessType processType = ProcessType.TO_APPLY;
 				Process process = new Process(processType, "설명", LocalDateTime.now());
-				Application application = NAVER_APPLICATION.toDomain(List.of(process), process);
+				Application application = NAVER_APPLICATION.toPersistedDomain(1L, List.of(process), process);
 				List<Application> applications = List.of(application);
 
 				given(applicationPersistenceQueryPort.findOnlyWithCurrentProcessByUserId(userId)).willReturn(
@@ -256,24 +256,20 @@ class ApplicationQueryServiceTest {
 			void it_return_application_processes() {
 				// given
 				Long userId = 1L;
-
-				int page = 1;
-				int size = 10;
-				PagingRequest request = new PagingRequest(page, size);
 				ProcessType processType = ProcessType.TO_APPLY;
 
 				Process process = TO_APPLY.toPersistedDomain(1);
 				List<Application> applications = List.of(
 					NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
-				given(applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType,
-					page, size)).willReturn(new PagingContainer<>(false, applications));
+				given(applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType))
+					.willReturn(applications);
 
 				// when
-				PagingResponse<KanbanByProcessApplicationResponse> response = applicationQueryService.findForKanbanByProcess(
-					userId, processType, request);
+				List<KanbanByProcessApplicationResponse> responses = applicationQueryService.findForKanbanByProcess(
+					userId, processType);
 
 				// then
-				assertThat(response.getContent()).hasSize(applications.size());
+				assertThat(responses).hasSize(applications.size());
 			}
 		}
 	}

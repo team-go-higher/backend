@@ -59,6 +59,5 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "AND p.isCurrent = true "
 		+ "AND p.type = :processType "
 		+ "AND a.deleted = false")
-	Slice<ApplicationJpaEntity> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType,
-		Pageable pageable);
+	List<ApplicationJpaEntity> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType);
 }
