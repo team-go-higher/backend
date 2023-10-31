@@ -23,8 +23,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // slf4j & logback
-    implementation('org.slf4j:jcl-over-slf4j')
-    implementation('ch.qos.logback:logback-classic')
+    implementation 'org.slf4j:jcl-over-slf4j'
+    implementation 'ch.qos.logback:logback-classic'
 }
 
 test {
