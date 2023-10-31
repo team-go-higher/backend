@@ -4,4 +4,4 @@ spring:
     password: ENC(3s6N6Fb0NYjyv6AIW3wHLv3c8O7tsrMg)
     url: ENC(wAs4ej4OoDN0qcuaLc1fpAxc9HRSjla3Hj0HFE/IUB9sAaoF/iDKe7xc91Rvq9kuu89biauadjUZU1fkupEmlLtiSLII8A8OxHHLIWwPd4FcluGXJ7ZbZMKNRCOHvPV2GrzOG+u8cca/8qlii0GOTgH9QlKVOx3kKn1IVQ2F++LsOdYe0vx30KPmrLO3bVds5NK1I27KX7E=)
   jpa:
-    hibernate.ddl-auto: validate
+    hibernate.ddl-auto: create
