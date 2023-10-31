@@ -24,12 +24,16 @@ class ApplicationCommandServiceTest {
 
 	private static final long APPLICATION_ID = 1L;
 	private final long applicationOwnerId = 1L;
+	
 	@Mock
 	private ApplicationPersistenceCommandPort applicationPersistenceCommandPort;
+
 	@Mock
 	private ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
+
 	@Mock
 	private ApplicationProcessPersistenceQueryPort applicationProcessPersistenceQueryPort;
+
 	@InjectMocks
 	private ApplicationCommandService applicationCommandService;
 

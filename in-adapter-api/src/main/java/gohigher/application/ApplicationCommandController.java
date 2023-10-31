@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,7 +52,7 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 	}
 
 	@PutMapping("/{applicationId}/simple")
-	public ResponseEntity<GohigherResponse<Void>> updateSimply(@Login Long userId, Long applicationId,
+	public ResponseEntity<GohigherResponse<Void>> updateSimply(@Login Long userId, @PathVariable Long applicationId,
 		@RequestBody @Valid SimpleApplicationUpdateRequest request) {
 		applicationCommandPort.updateSimply(userId, applicationId, request);
 		return ResponseEntity.ok(GohigherResponse.success(null));
