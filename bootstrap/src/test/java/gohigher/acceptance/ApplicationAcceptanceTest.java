@@ -14,9 +14,10 @@ import gohigher.user.auth.Provider;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 
+@DisplayName("Application 인수테스트의")
 public class ApplicationAcceptanceTest extends AcceptanceTest {
 
-	@DisplayName("지원서를 작성한다")
+	@DisplayName("지원서를 작성 기능을 테스트한다")
 	@Test
 	void create_application() {
 		// given
