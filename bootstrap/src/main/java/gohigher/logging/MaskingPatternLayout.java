@@ -17,23 +17,23 @@ public class MaskingPatternLayout extends PatternLayout {
 	private Pattern multilinePattern;
 	private final List<String> maskPatterns = new ArrayList<>();
 
-	public void addMaskPattern(final String maskPattern) {
+	public void addMaskPattern(String maskPattern) {
 		maskPatterns.add(maskPattern);
 		multilinePattern = Pattern.compile(String.join("|", maskPatterns), Pattern.CASE_INSENSITIVE);
 	}
 
 	@Override
-	public String doLayout(final ILoggingEvent event) {
+	public String doLayout(ILoggingEvent event) {
 		return maskMessage(super.doLayout(event));
 	}
 
-	private String maskMessage(final String message) {
+	private String maskMessage(String message) {
 		if (multilinePattern == null) {
 			return message;
 		}
 
-		final StringBuilder stringBuilder = new StringBuilder(message);
-		final Matcher matcher = multilinePattern.matcher(stringBuilder);
+		StringBuilder stringBuilder = new StringBuilder(message);
+		Matcher matcher = multilinePattern.matcher(stringBuilder);
 		while (matcher.find()) {
 			maskIfMatch(stringBuilder, matcher);
 		}
@@ -41,7 +41,7 @@ public class MaskingPatternLayout extends PatternLayout {
 		return stringBuilder.toString();
 	}
 
-	private void maskIfMatch(final StringBuilder stringBuilder, final Matcher matcher) {
+	private void maskIfMatch(StringBuilder stringBuilder, Matcher matcher) {
 		IntStream.rangeClosed(1, matcher.groupCount())
 			.filter(it -> !Objects.isNull(matcher.group(it)))
 			.forEach(it -> stringBuilder.replace(matcher.start(it), matcher.end(it), MASKED_STRING));

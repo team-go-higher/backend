@@ -21,13 +21,13 @@ public class QueryCountInspector implements StatementInspector {
 	}
 
 	@Override
-	public String inspect(final String sql) {
+	public String inspect(String sql) {
 		increaseCount();
 		return sql;
 	}
 
 	private void increaseCount() {
-		final Long count = queryCount.get();
+		Long count = queryCount.get();
 		if (count != null) {
 			queryCount.set(count + 1);
 		}

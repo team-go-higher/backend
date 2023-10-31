@@ -10,7 +10,7 @@ public class HibernateConfig {
 
 	private final QueryCountInspector queryCountInspector;
 
-	public HibernateConfig(final QueryCountInspector queryCountInspector) {
+	public HibernateConfig(QueryCountInspector queryCountInspector) {
 		this.queryCountInspector = queryCountInspector;
 	}
 

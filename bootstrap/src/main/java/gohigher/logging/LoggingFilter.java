@@ -37,17 +37,17 @@ public class LoggingFilter extends OncePerRequestFilter {
 
 	private final QueryCountInspector queryCountInspector;
 
-	public LoggingFilter(final QueryCountInspector queryCountInspector) {
+	public LoggingFilter(QueryCountInspector queryCountInspector) {
 		this.queryCountInspector = queryCountInspector;
 	}
 
 	@Override
-	protected void doFilterInternal(final HttpServletRequest request,
-		final HttpServletResponse response,
-		final FilterChain filterChain) throws ServletException, IOException {
-		final ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
-		final ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
-		final long startTime = System.currentTimeMillis();
+	protected void doFilterInternal(HttpServletRequest request,
+		HttpServletResponse response,
+		FilterChain filterChain) throws ServletException, IOException {
+		ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
+		ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
+		long startTime = System.currentTimeMillis();
 		MDC.put("traceId", UUID.randomUUID().toString());
 		queryCountInspector.startCounter();
 
@@ -59,16 +59,16 @@ public class LoggingFilter extends OncePerRequestFilter {
 		wrappedResponse.copyBodyToResponse();
 	}
 
-	private void logProcessedRequest(final ContentCachingRequestWrapper request,
-		final ContentCachingResponseWrapper response,
-		final long duration) {
+	private void logProcessedRequest(ContentCachingRequestWrapper request,
+		ContentCachingResponseWrapper response,
+		long duration) {
 		logRequest(request);
 		logResponse(response);
 		logQueryCount(duration, request.getMethod(), request.getRequestURI());
 	}
 
-	private void logRequest(final ContentCachingRequestWrapper request) {
-		final String requestBody = new String(request.getContentAsByteArray());
+	private void logRequest(ContentCachingRequestWrapper request) {
+		String requestBody = new String(request.getContentAsByteArray());
 
 		if (request.getHeader(AUTHORIZATION_HEADER) == null) {
 			log.info(HTTP_REQUEST_FORMAT + REQUEST_BODY_FORMAT,
@@ -87,8 +87,8 @@ public class LoggingFilter extends OncePerRequestFilter {
 			requestBody);
 	}
 
-	private void logResponse(final ContentCachingResponseWrapper response) {
-		final Optional<String> body = getJsonResponseBody(response);
+	private void logResponse(ContentCachingResponseWrapper response) {
+		Optional<String> body = getJsonResponseBody(response);
 
 		if (body.isPresent()) {
 			log.info(HTTP_RESPONSE_WITH_BODY_FORMAT, response.getStatus(), body.get());
@@ -98,8 +98,8 @@ public class LoggingFilter extends OncePerRequestFilter {
 		log.info(HTTP_RESPONSE_FORMAT, response.getStatus());
 	}
 
-	private void logQueryCount(final long duration, final String method, final String uri) {
-		final Long queryCount = queryCountInspector.getQueryCount();
+	private void logQueryCount(long duration, String method, String uri) {
+		Long queryCount = queryCountInspector.getQueryCount();
 		Object[] args = new Object[] {method, uri, duration, queryCount};
 
 		if (queryCount >= 10) {
@@ -110,9 +110,9 @@ public class LoggingFilter extends OncePerRequestFilter {
 		log.info(QUERY_COUNTER_FORMAT, args);
 	}
 
-	private String getRequestUri(final ContentCachingRequestWrapper request) {
-		final String requestURI = request.getRequestURI();
-		final String queryString = request.getQueryString();
+	private String getRequestUri(ContentCachingRequestWrapper request) {
+		String requestURI = request.getRequestURI();
+		String queryString = request.getQueryString();
 
 		if (queryString == null) {
 			return requestURI;
@@ -121,16 +121,16 @@ public class LoggingFilter extends OncePerRequestFilter {
 		return requestURI + QUERY_STRING_PREFIX + queryString;
 	}
 
-	private String mask(final String authorization) {
-		final String[] splitValue = authorization.split(AUTHORIZATION_SPLIT_DELIMITER);
-		final StringBuilder stringBuilder = new StringBuilder(splitValue[AUTHORIZATION_CREDENTIALS_INDEX]);
+	private String mask(String authorization) {
+		String[] splitValue = authorization.split(AUTHORIZATION_SPLIT_DELIMITER);
+		StringBuilder stringBuilder = new StringBuilder(splitValue[AUTHORIZATION_CREDENTIALS_INDEX]);
 		IntStream.range(0, stringBuilder.length())
 			.forEach(it -> stringBuilder.setCharAt(it, MASKED_CHARACTER));
 
 		return stringBuilder.toString();
 	}
 
-	private Optional<String> getJsonResponseBody(final ContentCachingResponseWrapper response) {
+	private Optional<String> getJsonResponseBody(ContentCachingResponseWrapper response) {
 		if (Objects.equals(response.getContentType(), MediaType.APPLICATION_JSON_VALUE)) {
 			return Optional.of(new String(response.getContentAsByteArray()));
 		}
