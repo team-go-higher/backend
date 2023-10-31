@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "desiredPosition")
+@Table(name = "desired_position")
 @Entity
 public class DesiredPositionJpaEntity {
 
