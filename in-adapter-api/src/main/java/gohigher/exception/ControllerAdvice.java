@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import gohigher.controller.response.GohigherResponse;
 import gohigher.global.exception.GlobalErrorCode;
 import gohigher.global.exception.GoHigherException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestControllerAdvice
 public class ControllerAdvice {
 
@@ -46,7 +48,8 @@ public class ControllerAdvice {
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<GohigherResponse<Void>> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+	public ResponseEntity<GohigherResponse<Void>> handleHttpMessageNotReadableException(
+		HttpMessageNotReadableException e) {
 		GohigherResponse<Void> response = GohigherResponse.fail(INVALID_JSON_FORMAT.getErrorCode(),
 			INVALID_JSON_FORMAT.getMessage());
 
@@ -55,6 +58,7 @@ public class ControllerAdvice {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<GohigherResponse<Void>> uncontrolledException(Exception e) {
+		log.error("Internal Server Error\n{}", e.getMessage(), e);
 		GlobalErrorCode errorCode = GlobalErrorCode.NOT_CONTROLLED_ERROR;
 		int statusCode = errorCode.getStatusCode();
 		GohigherResponse<Void> response = GohigherResponse.fail(errorCode.getErrorCode(), errorCode.getMessage());
