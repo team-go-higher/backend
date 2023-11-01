@@ -4,11 +4,11 @@ spring:
       client:
         registration:
           google:
-            client-id: ENC(h47JjPyAlcc6k1vudWNektC6cc6kjKOOZ7V+U0jKhS747qx++/EriOgP3ND49HA8F6CCzfxA4l0ftb60cKBodqBwB+5binG+SxhV4+0xaN5aGmHHOMf6tA==)
-            client-secret: ENC(tKWZLr6cgzNM9heCx7Q0UqJkBTqasiS1gNnYAeLSYqXd0PTw0bUE+XItPCLIX+0Y)
+            client-id: ENC(cx7OYawVMleYVKerl15i5/vGXJ8lup66eycRn5yBRCA1H5GhPiFelR1OptANOsUdj4W/mrIVCqD6ESXz5CawGZ5u8lrBPmYcmkLCuTRGdlEgKopZhZjwtQ==)
+            client-secret: ENC(FbW+6olqQLswd0X/Y6Xhd0PJ38dGfcblCoodHdEhZJXFfCxlbp90saJFaWMLIPAf)
             scope: email
           kakao:
-            client-id: ENC(uNd/J/dlaSuNsJ6BFMgUNIrZ5lXhMPEvNYduZ96tIEm3V5uimMKJpAcuGUk70yYi)
+            client-id: ENC(qDNL3VhDV23d0b86RkR6oYX+58QsCGd+XD3S8PvER4ZCWwAzen40h4iVfC7HVqRy)
             authorization-grant-type: authorization_code
             scope: account_email,profile_nickname
             client-name: Kakao
