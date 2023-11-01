@@ -4,9 +4,9 @@ spring:
       client:
         registration:
           google:
-            redirect_uri: ENC(2yqMAMisnVRmZDR0W0nrFXFHASyJ3CWqth2S+LWBHSiJ1swupyBPgUbHGPzzQRnk4RqsnddbQZ7sEGtfx2t/Iw==)
+            redirect_uri: ENC(1yDzJNmIjjxr2natwJ+2hI/z+w5tlzkLuTzpmctyqcKuAFSowZrr5cki3VSYWob/ygbD7ksCTLib70Aqx9MxDg==)
           kakao:
-            redirect-uri: ENC(0tnMuUU2iNEQaBWqqrKW9EflgTCVJdimdvLvK0jpb73grlg11/5Xlz1dUGNIXdd28BgBauNfqqD6EqFgoZVSAg==)
+            redirect-uri: ENC(OKB1DkhKLto1VF8SkBdbump/YLgAukeowH3CS5z6lHPt3shQnvRfxedR88jTeTaHHtRhetIvrPxP1CGOKBIR2A==)
 
 oauth2:
   success:
