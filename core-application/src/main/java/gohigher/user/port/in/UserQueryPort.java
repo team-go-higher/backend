@@ -5,4 +5,6 @@ import gohigher.user.User;
 public interface UserQueryPort {
 
 	User findById(Long id);
+
+	MyInfoResponse findMyInfo(Long id);
 }
