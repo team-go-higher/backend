@@ -5,13 +5,11 @@ import static org.hamcrest.Matchers.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import gohigher.application.port.in.SimpleApplicationProcessRequest;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.common.ProcessType;
 import gohigher.user.auth.Provider;
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 
 @DisplayName("Application 인수테스트의")
@@ -30,13 +28,7 @@ public class ApplicationAcceptanceTest extends AcceptanceTest {
 			processRequest);
 
 		// when
-		ValidatableResponse response = RestAssured.given().log().all()
-			.auth().oauth2(accessToken)
-			.body(simpleApplicationRequest)
-			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.accept(MediaType.APPLICATION_JSON_VALUE)
-			.when().post("/v1/applications/simple")
-			.then().log().all();
+		ValidatableResponse response = post(accessToken, "/v1/applications/simple", simpleApplicationRequest);
 
 		// then
 		response.statusCode(HttpStatus.OK.value())
