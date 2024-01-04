@@ -1,6 +1,6 @@
 package gohigher.user.port.in;
 
-public interface RefreshTokenCommandPort {
+public interface TokenCommandPort {
 
 	void saveRefreshToken(Long userId, String refreshToken);
 }

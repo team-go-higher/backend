@@ -18,7 +18,7 @@ import gohigher.auth.support.RefreshTokenCookieProvider;
 import gohigher.auth.support.TokenType;
 import gohigher.global.exception.GlobalErrorCode;
 import gohigher.global.exception.GoHigherException;
-import gohigher.user.port.in.RefreshTokenCommandPort;
+import gohigher.user.port.in.TokenCommandPort;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -29,16 +29,16 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 	private final String tokenRequestUri;
 	private final JwtProvider jwtProvider;
 	private final RefreshTokenCookieProvider refreshTokenCookieProvider;
-	private final RefreshTokenCommandPort refreshTokenCommandPort;
+	private final TokenCommandPort tokenCommandPort;
 
 	public AuthenticationSuccessHandler(@Value("${oauth2.success.redirect_uri}") String redirectUri,
 		@Value("${token.request.uri}") String tokenRequestUri, JwtProvider jwtProvider,
-		RefreshTokenCookieProvider refreshTokenCookieProvider, RefreshTokenCommandPort refreshTokenCommandPort) {
+		RefreshTokenCookieProvider refreshTokenCookieProvider, TokenCommandPort tokenCommandPort) {
 		this.redirectUri = redirectUri;
 		this.tokenRequestUri = tokenRequestUri;
 		this.jwtProvider = jwtProvider;
 		this.refreshTokenCookieProvider = refreshTokenCookieProvider;
-		this.refreshTokenCommandPort = refreshTokenCommandPort;
+		this.tokenCommandPort = tokenCommandPort;
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		String accessToken = jwtProvider.createToken(userId, today, TokenType.ACCESS);
 		String refreshToken = jwtProvider.createToken(userId, today, TokenType.REFRESH);
 
-		refreshTokenCommandPort.saveRefreshToken(userId, refreshToken);
+		tokenCommandPort.saveRefreshToken(userId, refreshToken);
 
 		addRefreshTokenCookie(response, refreshToken);
 		getRedirectStrategy().sendRedirect(request, response, createTargetUrl(accessToken, role));
