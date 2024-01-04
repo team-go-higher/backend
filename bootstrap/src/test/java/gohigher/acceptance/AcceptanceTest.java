@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import gohigher.auth.support.JwtProvider;
-import gohigher.auth.support.TokenType;
+import gohigher.support.auth.JwtProvider;
+import gohigher.support.auth.TokenType;
 import gohigher.support.DatabaseCleanUp;
 import gohigher.user.Role;
 import gohigher.user.auth.Provider;

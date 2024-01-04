@@ -17,8 +17,8 @@ import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SimpleApplicationUpdateRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
-import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
+import gohigher.support.auth.Login;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 

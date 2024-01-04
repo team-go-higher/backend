@@ -13,11 +13,11 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import gohigher.auth.support.JwtProvider;
-import gohigher.auth.support.RefreshTokenCookieProvider;
-import gohigher.auth.support.TokenType;
 import gohigher.global.exception.GlobalErrorCode;
 import gohigher.global.exception.GoHigherException;
+import gohigher.support.auth.JwtProvider;
+import gohigher.support.auth.RefreshTokenCookieProvider;
+import gohigher.support.auth.TokenType;
 import gohigher.user.port.in.TokenCommandPort;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

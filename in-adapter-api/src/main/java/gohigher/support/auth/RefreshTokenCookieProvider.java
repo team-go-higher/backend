@@ -1,4 +1,4 @@
-package gohigher.auth.support;
+package gohigher.support.auth;
 
 import java.time.Duration;
 import java.util.Arrays;

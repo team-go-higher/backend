@@ -1,4 +1,4 @@
-package gohigher.auth.response;
+package gohigher.user.port.in;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

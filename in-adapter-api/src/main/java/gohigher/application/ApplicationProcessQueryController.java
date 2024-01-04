@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;
 import gohigher.application.port.in.ApplicationProcessQueryPort;
-import gohigher.auth.support.Login;
 import gohigher.common.ProcessType;
 import gohigher.controller.response.GohigherResponse;
+import gohigher.support.auth.Login;
 import lombok.RequiredArgsConstructor;
 
 @RestController
