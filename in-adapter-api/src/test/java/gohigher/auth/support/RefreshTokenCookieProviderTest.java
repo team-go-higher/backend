@@ -9,8 +9,15 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseCookie;
 
+import gohigher.global.exception.GoHigherException;
+import gohigher.user.auth.AuthErrorCode;
+import jakarta.servlet.http.Cookie;
+
 @DisplayName("RefreshTokenCookieProvider 클래스의")
 class RefreshTokenCookieProviderTest {
+
+	private RefreshTokenCookieProvider refreshTokenCookieProvider = new RefreshTokenCookieProvider(300000,
+		"/token");
 
 	@DisplayName("create 메서드는")
 	@Nested
@@ -26,8 +33,6 @@ class RefreshTokenCookieProviderTest {
 			@Test
 			void returns_expire_length_cookie() {
 				// given
-				RefreshTokenCookieProvider refreshTokenCookieProvider = new RefreshTokenCookieProvider(expireLength,
-					"/token");
 				String value = "value";
 
 				// when
@@ -46,8 +51,6 @@ class RefreshTokenCookieProviderTest {
 			@Test
 			void returns_value_cookie() {
 				// given
-				RefreshTokenCookieProvider refreshTokenCookieProvider = new RefreshTokenCookieProvider(300000,
-					"/token");
 				String value = "value";
 
 				// when
@@ -55,6 +58,42 @@ class RefreshTokenCookieProviderTest {
 
 				// then
 				assertThat(cookie.getValue()).isEqualTo(value);
+			}
+		}
+	}
+
+	@DisplayName("extractToken 메서드는")
+	@Nested
+	class Describe_extractToken {
+
+		@DisplayName("쿠키가 주어질 떄,")
+		@Nested
+		class Context_given_cookies {
+
+			@DisplayName("쿠키에서 리프레시 토큰값을 반환한다.")
+			@Test
+			void it_returns_refresh_token_value() {
+				// given
+				String refreshTokenValue = "refreshTokenValue";
+				Cookie[] cookies = new Cookie[] {
+					new Cookie(refreshTokenCookieProvider.REFRESH_TOKEN_KEY, refreshTokenValue)};
+
+				// when
+				String token = refreshTokenCookieProvider.extractToken(cookies);
+
+				// then
+				assertThat(token).isEqualTo(refreshTokenValue);
+			}
+
+			@DisplayName("리프레시 토큰 쿠키가 없다면 예외를 발생한다.")
+			@Test
+			void it_returns_exception_if_no_refresh_token_cookie() {
+				// given
+				Cookie[] cookies = new Cookie[] {new Cookie("fake", "value")};
+
+				// when && then
+				assertThatThrownBy(() -> refreshTokenCookieProvider.extractToken(cookies)).isInstanceOf(
+					GoHigherException.class).hasMessage(AuthErrorCode.EMPTY_REFRESH_TOKEN_COOKIE.getMessage());
 			}
 		}
 	}

@@ -19,6 +19,9 @@ public enum AuthErrorCode implements ErrorCode {
 
 	// 21 - 30 사용자 파라미터 관련 에러 코드
 	INVALID_PROVIDER(400, "AUTH_021", "잘못된 provider 입니다."),
+
+	// 31-40 리프레시 토큰 쿠키 관련 에러코드
+	EMPTY_REFRESH_TOKEN_COOKIE(400, "AUTH_031", "리프레시 토큰이 없습니다."),
 	;
 
 	private final int statusCode;
