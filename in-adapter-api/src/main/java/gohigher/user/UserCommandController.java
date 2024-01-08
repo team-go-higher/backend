@@ -35,9 +35,9 @@ public class UserCommandController implements UserCommandControllerDocs {
 
 	@PatchMapping("/v1/token/refresh")
 	public ResponseEntity<GohigherResponse<TokenResponse>> refreshTokens(HttpServletRequest request,
-		HttpServletResponse response) {
+		HttpServletResponse response, @Login Long userId) {
 		String refreshToken = refreshTokenCookieProvider.extractToken(request.getCookies());
-		TokenResponse tokenResponse = tokenCommandPort.refresh(refreshToken);
+		TokenResponse tokenResponse = tokenCommandPort.refresh(userId, refreshToken);
 		return ResponseEntity.ok(GohigherResponse.success(tokenResponse));
 	}
 
