@@ -17,4 +17,9 @@ public class RefreshTokenPersistenceCommandAdapter implements RefreshTokenPersis
 	public void save(Long userId, String refreshToken) {
 		refreshTokenRepository.save(new RefreshTokenJpaEntity(userId, refreshToken));
 	}
+
+	@Override
+	public void update(Long userId, String refreshToken) {
+		refreshTokenRepository.updateValueByUserId(userId, refreshToken);
+	}
 }
