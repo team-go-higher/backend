@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.util.CollectionUtils;
 
 import jakarta.validation.constraints.AssertFalse;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class DesiredPositionRequest {
