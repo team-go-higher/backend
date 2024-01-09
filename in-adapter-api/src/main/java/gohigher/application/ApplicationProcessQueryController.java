@@ -23,7 +23,7 @@ public class ApplicationProcessQueryController implements ApplicationProcessQuer
 
 	@GetMapping("/v1/applications/{applicationId}/processes")
 	public ResponseEntity<GohigherResponse<List<ApplicationProcessByProcessTypeResponse>>> getApplicationProcessesByApplicationIdAndType(
-		@Login Long userId, @PathVariable long applicationId, @RequestParam ProcessType processType) {
+		@Login Long userId, @PathVariable Long applicationId, @RequestParam ProcessType processType) {
 		List<ApplicationProcessByProcessTypeResponse> response =
 			applicationProcessQueryPort.findByApplicationIdAndProcessType(userId, applicationId, processType);
 		return ResponseEntity.ok(GohigherResponse.success(response));

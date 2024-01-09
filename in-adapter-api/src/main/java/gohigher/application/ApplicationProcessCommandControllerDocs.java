@@ -58,6 +58,6 @@ public interface ApplicationProcessCommandControllerDocs {
 			}))
 	})
 	ResponseEntity<GohigherResponse<ApplicationProcessByProcessTypeResponse>> registerApplicationProcess(
-		@Parameter(hidden = true) Long userId, long applicationId,
+		@Parameter(hidden = true) Long userId, Long applicationId,
 		@RequestBody UnscheduledProcessRequest request);
 }

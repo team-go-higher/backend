@@ -62,5 +62,5 @@ public interface ApplicationProcessQueryControllerDocs {
 		}
 	)
 	ResponseEntity<GohigherResponse<List<ApplicationProcessByProcessTypeResponse>>> getApplicationProcessesByApplicationIdAndType(
-		@Parameter(hidden = true) Long userId, long applicationId, ProcessType processType);
+		@Parameter(hidden = true) Long userId, Long applicationId, ProcessType processType);
 }

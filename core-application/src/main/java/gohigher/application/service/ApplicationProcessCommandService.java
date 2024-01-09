@@ -27,7 +27,7 @@ public class ApplicationProcessCommandService implements ApplicationProcessComma
 	private final ApplicationProcessPersistenceQueryPort applicationProcessPersistenceQueryPort;
 
 	@Override
-	public ApplicationProcessByProcessTypeResponse register(Long userId, long applicationId,
+	public ApplicationProcessByProcessTypeResponse register(Long userId, Long applicationId,
 		UnscheduledProcessRequest request) {
 		validateAuthorizationOfUser(userId, applicationId);
 

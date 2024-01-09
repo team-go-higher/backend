@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import gohigher.application.ApplicationErrorCode;
 import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;
 import gohigher.application.port.in.UnscheduledProcessRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
@@ -68,6 +69,28 @@ class ApplicationProcessCommandServiceTest {
 
 				// then
 				assertThat(response.getDescription()).isEqualTo(interviewRequest.getDescription());
+			}
+		}
+
+		@DisplayName("지원서 아이디와 사용자 아이디가 일치하는 지원서가 없을 때")
+		@Nested
+		class Context_not_exist_application_with_application_id_and_user_id {
+
+			@DisplayName("예외가 발생한다")
+			@Test
+			void it_throw_exception() {
+				// given
+				long notExistUserId = 0L;
+				long notExistApplicationId = 0L;
+				UnscheduledProcessRequest request = mock(UnscheduledProcessRequest.class);
+
+				// mocking
+				when(applicationPersistenceQueryPort.existsByIdAndUserId(notExistApplicationId, notExistUserId))
+					.thenReturn(false);
+
+				// when & then
+				assertThatThrownBy(() -> applicationProcessCommandService.register(notExistUserId, notExistApplicationId, request))
+					.hasMessage(ApplicationErrorCode.APPLICATION_NOT_FOUND.getMessage());
 			}
 		}
 	}

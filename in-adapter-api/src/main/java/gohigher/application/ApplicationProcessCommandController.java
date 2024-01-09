@@ -22,7 +22,7 @@ public class ApplicationProcessCommandController implements ApplicationProcessCo
 
 	@PostMapping("/v1/applications/{applicationId}/processes")
 	public ResponseEntity<GohigherResponse<ApplicationProcessByProcessTypeResponse>> registerApplicationProcess(
-		@Login Long userId, @PathVariable long applicationId,
+		@Login Long userId, @PathVariable Long applicationId,
 		@Valid @RequestBody UnscheduledProcessRequest request) {
 		ApplicationProcessByProcessTypeResponse response = applicationProcessCommandPort.register(userId, applicationId,
 			request);
