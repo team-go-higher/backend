@@ -136,8 +136,8 @@ class ApplicationCommandServiceTest {
 				long applicationId = 1L;
 
 				// mocking
-				when(applicationPersistenceQueryPort.findByIdAndUserId(applicationId, notExistUserId))
-					.thenReturn(Optional.empty());
+				when(applicationPersistenceQueryPort.existsByIdAndUserId(applicationId, notExistUserId))
+					.thenReturn(false);
 
 				// when & then
 				assertThatThrownBy(() -> applicationCommandService.deleteApplication(notExistUserId, applicationId))
@@ -157,16 +157,14 @@ class ApplicationCommandServiceTest {
 				long notExistApplicationId = 0L;
 
 				// mocking
-				when(applicationPersistenceQueryPort.findByIdAndUserId(notExistApplicationId, userId))
-					.thenReturn(Optional.empty());
+				when(applicationPersistenceQueryPort.existsByIdAndUserId(notExistApplicationId, userId))
+					.thenReturn(false);
 
 				// when & then
 				assertThatThrownBy(() -> applicationCommandService.deleteApplication(userId, notExistApplicationId))
 					.hasMessage(APPLICATION_NOT_FOUND.getMessage());
 			}
 		}
-
-		// todo: 삭제된 지원서 <- 쿼리문 수정하고 나중에 추가
 
 		@DisplayName("지원서의 아이디로")
 		@Nested
@@ -180,8 +178,8 @@ class ApplicationCommandServiceTest {
 				long applicationId = 2L;
 
 				// mocking
-				when(applicationPersistenceQueryPort.findByIdAndUserId(applicationId, userId))
-					.thenReturn(Optional.of(NAVER_APPLICATION.toDomain()));
+				when(applicationPersistenceQueryPort.existsByIdAndUserId(applicationId, userId))
+					.thenReturn(true);
 				doNothing().when(applicationPersistenceCommandPort)
 						.delete(applicationId);
 

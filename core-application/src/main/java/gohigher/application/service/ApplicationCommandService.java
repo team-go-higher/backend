@@ -62,9 +62,7 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 
 	@Override
 	public void deleteApplication(Long userId, Long applicationId) {
-		applicationPersistenceQueryPort.findByIdAndUserId(applicationId, userId)
-			.orElseThrow(() -> new GoHigherException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
-
+		validateNotFound(userId, applicationId);
 		applicationPersistenceCommandPort.delete(applicationId);
 	}
 
