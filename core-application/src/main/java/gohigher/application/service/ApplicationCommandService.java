@@ -60,6 +60,14 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 		applicationPersistenceCommandPort.updateCurrentProcessOrder(applicationId, userId, request.getProcessId());
 	}
 
+	@Override
+	public void deleteApplication(Long userId, Long applicationId) {
+		applicationPersistenceQueryPort.findByIdAndUserId(applicationId, userId)
+			.orElseThrow(() -> new GoHigherException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
+
+		applicationPersistenceCommandPort.delete(applicationId);
+	}
+
 	private void validateNotFound(Long userId, Long applicationId) {
 		if (!applicationPersistenceQueryPort.existsByIdAndUserId(applicationId, userId)) {
 			throw new GoHigherException(APPLICATION_NOT_FOUND);

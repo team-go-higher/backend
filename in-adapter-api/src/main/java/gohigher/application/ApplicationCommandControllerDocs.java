@@ -257,4 +257,22 @@ public interface ApplicationCommandControllerDocs {
 				}))})
 	ResponseEntity<GohigherResponse<Void>> updateSimply(@Parameter(hidden = true) Long userId, Long applicationId,
 		@RequestBody SimpleApplicationUpdateRequest request);
+
+	@Operation(summary = "지원서 삭제")
+	@ApiResponses(
+		value = {
+			@ApiResponse(responseCode = "200", description = "지원서 삭제 성공"),
+			@ApiResponse(responseCode = "404", description = "지원서 삭제 실패", content = @Content(
+				examples = {@ExampleObject(name = "존재하지 않는 지원서", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "APPLICATION_001",
+						"message": "존재하지 않는 지원서입니다."
+					},
+					"data": null
+					}
+					""")
+				}))})
+	ResponseEntity<GohigherResponse<Void>> deleteApplication(@Parameter(hidden = true) Long userId, Long applicationId);
 }

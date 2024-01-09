@@ -70,4 +70,12 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 
 		applicationProcessJpaEntity.update(application.getProcessById(processId));
 	}
+
+	@Override
+	public void delete(long id) {
+		ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(id)
+			.orElseThrow(() -> new GoHigherException(APPLICATION_NOT_FOUND));
+
+		applicationJpaEntity.delete();
+	}
 }

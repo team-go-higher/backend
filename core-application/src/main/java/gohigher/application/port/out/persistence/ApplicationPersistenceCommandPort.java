@@ -9,4 +9,6 @@ public interface ApplicationPersistenceCommandPort {
 	void updateCurrentProcessOrder(long id, long userId, long processId);
 
 	void updateSimply(Long processId, Application application);
+
+	void delete(long applicationId);
 }

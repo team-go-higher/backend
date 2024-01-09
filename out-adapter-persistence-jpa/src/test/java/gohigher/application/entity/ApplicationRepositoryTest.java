@@ -23,7 +23,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 import gohigher.application.Application;
@@ -89,7 +88,7 @@ class ApplicationRepositoryTest {
 				Application naverApplication = NAVER_APPLICATION.toDomain();
 				naverApplicationEntity = saveApplicationAndProcesses(userId, naverApplication);
 
-				naverApplicationEntity.changeToDelete();
+				naverApplicationEntity.delete();
 			}
 
 			@DisplayName("비어있는 결과를 반환한다.")

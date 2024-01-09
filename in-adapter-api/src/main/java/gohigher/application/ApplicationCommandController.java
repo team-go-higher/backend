@@ -3,6 +3,7 @@ package gohigher.application;
 import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,5 +57,11 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 		@RequestBody @Valid SimpleApplicationUpdateRequest request) {
 		applicationCommandPort.updateSimply(userId, applicationId, request);
 		return ResponseEntity.ok(GohigherResponse.success(null));
+	}
+
+	@DeleteMapping("/{applicationId}")
+	public ResponseEntity<GohigherResponse<Void>> deleteApplication(@Login Long userId, @PathVariable Long applicationId) {
+		applicationCommandPort.deleteApplication(userId, applicationId);
+		return ResponseEntity.noContent().build();
 	}
 }
