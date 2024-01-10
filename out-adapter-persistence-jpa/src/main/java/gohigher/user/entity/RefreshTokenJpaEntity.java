@@ -26,6 +26,7 @@ public class RefreshTokenJpaEntity {
 	private String value;
 
 	public RefreshTokenJpaEntity(Long userId, String value) {
+		this.userId = userId;
 		this.value = value;
 	}
 }
