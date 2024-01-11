@@ -32,7 +32,7 @@ public class TokenCommandService implements TokenCommandPort {
 	@Override
 	public RefreshedTokenResponse refreshToken(Long userId, Date now, String refreshToken) {
 		if (!jwtProvider.verifyToken(refreshToken, now)) {
-			throw new GoHigherException(AuthErrorCode.TOKEN_EXPIRED);
+			throw new GoHigherException(AuthErrorCode.EXPIRED_REFRESH_TOKEN);
 		}
 
 		String existingRefreshToken = refreshTokenPersistenceQueryPort.findByUserId(userId)

@@ -115,6 +115,19 @@ public interface UserCommandControllerDocs {
 					}
 					""")}
 		)),
+		@ApiResponse(responseCode = "400", description = "만료된 리프레시 토큰인 경우", content = @Content(
+			examples = {
+				@ExampleObject(name = "만료된 리프레시 토큰인 경우", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "AUTH_006",
+						"message": "만료된 토큰입니다."
+					},
+					"data": null
+					}
+					""")}
+		)),
 	})
 	ResponseEntity<GohigherResponse<TokenResponse>> refreshTokens(HttpServletRequest request,
 		HttpServletResponse response, @Parameter(hidden = true) Long userId);

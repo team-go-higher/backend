@@ -14,6 +14,7 @@ public enum AuthErrorCode implements ErrorCode {
 	NOT_EXISTED_TOKEN_TYPE(500, "AUTH_003", "제공되는 토큰 타입이 아닙니다."),
 	NOT_EXISTED_TOKEN(404, "AUTH_004", "존재하지 않는 토큰입니다."),
 	USED_REFRESH_TOKEN(400, "AUTH_005", "이미 사용된 리프레시 토큰입니다."),
+	EXPIRED_REFRESH_TOKEN(400, "AUTH_006", "만료된 토큰입니다."),
 
 	// 11 - 20 외부와의 정보 교환 부분에서 일어날 수 있는 에러 코드
 	INVALID_OAUTH_RESPONSE(401, "AUTH_011", "소셜 로그인 실패입니다."),
