@@ -24,7 +24,7 @@ public class ApplicationProcessQueryService implements ApplicationProcessQueryPo
 
 	@Override
 	public List<ApplicationProcessByProcessTypeResponse> findByApplicationIdAndProcessType(Long userId,
-		long applicationId, ProcessType processType) {
+		Long applicationId, ProcessType processType) {
 		validateAuthorizationOfUser(userId, applicationId);
 		return applicationProcessPersistenceQueryPort.findByApplicationIdAndProcessType(applicationId, processType)
 			.stream()

@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -181,6 +182,40 @@ class ApplicationPersistenceCommandAdapterTest {
 							tuple(secondProcess.getType(), scheduleToUpdate)
 						)
 				);
+			}
+		}
+	}
+
+	@DisplayName("delete 메서드는")
+	@Nested
+	class Describe_delete {
+
+		@DisplayName("지원서 아이디로")
+		@Nested
+		class Context_with_application_id {
+
+			@DisplayName("지원서를 삭제한다")
+			@Test
+			void it_delete_application() {
+				// given
+				ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(ApplicationJpaEntity.of(application, USER_ID));
+
+				ApplicationProcessJpaEntity processJpaEntity = applicationProcessRepository.save(
+					ApplicationProcessJpaEntity.of(applicationJpaEntity, firstProcess, true));
+				applicationJpaEntity.addProcess(processJpaEntity);
+
+				Application application = applicationJpaEntity.toDomain();
+
+				// when
+				applicationPersistenceCommandAdapter.delete(application.getId());
+
+				// then
+				Optional<ApplicationJpaEntity> deletedApplication = applicationRepository.findById(application.getId());
+				assertThat(deletedApplication).isPresent();
+
+				ApplicationJpaEntity actual = deletedApplication.get();
+
+				assertThat(actual.isDeleted()).isTrue();
 			}
 		}
 	}

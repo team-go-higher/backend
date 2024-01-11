@@ -58,14 +58,20 @@ public class AcceptanceTest {
 		post(accessToken, "v1/desired-positions", desiredPositionRequest);
 	}
 
-	ValidatableResponse post(String accessToken, String uri, Object desiredPositionRequest) {
+	ValidatableResponse post(String accessToken, String uri, Object requestBody) {
 		return RestAssured.given().log().all()
 			.auth().oauth2(accessToken)
-			.body(desiredPositionRequest)
+			.body(requestBody)
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.accept(MediaType.APPLICATION_JSON_VALUE)
 			.when().post(uri)
 			.then().log().all();
 	}
 
+	ValidatableResponse delete(String accessToken, String uri) {
+		return RestAssured.given().log().all()
+			.auth().oauth2(accessToken)
+			.when().delete(uri)
+			.then().log().all();
+	}
 }

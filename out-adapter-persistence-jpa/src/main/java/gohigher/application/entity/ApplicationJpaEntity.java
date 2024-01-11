@@ -94,7 +94,7 @@ public class ApplicationJpaEntity {
 		processes.add(process);
 	}
 
-	public void changeToDelete() {
+	public void delete() {
 		this.deleted = true;
 	}
 
