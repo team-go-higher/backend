@@ -21,17 +21,17 @@ class RefreshTokenCookieProviderTest {
 
 	@DisplayName("create 메서드는")
 	@Nested
-	class Create {
+	class Describe_create {
 
 		@DisplayName("만료 기간이 정해지면")
 		@Nested
-		class ExpireLength {
+		class Context_adjust_expireLength {
 
 			long expireLength = 300000;
 
 			@DisplayName("해당 기간에 맞는 만료 기간을 가진 쿠키를 반환한다.")
 			@Test
-			void returns_expire_length_cookie() {
+			void it_returns_expire_length_cookie() {
 				// given
 				String value = "value";
 
@@ -45,11 +45,11 @@ class RefreshTokenCookieProviderTest {
 
 		@DisplayName("value가 정해지면")
 		@Nested
-		class Value {
+		class Context_get_value {
 
 			@DisplayName("해당 value를 가진 쿠키를 반환한다.")
 			@Test
-			void returns_value_cookie() {
+			void it_returns_value_cookie() {
 				// given
 				String value = "value";
 
