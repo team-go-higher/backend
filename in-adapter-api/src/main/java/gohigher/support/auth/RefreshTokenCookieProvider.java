@@ -42,12 +42,11 @@ public class RefreshTokenCookieProvider {
 
 	public String extractToken(final Cookie[] cookies) {
 		validateCookiesNotEmpty(cookies);
-		final Cookie cookie = Arrays.stream(cookies)
+		return Arrays.stream(cookies)
 			.filter(it -> it.getName().equals(REFRESH_TOKEN_KEY))
 			.findAny()
-			.orElseThrow(() -> new GoHigherException(AuthErrorCode.EMPTY_REFRESH_TOKEN_COOKIE));
-
-		return cookie.getValue();
+			.orElseThrow(() -> new GoHigherException(AuthErrorCode.EMPTY_REFRESH_TOKEN_COOKIE))
+			.getValue();
 	}
 
 	private void validateCookiesNotEmpty(final Cookie[] cookies) {
