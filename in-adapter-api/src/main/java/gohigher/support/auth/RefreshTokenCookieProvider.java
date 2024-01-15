@@ -40,7 +40,7 @@ public class RefreshTokenCookieProvider {
 			.sameSite(SameSite.NONE.attributeValue());
 	}
 
-	public String extractToken(final Cookie[] cookies) {
+	public String extractToken(Cookie[] cookies) {
 		validateCookiesNotEmpty(cookies);
 		return Arrays.stream(cookies)
 			.filter(it -> it.getName().equals(REFRESH_TOKEN_KEY))
@@ -49,7 +49,7 @@ public class RefreshTokenCookieProvider {
 			.getValue();
 	}
 
-	private void validateCookiesNotEmpty(final Cookie[] cookies) {
+	private void validateCookiesNotEmpty(Cookie[] cookies) {
 		if (cookies == null) {
 			throw new GoHigherException(AuthErrorCode.EMPTY_REFRESH_TOKEN_COOKIE);
 		}
