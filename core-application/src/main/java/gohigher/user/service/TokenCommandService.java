@@ -26,6 +26,9 @@ public class TokenCommandService implements TokenCommandPort {
 
 	@Override
 	public void saveRefreshToken(Long userId, String refreshToken) {
+		refreshTokenPersistenceQueryPort.findByUserId(userId)
+			.ifPresent(s -> refreshTokenPersistenceCommandport.delete(userId));
+
 		refreshTokenPersistenceCommandport.save(userId, refreshToken);
 	}
 

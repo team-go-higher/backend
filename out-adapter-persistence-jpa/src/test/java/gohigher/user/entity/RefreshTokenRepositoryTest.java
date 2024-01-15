@@ -69,8 +69,7 @@ class RefreshTokenRepositoryTest {
 
 			@BeforeEach
 			void setUp() {
-				RefreshTokenJpaEntity previousToken = refreshTokenRepository.save(
-					new RefreshTokenJpaEntity(userId, "previousToken"));
+				refreshTokenRepository.save(new RefreshTokenJpaEntity(userId, "previousToken"));
 				entityManager.clear();
 			}
 
@@ -82,6 +81,35 @@ class RefreshTokenRepositoryTest {
 
 				// then
 				assertThat(refreshTokenJpaEntity.isEmpty()).isFalse();
+			}
+		}
+	}
+
+	@DisplayName("deleteByUserId 메서드는")
+	@Nested
+	class Describe_deleteByUserId {
+
+		@DisplayName("userId를 받으면")
+		@Nested
+		class Context_request_with_user_id {
+
+			Long userId = 1L;
+
+			@BeforeEach
+			void setUp() {
+				refreshTokenRepository.save(new RefreshTokenJpaEntity(userId, "previousToken"));
+				entityManager.clear();
+			}
+
+			@DisplayName("해당 userId를 가지고 토큰을 찾아 반환한다.")
+			@Test
+			void it_returns_refresh_token() {
+				// given & when
+				refreshTokenRepository.deleteByUserId(userId);
+
+				// then
+				Optional<RefreshTokenJpaEntity> refreshTokenJpaEntity = refreshTokenRepository.findByUserId(userId);
+				assertThat(refreshTokenJpaEntity.isEmpty()).isTrue();
 			}
 		}
 	}

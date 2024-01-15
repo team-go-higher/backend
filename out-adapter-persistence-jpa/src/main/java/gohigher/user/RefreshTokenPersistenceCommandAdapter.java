@@ -22,4 +22,9 @@ public class RefreshTokenPersistenceCommandAdapter implements RefreshTokenPersis
 	public void update(Long userId, String refreshToken) {
 		refreshTokenRepository.updateValueByUserId(userId, refreshToken);
 	}
+
+	@Override
+	public void delete(Long userId) {
+		refreshTokenRepository.deleteByUserId(userId);
+	}
 }
