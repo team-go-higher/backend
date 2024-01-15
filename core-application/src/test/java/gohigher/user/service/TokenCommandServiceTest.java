@@ -28,8 +28,7 @@ class TokenCommandServiceTest {
 	private static final int ACCESS_TOKEN_EXPIRE_LENGTH = 60000;
 	private static final int REFRESH_TOKEN_EXPIRE_LENGTH = 60000;
 	private final JwtProvider jwtProvider = new JwtProvider(
-		"c482e22dd637030da080d5ebf9864988a04b9e0940aabd77a0ad4b67f09463a1192b946701cb0a836ab2c962dd6bcf2094448d0f817592f2bde706e41dc5257b",
-		ACCESS_TOKEN_EXPIRE_LENGTH, REFRESH_TOKEN_EXPIRE_LENGTH);
+		"secret-key".repeat(6), ACCESS_TOKEN_EXPIRE_LENGTH, REFRESH_TOKEN_EXPIRE_LENGTH);
 	@Mock
 	private RefreshTokenPersistenceCommandPort refreshTokenPersistenceCommandPort;
 	@Mock
