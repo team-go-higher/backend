@@ -129,6 +129,6 @@ public interface UserCommandControllerDocs {
 					""")}
 		)),
 	})
-	ResponseEntity<GohigherResponse<TokenResponse>> refreshTokens(HttpServletRequest request,
+	ResponseEntity<GohigherResponse<TokenResponse>> reissueRefreshTokens(HttpServletRequest request,
 		HttpServletResponse response, @Parameter(hidden = true) Long userId);
 }

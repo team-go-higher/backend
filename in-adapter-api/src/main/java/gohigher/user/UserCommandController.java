@@ -39,7 +39,7 @@ public class UserCommandController implements UserCommandControllerDocs {
 	}
 
 	@PatchMapping("/v1/token")
-	public ResponseEntity<GohigherResponse<TokenResponse>> refreshTokens(HttpServletRequest request,
+	public ResponseEntity<GohigherResponse<TokenResponse>> reissueRefreshTokens(HttpServletRequest request,
 		HttpServletResponse response, @Login Long userId) {
 		String refreshToken = refreshTokenCookieProvider.extractToken(request.getCookies());
 		Date now = new Date();
