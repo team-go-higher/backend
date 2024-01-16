@@ -80,7 +80,7 @@ class RefreshTokenRepositoryTest {
 				Optional<RefreshTokenJpaEntity> refreshTokenJpaEntity = refreshTokenRepository.findByUserId(userId);
 
 				// then
-				assertThat(refreshTokenJpaEntity.isEmpty()).isFalse();
+				assertThat(refreshTokenJpaEntity).isPresent();
 			}
 		}
 	}
@@ -109,7 +109,7 @@ class RefreshTokenRepositoryTest {
 
 				// then
 				Optional<RefreshTokenJpaEntity> refreshTokenJpaEntity = refreshTokenRepository.findByUserId(userId);
-				assertThat(refreshTokenJpaEntity.isEmpty()).isTrue();
+				assertThat(refreshTokenJpaEntity).isEmpty();
 			}
 		}
 	}
