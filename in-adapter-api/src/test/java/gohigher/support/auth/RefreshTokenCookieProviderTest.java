@@ -17,7 +17,7 @@ import jakarta.servlet.http.Cookie;
 class RefreshTokenCookieProviderTest {
 
 	private RefreshTokenCookieProvider refreshTokenCookieProvider = new RefreshTokenCookieProvider(300000,
-		"/token");
+		"/token", "refresh-token");
 
 	@DisplayName("create 메서드는")
 	@Nested
@@ -76,7 +76,7 @@ class RefreshTokenCookieProviderTest {
 				// given
 				String refreshTokenValue = "refreshTokenValue";
 				Cookie[] cookies = new Cookie[] {
-					new Cookie(refreshTokenCookieProvider.REFRESH_TOKEN_KEY, refreshTokenValue)};
+					new Cookie(refreshTokenCookieProvider.getRefreshTokenKey(), refreshTokenValue)};
 
 				// when
 				String token = refreshTokenCookieProvider.extractToken(cookies);

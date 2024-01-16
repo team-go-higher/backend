@@ -29,18 +29,21 @@ public class SpringSecurityConfig {
 	private final AuthenticationSuccessHandler oAuth2LoginSuccessHandler;
 	private final AuthenticationFailureHandler oAuth2LoginFailureHandler;
 	private final String tokenRequestUri;
+	private final String tokenCookieKey;
 
 	public SpringSecurityConfig(OauthUserService oauthUserService, JwtAuthFilter jwtAuthFilter,
 		JwtExceptionFilter jwtExceptionFilter,
 		AuthenticationSuccessHandler oAuth2LoginSuccessHandler,
 		AuthenticationFailureHandler oAuth2LoginFailureHandler,
-		@Value("${token.request.uri}") String tokenRequestUri) {
+		@Value("${token.request.uri}") String tokenRequestUri,
+		@Value("${token.cookie.key}") String tokenCookieKey) {
 		this.oauthUserService = oauthUserService;
 		this.jwtAuthFilter = jwtAuthFilter;
 		this.jwtExceptionFilter = jwtExceptionFilter;
 		this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
 		this.oAuth2LoginFailureHandler = oAuth2LoginFailureHandler;
 		this.tokenRequestUri = tokenRequestUri;
+		this.tokenCookieKey = tokenCookieKey;
 	}
 
 	@Bean
@@ -61,6 +64,8 @@ public class SpringSecurityConfig {
 			.userInfoEndpoint(userInfo -> userInfo.userService(oauthUserService))
 			.successHandler(oAuth2LoginSuccessHandler)
 			.failureHandler(oAuth2LoginFailureHandler));
+
+		http.logout(logout -> logout.deleteCookies(tokenCookieKey));
 
 		return http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class)

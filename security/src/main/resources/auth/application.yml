@@ -23,3 +23,5 @@ spring:
 token:
   request:
     uri: '/tokens'
+  cookie:
+    key: 'refresh-token'

@@ -15,15 +15,16 @@ import jakarta.servlet.http.Cookie;
 @Component
 public class RefreshTokenCookieProvider {
 
-	static final String REFRESH_TOKEN_KEY = "refresh-token";
-
 	private final long refreshTokenExpireLength;
 	private final String tokenRequestUri;
+	private final String refreshTokenKey;
 
 	public RefreshTokenCookieProvider(@Value("${security.jwt.expire-length.refresh}") long refreshTokenExpireLength,
-		@Value("${token.request.uri}") String tokenRequestUri) {
+		@Value("${token.request.uri}") String tokenRequestUri,
+		@Value("${token.cookie.key}") String refreshTokenKey) {
 		this.refreshTokenExpireLength = refreshTokenExpireLength;
 		this.tokenRequestUri = tokenRequestUri;
+		this.refreshTokenKey = refreshTokenKey;
 	}
 
 	public ResponseCookie create(String refreshToken) {
@@ -33,7 +34,7 @@ public class RefreshTokenCookieProvider {
 	}
 
 	private ResponseCookie.ResponseCookieBuilder createTokenCookieBuilder(String value) {
-		return ResponseCookie.from(REFRESH_TOKEN_KEY, value)
+		return ResponseCookie.from(refreshTokenKey, value)
 			.httpOnly(true)
 			.secure(true)
 			.path(tokenRequestUri)
@@ -43,7 +44,7 @@ public class RefreshTokenCookieProvider {
 	public String extractToken(Cookie[] cookies) {
 		validateCookiesNotEmpty(cookies);
 		return Arrays.stream(cookies)
-			.filter(it -> it.getName().equals(REFRESH_TOKEN_KEY))
+			.filter(it -> it.getName().equals(refreshTokenKey))
 			.findAny()
 			.orElseThrow(() -> new GoHigherException(AuthErrorCode.EMPTY_REFRESH_TOKEN_COOKIE))
 			.getValue();
@@ -53,5 +54,9 @@ public class RefreshTokenCookieProvider {
 		if (cookies == null) {
 			throw new GoHigherException(AuthErrorCode.EMPTY_REFRESH_TOKEN_COOKIE);
 		}
+	}
+
+	public String getRefreshTokenKey() {
+		return refreshTokenKey;
 	}
 }
