@@ -49,7 +49,7 @@ public class SpringSecurityConfig {
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth ->
 				auth.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-					.requestMatchers(tokenRequestUri + "/**", "/api-docs", "/swagger-ui/**",
+					.requestMatchers("/v1" + tokenRequestUri + "/**", "/api-docs", "/swagger-ui/**",
 						"/v3/api-docs/swagger-config", "/v3/api-docs"
 					).permitAll()
 					.anyRequest().authenticated()

@@ -20,7 +20,7 @@ import gohigher.user.port.in.DesiredPositionCommandPort;
 import gohigher.user.port.out.UserPersistenceCommandPort;
 import gohigher.user.port.out.UserPersistenceQueryPort;
 
-@DisplayName("OAuth2CommandService 클래스의")
+@DisplayName("UserCommandService 클래스의")
 @ExtendWith(MockitoExtension.class)
 class UserCommandServiceTest {
 

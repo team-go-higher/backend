@@ -2,8 +2,8 @@ package gohigher.user;
 
 import org.springframework.http.ResponseEntity;
 
-import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
+import gohigher.support.auth.Login;
 import gohigher.user.port.in.MyInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

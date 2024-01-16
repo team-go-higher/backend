@@ -1,4 +1,4 @@
-package gohigher.auth.support;
+package gohigher.support.auth;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

@@ -4,8 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
+import gohigher.support.auth.Login;
 import gohigher.user.port.in.MyInfoResponse;
 import gohigher.user.port.in.UserQueryPort;
 import lombok.RequiredArgsConstructor;

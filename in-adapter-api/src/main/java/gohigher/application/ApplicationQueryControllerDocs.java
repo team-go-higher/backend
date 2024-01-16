@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import gohigher.application.port.in.ApplicationResponse;
 import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationResponse;
-import gohigher.application.port.in.KanbanByProcessApplicationResponse;
-import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
+import gohigher.application.port.in.KanbanByProcessApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
-import gohigher.auth.support.Login;
+import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.common.ProcessType;
 import gohigher.controller.response.GohigherResponse;
+import gohigher.support.auth.Login;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -125,13 +125,14 @@ public interface ApplicationQueryControllerDocs {
 			@ApiResponse(responseCode = "200", description = "칸반 지원서 목록 조회 성공")
 		}
 	)
-	ResponseEntity<GohigherResponse<List<KanbanApplicationResponse>>> findForKanban(@Parameter(hidden = true) Long userId);
+	ResponseEntity<GohigherResponse<List<KanbanApplicationResponse>>> findForKanban(
+		@Parameter(hidden = true) Long userId);
 
 	@Operation(summary = "칸반 전형별 지원서 목록 조회")
 	@ApiResponses(
 		value = {
 			@ApiResponse(responseCode = "200", description = "칸반 전형별 지원서 목록 조회 성공")
-	})
+		})
 	ResponseEntity<GohigherResponse<List<KanbanByProcessApplicationResponse>>> findForKanbanByProcess(
 		@Parameter(hidden = true) Long userId, @PathVariable ProcessType processType);
 }

@@ -22,4 +22,4 @@ spring:
 
 token:
   request:
-    uri: '/token'
+    uri: '/tokens'

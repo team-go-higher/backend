@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import gohigher.user.port.in.DesiredPositionRequest;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -67,6 +66,5 @@ public interface UserCommandControllerDocs {
 					}
 					""")}))
 	})
-	ResponseEntity<Void> saveDesiredPositions(@Parameter(hidden = true) Long userId,
-		@RequestBody DesiredPositionRequest request);
+	ResponseEntity<Void> saveDesiredPositions(Long userId, @RequestBody DesiredPositionRequest request);
 }

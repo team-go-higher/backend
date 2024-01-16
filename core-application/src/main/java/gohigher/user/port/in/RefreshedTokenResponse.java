@@ -1,12 +1,12 @@
-package gohigher.auth.response;
+package gohigher.user.port.in;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class TokenResponse {
+public class RefreshedTokenResponse {
 
 	private final String accessToken;
-	private final String role;
+	private final String refreshToken;
 }

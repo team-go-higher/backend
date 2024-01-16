@@ -9,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 
-import gohigher.auth.support.JwtProvider;
-import gohigher.auth.support.TokenType;
 import gohigher.position.entity.PositionJpaEntity;
 import gohigher.position.entity.PositionRepository;
 import gohigher.support.DatabaseCleanUp;
+import gohigher.support.auth.JwtProvider;
+import gohigher.support.auth.TokenType;
 import gohigher.user.Role;
 import gohigher.user.auth.Provider;
 import gohigher.user.entity.UserJpaEntity;
@@ -27,14 +27,19 @@ public class AcceptanceTest {
 
 	@LocalServerPort
 	int port;
+
 	PositionJpaEntity developer;
 	PositionJpaEntity designer;
+
 	@Autowired
 	private UserRepository userRepository;
+
 	@Autowired
 	private PositionRepository positionRepository;
+
 	@Autowired
 	private JwtProvider jwtProvider;
+
 	@Autowired
 	private DatabaseCleanUp databaseCleanUp;
 

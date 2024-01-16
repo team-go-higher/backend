@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import gohigher.application.port.in.ApplicationProcessByProcessTypeResponse;
 import gohigher.application.port.in.ApplicationProcessCommandPort;
 import gohigher.application.port.in.UnscheduledProcessRequest;
-import gohigher.auth.support.Login;
 import gohigher.controller.response.GohigherResponse;
+import gohigher.support.auth.Login;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 

@@ -13,11 +13,12 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import gohigher.auth.support.JwtProvider;
-import gohigher.auth.support.RefreshTokenCookieProvider;
-import gohigher.auth.support.TokenType;
 import gohigher.global.exception.GlobalErrorCode;
 import gohigher.global.exception.GoHigherException;
+import gohigher.support.auth.JwtProvider;
+import gohigher.support.auth.RefreshTokenCookieProvider;
+import gohigher.support.auth.TokenType;
+import gohigher.user.port.in.TokenCommandPort;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -28,14 +29,16 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 	private final String tokenRequestUri;
 	private final JwtProvider jwtProvider;
 	private final RefreshTokenCookieProvider refreshTokenCookieProvider;
+	private final TokenCommandPort tokenCommandPort;
 
 	public AuthenticationSuccessHandler(@Value("${oauth2.success.redirect_uri}") String redirectUri,
 		@Value("${token.request.uri}") String tokenRequestUri, JwtProvider jwtProvider,
-		RefreshTokenCookieProvider refreshTokenCookieProvider) {
+		RefreshTokenCookieProvider refreshTokenCookieProvider, TokenCommandPort tokenCommandPort) {
 		this.redirectUri = redirectUri;
 		this.tokenRequestUri = tokenRequestUri;
 		this.jwtProvider = jwtProvider;
 		this.refreshTokenCookieProvider = refreshTokenCookieProvider;
+		this.tokenCommandPort = tokenCommandPort;
 	}
 
 	@Override
@@ -49,6 +52,8 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		Date today = new Date();
 		String accessToken = jwtProvider.createToken(userId, today, TokenType.ACCESS);
 		String refreshToken = jwtProvider.createToken(userId, today, TokenType.REFRESH);
+
+		tokenCommandPort.saveRefreshToken(userId, refreshToken);
 
 		addRefreshTokenCookie(response, refreshToken);
 		getRedirectStrategy().sendRedirect(request, response, createTargetUrl(accessToken, role));
