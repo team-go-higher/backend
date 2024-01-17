@@ -25,7 +25,7 @@ public class TokenCommandController implements TokenCommandControllerDocs {
 	private final TokenCommandPort tokenCommandPort;
 	private final RefreshTokenCookieProvider refreshTokenCookieProvider;
 
-	@PatchMapping("/v1/tokens/mine")
+	@PatchMapping("/tokens/mine")
 	public ResponseEntity<GohigherResponse<TokenResponse>> reissueRefreshTokens(HttpServletRequest request,
 		HttpServletResponse response, @Login Long userId) {
 		String refreshToken = refreshTokenCookieProvider.extractToken(request.getCookies());
