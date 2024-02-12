@@ -8,6 +8,8 @@ public interface ApplicationCommandPort {
 
 	void updateSimply(Long userId, Long applicationId, SimpleApplicationUpdateRequest request);
 
+	void updateSpecifically(Long userId, Long applicationId, SpecificApplicationUpdateRequest request);
+
 	void updateCurrentProcess(Long userId, CurrentProcessUpdateRequest request);
 
 	void deleteApplication(Long userId, Long applicationId);

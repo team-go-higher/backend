@@ -13,6 +13,7 @@ import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SimpleApplicationUpdateRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
+import gohigher.application.port.in.SpecificApplicationUpdateRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
@@ -50,6 +51,11 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 			request.getSchedule());
 
 		applicationPersistenceCommandPort.updateSimply(request.getProcessId(), application);
+	}
+
+	@Override
+	public void updateSpecifically(Long userId, Long applicationId, SpecificApplicationUpdateRequest request) {
+		
 	}
 
 	@Override
