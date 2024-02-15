@@ -1,7 +1,12 @@
 package gohigher.application.port.in;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import gohigher.application.Application;
+import gohigher.common.EmploymentType;
+import gohigher.common.Process;
+import gohigher.common.Processes;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -30,4 +35,20 @@ public class SpecificApplicationUpdateRequest {
 	@Valid
 	private List<SpecificApplicationProcessUpdateRequest> processes;
 	private String url;
+
+	public Application toDomain() {
+		List<Process> processDomains = new ArrayList<>();
+		int currentProcessIdx = 0;
+
+		for (int i = 0; i < processes.size(); i++) {
+			if (processes.get(i).getIsCurrent()) {
+				currentProcessIdx = i;
+			}
+			processDomains.add(processes.get(i).toDomain());
+		}
+
+		return new Application(null, companyName, team, location, contact, position, specificPosition, jobDescription,
+			workType, EmploymentType.from(employmentType), careerRequirement, requiredCapability,
+			preferredQualification, Processes.initialFrom(processDomains), url, processDomains.get(currentProcessIdx));
+	}
 }

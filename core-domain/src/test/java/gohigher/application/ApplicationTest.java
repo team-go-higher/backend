@@ -48,4 +48,36 @@ class ApplicationTest {
 			}
 		}
 	}
+
+	@DisplayName("updateSpecifically 메서드는")
+	@Nested
+	class Describe_updateSpecifically {
+
+		@DisplayName("요청받은 정보로")
+		@Nested
+		class Context_with_updated_info {
+
+			@DisplayName("정보를 업데이트한다.")
+			@Test
+			void it_returns_updated_application() {
+				// given
+				Process interview = INTERVIEW.toPersistedDomain(1L);
+				Application application = NAVER_APPLICATION.toDomain(List.of(interview), interview);
+
+				Process codingTest = CODING_TEST.toDomain();
+				Application targetApplication = KAKAO_APPLICATION.toDomain(List.of(codingTest), codingTest);
+
+				// when
+				Application updatedApplication = application.updateSpecifically(targetApplication);
+
+				// then
+				assertAll(
+					() -> assertThat(updatedApplication.getId()).isEqualTo(application.getId()),
+					() -> assertThat(updatedApplication).usingRecursiveComparison()
+						.ignoringFields("id")
+						.isEqualTo(targetApplication)
+				);
+			}
+		}
+	}
 }

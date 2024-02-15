@@ -2,6 +2,8 @@ package gohigher.application.port.in;
 
 import java.time.LocalDateTime;
 
+import gohigher.common.Process;
+import gohigher.common.ProcessType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,4 +19,8 @@ public class SpecificApplicationProcessUpdateRequest {
 
 	private LocalDateTime schedule;
 	private Boolean isCurrent;
+
+	public Process toDomain() {
+		return new Process(ProcessType.from(type), description, schedule);
+	}
 }

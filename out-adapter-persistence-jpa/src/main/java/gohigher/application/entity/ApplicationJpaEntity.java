@@ -153,4 +153,8 @@ public class ApplicationJpaEntity {
 		this.preferredQualification = application.getPreferredQualification();
 		this.url = application.getUrl();
 	}
+
+	public void resetProcesses() {
+		this.processes = new ArrayList<>();
+	}
 }

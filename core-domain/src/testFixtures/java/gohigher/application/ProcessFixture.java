@@ -44,7 +44,7 @@ public enum ProcessFixture {
 		return createProcess(null, type, description, schedule, 0);
 	}
 
-	public Process toPersistedDomain(long id) {
+	public Process toPersistedDomain(Long id) {
 		return createProcess(id, type, description, schedule, order);
 	}
 

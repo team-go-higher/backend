@@ -55,7 +55,11 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 
 	@Override
 	public void updateSpecifically(Long userId, Long applicationId, SpecificApplicationUpdateRequest request) {
-		
+		Application application = applicationPersistenceQueryPort.findByIdAndUserId(applicationId, userId)
+			.orElseThrow(() -> new GoHigherException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
+		final Application updatedApplication = application.updateSpecifically(request.toDomain());
+
+		applicationPersistenceCommandPort.updateSpecifically(updatedApplication);
 	}
 
 	@Override

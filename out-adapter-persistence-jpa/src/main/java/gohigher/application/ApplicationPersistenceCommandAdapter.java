@@ -32,16 +32,6 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 		return savedApplicationJpaEntity.toDomain();
 	}
 
-	private void saveApplicationProcesses(ApplicationJpaEntity applicationJpaEntity,
-		List<Process> processes, Process currentProcess) {
-		for (Process process : processes) {
-			applicationJpaEntity.addProcess(ApplicationProcessJpaEntity.of(
-				applicationJpaEntity, process, process == currentProcess));
-		}
-
-		applicationProcessRepository.saveAll(applicationJpaEntity.getProcesses());
-	}
-
 	@Override
 	public void updateCurrentProcessOrder(long id, long userId, long processId) {
 		ApplicationJpaEntity application = applicationRepository.findByIdAndUserIdWithProcess(id, userId)
@@ -72,10 +62,40 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 	}
 
 	@Override
+	public void updateSpecifically(Application application) {
+		ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(application.getId())
+			.orElseThrow(() -> new GoHigherException(APPLICATION_NOT_FOUND));
+
+		applicationJpaEntity.update(application);
+		updateApplicationProcess(applicationJpaEntity, application.getProcesses(), application.getCurrentProcess());
+	}
+
+	@Override
 	public void delete(long id) {
 		ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(id)
 			.orElseThrow(() -> new GoHigherException(APPLICATION_NOT_FOUND));
 
 		applicationJpaEntity.delete();
+	}
+
+	private void saveApplicationProcesses(ApplicationJpaEntity applicationJpaEntity,
+		List<Process> processes, Process currentProcess) {
+		for (Process process : processes) {
+			applicationJpaEntity.addProcess(ApplicationProcessJpaEntity.of(
+				applicationJpaEntity, process, process == currentProcess));
+		}
+
+		applicationProcessRepository.saveAll(applicationJpaEntity.getProcesses());
+	}
+
+	private void updateApplicationProcess(ApplicationJpaEntity application, List<Process> processes,
+		Process currentProcess) {
+		resetProcesses(application);
+		saveApplicationProcesses(application, processes, currentProcess);
+	}
+
+	private void resetProcesses(ApplicationJpaEntity application) {
+		applicationProcessRepository.deleteByApplicationId(application.getId());
+		application.resetProcesses();
 	}
 }
