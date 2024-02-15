@@ -36,6 +36,26 @@ public class SpecificApplicationUpdateRequest {
 	private List<SpecificApplicationProcessUpdateRequest> processes;
 	private String url;
 
+	public SpecificApplicationUpdateRequest(String companyName, String team, String location, String contact,
+		String position, String specificPosition, String jobDescription, String workType, String employmentType,
+		String careerRequirement, String requiredCapability, String preferredQualification,
+		List<SpecificApplicationProcessUpdateRequest> processes, String url) {
+		this.companyName = companyName;
+		this.team = team;
+		this.location = location;
+		this.contact = contact;
+		this.position = position;
+		this.specificPosition = specificPosition;
+		this.jobDescription = jobDescription;
+		this.workType = workType;
+		this.employmentType = employmentType;
+		this.careerRequirement = careerRequirement;
+		this.requiredCapability = requiredCapability;
+		this.preferredQualification = preferredQualification;
+		this.processes = processes;
+		this.url = url;
+	}
+
 	public Application toDomain() {
 		List<Process> processDomains = new ArrayList<>();
 		int currentProcessIdx = 0;

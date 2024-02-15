@@ -14,6 +14,10 @@ public enum EmploymentType {
 	;
 
 	public static EmploymentType from(String value) {
+		if (value == null) {
+			return null;
+		}
+
 		return Arrays.stream(values())
 			.filter(employmentType -> employmentType.name().equals(value))
 			.findAny()

@@ -20,6 +20,14 @@ public class SpecificApplicationProcessUpdateRequest {
 	private LocalDateTime schedule;
 	private Boolean isCurrent;
 
+	public SpecificApplicationProcessUpdateRequest(String type, String description, LocalDateTime schedule,
+		Boolean isCurrent) {
+		this.type = type;
+		this.description = description;
+		this.schedule = schedule;
+		this.isCurrent = isCurrent;
+	}
+
 	public Process toDomain() {
 		return new Process(ProcessType.from(type), description, schedule);
 	}
