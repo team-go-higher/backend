@@ -40,4 +40,11 @@ public class Application extends JobInfo {
 	public Process getProcessById(Long processId) {
 		return processes.getValueById(processId);
 	}
+
+	public Application updateSpecifically(Application target) {
+		return new Application(this.id, target.companyName, target.team, target.location, target.contact,
+			target.position, target.specificPosition, target.jobDescription, target.workType, target.employmentType,
+			target.careerRequirement, target.requiredCapability, target.preferredQualification, target.processes,
+			target.url, target.currentProcess);
+	}
 }

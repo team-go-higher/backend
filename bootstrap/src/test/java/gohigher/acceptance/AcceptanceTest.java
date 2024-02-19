@@ -73,6 +73,16 @@ public class AcceptanceTest {
 			.then().log().all();
 	}
 
+	ValidatableResponse put(String accessToken, String uri, Object requestBody) {
+		return RestAssured.given().log().all()
+			.auth().oauth2(accessToken)
+			.body(requestBody)
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.accept(MediaType.APPLICATION_JSON_VALUE)
+			.when().put(uri)
+			.then().log().all();
+	}
+
 	ValidatableResponse delete(String accessToken, String uri) {
 		return RestAssured.given().log().all()
 			.auth().oauth2(accessToken)

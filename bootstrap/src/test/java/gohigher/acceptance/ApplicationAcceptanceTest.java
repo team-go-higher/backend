@@ -2,12 +2,16 @@ package gohigher.acceptance;
 
 import static org.hamcrest.Matchers.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import gohigher.application.port.in.SimpleApplicationProcessRequest;
 import gohigher.application.port.in.SimpleApplicationRequest;
+import gohigher.application.port.in.SpecificApplicationProcessUpdateRequest;
+import gohigher.application.port.in.SpecificApplicationUpdateRequest;
 import gohigher.common.ProcessType;
 import gohigher.user.auth.Provider;
 import io.restassured.response.ValidatableResponse;
@@ -51,6 +55,25 @@ public class ApplicationAcceptanceTest extends AcceptanceTest {
 
 		// then
 		response.statusCode(HttpStatus.NO_CONTENT.value());
+	}
+
+	@DisplayName("지원서 상세 수정 기능을 테스트한다.")
+	@Test
+	void update_specifically() {
+		// given
+		String accessToken = signUp("azpi@email.com", Provider.GOOGLE);
+		int applicationId = createApplication(accessToken);
+
+		SpecificApplicationUpdateRequest specificApplicationUpdateRequest = new SpecificApplicationUpdateRequest("카카오",
+			null, null, null, "디자이너", null, null, null, null, null, null, null,
+			List.of(new SpecificApplicationProcessUpdateRequest("INTERVIEW", "1차 면접", null, true)), null);
+
+		// when
+		ValidatableResponse response = put(accessToken, "/v1/applications/" + applicationId + "/specific",
+			specificApplicationUpdateRequest);
+
+		// then
+		response.statusCode(HttpStatus.OK.value());
 	}
 
 	private int createApplication(String accessToken) {

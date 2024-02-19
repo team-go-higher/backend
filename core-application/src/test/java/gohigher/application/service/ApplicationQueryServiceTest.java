@@ -192,7 +192,7 @@ class ApplicationQueryServiceTest {
 				int size = 10;
 				PagingRequest request = new PagingRequest(page, size);
 
-				Process process = TEST.toPersistedDomain(1);
+				Process process = TEST.toPersistedDomain(1L);
 				List<Application> applications = List.of(
 					NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
 				given(applicationPersistenceQueryPort.findUnscheduledByUserId(userId, page, size))
@@ -258,7 +258,7 @@ class ApplicationQueryServiceTest {
 				Long userId = 1L;
 				ProcessType processType = ProcessType.TO_APPLY;
 
-				Process process = TO_APPLY.toPersistedDomain(1);
+				Process process = TO_APPLY.toPersistedDomain(1L);
 				List<Application> applications = List.of(
 					NAVER_APPLICATION.toPersistedDomain(1, List.of(process), process));
 				given(applicationPersistenceQueryPort.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType))

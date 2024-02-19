@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,7 @@ import gohigher.application.entity.ApplicationProcessJpaEntity;
 import gohigher.application.entity.ApplicationProcessRepository;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.common.Process;
+import gohigher.common.ProcessType;
 import jakarta.persistence.EntityManager;
 
 @DisplayName("ApplicationPersistenceCommandAdapter 클래스의")
@@ -133,10 +135,10 @@ class ApplicationPersistenceCommandAdapterTest {
 			private long applicationId;
 			private Application applicationToUpdate;
 			private Long processId;
-			private String companyNameToUpdate = "new Naver";
-			private String potisionToUpdate = "new position";
-			private String urlToUpdate = "www.update.com";
-			private LocalDateTime scheduleToUpdate = LocalDateTime.now().plusDays(10);
+			private final String companyNameToUpdate = "new Naver";
+			private final String potisionToUpdate = "new position";
+			private final String urlToUpdate = "www.update.com";
+			private final LocalDateTime scheduleToUpdate = LocalDateTime.now().plusDays(10);
 
 			@BeforeEach
 			void setUp() {
@@ -198,7 +200,8 @@ class ApplicationPersistenceCommandAdapterTest {
 			@Test
 			void it_delete_application() {
 				// given
-				ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(ApplicationJpaEntity.of(application, USER_ID));
+				ApplicationJpaEntity applicationJpaEntity = applicationRepository.save(
+					ApplicationJpaEntity.of(application, USER_ID));
 
 				ApplicationProcessJpaEntity processJpaEntity = applicationProcessRepository.save(
 					ApplicationProcessJpaEntity.of(applicationJpaEntity, firstProcess, true));
@@ -216,6 +219,66 @@ class ApplicationPersistenceCommandAdapterTest {
 				ApplicationJpaEntity actual = deletedApplication.get();
 
 				assertThat(actual.isDeleted()).isTrue();
+			}
+		}
+	}
+
+	@DisplayName("updateSpecifically 메서드는")
+	@Nested
+	class Describe_updateSpecifically {
+
+		@DisplayName("변경된 지원서 정보로")
+		@Nested
+		class Context_with_updated_application_info {
+
+			Long applicationId;
+
+			@BeforeEach
+			void setUp() {
+				Application savedApplication = applicationPersistenceCommandAdapter.save(USER_ID, application);
+				applicationId = savedApplication.getId();
+				entityManager.clear();
+			}
+
+			@DisplayName("지원서 정보를 업데이트한다.")
+			@Test
+			void it_updates_application_info() {
+				// given
+				Process codingTest = CODING_TEST.toDomain();
+				Process interview = INTERVIEW.toDomain();
+				Application targetApplication = KAKAO_APPLICATION.toPersistedDomain(applicationId,
+					List.of(codingTest, interview), codingTest);
+
+				// when
+				applicationPersistenceCommandAdapter.updateSpecifically(targetApplication);
+				entityManager.flush();
+				entityManager.clear();
+
+				// then
+				ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(applicationId).get();
+				List<ApplicationProcessJpaEntity> processes = applicationJpaEntity.getProcesses();
+
+				assertAll(
+					() -> assertThat(applicationJpaEntity.getCompanyName()).isEqualTo(
+						targetApplication.getCompanyName()),
+					() -> assertThat(processes).hasSize(2),
+					() -> assertThat(
+						processes.stream()
+							.filter(process -> process.getType().equals(ProcessType.TEST)))
+						.hasSize(1),
+					() -> assertThat(
+						processes.stream()
+							.filter(process -> process.getType().equals(ProcessType.INTERVIEW)))
+						.hasSize(1),
+					() -> assertThat(
+						processes.stream()
+							.filter(process -> process.getType().equals(ProcessType.TO_APPLY)))
+						.isEmpty(),
+					() -> assertThat(
+						processes.stream()
+							.filter(process -> process.getType().equals(ProcessType.DOCUMENT)))
+						.isEmpty()
+				);
 			}
 		}
 	}

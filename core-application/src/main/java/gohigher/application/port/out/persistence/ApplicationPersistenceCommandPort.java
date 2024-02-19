@@ -11,4 +11,6 @@ public interface ApplicationPersistenceCommandPort {
 	void updateSimply(Long processId, Application application);
 
 	void delete(long applicationId);
+
+	void updateSpecifically(Application updatedTarget);
 }

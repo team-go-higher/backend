@@ -66,6 +66,6 @@ public class ApplicationResponse {
 
 	private static String getEmploymentType(Application application) {
 		EmploymentType employmentType = application.getEmploymentType();
-		return employmentType == null ? null : employmentType.name();
+		return employmentType == null ? null : employmentType.getValue();
 	}
 }
