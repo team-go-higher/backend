@@ -36,6 +36,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("utf-8");
 			response.addHeader("Access-Control-Allow-Origin", allowedOrigin);
+			response.addHeader("Access-Control-Allow-Credentials", "true");
 
 			GohigherResponse<Object> errorResponse = GohigherResponse.fail(e.getErrorCode(), e.getMessage());
 
