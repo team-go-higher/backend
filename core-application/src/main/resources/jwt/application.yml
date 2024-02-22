@@ -1,5 +1,5 @@
 security:
   jwt:
     expire-length:
-      access: 2628000000  # 1달
-      refresh: 5256000000 # 2달
+      access: 600000  # 10분
+      refresh: 604800016 # 1주
