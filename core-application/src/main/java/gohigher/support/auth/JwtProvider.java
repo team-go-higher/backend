@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import gohigher.global.exception.GoHigherException;
 import gohigher.user.auth.AuthErrorCode;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -61,12 +62,14 @@ public class JwtProvider {
 			return claims.getBody()
 				.getExpiration()
 				.after(now);
+		} catch (ExpiredJwtException e) {
+			return false;
 		} catch (SignatureException e) {
 			throw new GoHigherException(AuthErrorCode.INVALID_TOKEN_BY_SIGNATURE);
 		}
 	}
 
-	private Jws<Claims> parseClaimsJws(String token) throws SignatureException {
+	private Jws<Claims> parseClaimsJws(String token) throws SignatureException, ExpiredJwtException {
 		return Jwts.parserBuilder()
 			.setSigningKey(secretKey)
 			.build()
