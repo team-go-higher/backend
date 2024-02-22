@@ -63,7 +63,7 @@ class TokenCommandServiceTest {
 				doNothing().when(refreshTokenPersistenceCommandPort).update(anyLong(), anyString());
 
 				// then
-				assertThat(tokenCommandService.refreshToken(userId, now, previousRefreshToken)).isNotNull();
+				assertThat(tokenCommandService.refreshToken(now, previousRefreshToken)).isNotNull();
 			}
 
 			@DisplayName("유효성 확인 후, 이미 사용한 토큰이면 예외를 발생한다.")
@@ -79,7 +79,7 @@ class TokenCommandServiceTest {
 
 				// then
 				String anotherToken = jwtProvider.createToken(userId, now, TokenType.REFRESH);
-				assertThatThrownBy(() -> tokenCommandService.refreshToken(userId, now, anotherToken))
+				assertThatThrownBy(() -> tokenCommandService.refreshToken(now, anotherToken))
 					.isInstanceOf(GoHigherException.class)
 					.hasMessage(AuthErrorCode.USED_REFRESH_TOKEN.getMessage());
 			}
