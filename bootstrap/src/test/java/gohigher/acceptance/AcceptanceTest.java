@@ -60,7 +60,7 @@ public class AcceptanceTest {
 	void assignDesiredPositions(String accessToken) {
 		DesiredPositionRequest desiredPositionRequest = new DesiredPositionRequest(
 			List.of(developer.getId(), designer.getId()));
-		post(accessToken, "v1/desired-positions", desiredPositionRequest);
+		post(accessToken, "/v1/desired-positions", desiredPositionRequest);
 	}
 
 	ValidatableResponse post(String accessToken, String uri, Object requestBody) {
