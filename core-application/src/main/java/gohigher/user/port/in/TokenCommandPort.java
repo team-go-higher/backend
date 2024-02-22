@@ -6,5 +6,5 @@ public interface TokenCommandPort {
 
 	void saveRefreshToken(Long userId, String refreshToken);
 
-	RefreshedTokenResponse refreshToken(Long userId, Date now, String refreshToken);
+	RefreshedTokenResponse refreshToken(Date now, String refreshToken);
 }

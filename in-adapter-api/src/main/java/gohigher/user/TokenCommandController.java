@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gohigher.controller.response.GohigherResponse;
-import gohigher.support.auth.Login;
 import gohigher.support.auth.RefreshTokenCookieProvider;
 import gohigher.user.port.in.RefreshedTokenResponse;
 import gohigher.user.port.in.TokenCommandPort;
@@ -27,10 +26,10 @@ public class TokenCommandController implements TokenCommandControllerDocs {
 
 	@PatchMapping("/tokens/mine")
 	public ResponseEntity<GohigherResponse<TokenResponse>> reissueRefreshTokens(HttpServletRequest request,
-		HttpServletResponse response, @Login Long userId) {
+		HttpServletResponse response) {
 		String refreshToken = refreshTokenCookieProvider.extractToken(request.getCookies());
 		Date now = new Date();
-		RefreshedTokenResponse refreshedTokenResponse = tokenCommandPort.refreshToken(userId, now, refreshToken);
+		RefreshedTokenResponse refreshedTokenResponse = tokenCommandPort.refreshToken(now, refreshToken);
 		TokenResponse tokenResponse = new TokenResponse(refreshedTokenResponse.getAccessToken());
 		addRefreshTokenCookie(response, refreshedTokenResponse.getRefreshToken());
 		return ResponseEntity.ok(GohigherResponse.success(tokenResponse));

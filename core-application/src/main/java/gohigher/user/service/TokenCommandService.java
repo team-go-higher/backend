@@ -13,6 +13,7 @@ import gohigher.user.port.in.RefreshedTokenResponse;
 import gohigher.user.port.in.TokenCommandPort;
 import gohigher.user.port.out.RefreshTokenPersistenceCommandPort;
 import gohigher.user.port.out.RefreshTokenPersistenceQueryPort;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -33,10 +34,12 @@ public class TokenCommandService implements TokenCommandPort {
 	}
 
 	@Override
-	public RefreshedTokenResponse refreshToken(Long userId, Date now, String refreshToken) {
+	public RefreshedTokenResponse refreshToken(Date now, String refreshToken) {
 		if (!jwtProvider.verifyToken(refreshToken, now)) {
 			throw new GoHigherException(AuthErrorCode.EXPIRED_REFRESH_TOKEN);
 		}
+
+		Long userId = parseToken(refreshToken);
 
 		String existingRefreshToken = refreshTokenPersistenceQueryPort.findByUserId(userId)
 			.orElseThrow(() -> new GoHigherException(AuthErrorCode.NOT_EXISTED_TOKEN));
@@ -46,6 +49,14 @@ public class TokenCommandService implements TokenCommandPort {
 		refreshTokenPersistenceCommandport.update(userId, newRefreshToken);
 
 		return new RefreshedTokenResponse(jwtProvider.createToken(userId, now, TokenType.ACCESS), newRefreshToken);
+	}
+
+	private Long parseToken(String refreshToken) {
+		try {
+			return jwtProvider.getPayload(refreshToken);
+		} catch (ExpiredJwtException e) {
+			throw new GoHigherException(AuthErrorCode.EXPIRED_REFRESH_TOKEN);
+		}
 	}
 
 	private void validateAlreadyUsedToken(String refreshToken, String existingRefreshToken) {
