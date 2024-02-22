@@ -2,6 +2,7 @@ package gohigher.jwt;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -13,13 +14,17 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
 public class JwtExceptionFilter extends OncePerRequestFilter {
 
-	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final ObjectMapper objectMapper;
+	private final String allowedOrigin;
+
+	public JwtExceptionFilter(@Value("${cors-config.allowed-origin}") String allowedOrigin) {
+		this.objectMapper = new ObjectMapper();
+		this.allowedOrigin = allowedOrigin;
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -30,6 +35,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 			response.setStatus(e.getStatusCode());
 			response.setContentType("application/json");
 			response.setCharacterEncoding("utf-8");
+			response.addHeader("Access-Control-Allow-Origin", allowedOrigin);
 
 			GohigherResponse<Object> errorResponse = GohigherResponse.fail(e.getErrorCode(), e.getMessage());
 
