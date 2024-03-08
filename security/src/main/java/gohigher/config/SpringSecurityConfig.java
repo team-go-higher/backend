@@ -18,6 +18,7 @@ import gohigher.jwt.JwtExceptionFilter;
 import gohigher.oauth2.OauthUserService;
 import gohigher.oauth2.handler.AuthenticationFailureHandler;
 import gohigher.oauth2.handler.AuthenticationSuccessHandler;
+import gohigher.oauth2.handler.LogoutHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -28,6 +29,7 @@ public class SpringSecurityConfig {
 	private final JwtExceptionFilter jwtExceptionFilter;
 	private final AuthenticationSuccessHandler oAuth2LoginSuccessHandler;
 	private final AuthenticationFailureHandler oAuth2LoginFailureHandler;
+	private final LogoutHandler logoutHandler;
 	private final String tokenRequestUri;
 	private final String tokenCookieKey;
 
@@ -35,6 +37,7 @@ public class SpringSecurityConfig {
 		JwtExceptionFilter jwtExceptionFilter,
 		AuthenticationSuccessHandler oAuth2LoginSuccessHandler,
 		AuthenticationFailureHandler oAuth2LoginFailureHandler,
+		LogoutHandler logoutHandler,
 		@Value("${token.request.uri}") String tokenRequestUri,
 		@Value("${token.cookie.key}") String tokenCookieKey) {
 		this.oauthUserService = oauthUserService;
@@ -42,6 +45,7 @@ public class SpringSecurityConfig {
 		this.jwtExceptionFilter = jwtExceptionFilter;
 		this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
 		this.oAuth2LoginFailureHandler = oAuth2LoginFailureHandler;
+		this.logoutHandler = logoutHandler;
 		this.tokenRequestUri = tokenRequestUri;
 		this.tokenCookieKey = tokenCookieKey;
 	}
@@ -65,7 +69,9 @@ public class SpringSecurityConfig {
 			.successHandler(oAuth2LoginSuccessHandler)
 			.failureHandler(oAuth2LoginFailureHandler));
 
-		http.logout(logout -> logout.deleteCookies(tokenCookieKey));
+		http.logout(logout -> logout.logoutUrl("/logout")
+			.logoutSuccessHandler(logoutHandler)
+			.deleteCookies(tokenCookieKey));
 
 		return http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class)
