@@ -51,6 +51,11 @@ public class TokenCommandService implements TokenCommandPort {
 		return new RefreshedTokenResponse(jwtProvider.createToken(userId, now, TokenType.ACCESS), newRefreshToken);
 	}
 
+	@Override
+	public void deleteRefreshToken(Long loginId) {
+		refreshTokenPersistenceCommandport.delete(loginId);
+	}
+
 	private Long parseToken(String refreshToken) {
 		try {
 			return jwtProvider.getPayload(refreshToken);
