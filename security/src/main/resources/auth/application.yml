@@ -25,7 +25,3 @@ token:
     uri: '/tokens'
   cookie:
     key: 'refresh-token'
-
-logout:
-  redirect:
-    uri: '/logout'
