@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.server.Cookie.SameSite;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseCookie.ResponseCookieBuilder;
 import org.springframework.stereotype.Component;
 
 import gohigher.global.exception.GoHigherException;
@@ -33,7 +34,7 @@ public class RefreshTokenCookieProvider {
 			.build();
 	}
 
-	private ResponseCookie.ResponseCookieBuilder createTokenCookieBuilder(String value) {
+	private ResponseCookieBuilder createTokenCookieBuilder(String value) {
 		return ResponseCookie.from(refreshTokenKey, value)
 			.httpOnly(true)
 			.secure(true)
@@ -48,6 +49,12 @@ public class RefreshTokenCookieProvider {
 			.findAny()
 			.orElseThrow(() -> new GoHigherException(AuthErrorCode.EMPTY_REFRESH_TOKEN_COOKIE))
 			.getValue();
+	}
+
+	public ResponseCookie createInvalidCookie() {
+		return createTokenCookieBuilder("")
+			.maxAge(Duration.ofMillis(0))
+			.build();
 	}
 
 	private void validateCookiesNotEmpty(Cookie[] cookies) {

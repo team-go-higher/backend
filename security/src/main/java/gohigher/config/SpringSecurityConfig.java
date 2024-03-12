@@ -2,8 +2,6 @@ package gohigher.config;
 
 import static org.springframework.security.config.Customizer.*;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +24,6 @@ import gohigher.oauth2.handler.LogoutHandler;
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
-	private final List<String> allowedMethods = List.of("GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "OPTIONS",
-		"PATCH");
-
 	private final OauthUserService oauthUserService;
 	private final JwtAuthFilter jwtAuthFilter;
 	private final JwtExceptionFilter jwtExceptionFilter;
@@ -37,7 +32,6 @@ public class SpringSecurityConfig {
 	private final LogoutHandler logoutHandler;
 	private final String tokenRequestUri;
 	private final String tokenCookieKey;
-	private final String allowedOrigin;
 
 	public SpringSecurityConfig(OauthUserService oauthUserService, JwtAuthFilter jwtAuthFilter,
 		JwtExceptionFilter jwtExceptionFilter,
@@ -45,8 +39,7 @@ public class SpringSecurityConfig {
 		AuthenticationFailureHandler oAuth2LoginFailureHandler,
 		LogoutHandler logoutHandler,
 		@Value("${token.request.uri}") String tokenRequestUri,
-		@Value("${token.cookie.key}") String tokenCookieKey,
-		@Value("${cors-config.allowed-origin}") String allowedOrigin) {
+		@Value("${token.cookie.key}") String tokenCookieKey) {
 		this.oauthUserService = oauthUserService;
 		this.jwtAuthFilter = jwtAuthFilter;
 		this.jwtExceptionFilter = jwtExceptionFilter;
@@ -55,7 +48,6 @@ public class SpringSecurityConfig {
 		this.logoutHandler = logoutHandler;
 		this.tokenRequestUri = tokenRequestUri;
 		this.tokenCookieKey = tokenCookieKey;
-		this.allowedOrigin = allowedOrigin;
 	}
 
 	@Bean
@@ -79,8 +71,7 @@ public class SpringSecurityConfig {
 			.failureHandler(oAuth2LoginFailureHandler));
 
 		http.logout(logout -> logout.logoutUrl("/tokens/logout")
-			.logoutSuccessHandler(logoutHandler)
-			.deleteCookies(tokenCookieKey));
+			.logoutSuccessHandler(logoutHandler));
 
 		return http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class)
