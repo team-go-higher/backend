@@ -18,6 +18,14 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
+      - name: Set up MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          host port: 3306
+          container port: 3306
+          mysql database: 'gohigher'
+          mysql root password: 'password' }
+
       - name: Checkout source code
         uses: actions/checkout@v2
 
