@@ -19,10 +19,6 @@ dependencies {
     testFixturesAnnotationProcessor 'org.projectlombok:lombok'
 }
 
-test {
-    useJUnitPlatform()
-}
-
 bootJar {
     enabled = false
 }
