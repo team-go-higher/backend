@@ -29,4 +29,5 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    systemProperty "encryption-key", project.getProperties().get("encryption-key")
 }
