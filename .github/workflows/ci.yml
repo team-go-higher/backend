@@ -22,9 +22,9 @@ jobs:
         uses: mirromutth/mysql-action@v1.1
         with:
           host port: 3306
-          container port: 3306
           mysql database: 'gohigher'
-          mysql root password: 'password' }
+          mysql user: 'gohigher'
+          mysql password: 'password'
 
       - name: Checkout source code
         uses: actions/checkout@v2
