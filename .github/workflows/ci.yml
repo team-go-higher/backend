@@ -27,7 +27,7 @@ jobs:
           mysql password: 'password'
 
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Change gradlew permission
         run: sudo chmod 755 gradlew
