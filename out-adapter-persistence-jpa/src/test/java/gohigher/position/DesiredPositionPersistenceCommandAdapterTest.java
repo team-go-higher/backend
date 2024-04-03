@@ -12,13 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 
 import gohigher.fixtureConverter.PositionFixtureConverter;
 import gohigher.fixtureConverter.UserFixtureConvertor;
 import gohigher.position.entity.PositionJpaEntity;
 import gohigher.position.entity.PositionRepository;
-import gohigher.support.DatabaseCleanUp;
 import gohigher.user.DesiredPositionPersistenceCommandAdapter;
 import gohigher.user.UserFixture;
 import gohigher.user.entity.DesiredPositionJpaEntity;
@@ -29,36 +27,26 @@ import jakarta.persistence.EntityManager;
 
 @DisplayName("DesiredPositionPersistenceCommandAdapter 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(DatabaseCleanUp.class)
 @DataJpaTest
 class DesiredPositionPersistenceCommandAdapterTest {
-
-	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private PositionRepository positionRepository;
-
-	@Autowired
-	private DesiredPositionRepository desiredPositionRepository;
-
-	@Autowired
-	private EntityManager entityManager;
-
-	@Autowired
-	private DatabaseCleanUp databaseCleanUp;
-
-	private DesiredPositionPersistenceCommandAdapter desiredPositionPersistenceCommandAdapter;
 
 	private final UserJpaEntity azpi = UserFixtureConvertor.convertToUserEntity(UserFixture.AZPI.toDomain());
 	private final PositionJpaEntity developer = PositionFixtureConverter.convertToPositionEntity(
 		PositionFixture.DEVELOPER.toDomain());
 	private final PositionJpaEntity designer = PositionFixtureConverter.convertToPositionEntity(
 		PositionFixture.DESIGNER.toDomain());
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private PositionRepository positionRepository;
+	@Autowired
+	private DesiredPositionRepository desiredPositionRepository;
+	@Autowired
+	private EntityManager entityManager;
+	private DesiredPositionPersistenceCommandAdapter desiredPositionPersistenceCommandAdapter;
 
 	@BeforeEach
 	void setUp() {
-		databaseCleanUp.execute();
 		desiredPositionPersistenceCommandAdapter = new DesiredPositionPersistenceCommandAdapter(
 			userRepository, positionRepository, desiredPositionRepository);
 	}

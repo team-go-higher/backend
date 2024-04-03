@@ -4,36 +4,24 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 
-import gohigher.support.DatabaseCleanUp;
 import gohigher.user.auth.Provider;
 import gohigher.user.entity.UserJpaEntity;
 import gohigher.user.entity.UserRepository;
 
 @DisplayName("UserRepository 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(DatabaseCleanUp.class)
 @DataJpaTest
 public class UserRepositoryTest {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private DatabaseCleanUp databaseCleanUp;
-
-	@BeforeEach
-	void setUp() {
-		databaseCleanUp.execute();
-	}
 
 	@DisplayName("findByEmail 메서드는")
 	@Nested

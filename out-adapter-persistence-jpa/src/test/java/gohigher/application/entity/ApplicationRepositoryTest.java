@@ -22,18 +22,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 
 import gohigher.application.Application;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
-import gohigher.support.DatabaseCleanUp;
 
 @DisplayName("ApplicationRepository 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(DatabaseCleanUp.class)
 @DataJpaTest
 class ApplicationRepositoryTest {
 
@@ -45,14 +42,6 @@ class ApplicationRepositoryTest {
 
 	@Autowired
 	private TestEntityManager entityManager;
-
-	@Autowired
-	private DatabaseCleanUp databaseCleanUp;
-
-	@BeforeEach
-	void setUp() {
-		databaseCleanUp.execute();
-	}
 
 	public ApplicationJpaEntity saveApplicationAndProcesses(Long userId, Application application) {
 		ApplicationJpaEntity applicationEntity = applicationRepository.save(

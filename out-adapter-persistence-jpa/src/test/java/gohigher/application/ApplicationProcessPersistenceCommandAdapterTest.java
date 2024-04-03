@@ -10,14 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationProcessRepository;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
-import gohigher.support.DatabaseCleanUp;
 import gohigher.user.UserFixture;
 import gohigher.user.entity.UserJpaEntity;
 import gohigher.user.entity.UserRepository;
@@ -25,7 +23,6 @@ import jakarta.persistence.EntityManager;
 
 @DisplayName("ApplicationProcessPersistenceCommandAdapter 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(DatabaseCleanUp.class)
 @DataJpaTest
 class ApplicationProcessPersistenceCommandAdapterTest {
 
@@ -41,16 +38,12 @@ class ApplicationProcessPersistenceCommandAdapterTest {
 	@Autowired
 	private EntityManager entityManager;
 
-	@Autowired
-	private DatabaseCleanUp databaseCleanUp;
-
 	private ApplicationProcessPersistenceCommandAdapter applicationProcessPersistenceCommandAdapter;
 
 	private Long userId;
 
 	@BeforeEach
 	void setUp() {
-		databaseCleanUp.execute();
 		applicationProcessPersistenceCommandAdapter = new ApplicationProcessPersistenceCommandAdapter(
 			applicationRepository, applicationProcessRepository);
 		UserJpaEntity savedUser = userRepository.save(UserJpaEntity.from(UserFixture.AZPI.toDomain()));

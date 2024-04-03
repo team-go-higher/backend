@@ -308,7 +308,8 @@ class ApplicationPersistenceQueryAdapterTest {
 
 				// when
 				List<Application> applications =
-					applicationPersistenceQueryAdapter.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
+					applicationPersistenceQueryAdapter.findOnlyCurrentProcessByUserIdAndProcessType(userId,
+						processType);
 
 				// then
 				assertThat(applications.size()).isEqualTo(applicationJpaEntities.size());
