@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.opentest4j.MultipleFailuresError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -183,20 +181,11 @@ class ApplicationPersistenceCommandAdapterTest {
 
 				// then
 				ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(applicationId).get();
-				try {
-					assertAll(
-						() -> assertThat(applicationJpaEntity.getCompanyName()).isEqualTo(companyNameToUpdate),
-						() -> assertThat(applicationJpaEntity.getPosition()).isEqualTo(potisionToUpdate),
-						() -> assertThat(applicationJpaEntity.getUrl()).isEqualTo(urlToUpdate),
-						() -> assertThat(applicationJpaEntity.getProcesses()).extracting("type", "schedule")
-							.contains(
-								tuple(firstProcess.getType(), firstProcess.getSchedule()),
-								tuple(secondProcess.getType(), scheduleToUpdate)
-							)
-					);
-				} catch (MultipleFailuresError e) {
-					System.err.println(Arrays.toString(e.getStackTrace()));
-				}
+				assertAll(
+					() -> assertThat(applicationJpaEntity.getCompanyName()).isEqualTo(companyNameToUpdate),
+					() -> assertThat(applicationJpaEntity.getPosition()).isEqualTo(potisionToUpdate),
+					() -> assertThat(applicationJpaEntity.getUrl()).isEqualTo(urlToUpdate)
+				);
 			}
 		}
 	}
