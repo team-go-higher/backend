@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationProcessJpaEntity;
@@ -23,10 +24,12 @@ import gohigher.application.entity.ApplicationProcessRepository;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
+import gohigher.support.DatabaseCleanUp;
 import jakarta.persistence.EntityManager;
 
 @DisplayName("ApplicationPersistenceCommandAdapter 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(DatabaseCleanUp.class)
 @DataJpaTest
 class ApplicationPersistenceCommandAdapterTest {
 
@@ -46,8 +49,12 @@ class ApplicationPersistenceCommandAdapterTest {
 	@Autowired
 	private EntityManager entityManager;
 
+	@Autowired
+	private DatabaseCleanUp databaseCleanUp;
+
 	@BeforeEach
 	void setUp() {
+		databaseCleanUp.execute();
 		applicationPersistenceCommandAdapter =
 			new ApplicationPersistenceCommandAdapter(applicationRepository, applicationProcessRepository);
 	}
@@ -132,13 +139,13 @@ class ApplicationPersistenceCommandAdapterTest {
 		@Nested
 		class Context_with_changed_application_and_process {
 
-			private long applicationId;
-			private Application applicationToUpdate;
-			private Long processId;
 			private final String companyNameToUpdate = "new Naver";
 			private final String potisionToUpdate = "new position";
 			private final String urlToUpdate = "www.update.com";
 			private final LocalDateTime scheduleToUpdate = LocalDateTime.now().plusDays(10);
+			private long applicationId;
+			private Application applicationToUpdate;
+			private Long processId;
 
 			@BeforeEach
 			void setUp() {

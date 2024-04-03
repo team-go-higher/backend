@@ -22,15 +22,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 
 import gohigher.application.Application;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
+import gohigher.support.DatabaseCleanUp;
 
 @DisplayName("ApplicationRepository 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(DatabaseCleanUp.class)
 @DataJpaTest
 class ApplicationRepositoryTest {
 
@@ -42,6 +45,29 @@ class ApplicationRepositoryTest {
 
 	@Autowired
 	private TestEntityManager entityManager;
+
+	@Autowired
+	private DatabaseCleanUp databaseCleanUp;
+
+	@BeforeEach
+	void setUp() {
+		databaseCleanUp.execute();
+	}
+
+	public ApplicationJpaEntity saveApplicationAndProcesses(Long userId, Application application) {
+		ApplicationJpaEntity applicationEntity = applicationRepository.save(
+			convertToApplicationEntity(userId, application));
+
+		for (Process process : application.getProcesses()) {
+			ApplicationProcessJpaEntity applicationProcessJpaEntity = applicationProcessRepository.save(
+				convertToApplicationProcessEntity(applicationEntity, process,
+					application.getCurrentProcess() == process));
+
+			applicationEntity.addProcess(applicationProcessJpaEntity);
+		}
+
+		return applicationEntity;
+	}
 
 	@DisplayName("findByIdAndUserIdWithProcess 메소드는")
 	@Nested
@@ -311,6 +337,20 @@ class ApplicationRepositoryTest {
 	@Nested
 	class Describe_findOnlyWithCurrentProcessByUserId {
 
+		private ApplicationJpaEntity createDeletedApplication(Long userId) {
+			boolean deleted = true;
+
+			Application application = NAVER_APPLICATION.toDomain();
+			return new ApplicationJpaEntity(
+				application.getId(), userId, application.getCompanyName(), application.getTeam(),
+				application.getLocation(), application.getContact(), application.getPosition(),
+				application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
+				application.getEmploymentType(), application.getCareerRequirement(),
+				application.getRequiredCapability(), application.getPreferredQualification(), application.getUrl(),
+				null, null, deleted
+			);
+		}
+
 		@DisplayName("어플리케이션이 여러 채용 과정을 갖고 있어도")
 		@Nested
 		class Context_exist_application {
@@ -356,20 +396,6 @@ class ApplicationRepositoryTest {
 				// then
 				assertThat(applications).isEmpty();
 			}
-		}
-
-		private ApplicationJpaEntity createDeletedApplication(Long userId) {
-			boolean deleted = true;
-
-			Application application = NAVER_APPLICATION.toDomain();
-			return new ApplicationJpaEntity(
-				application.getId(), userId, application.getCompanyName(), application.getTeam(),
-				application.getLocation(), application.getContact(), application.getPosition(),
-				application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
-				application.getEmploymentType(), application.getCareerRequirement(),
-				application.getRequiredCapability(), application.getPreferredQualification(), application.getUrl(),
-				null, null, deleted
-			);
 		}
 	}
 
@@ -453,20 +479,5 @@ class ApplicationRepositoryTest {
 				);
 			}
 		}
-	}
-
-	public ApplicationJpaEntity saveApplicationAndProcesses(Long userId, Application application) {
-		ApplicationJpaEntity applicationEntity = applicationRepository.save(
-			convertToApplicationEntity(userId, application));
-
-		for (Process process : application.getProcesses()) {
-			ApplicationProcessJpaEntity applicationProcessJpaEntity = applicationProcessRepository.save(
-				convertToApplicationProcessEntity(applicationEntity, process,
-					application.getCurrentProcess() == process));
-
-			applicationEntity.addProcess(applicationProcessJpaEntity);
-		}
-
-		return applicationEntity;
 	}
 }

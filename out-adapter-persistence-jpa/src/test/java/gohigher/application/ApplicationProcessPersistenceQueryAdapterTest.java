@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationProcessJpaEntity;
@@ -22,9 +23,11 @@ import gohigher.application.entity.ApplicationProcessRepository;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
+import gohigher.support.DatabaseCleanUp;
 
 @DisplayName("ApplicationProcessPersistenceQueryAdapter 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(DatabaseCleanUp.class)
 @DataJpaTest
 class ApplicationProcessPersistenceQueryAdapterTest {
 
@@ -36,10 +39,14 @@ class ApplicationProcessPersistenceQueryAdapterTest {
 	@Autowired
 	private ApplicationProcessRepository applicationProcessRepository;
 
+	@Autowired
+	private DatabaseCleanUp databaseCleanUp;
+
 	private ApplicationProcessPersistenceQueryAdapter applicationProcessPersistenceQueryAdapter;
 
 	@BeforeEach
 	void setUp() {
+		databaseCleanUp.execute();
 		applicationProcessPersistenceQueryAdapter = new ApplicationProcessPersistenceQueryAdapter(
 			applicationProcessRepository);
 	}

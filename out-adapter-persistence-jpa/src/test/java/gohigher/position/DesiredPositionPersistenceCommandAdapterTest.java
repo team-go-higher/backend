@@ -12,11 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import gohigher.fixtureConverter.PositionFixtureConverter;
 import gohigher.fixtureConverter.UserFixtureConvertor;
 import gohigher.position.entity.PositionJpaEntity;
 import gohigher.position.entity.PositionRepository;
+import gohigher.support.DatabaseCleanUp;
 import gohigher.user.DesiredPositionPersistenceCommandAdapter;
 import gohigher.user.UserFixture;
 import gohigher.user.entity.DesiredPositionJpaEntity;
@@ -27,6 +29,7 @@ import jakarta.persistence.EntityManager;
 
 @DisplayName("DesiredPositionPersistenceCommandAdapter 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(DatabaseCleanUp.class)
 @DataJpaTest
 class DesiredPositionPersistenceCommandAdapterTest {
 
@@ -42,16 +45,20 @@ class DesiredPositionPersistenceCommandAdapterTest {
 	@Autowired
 	private EntityManager entityManager;
 
+	@Autowired
+	private DatabaseCleanUp databaseCleanUp;
+
 	private DesiredPositionPersistenceCommandAdapter desiredPositionPersistenceCommandAdapter;
 
-	private UserJpaEntity azpi = UserFixtureConvertor.convertToUserEntity(UserFixture.AZPI.toDomain());
-	private PositionJpaEntity developer = PositionFixtureConverter.convertToPositionEntity(
+	private final UserJpaEntity azpi = UserFixtureConvertor.convertToUserEntity(UserFixture.AZPI.toDomain());
+	private final PositionJpaEntity developer = PositionFixtureConverter.convertToPositionEntity(
 		PositionFixture.DEVELOPER.toDomain());
-	private PositionJpaEntity designer = PositionFixtureConverter.convertToPositionEntity(
+	private final PositionJpaEntity designer = PositionFixtureConverter.convertToPositionEntity(
 		PositionFixture.DESIGNER.toDomain());
 
 	@BeforeEach
 	void setUp() {
+		databaseCleanUp.execute();
 		desiredPositionPersistenceCommandAdapter = new DesiredPositionPersistenceCommandAdapter(
 			userRepository, positionRepository, desiredPositionRepository);
 	}

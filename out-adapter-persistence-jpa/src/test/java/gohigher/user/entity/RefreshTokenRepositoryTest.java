@@ -12,9 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
+
+import gohigher.support.DatabaseCleanUp;
 
 @DisplayName("RefreshTokenRepository 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(DatabaseCleanUp.class)
 @DataJpaTest
 class RefreshTokenRepositoryTest {
 
@@ -23,6 +27,14 @@ class RefreshTokenRepositoryTest {
 
 	@Autowired
 	private TestEntityManager entityManager;
+
+	@Autowired
+	private DatabaseCleanUp databaseCleanUp;
+
+	@BeforeEach
+	void setUp() {
+		databaseCleanUp.execute();
+	}
 
 	@DisplayName("updateValueByUserId 메서드는")
 	@Nested

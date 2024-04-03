@@ -12,13 +12,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import gohigher.position.entity.PositionJpaEntity;
 import gohigher.position.entity.PositionRepository;
+import gohigher.support.DatabaseCleanUp;
 import jakarta.persistence.EntityManager;
 
 @DisplayName("PositionPersistenceQueryAdapter 클래스의")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(DatabaseCleanUp.class)
 @DataJpaTest
 class PositionPersistenceQueryAdapterTest {
 
@@ -28,10 +31,14 @@ class PositionPersistenceQueryAdapterTest {
 	@Autowired
 	private EntityManager entityManager;
 
+	@Autowired
+	private DatabaseCleanUp databaseCleanUp;
+
 	private PositionPersistenceQueryAdapter positionPersistenceQueryAdapter;
 
 	@BeforeEach
 	void setUp() {
+		databaseCleanUp.execute();
 		positionPersistenceQueryAdapter = new PositionPersistenceQueryAdapter(positionRepository);
 	}
 
