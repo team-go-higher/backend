@@ -184,12 +184,12 @@ class ApplicationPersistenceCommandAdapterTest {
 				assertAll(
 					() -> assertThat(applicationJpaEntity.getCompanyName()).isEqualTo(companyNameToUpdate),
 					() -> assertThat(applicationJpaEntity.getPosition()).isEqualTo(potisionToUpdate),
-					() -> assertThat(applicationJpaEntity.getUrl()).isEqualTo(urlToUpdate)
-					// () -> assertThat(applicationJpaEntity.getProcesses()).extracting("type", "schedule")
-					// 	.contains(
-					// 		tuple(firstProcess.getType(), firstProcess.getSchedule()),
-					// 		tuple(secondProcess.getType(), scheduleToUpdate)
-					// 	)
+					() -> assertThat(applicationJpaEntity.getUrl()).isEqualTo(urlToUpdate),
+					() -> assertThat(applicationJpaEntity.getProcesses()).extracting("type", "schedule")
+						.contains(
+							tuple(firstProcess.getType(), firstProcess.getSchedule()),
+							tuple(secondProcess.getType(), scheduleToUpdate)
+						)
 				);
 			}
 		}
