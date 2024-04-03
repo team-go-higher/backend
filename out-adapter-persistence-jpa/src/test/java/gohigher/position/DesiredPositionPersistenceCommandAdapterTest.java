@@ -30,25 +30,20 @@ import jakarta.persistence.EntityManager;
 @DataJpaTest
 class DesiredPositionPersistenceCommandAdapterTest {
 
+	private final UserJpaEntity azpi = UserFixtureConvertor.convertToUserEntity(UserFixture.AZPI.toDomain());
+	private final PositionJpaEntity developer = PositionFixtureConverter.convertToPositionEntity(
+		PositionFixture.DEVELOPER.toDomain());
+	private final PositionJpaEntity designer = PositionFixtureConverter.convertToPositionEntity(
+		PositionFixture.DESIGNER.toDomain());
 	@Autowired
 	private UserRepository userRepository;
-
 	@Autowired
 	private PositionRepository positionRepository;
-
 	@Autowired
 	private DesiredPositionRepository desiredPositionRepository;
-
 	@Autowired
 	private EntityManager entityManager;
-
 	private DesiredPositionPersistenceCommandAdapter desiredPositionPersistenceCommandAdapter;
-
-	private UserJpaEntity azpi = UserFixtureConvertor.convertToUserEntity(UserFixture.AZPI.toDomain());
-	private PositionJpaEntity developer = PositionFixtureConverter.convertToPositionEntity(
-		PositionFixture.DEVELOPER.toDomain());
-	private PositionJpaEntity designer = PositionFixtureConverter.convertToPositionEntity(
-		PositionFixture.DESIGNER.toDomain());
 
 	@BeforeEach
 	void setUp() {

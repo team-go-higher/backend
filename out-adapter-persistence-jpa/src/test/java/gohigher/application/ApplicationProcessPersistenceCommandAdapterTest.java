@@ -35,10 +35,10 @@ class ApplicationProcessPersistenceCommandAdapterTest {
 	@Autowired
 	private ApplicationProcessRepository applicationProcessRepository;
 
-	private ApplicationProcessPersistenceCommandAdapter applicationProcessPersistenceCommandAdapter;
-
 	@Autowired
 	private EntityManager entityManager;
+
+	private ApplicationProcessPersistenceCommandAdapter applicationProcessPersistenceCommandAdapter;
 
 	private Long userId;
 

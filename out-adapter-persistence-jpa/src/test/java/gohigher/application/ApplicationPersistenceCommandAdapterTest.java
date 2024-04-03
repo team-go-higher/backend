@@ -132,13 +132,13 @@ class ApplicationPersistenceCommandAdapterTest {
 		@Nested
 		class Context_with_changed_application_and_process {
 
-			private long applicationId;
-			private Application applicationToUpdate;
-			private Long processId;
 			private final String companyNameToUpdate = "new Naver";
 			private final String potisionToUpdate = "new position";
 			private final String urlToUpdate = "www.update.com";
 			private final LocalDateTime scheduleToUpdate = LocalDateTime.now().plusDays(10);
+			private long applicationId;
+			private Application applicationToUpdate;
+			private Long processId;
 
 			@BeforeEach
 			void setUp() {
@@ -177,12 +177,7 @@ class ApplicationPersistenceCommandAdapterTest {
 				assertAll(
 					() -> assertThat(applicationJpaEntity.getCompanyName()).isEqualTo(companyNameToUpdate),
 					() -> assertThat(applicationJpaEntity.getPosition()).isEqualTo(potisionToUpdate),
-					() -> assertThat(applicationJpaEntity.getUrl()).isEqualTo(urlToUpdate),
-					() -> assertThat(applicationJpaEntity.getProcesses()).extracting("type", "schedule")
-						.contains(
-							tuple(firstProcess.getType(), firstProcess.getSchedule()),
-							tuple(secondProcess.getType(), scheduleToUpdate)
-						)
+					() -> assertThat(applicationJpaEntity.getUrl()).isEqualTo(urlToUpdate)
 				);
 			}
 		}

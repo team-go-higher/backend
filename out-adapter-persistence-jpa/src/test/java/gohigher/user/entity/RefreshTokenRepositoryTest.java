@@ -23,7 +23,7 @@ class RefreshTokenRepositoryTest {
 
 	@Autowired
 	private TestEntityManager entityManager;
-
+	
 	@DisplayName("updateValueByUserId 메서드는")
 	@Nested
 	class Describe_updateValueByUserId {

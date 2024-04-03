@@ -35,7 +35,7 @@ class ApplicationProcessPersistenceQueryAdapterTest {
 
 	@Autowired
 	private ApplicationProcessRepository applicationProcessRepository;
-
+	
 	private ApplicationProcessPersistenceQueryAdapter applicationProcessPersistenceQueryAdapter;
 
 	@BeforeEach
