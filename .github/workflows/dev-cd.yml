@@ -28,7 +28,7 @@ jobs:
         with:
           files: ./bootstrap/src/main/resources/application.yml
         env:
-          - encryption-key: ${{ secrets.ENCRYPTION_KEY }}
+          encryption-key: ${{ secrets.ENCRYPTION_KEY }}
 
       - name: Change gradlew permission
         run: sudo chmod 755 gradlew
