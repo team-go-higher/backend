@@ -24,11 +24,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set Encryption Key
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ./bootstrap/src/main/resources/application.yml
+        run: |
+          echo "encryption-key: $ENCRYPTION_KEY" >> $RESOURCE_PATH
         env:
-          encryption-key: ${{ secrets.ENCRYPTION_KEY }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          RESOURCE_PATH: './bootstrap/src/main/resources/application.yml'
 
       - name: Change gradlew permission
         run: sudo chmod 755 gradlew
