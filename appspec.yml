@@ -4,10 +4,12 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/gohigher
+
 permissions:
   - object: /home/ubuntu/gohigher/
     owner: ubuntu
     group: ubuntu
+
 hooks:
   AfterInstall:
     - location: scripts/deploy.sh
