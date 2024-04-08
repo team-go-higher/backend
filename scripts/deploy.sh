@@ -20,11 +20,11 @@ fuser -k -n tcp ${TEST_PORT}
 
 echo "> execute dev jar"
 cd bootstrap/build/libs
-nohup java -jar --spring.profiles.active=${DEV_PROFILE} ${JAR_FILE} 1>${DEV_LOG_FILE} 2>&1 &
+nohup java -jar -Dspring.profiles.active=${DEV_PROFILE} ${JAR_FILE} 1>${DEV_LOG_FILE} 2>&1 &
 
 echo "> execute test jar"
 mkdir ${TEST_FOLDER}
 mv ${JAR_FILE} /${TEST_FOLDER}
 cd test
-nohup java -jar --spring.profiles.active=${TEST_PROFILE} --server.port=${TEST_PORT} ${JAR_FILE} 1>${TEST_LOG_FILE} 2>&1 &
+nohup java -jar -Dspring.profiles.active=${TEST_PROFILE} -Dserver.port=${TEST_PORT} ${JAR_FILE} 1>${TEST_LOG_FILE} 2>&1 &
 
