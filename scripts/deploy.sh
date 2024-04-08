@@ -4,7 +4,7 @@ TEST_PORT=8081
 DEV_PROFILE="dev"
 TEST_PROFILE="test"
 
-JAR_FILE="bootstrap-0.0.1-SNAPSHOT.jar"성
+JAR_FILE="bootstrap-0.0.1-SNAPSHOT.jar"
 TEST_FOLDER="test"
 DEV_LOG_FILE="gohigher.out"
 TEST_LOG_FILE="gohigher-test.out"
