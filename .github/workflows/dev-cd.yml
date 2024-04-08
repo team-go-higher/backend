@@ -33,7 +33,7 @@ jobs:
       - name: Change gradlew permission
         run: sudo chmod 755 gradlew
 
-      - name: Build with Gradle without test
+      - name: Make Jar File
         run: ./gradlew bootJar
 
       - name: Make Zip File

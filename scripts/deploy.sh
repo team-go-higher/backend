@@ -21,6 +21,7 @@ fuser -k -n tcp ${TEST_PORT}
 echo "> execute dev jar"
 cd bootstrap/build/libs
 nohup java -jar -Dspring.profiles.active=${DEV_PROFILE} ${JAR_FILE} 1>${DEV_LOG_FILE} 2>&1 &
+sleep 3
 
 echo "> execute test jar"
 mkdir ${TEST_FOLDER}
