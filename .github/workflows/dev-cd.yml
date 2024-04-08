@@ -34,7 +34,7 @@ jobs:
         run: sudo chmod 755 gradlew
 
       - name: Build with Gradle without test
-        run: ./gradlew clean build -x test
+        run: ./gradlew bootJar
 
       - name: Make Zip File
         run: zip -qq -r ./$GITHUB_SHA.zip .
