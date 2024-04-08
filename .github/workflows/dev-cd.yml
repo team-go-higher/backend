@@ -35,3 +35,7 @@ jobs:
 
       - name: Build with Gradle without test
         run: ./gradlew clean build -x test
+
+      - name: Make Zip File
+        run: zip -qq -r ./$GITHUB_SHA.zip .
+        shell: bash
