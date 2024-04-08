@@ -28,4 +28,3 @@ mkdir ${TEST_FOLDER}
 sudo mv ${JAR_FILE} ${TEST_FOLDER}/
 cd ${TEST_FOLDER}
 nohup java -jar -Dspring.profiles.active=${TEST_PROFILE} -Dserver.port=${TEST_PORT} ${JAR_FILE} 1>${TEST_LOG_FILE} 2>&1 &
-
