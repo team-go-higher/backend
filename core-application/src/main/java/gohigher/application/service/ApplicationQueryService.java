@@ -43,7 +43,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	public PagingResponse<MyApplicationResponse> findAllByUserId(Long userId, PagingRequest pagingRequest, MyApplicationRequest request) {
 		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findAllByUserId(
 			userId, pagingRequest.getPage(), pagingRequest.getSize());
-		List<MyApplicationResponse> responses = findMyApplicationsByUserId(pagingContainer.getContent());
+		List<MyApplicationResponse> responses = findApplicationsByUserId(pagingContainer.getContent(), MyApplicationResponse::of);
 		return new PagingResponse<>(pagingContainer.hasNext(), responses);
 	}
 
@@ -78,7 +78,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	public PagingResponse<UnscheduledApplicationResponse> findUnscheduled(Long userId, PagingRequest request) {
 		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findUnscheduledByUserId(
 			userId, request.getPage(), request.getSize());
-		List<UnscheduledApplicationResponse> responses = findUnscheduledByUserId(pagingContainer.getContent());
+		List<UnscheduledApplicationResponse> responses = findApplicationsByUserId(pagingContainer.getContent(), UnscheduledApplicationResponse::of);
 		return new PagingResponse<>(pagingContainer.hasNext(), responses);
 	}
 
@@ -96,16 +96,16 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.toList();
 	}
 
-	private List<UnscheduledApplicationResponse> findUnscheduledByUserId(List<Application> applications) {
+	private <T> List<T> findApplicationsByUserId(List<Application> applications, BiFunction<Application, Process, T> responseMapper) {
 		return applications.stream()
-			.flatMap(application -> extractApplicationResponse(application, UnscheduledApplicationResponse::of))
+			.flatMap(application -> extractApplicationResponse(application, responseMapper))
 			.toList();
 	}
 
-	private List<MyApplicationResponse> findMyApplicationsByUserId(List<Application> applications) {
-		return applications.stream()
-			.flatMap(application -> extractApplicationResponse(application, MyApplicationResponse::of))
-			.toList();
+	private <T> Stream<T> extractApplicationResponse(Application application, BiFunction<Application, Process, T> responseMapper) {
+		return application.getProcesses()
+			.stream()
+			.map(process -> responseMapper.apply(application, process));
 	}
 
 	private Stream<CalendarApplicationResponse> extractCalendarResponses(Application application) {
@@ -119,12 +119,6 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.stream()
 			.map(ProcessResponse::from)
 			.map(processResponse -> DateApplicationResponse.of(application, processResponse));
-	}
-
-	private <T> Stream<T> extractApplicationResponse(Application application, BiFunction<Application, Process, T> responseMapper) {
-		return application.getProcesses()
-			.stream()
-			.map(process -> responseMapper.apply(application, process));
 	}
 
 	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<Application> applications) {
