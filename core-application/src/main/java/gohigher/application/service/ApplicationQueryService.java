@@ -18,6 +18,8 @@ import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.in.KanbanByProcessApplicationResponse;
+import gohigher.application.port.in.MyApplicationRequest;
+import gohigher.application.port.in.MyApplicationResponse;
 import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
@@ -34,6 +36,14 @@ import lombok.RequiredArgsConstructor;
 public class ApplicationQueryService implements ApplicationQueryPort {
 
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
+
+	@Override
+	public PagingResponse<MyApplicationResponse> findAllByUserId(Long userId, PagingRequest pagingRequest, MyApplicationRequest request) {
+		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findAllByUserId(
+			userId, pagingRequest.getPage(), pagingRequest.getSize());
+		List<MyApplicationResponse> responses = findMyApplicationsByUserId(pagingContainer.getContent());
+		return new PagingResponse<>(pagingContainer.hasNext(), responses);
+	}
 
 	@Override
 	public ApplicationResponse findById(Long userId, Long applicationId) {
@@ -90,6 +100,12 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.toList();
 	}
 
+	private List<MyApplicationResponse> findMyApplicationsByUserId(List<Application> applications) {
+		return applications.stream()
+			.flatMap(this::extractMyApplicationResponse)
+			.toList();
+	}
+
 	private Stream<CalendarApplicationResponse> extractCalendarResponses(Application application) {
 		return application.getProcesses()
 			.stream()
@@ -107,6 +123,12 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 		return application.getProcesses()
 			.stream()
 			.map(process -> UnscheduledApplicationResponse.of(application, process));
+	}
+
+	private Stream<MyApplicationResponse> extractMyApplicationResponse(Application application) {
+		return application.getProcesses()
+			.stream()
+			.map(process -> MyApplicationResponse.of(application, process));
 	}
 
 	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<Application> applications) {

@@ -13,6 +13,13 @@ import gohigher.common.ProcessType;
 
 public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntity, Long> {
 
+	@Query("SELECT a FROM ApplicationJpaEntity a "
+		+ "JOIN FETCH a.processes p "
+		+ "WHERE a.userId = :userId "
+		+ "AND a.deleted = false "
+		+ "ORDER BY p.id DESC ")
+	Slice<ApplicationJpaEntity> findAllByUserId(Long userId, Pageable pageable);
+
 	boolean existsByIdAndUserId(Long id, Long userId);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "

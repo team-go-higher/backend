@@ -10,6 +10,8 @@ import gohigher.pagination.PagingContainer;
 
 public interface ApplicationPersistenceQueryPort {
 
+	PagingContainer<Application> findAllByUserId(Long userId, int page, int size);
+
 	boolean existsByIdAndUserId(Long id, Long userId);
 
 	Optional<Application> findByIdAndUserId(Long id, Long userId);
