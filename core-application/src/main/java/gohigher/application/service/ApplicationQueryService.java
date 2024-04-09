@@ -2,6 +2,7 @@ package gohigher.application.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,6 +26,7 @@ import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.ProcessResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
+import gohigher.common.Process;
 import gohigher.common.ProcessType;
 import gohigher.global.exception.GoHigherException;
 import gohigher.pagination.PagingContainer;
@@ -96,13 +98,13 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	private List<UnscheduledApplicationResponse> findUnscheduledByUserId(List<Application> applications) {
 		return applications.stream()
-			.flatMap(this::extractUnscheduledApplicationResponse)
+			.flatMap(application -> extractApplicationResponse(application, UnscheduledApplicationResponse::of))
 			.toList();
 	}
 
 	private List<MyApplicationResponse> findMyApplicationsByUserId(List<Application> applications) {
 		return applications.stream()
-			.flatMap(this::extractMyApplicationResponse)
+			.flatMap(application -> extractApplicationResponse(application, MyApplicationResponse::of))
 			.toList();
 	}
 
@@ -119,16 +121,10 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.map(processResponse -> DateApplicationResponse.of(application, processResponse));
 	}
 
-	private Stream<UnscheduledApplicationResponse> extractUnscheduledApplicationResponse(Application application) {
+	private <T> Stream<T> extractApplicationResponse(Application application, BiFunction<Application, Process, T> responseMapper) {
 		return application.getProcesses()
 			.stream()
-			.map(process -> UnscheduledApplicationResponse.of(application, process));
-	}
-
-	private Stream<MyApplicationResponse> extractMyApplicationResponse(Application application) {
-		return application.getProcesses()
-			.stream()
-			.map(process -> MyApplicationResponse.of(application, process));
+			.map(process -> responseMapper.apply(application, process));
 	}
 
 	private List<KanbanApplicationResponse> createKanbanApplicationResponses(List<Application> applications) {
