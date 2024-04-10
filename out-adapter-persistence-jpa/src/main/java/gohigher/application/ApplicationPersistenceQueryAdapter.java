@@ -25,9 +25,11 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	private final ApplicationRepository applicationRepository;
 
 	@Override
-	public PagingContainer<Application> findAllByUserId(Long userId, int page, int size) {
+	public PagingContainer<Application> findAllByUserId(Long userId, int page, int size, String sort,
+		List<String> process, List<String> scheduled, String companyName) {
 		Slice<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findAllByUserId(userId,
-			PageRequest.of(page - DIFFERENCES_PAGES_AND_DB_INDEX, size));
+			PageRequest.of(page - DIFFERENCES_PAGES_AND_DB_INDEX, size),
+			sort, process, scheduled, companyName);
 		return convertToPagingContainer(applicationJpaEntities);
 	}
 
