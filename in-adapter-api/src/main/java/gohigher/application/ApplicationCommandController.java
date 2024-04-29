@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gohigher.application.port.in.ApplicationCommandPort;
+import gohigher.application.port.in.ApplicationVisibleRequest;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SimpleApplicationUpdateRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationUpdateRequest;
+import gohigher.application.port.in.UpdatedVisibilityResponse;
 import gohigher.controller.response.GohigherResponse;
 import gohigher.support.auth.Login;
 import jakarta.validation.Valid;
@@ -67,7 +69,15 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 		return ResponseEntity.ok(GohigherResponse.success(null));
 	}
 
+	@PatchMapping("/{applicationId}")
+	public ResponseEntity<GohigherResponse<UpdatedVisibilityResponse>> updateVisible(@Login Long userId,
+		@PathVariable Long applicationId, @RequestBody @Valid ApplicationVisibleRequest request) {
+		UpdatedVisibilityResponse response = applicationCommandPort.updateVisible(userId, applicationId, request);
+		return ResponseEntity.ok(GohigherResponse.success(response));
+	}
+
 	@DeleteMapping("/{applicationId}")
+
 	public ResponseEntity<GohigherResponse<Void>> deleteApplication(@Login Long userId,
 		@PathVariable Long applicationId) {
 		applicationCommandPort.deleteApplication(userId, applicationId);

@@ -8,12 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 import gohigher.application.Application;
 import gohigher.application.ApplicationErrorCode;
 import gohigher.application.port.in.ApplicationCommandPort;
+import gohigher.application.port.in.ApplicationVisibleRequest;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SimpleApplicationUpdateRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationUpdateRequest;
+import gohigher.application.port.in.UpdatedVisibilityResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
@@ -74,6 +76,11 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 	public void deleteApplication(Long userId, Long applicationId) {
 		validateNotFound(userId, applicationId);
 		applicationPersistenceCommandPort.delete(applicationId);
+	}
+
+	@Override
+	public UpdatedVisibilityResponse updateVisible(Long userId, Long applicationId, ApplicationVisibleRequest request) {
+		return null;
 	}
 
 	private void validateNotFound(Long userId, Long applicationId) {
