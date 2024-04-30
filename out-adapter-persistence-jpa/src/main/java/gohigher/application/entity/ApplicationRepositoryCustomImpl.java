@@ -48,7 +48,7 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
                 eqUserId(userId),
                 applicationProcessJpaEntity.application.deleted.eq(false),
                 inProcessType(process),
-                applicationProcessJpaEntity.application.companyName.like(companyName)
+                containsCompanyName(companyName)
             )
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize() + 1)
@@ -63,6 +63,13 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
         }
 
         return new SliceImpl<>(applications, pageable, hasNext);
+    }
+
+    private BooleanExpression containsCompanyName(String companyName) {
+        if (companyName == null) {
+            companyName = "";
+        }
+        return applicationProcessJpaEntity.application.companyName.contains(companyName);
     }
 
     private BooleanExpression eqUserId(Long userId) {
