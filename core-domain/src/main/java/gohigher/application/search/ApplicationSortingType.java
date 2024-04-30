@@ -12,8 +12,8 @@ import lombok.RequiredArgsConstructor;
 public enum ApplicationSortingType {
 
     CREATED("created"),
-    SCHEDULED("scheduled"),
-    RE_SCHEDULED("re-scheduled"),
+    PROCESS_TYPE("processType"),
+    REVERSE_PROCESS_TYPE("reverseProcessType"),
     CLOSING("closing"),
     ;
 

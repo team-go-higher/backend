@@ -95,7 +95,7 @@ class ApplicationRepositoryCustomImplTest {
             @DisplayName("전형일 오름차순으로 정렬되어 조회한다.")
             @Test
             void it_returns_asc_scheduled() {
-                ApplicationSortingType sortingType = ApplicationSortingType.SCHEDULED;
+                ApplicationSortingType sortingType = ApplicationSortingType.PROCESS_TYPE;
 
                 Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
                     userId, pageRequest, sortingType, List.of(), null, null);
@@ -116,7 +116,7 @@ class ApplicationRepositoryCustomImplTest {
             @DisplayName("전형일 내림차순으로 정렬되어 조회한다.")
             @Test
             void it_returns_desc_scheduled() {
-                ApplicationSortingType sortingType = ApplicationSortingType.RE_SCHEDULED;
+                ApplicationSortingType sortingType = ApplicationSortingType.REVERSE_PROCESS_TYPE;
 
                 Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
                     userId, pageRequest, sortingType, List.of(), null, null);

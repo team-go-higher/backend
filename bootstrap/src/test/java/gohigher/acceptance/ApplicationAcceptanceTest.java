@@ -25,7 +25,7 @@ public class ApplicationAcceptanceTest extends AcceptanceTest {
 		// given
 		int page = 1;
 		int size = 10;
-		String sort = "scheduled";
+		String sort = "processType";
 		String process1 = ProcessType.TO_APPLY.name();
 		String process2 = ProcessType.DOCUMENT.name();
 		String companyName = "카카오";

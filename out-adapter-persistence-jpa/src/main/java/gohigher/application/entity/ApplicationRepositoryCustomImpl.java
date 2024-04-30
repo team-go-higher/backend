@@ -89,8 +89,8 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
     private OrderSpecifier<?> selectOrderSpecifierAboutFindAll(ApplicationSortingType sortingType) {
         return switch (sortingType) {
             case CREATED -> applicationProcessJpaEntity.id.desc();
-            case SCHEDULED -> applicationProcessJpaEntity.schedule.asc();
-            case RE_SCHEDULED -> applicationProcessJpaEntity.schedule.desc();
+            case PROCESS_TYPE -> applicationProcessJpaEntity.schedule.asc();
+            case REVERSE_PROCESS_TYPE -> applicationProcessJpaEntity.schedule.desc();
             case CLOSING -> applicationProcessJpaEntity.id.asc();
         };
     }
