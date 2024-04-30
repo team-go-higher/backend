@@ -57,6 +57,7 @@ public class ApplicationJpaEntity {
 	private String preferredQualification;
 	private String url;
 
+	@Builder.Default
 	@OneToMany(mappedBy = "application")
 	private List<ApplicationProcessJpaEntity> processes = new ArrayList<>();
 
