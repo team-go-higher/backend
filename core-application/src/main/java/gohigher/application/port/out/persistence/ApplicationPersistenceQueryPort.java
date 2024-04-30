@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import gohigher.application.Application;
+import gohigher.application.search.ApplicationSortingType;
 import gohigher.common.ProcessType;
 import gohigher.pagination.PagingContainer;
 
 public interface ApplicationPersistenceQueryPort {
 
-	PagingContainer<Application> findAllByUserId(Long userId, int page, int size, String sort, List<String> process,
-		List<String> scheduled, String companyName);
+	PagingContainer<Application> findAllByUserId(Long userId, int page, int size, ApplicationSortingType sortingType,
+		List<ProcessType> process, List<String> scheduled, String companyName);
 
 	boolean existsByIdAndUserId(Long id, Long userId);
 

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
+import gohigher.application.search.ApplicationSortingType;
 import gohigher.common.ProcessType;
 import gohigher.pagination.PagingContainer;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +26,12 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	private final ApplicationRepository applicationRepository;
 
 	@Override
-	public PagingContainer<Application> findAllByUserId(Long userId, int page, int size, String sort,
-		List<String> process, List<String> scheduled, String companyName) {
+	public PagingContainer<Application> findAllByUserId(Long userId, int page, int size, ApplicationSortingType sortingType,
+		List<ProcessType> process, List<String> scheduled, String companyName) {
 		Slice<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findAllByUserId(userId,
 			PageRequest.of(page - DIFFERENCES_PAGES_AND_DB_INDEX, size),
-			sort, process, scheduled, companyName);
+			sortingType, process, scheduled, companyName);
+
 		return convertToPagingContainer(applicationJpaEntities);
 	}
 

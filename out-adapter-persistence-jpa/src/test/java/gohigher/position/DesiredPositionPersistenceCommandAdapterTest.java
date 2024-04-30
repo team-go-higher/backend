@@ -10,9 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import gohigher.JpaQueryTest;
 import gohigher.fixtureConverter.PositionFixtureConverter;
 import gohigher.fixtureConverter.UserFixtureConvertor;
 import gohigher.position.entity.PositionJpaEntity;
@@ -26,8 +25,7 @@ import gohigher.user.entity.UserRepository;
 import jakarta.persistence.EntityManager;
 
 @DisplayName("DesiredPositionPersistenceCommandAdapter 클래스의")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DataJpaTest
+@JpaQueryTest
 class DesiredPositionPersistenceCommandAdapterTest {
 
 	private final UserJpaEntity azpi = UserFixtureConvertor.convertToUserEntity(UserFixture.AZPI.toDomain());

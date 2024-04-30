@@ -8,16 +8,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import gohigher.JpaQueryTest;
 import gohigher.user.auth.Provider;
 import gohigher.user.entity.UserJpaEntity;
 import gohigher.user.entity.UserRepository;
 
 @DisplayName("UserRepository 클래스의")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DataJpaTest
+@JpaQueryTest
 public class UserRepositoryTest {
 
 	@Autowired

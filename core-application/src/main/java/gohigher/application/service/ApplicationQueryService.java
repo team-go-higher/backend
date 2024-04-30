@@ -26,6 +26,7 @@ import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.ProcessResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
+import gohigher.application.search.ApplicationSortingType;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
 import gohigher.global.exception.GoHigherException;
@@ -43,7 +44,8 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	public PagingResponse<MyApplicationResponse> findAllByUserId(Long userId, PagingRequest pagingRequest, MyApplicationRequest request) {
 		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findAllByUserId(
 			userId, pagingRequest.getPage(), pagingRequest.getSize(),
-			request.getSort(), request.getProcess(), request.getScheduled(), request.getCompanyName());
+			ApplicationSortingType.from(request.getSort()),
+			ProcessType.from(request.getProcess()), request.getScheduled(), request.getCompanyName());
 		List<MyApplicationResponse> responses = findApplicationsByUserId(pagingContainer.getContent(), MyApplicationResponse::of);
 		return new PagingResponse<>(pagingContainer.hasNext(), responses);
 	}
