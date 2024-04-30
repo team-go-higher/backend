@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ApplicationSortingType {
 
-    CREATED(null),
+    CREATED("created"),
     SCHEDULED("scheduled"),
     RE_SCHEDULED("re-scheduled"),
     CLOSING("closing"),

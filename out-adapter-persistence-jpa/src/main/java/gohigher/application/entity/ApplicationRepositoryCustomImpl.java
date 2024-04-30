@@ -45,7 +45,7 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
             .from(applicationProcessJpaEntity)
             .join(applicationProcessJpaEntity.application, applicationJpaEntity)
             .where(
-                applicationProcessJpaEntity.application.userId.eq(userId),
+                eqUserId(userId),
                 applicationProcessJpaEntity.application.deleted.eq(false),
                 inProcessType(process)
             )
@@ -62,6 +62,13 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
         }
 
         return new SliceImpl<>(applications, pageable, hasNext);
+    }
+
+    private BooleanExpression eqUserId(Long userId) {
+        if (userId == null) {
+            return applicationProcessJpaEntity.application.userId.isNull();
+        }
+        return applicationProcessJpaEntity.application.userId.eq(userId);
     }
 
     private BooleanExpression inProcessType(List<ProcessType> process) {
