@@ -47,7 +47,8 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
             .where(
                 eqUserId(userId),
                 applicationProcessJpaEntity.application.deleted.eq(false),
-                inProcessType(process)
+                inProcessType(process),
+                applicationProcessJpaEntity.application.companyName.like(companyName)
             )
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize() + 1)

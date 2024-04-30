@@ -223,7 +223,15 @@ class ApplicationRepositoryCustomImplTest {
             @DisplayName("해당 회사명을 가지는 전형 목록만 조회한다.")
             @Test
             void it_returns_contained_applications_company_name() {
+                String companyName = naverApplicationEntity.getCompanyName();
 
+                Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
+                    userId, pageRequest, ApplicationSortingType.CREATED, List.of(), null, companyName);
+
+                List<Long> ids = applications.getContent().stream()
+                    .map(ApplicationJpaEntity::getId)
+                    .toList();
+                assertThat(ids).contains(naverApplicationEntity.getId());
             }
         }
     }
