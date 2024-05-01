@@ -47,6 +47,7 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
             .where(
                 eqUserId(userId),
                 applicationProcessJpaEntity.application.deleted.eq(false),
+                applicationProcessJpaEntity.isCurrent.eq(true),
                 inProcessType(process),
                 containsCompanyName(companyName)
             )

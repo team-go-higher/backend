@@ -2,6 +2,7 @@ package gohigher.application.entity;
 
 import static gohigher.application.ApplicationFixture.COUPANG_APPLICATION;
 import static gohigher.application.ApplicationFixture.KAKAO_APPLICATION;
+import static gohigher.application.ApplicationFixture.LINE_APPLICATION;
 import static gohigher.application.ApplicationFixture.NAVER_APPLICATION;
 import static gohigher.application.ProcessFixture.DOCUMENT;
 import static gohigher.application.ProcessFixture.TEST;
@@ -65,6 +66,28 @@ class ApplicationRepositoryCustomImplTest {
 
             Application coupangApplication = COUPANG_APPLICATION.toDomain(TEST.toDomainWithSchedule(today));
             coupangApplicationEntity = saveApplicationAndProcesses(userId, coupangApplication);
+        }
+
+        @DisplayName("조회를 요청할 경우")
+        @Nested
+        class Context_request {
+
+            @DisplayName("삭제되지 않은 현재 프로세스 전형을 조회한다.")
+            @Test
+            void it_returns_processes() {
+                Application deletedApplication = LINE_APPLICATION.toDomain();
+                ApplicationJpaEntity deletedApplicationJpaEntity = saveApplicationAndProcesses(userId, deletedApplication);
+                deletedApplicationJpaEntity.delete();
+
+                Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
+                    userId, pageRequest, ApplicationSortingType.CREATED, List.of(), null, null);
+
+                assertAll(
+                    () -> assertThat(applications.getContent()).hasSizeGreaterThan(1),
+                    () -> assertThat(applications.getContent().get(0).getProcesses()).hasSize(1),
+                    () -> assertThat(applications.getContent()).doesNotContain(deletedApplicationJpaEntity)
+                );
+            }
         }
 
         @DisplayName("정렬 기준을 생략할 경우")
