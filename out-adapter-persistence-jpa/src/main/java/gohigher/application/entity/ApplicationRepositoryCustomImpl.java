@@ -28,7 +28,7 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
 
     @Override
     public Slice<ApplicationJpaEntity> findAllByUserId(Long userId, Pageable pageable, ApplicationSortingType sortingType,
-        List<ProcessType> process, List<String> scheduled, String companyName) {
+        List<ProcessType> process, List<Boolean> scheduled, String companyName) {
 
         JPAQuery<ProcessWithApplicationResponse> query = jpaQueryFactory
             .select(Projections.bean(

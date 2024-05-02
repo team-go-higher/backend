@@ -80,7 +80,7 @@ class ApplicationRepositoryCustomImplTest {
                 deletedApplicationJpaEntity.delete();
 
                 Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-                    userId, pageRequest, ApplicationSortingType.CREATED, List.of(), null, null);
+                    userId, pageRequest, ApplicationSortingType.CREATED, List.of(), List.of(), null);
 
                 assertAll(
                     () -> assertThat(applications.getContent()).hasSizeGreaterThan(1),
@@ -100,7 +100,7 @@ class ApplicationRepositoryCustomImplTest {
                 ApplicationSortingType sortingType = ApplicationSortingType.CREATED;
 
                 Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-                    userId, pageRequest, sortingType, List.of(), null, null);
+                    userId, pageRequest, sortingType, List.of(), List.of(), null);
 
                 assertAll(
                     () -> assertThat(applications.getNumberOfElements()).isEqualTo(3),
@@ -121,7 +121,7 @@ class ApplicationRepositoryCustomImplTest {
                 ApplicationSortingType sortingType = ApplicationSortingType.PROCESS_TYPE;
 
                 Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-                    userId, pageRequest, sortingType, List.of(), null, null);
+                    userId, pageRequest, sortingType, List.of(), List.of(), null);
 
                 assertAll(
                     () -> assertThat(applications.getNumberOfElements()).isEqualTo(3),
@@ -142,7 +142,7 @@ class ApplicationRepositoryCustomImplTest {
                 ApplicationSortingType sortingType = ApplicationSortingType.REVERSE_PROCESS_TYPE;
 
                 Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-                    userId, pageRequest, sortingType, List.of(), null, null);
+                    userId, pageRequest, sortingType, List.of(), List.of(), null);
 
                 assertAll(
                     () -> assertThat(applications.getNumberOfElements()).isEqualTo(3),
@@ -184,7 +184,7 @@ class ApplicationRepositoryCustomImplTest {
                 List<ProcessType> processTypes = List.of();
 
                 Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-                    userId, pageRequest, ApplicationSortingType.CREATED, processTypes, null, null);
+                    userId, pageRequest, ApplicationSortingType.CREATED, processTypes, List.of(), null);
 
                 List<Long> ids = applications.getContent().stream()
                     .map(ApplicationJpaEntity::getId)
@@ -208,7 +208,7 @@ class ApplicationRepositoryCustomImplTest {
                 ApplicationJpaEntity applicationJpaEntity = saveApplicationAndProcesses(userId, naverApplication);
 
                 Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-                    userId, pageRequest, ApplicationSortingType.CREATED, processTypes, null, null);
+                    userId, pageRequest, ApplicationSortingType.CREATED, processTypes, List.of(), null);
 
                 List<Long> ids = applications.getContent().stream()
                     .map(ApplicationJpaEntity::getId)
@@ -249,7 +249,7 @@ class ApplicationRepositoryCustomImplTest {
                 String companyName = naverApplicationEntity.getCompanyName();
 
                 Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-                    userId, pageRequest, ApplicationSortingType.CREATED, List.of(), null, companyName);
+                    userId, pageRequest, ApplicationSortingType.CREATED, List.of(), List.of(), companyName);
 
                 List<Long> ids = applications.getContent().stream()
                     .map(ApplicationJpaEntity::getId)
