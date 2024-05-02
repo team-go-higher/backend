@@ -40,6 +40,7 @@ subprojects {
     tasks.named('test') {
         useJUnitPlatform()
         jvmArgs '-Xshare:off'
+        systemProperty "encryption-key", System.getProperties().get("encryption-key")
     }
 }
 
