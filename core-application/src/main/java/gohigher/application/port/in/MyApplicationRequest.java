@@ -13,6 +13,6 @@ public class MyApplicationRequest {
 
     private final String sort;
     private final List<String> process;
-    private final List<Boolean> scheduled;
+    private final List<Boolean> completed;
     private final String companyName;
 }

@@ -12,7 +12,7 @@ import gohigher.pagination.PagingContainer;
 public interface ApplicationPersistenceQueryPort {
 
 	PagingContainer<Application> findAllByUserId(Long userId, int page, int size, ApplicationSortingType sortingType,
-		List<ProcessType> process, List<Boolean> scheduled, String companyName);
+		List<ProcessType> process, List<Boolean> completed, String companyName);
 
 	boolean existsByIdAndUserId(Long id, Long userId);
 

@@ -45,7 +45,7 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findAllByUserId(
 			userId, pagingRequest.getPage(), pagingRequest.getSize(),
 			ApplicationSortingType.from(request.getSort()),
-			ProcessType.from(request.getProcess()), request.getScheduled(), request.getCompanyName());
+			ProcessType.from(request.getProcess()), request.getCompleted(), request.getCompanyName());
 		List<MyApplicationResponse> responses = findApplicationsByUserId(pagingContainer.getContent(), MyApplicationResponse::of);
 		return new PagingResponse<>(pagingContainer.hasNext(), responses);
 	}

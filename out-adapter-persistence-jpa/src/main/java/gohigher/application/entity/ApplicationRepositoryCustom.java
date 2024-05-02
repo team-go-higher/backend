@@ -11,5 +11,5 @@ import gohigher.common.ProcessType;
 public interface ApplicationRepositoryCustom {
 
     Slice<ApplicationJpaEntity> findAllByUserId(Long userId, Pageable pageable, ApplicationSortingType sortingType,
-        List<ProcessType> process, List<Boolean> scheduled, String companyName);
+        List<ProcessType> process, List<Boolean> completed, String companyName);
 }
