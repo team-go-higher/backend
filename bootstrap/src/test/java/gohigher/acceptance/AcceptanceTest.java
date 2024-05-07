@@ -89,7 +89,7 @@ public class AcceptanceTest {
 			.body(requestBody)
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.accept(MediaType.APPLICATION_JSON_VALUE)
-			.when().put(uri)
+			.when().patch(uri)
 			.then().log().all();
 	}
 

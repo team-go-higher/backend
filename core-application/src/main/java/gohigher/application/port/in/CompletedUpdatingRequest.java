@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ApplicationVisibleRequest {
+public class CompletedUpdatingRequest {
 
 	@NotNull
 	private Boolean isCompleted;

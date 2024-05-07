@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import gohigher.application.port.in.ApplicationVisibleRequest;
+import gohigher.application.port.in.CompletedUpdatingRequest;
 import gohigher.application.port.in.SimpleApplicationProcessRequest;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationProcessUpdateRequest;
@@ -79,18 +79,18 @@ public class ApplicationAcceptanceTest extends AcceptanceTest {
 
 	@DisplayName("지원서 스위치 요청이 완료되면 상태코드 200과 변경된 상태를 반환한다.")
 	@Test
-	void delete_completely() {
+	void update_completed() {
 		// given
 		String accessToken = signUp("azpi@email.com", Provider.GOOGLE);
 		int applicationId = createApplication(accessToken);
-		ApplicationVisibleRequest request = new ApplicationVisibleRequest(false);
+		CompletedUpdatingRequest request = new CompletedUpdatingRequest(true);
 
 		// when
 		ValidatableResponse response = patch(accessToken, "/v1/applications/" + applicationId, request);
 
 		// then
 		response.statusCode(HttpStatus.OK.value())
-			.body("data.isVisible", equalTo(request.getIsCompleted()));
+			.body("data.isCompleted", equalTo(request.getIsCompleted()));
 	}
 
 	private int createApplication(String accessToken) {
