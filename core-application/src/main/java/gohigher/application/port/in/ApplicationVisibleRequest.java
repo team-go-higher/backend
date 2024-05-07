@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class ApplicationVisibleRequest {
 
 	@NotNull
-	private Boolean isVisible;
+	private Boolean isCompleted;
 }

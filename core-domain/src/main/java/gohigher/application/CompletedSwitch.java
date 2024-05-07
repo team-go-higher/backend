@@ -6,15 +6,15 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class VisibleSwitch {
+public class CompletedSwitch {
 
-	private boolean isVisible;
+	private boolean isCompleted;
 
-	public void convert(boolean isVisible) {
-		if (this.isVisible == isVisible) {
+	public void convert(boolean isCompleted) {
+		if (this.isCompleted == isCompleted) {
 			throw new GoHigherException(ApplicationErrorCode.ALREADY_VISIBLE_STATE_TO_CHANGE);
 		}
 
-		this.isVisible = isVisible;
+		this.isCompleted = isCompleted;
 	}
 }

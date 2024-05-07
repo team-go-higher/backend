@@ -90,7 +90,7 @@ public class ApplicationAcceptanceTest extends AcceptanceTest {
 
 		// then
 		response.statusCode(HttpStatus.OK.value())
-			.body("data.isVisible", equalTo(request.getIsVisible()));
+			.body("data.isVisible", equalTo(request.getIsCompleted()));
 	}
 
 	private int createApplication(String accessToken) {
