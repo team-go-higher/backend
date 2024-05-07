@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class UpdatedVisibilityResponse {
+public class CompletedUpdatingResponse {
 
 	private final Long applicationId;
-	private final Boolean isVisible;
+	private final Boolean isCompleted;
 }

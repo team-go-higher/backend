@@ -14,5 +14,5 @@ public interface ApplicationCommandPort {
 
 	void deleteApplication(Long userId, Long applicationId);
 
-	UpdatedVisibilityResponse updateVisible(Long userId, Long applicationId, ApplicationVisibleRequest request);
+	CompletedUpdatingResponse updateCompleted(Long userId, Long applicationId, CompletedUpdatingRequest request);
 }

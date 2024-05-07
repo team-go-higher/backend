@@ -336,7 +336,7 @@ class ApplicationRepositoryTest {
 				application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
 				application.getEmploymentType(), application.getCareerRequirement(),
 				application.getRequiredCapability(), application.getPreferredQualification(), application.getUrl(),
-				null, null, deleted
+				null, null, deleted, false
 			);
 		}
 
@@ -464,7 +464,7 @@ class ApplicationRepositoryTest {
 					application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
 					application.getEmploymentType(), application.getCareerRequirement(),
 					application.getRequiredCapability(), application.getPreferredQualification(), application.getUrl(),
-					null, null, deleted
+					null, null, deleted, false
 				);
 			}
 		}

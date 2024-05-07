@@ -8,14 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 import gohigher.application.Application;
 import gohigher.application.ApplicationErrorCode;
 import gohigher.application.port.in.ApplicationCommandPort;
-import gohigher.application.port.in.ApplicationVisibleRequest;
+import gohigher.application.port.in.CompletedUpdatingRequest;
+import gohigher.application.port.in.CompletedUpdatingResponse;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SimpleApplicationUpdateRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.application.port.in.SpecificApplicationUpdateRequest;
-import gohigher.application.port.in.UpdatedVisibilityResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
@@ -79,8 +79,13 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 	}
 
 	@Override
-	public UpdatedVisibilityResponse updateVisible(Long userId, Long applicationId, ApplicationVisibleRequest request) {
-		return null;
+	public CompletedUpdatingResponse updateCompleted(Long userId, Long applicationId,
+		CompletedUpdatingRequest request) {
+		Application application = applicationPersistenceQueryPort.findByIdAndUserId(applicationId, userId)
+			.orElseThrow(() -> new GoHigherException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
+		application.updateCompleted(request.getIsCompleted());
+		applicationPersistenceCommandPort.updateCompleted(application);
+		return new CompletedUpdatingResponse(application.getId(), application.isCompleted());
 	}
 
 	private void validateNotFound(Long userId, Long applicationId) {

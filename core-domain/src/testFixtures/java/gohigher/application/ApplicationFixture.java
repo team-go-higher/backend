@@ -127,8 +127,8 @@ public enum ApplicationFixture {
 				currentProcess = toApplyProcess;
 			}
 
-			return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription,
-				workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
+			return Application.specify(id, companyName, team, location, contact, position, specificPosition,
+				jobDescription, workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
 				Processes.initialFrom(processes), url, currentProcess);
 		}
 	}
