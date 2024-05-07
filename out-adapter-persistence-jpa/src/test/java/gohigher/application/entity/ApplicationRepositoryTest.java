@@ -19,19 +19,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 
+import gohigher.JpaQueryTest;
 import gohigher.application.Application;
 import gohigher.common.Process;
 import gohigher.common.ProcessType;
 
 @DisplayName("ApplicationRepository 클래스의")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DataJpaTest
+@JpaQueryTest
 class ApplicationRepositoryTest {
 
 	@Autowired

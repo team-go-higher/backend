@@ -3,10 +3,12 @@ package gohigher.common;
 import static gohigher.common.JobInfoErrorCode.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 import gohigher.global.exception.GoHigherException;
 
 public enum ProcessType {
+
 	TO_APPLY,
 	DOCUMENT,
 	TEST,
@@ -19,5 +21,11 @@ public enum ProcessType {
 			.filter(processType -> processType.name().equals(value))
 			.findAny()
 			.orElseThrow(() -> new GoHigherException(INVALID_PROCESS_TYPE));
+	}
+
+	public static List<ProcessType> from(List<String> values) {
+		return values.stream()
+			.map(ProcessType::from)
+			.toList();
 	}
 }

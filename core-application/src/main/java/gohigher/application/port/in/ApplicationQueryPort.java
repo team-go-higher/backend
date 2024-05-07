@@ -6,6 +6,8 @@ import gohigher.common.ProcessType;
 
 public interface ApplicationQueryPort {
 
+	PagingResponse<MyApplicationResponse> findAllByUserId(Long userId, PagingRequest pagingRequest, MyApplicationRequest request);
+
 	ApplicationResponse findById(Long userId, Long applicationId);
 
 	List<CalendarApplicationResponse> findByMonth(CalendarApplicationRequest request);

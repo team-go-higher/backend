@@ -63,6 +63,14 @@ public class AcceptanceTest {
 		post(accessToken, "/v1/desired-positions", desiredPositionRequest);
 	}
 
+	ValidatableResponse get(String accessToken, String uri) {
+		return RestAssured.given().log().all()
+			.auth().oauth2(accessToken)
+			.accept(MediaType.APPLICATION_JSON_VALUE)
+			.when().get(uri)
+			.then().log().all();
+	}
+
 	ValidatableResponse post(String accessToken, String uri, Object requestBody) {
 		return RestAssured.given().log().all()
 			.auth().oauth2(accessToken)
