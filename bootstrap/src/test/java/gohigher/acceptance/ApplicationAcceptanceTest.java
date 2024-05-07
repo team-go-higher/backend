@@ -19,6 +19,30 @@ import io.restassured.response.ValidatableResponse;
 @DisplayName("Application 인수테스트의")
 public class ApplicationAcceptanceTest extends AcceptanceTest {
 
+	@DisplayName("나의 지원현황 모아보기 기능을 테스트한다")
+	@Test
+	void findAllByUserId_application() {
+		// given
+		int page = 1;
+		int size = 10;
+		String sort = "processType";
+		String process1 = ProcessType.TO_APPLY.name();
+		String process2 = ProcessType.DOCUMENT.name();
+		String companyName = "카카오";
+
+		String accessToken = signUp("azpi@email.com", Provider.GOOGLE);
+		String uri = String.format(
+			"%s?page=%d&size=%d&sort=%s&process=%s&process=%s&companyName=%s",
+			"/v1/applications", page, size, sort, process1, process2, companyName);
+
+		// when
+		ValidatableResponse response = get(accessToken, uri);
+
+		// then
+		response.statusCode(HttpStatus.OK.value())
+			.body("success", equalTo(true));
+	}
+
 	@DisplayName("지원서를 작성하는 기능을 테스트한다")
 	@Test
 	void create_application() {

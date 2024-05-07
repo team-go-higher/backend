@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import gohigher.common.ProcessType;
 
-public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntity, Long> {
+public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntity, Long>, ApplicationRepositoryCustom {
 
 	boolean existsByIdAndUserId(Long id, Long userId);
 

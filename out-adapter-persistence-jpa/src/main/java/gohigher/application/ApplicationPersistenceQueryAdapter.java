@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import gohigher.application.entity.ApplicationJpaEntity;
 import gohigher.application.entity.ApplicationRepository;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
+import gohigher.application.search.ApplicationSortingType;
 import gohigher.common.ProcessType;
 import gohigher.pagination.PagingContainer;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,16 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	private static final int DIFFERENCES_PAGES_AND_DB_INDEX = 1;
 
 	private final ApplicationRepository applicationRepository;
+
+	@Override
+	public PagingContainer<Application> findAllByUserId(Long userId, int page, int size, ApplicationSortingType sortingType,
+		List<ProcessType> process, List<Boolean> completed, String companyName) {
+		Slice<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findAllByUserId(userId,
+			PageRequest.of(page - DIFFERENCES_PAGES_AND_DB_INDEX, size),
+			sortingType, process, completed, companyName);
+
+		return convertToPagingContainer(applicationJpaEntities);
+	}
 
 	@Override
 	public boolean existsByIdAndUserId(Long id, Long userId) {
@@ -56,11 +67,7 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	public PagingContainer<Application> findUnscheduledByUserId(Long userId, int page, int size) {
 		Slice<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findUnscheduledByUserId(userId,
 			PageRequest.of(page - DIFFERENCES_PAGES_AND_DB_INDEX, size));
-
-		List<Application> applications = applicationJpaEntities.stream()
-			.map(ApplicationJpaEntity::toCalenderDomain)
-			.toList();
-		return new PagingContainer<>(applicationJpaEntities.hasNext(), applications);
+		return convertToPagingContainer(applicationJpaEntities);
 	}
 
 	@Override
@@ -85,5 +92,12 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 		return applications.stream()
 			.map(ApplicationJpaEntity::toKanbanDomain)
 			.toList();
+	}
+
+	private PagingContainer<Application> convertToPagingContainer(Slice<ApplicationJpaEntity> applicationJpaEntities) {
+		List<Application> applications = applicationJpaEntities.stream()
+			.map(ApplicationJpaEntity::toCalenderDomain)
+			.toList();
+		return new PagingContainer<>(applicationJpaEntities.hasNext(), applications);
 	}
 }

@@ -12,6 +12,8 @@ import gohigher.application.port.in.CalendarApplicationResponse;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.in.KanbanByProcessApplicationResponse;
+import gohigher.application.port.in.MyApplicationRequest;
+import gohigher.application.port.in.MyApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.UnscheduledApplicationResponse;
@@ -28,6 +30,38 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "지원서")
 public interface ApplicationQueryControllerDocs {
+
+	@Operation(summary = "나의 지원 현황 모아보기 목록 조회")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "나의 지원 현황 모아보기 목록 조회 성공"),
+		@ApiResponse(responseCode = "400", description = "page 또는 size 의 범위가 잘못됨", content = @Content(
+			examples = {
+				@ExampleObject(name = "잘못된 page 값임", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "PAGINATION_001",
+						"message": "page 는 1 이상이어야 합니다."
+					},
+					"data": null
+					}
+					"""),
+				@ExampleObject(name = "잘못된 size 값임", value = """
+					{
+					"success": false,
+					"error": {
+						"code": "PAGINATION_002",
+						"message": "size 는 1 이상이어야 합니다."
+					},
+					"data": null
+					}
+					""")
+			}
+		))
+	})
+	ResponseEntity<GohigherResponse<PagingResponse<MyApplicationResponse>>> findAllByUserId(
+		@Parameter(hidden = true) Long userId, @ModelAttribute PagingRequest pagingRequest,
+		MyApplicationRequest request);
 
 	@Operation(summary = "지원서 상세 조회")
 	@ApiResponses(value = {
@@ -117,7 +151,7 @@ public interface ApplicationQueryControllerDocs {
 			}))
 	})
 	ResponseEntity<GohigherResponse<PagingResponse<UnscheduledApplicationResponse>>> findUnscheduled(
-		@Parameter(hidden = true) @Login Long userId, @ModelAttribute PagingRequest request);
+		@Parameter(hidden = true) Long userId, @ModelAttribute PagingRequest request);
 
 	@Operation(summary = "칸반 지원서 목록 조회")
 	@ApiResponses(

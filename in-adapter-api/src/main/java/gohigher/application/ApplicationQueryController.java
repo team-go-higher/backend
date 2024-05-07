@@ -18,6 +18,8 @@ import gohigher.application.port.in.DateApplicationRequest;
 import gohigher.application.port.in.DateApplicationResponse;
 import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.in.KanbanByProcessApplicationResponse;
+import gohigher.application.port.in.MyApplicationRequest;
+import gohigher.application.port.in.MyApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.UnscheduledApplicationResponse;
@@ -33,6 +35,13 @@ import lombok.RequiredArgsConstructor;
 public class ApplicationQueryController implements ApplicationQueryControllerDocs {
 
 	private final ApplicationQueryPort applicationQueryPort;
+
+	@GetMapping
+	public ResponseEntity<GohigherResponse<PagingResponse<MyApplicationResponse>>> findAllByUserId(
+		@Login Long userId, @Valid @ModelAttribute PagingRequest pagingRequest, MyApplicationRequest request) {
+		PagingResponse<MyApplicationResponse> responses = applicationQueryPort.findAllByUserId(userId, pagingRequest, request);
+		return ResponseEntity.ok(GohigherResponse.success(responses));
+	}
 
 	@GetMapping("/{applicationId}")
 	public ResponseEntity<GohigherResponse<ApplicationResponse>> findById(@Login Long userId,
