@@ -296,7 +296,19 @@ public interface ApplicationCommandControllerDocs {
 	@Operation(summary = "지원서 완료 여부 변경")
 	@ApiResponses(
 		value = {
-			@ApiResponse(responseCode = "200", description = "지원서 완료 여부 변경 성공"),
+			@ApiResponse(responseCode = "200", description = "지원서 완료 여부 변경 성공", content = @Content(
+				examples = {
+					@ExampleObject(name = "정상 요청의 경우", value = """
+						{
+						"success": true,
+						"error": null,
+						"data": {
+								"applicationId": 1L,
+								"isCompleted": true
+							}
+						}
+						""")
+				})),
 			@ApiResponse(responseCode = "400", description = "지원서 완료 여부 변경 실패", content = @Content(
 				examples = {
 					@ExampleObject(name = "기존 상태 그대로 요청한경우", value = """
