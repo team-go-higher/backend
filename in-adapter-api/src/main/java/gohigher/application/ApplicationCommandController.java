@@ -70,14 +70,13 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 	}
 
 	@PatchMapping("/{applicationId}")
-	public ResponseEntity<GohigherResponse<CompletedUpdatingResponse>> updateVisible(@Login Long userId,
+	public ResponseEntity<GohigherResponse<CompletedUpdatingResponse>> updateCompleted(@Login Long userId,
 		@PathVariable Long applicationId, @RequestBody @Valid CompletedUpdatingRequest request) {
 		CompletedUpdatingResponse response = applicationCommandPort.updateCompleted(userId, applicationId, request);
 		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
 
 	@DeleteMapping("/{applicationId}")
-
 	public ResponseEntity<GohigherResponse<Void>> deleteApplication(@Login Long userId,
 		@PathVariable Long applicationId) {
 		applicationCommandPort.deleteApplication(userId, applicationId);

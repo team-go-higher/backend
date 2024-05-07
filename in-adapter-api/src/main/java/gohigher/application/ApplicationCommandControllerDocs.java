@@ -3,6 +3,8 @@ package gohigher.application;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import gohigher.application.port.in.CompletedUpdatingRequest;
+import gohigher.application.port.in.CompletedUpdatingResponse;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
@@ -290,6 +292,26 @@ public interface ApplicationCommandControllerDocs {
 				}))})
 	ResponseEntity<GohigherResponse<Void>> updateSpecifically(@Parameter(hidden = true) Long userId,
 		Long applicationId, @RequestBody SpecificApplicationUpdateRequest request);
+
+	@Operation(summary = "지원서 완료 여부 변경")
+	@ApiResponses(
+		value = {
+			@ApiResponse(responseCode = "200", description = "지원서 완료 여부 변경 성공"),
+			@ApiResponse(responseCode = "400", description = "지원서 완료 여부 변경 실패", content = @Content(
+				examples = {
+					@ExampleObject(name = "기존 상태 그대로 요청한경우", value = """
+						{
+						"success": false,
+						"error": {
+							"code": "APPLICATION_020",
+							"message": "현재 보여주기/숨기기 상태로의 요청입니다."
+						},
+						"data": null
+						}
+						""")
+				}))})
+	ResponseEntity<GohigherResponse<CompletedUpdatingResponse>> updateCompleted(@Parameter(hidden = true) Long userId,
+		Long applicationId, @RequestBody CompletedUpdatingRequest request);
 
 	@Operation(summary = "지원서 삭제")
 	@ApiResponses(
