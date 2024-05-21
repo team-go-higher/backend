@@ -37,8 +37,7 @@ public class Application extends JobInfo {
 		String careerRequirement, String requiredCapability, String preferredQualification, Processes processes,
 		String url, Process currentProcess) {
 		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription,
-			workType,
-			employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
+			workType, employmentType, careerRequirement, requiredCapability, preferredQualification, processes, url,
 			currentProcess, new CompletedSwitch(false));
 	}
 
