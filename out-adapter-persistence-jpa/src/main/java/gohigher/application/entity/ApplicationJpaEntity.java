@@ -67,7 +67,7 @@ public class ApplicationJpaEntity {
 	private RecruitmentJpaEntity recruitment;
 
 	private boolean deleted;
-	private Boolean isCompleted;
+	private boolean isCompleted;
 
 	public static ApplicationJpaEntity of(Application application, Long userId) {
 		return new ApplicationJpaEntity(null,
