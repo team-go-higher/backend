@@ -110,7 +110,7 @@ public class ApplicationAcceptanceTest extends AcceptanceTest {
 		CompletedUpdatingRequest request = new CompletedUpdatingRequest(true);
 
 		// when
-		ValidatableResponse response = patch(accessToken, "/v1/applications/" + applicationId, request);
+		ValidatableResponse response = patch(accessToken, "/v1/applications/" + applicationId + "/finished", request);
 
 		// then
 		response.statusCode(HttpStatus.OK.value())

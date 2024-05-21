@@ -69,7 +69,7 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 		return ResponseEntity.ok(GohigherResponse.success(null));
 	}
 
-	@PatchMapping("/{applicationId}")
+	@PatchMapping("/{applicationId}/finished")
 	public ResponseEntity<GohigherResponse<CompletedUpdatingResponse>> updateCompleted(@Login Long userId,
 		@PathVariable Long applicationId, @RequestBody @Valid CompletedUpdatingRequest request) {
 		CompletedUpdatingResponse response = applicationCommandPort.updateCompleted(userId, applicationId, request);
