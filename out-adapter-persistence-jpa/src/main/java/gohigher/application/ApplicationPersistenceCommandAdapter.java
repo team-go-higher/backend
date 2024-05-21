@@ -50,11 +50,7 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 
 	@Override
 	public void updateSimply(Long processId, Application application) {
-		ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(application.getId())
-			.orElseThrow(() -> new GoHigherException(APPLICATION_NOT_FOUND));
-
-		applicationJpaEntity.update(application);
-
+		update(application);
 		ApplicationProcessJpaEntity applicationProcessJpaEntity = applicationProcessRepository.findById(processId)
 			.orElseThrow(() -> new GoHigherException(APPLICATION_PROCESS_NOT_FOUND));
 
@@ -63,11 +59,13 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 
 	@Override
 	public void updateSpecifically(Application application) {
-		ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(application.getId())
-			.orElseThrow(() -> new GoHigherException(APPLICATION_NOT_FOUND));
-
-		applicationJpaEntity.update(application);
+		ApplicationJpaEntity applicationJpaEntity = update(application);
 		updateApplicationProcess(applicationJpaEntity, application.getProcesses(), application.getCurrentProcess());
+	}
+
+	@Override
+	public void updateCompleted(Application application) {
+		update(application);
 	}
 
 	@Override
@@ -76,6 +74,14 @@ public class ApplicationPersistenceCommandAdapter implements ApplicationPersiste
 			.orElseThrow(() -> new GoHigherException(APPLICATION_NOT_FOUND));
 
 		applicationJpaEntity.delete();
+	}
+
+	private ApplicationJpaEntity update(Application application) {
+		ApplicationJpaEntity applicationJpaEntity = applicationRepository.findById(application.getId())
+			.orElseThrow(() -> new GoHigherException(APPLICATION_NOT_FOUND));
+
+		applicationJpaEntity.update(application);
+		return applicationJpaEntity;
 	}
 
 	private void saveApplicationProcesses(ApplicationJpaEntity applicationJpaEntity,

@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import gohigher.application.Application;
 import gohigher.application.ApplicationErrorCode;
 import gohigher.application.port.in.ApplicationCommandPort;
+import gohigher.application.port.in.CompletedUpdatingRequest;
+import gohigher.application.port.in.CompletedUpdatingResponse;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
@@ -74,6 +76,16 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 	public void deleteApplication(Long userId, Long applicationId) {
 		validateNotFound(userId, applicationId);
 		applicationPersistenceCommandPort.delete(applicationId);
+	}
+
+	@Override
+	public CompletedUpdatingResponse updateCompleted(Long userId, Long applicationId,
+		CompletedUpdatingRequest request) {
+		Application application = applicationPersistenceQueryPort.findByIdAndUserId(applicationId, userId)
+			.orElseThrow(() -> new GoHigherException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
+		application.updateCompleted(request.getIsCompleted());
+		applicationPersistenceCommandPort.updateCompleted(application);
+		return new CompletedUpdatingResponse(application.getId(), application.isCompleted());
 	}
 
 	private void validateNotFound(Long userId, Long applicationId) {

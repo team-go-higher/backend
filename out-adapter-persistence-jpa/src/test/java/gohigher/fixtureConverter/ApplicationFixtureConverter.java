@@ -22,7 +22,7 @@ public class ApplicationFixtureConverter {
 			application.getLocation(), application.getContact(), application.getPosition(),
 			application.getSpecificPosition(), application.getJobDescription(), application.getWorkType(),
 			application.getEmploymentType(), application.getCareerRequirement(), application.getRequiredCapability(),
-			application.getPreferredQualification(), application.getUrl(), new ArrayList<>(), null, false);
+			application.getPreferredQualification(), application.getUrl(), new ArrayList<>(), null, false, false);
 	}
 
 	public static ApplicationProcessJpaEntity convertToApplicationProcessEntity(

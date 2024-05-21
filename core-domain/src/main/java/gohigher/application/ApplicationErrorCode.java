@@ -19,6 +19,8 @@ public enum ApplicationErrorCode implements ErrorCode {
 	INVALID_DATE_PATTERN(400, "APPLICATION_012", "잘못된 날짜 형식입니다."),
 	CURRENT_PROCESS_NOT_FOUND(400, "APPLICATION_013", "현재 전형 단계를 조회하지 못했습니다."),
 
+	ALREADY_VISIBLE_STATE_TO_CHANGE(400, "APPLICATION_020", "현재 보여주기/숨기기 상태로의 요청입니다."),
+
 	INVALID_APPLICATION_SORTING_TYPE(400, "APPLICATION_021", "잘못된 sort 값입니다."),
 	;
 

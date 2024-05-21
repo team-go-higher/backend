@@ -13,4 +13,6 @@ public interface ApplicationCommandPort {
 	void updateCurrentProcess(Long userId, CurrentProcessUpdateRequest request);
 
 	void deleteApplication(Long userId, Long applicationId);
+
+	CompletedUpdatingResponse updateCompleted(Long userId, Long applicationId, CompletedUpdatingRequest request);
 }

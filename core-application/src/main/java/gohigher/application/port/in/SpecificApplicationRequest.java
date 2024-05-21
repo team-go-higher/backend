@@ -40,7 +40,8 @@ public class SpecificApplicationRequest {
 			.map(SpecificApplicationProcessRequest::toDomain)
 			.toList();
 
-		return new Application(null, companyName, team, location, contact, position, specificPosition, jobDescription,
+		return Application.specify(null, companyName, team, location, contact, position, specificPosition,
+			jobDescription,
 			workType, EmploymentType.from(employmentType), careerRequirement, requiredCapability,
 			preferredQualification, Processes.initialFrom(processes), url, processes.get(0));
 	}

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gohigher.application.Application;
+import gohigher.application.CompletedSwitch;
 import gohigher.common.EmploymentType;
 import gohigher.common.Process;
 import gohigher.common.Processes;
@@ -66,6 +67,7 @@ public class ApplicationJpaEntity {
 	private RecruitmentJpaEntity recruitment;
 
 	private boolean deleted;
+	private Boolean isCompleted;
 
 	public static ApplicationJpaEntity of(Application application, Long userId) {
 		return new ApplicationJpaEntity(null,
@@ -85,7 +87,8 @@ public class ApplicationJpaEntity {
 			application.getUrl(),
 			new ArrayList<>(),
 			null,
-			false
+			false,
+			application.isCompleted()
 		);
 	}
 
@@ -138,7 +141,7 @@ public class ApplicationJpaEntity {
 	private Application createApplication(List<Process> processes, Process currentProcess) {
 		return new Application(id, companyName, team, location, contact, position, specificPosition, jobDescription,
 			workType, employmentType, careerRequirement, requiredCapability, preferredQualification,
-			Processes.of(processes), url, currentProcess);
+			Processes.of(processes), url, currentProcess, new CompletedSwitch(isCompleted));
 	}
 
 	public void update(Application application) {
@@ -155,6 +158,7 @@ public class ApplicationJpaEntity {
 		this.requiredCapability = application.getRequiredCapability();
 		this.preferredQualification = application.getPreferredQualification();
 		this.url = application.getUrl();
+		this.isCompleted = application.isCompleted();
 	}
 
 	public void resetProcesses() {

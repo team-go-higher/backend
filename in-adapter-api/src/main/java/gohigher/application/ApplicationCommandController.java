@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gohigher.application.port.in.ApplicationCommandPort;
+import gohigher.application.port.in.CompletedUpdatingRequest;
+import gohigher.application.port.in.CompletedUpdatingResponse;
 import gohigher.application.port.in.CurrentProcessUpdateRequest;
 import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
@@ -65,6 +67,13 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 		@PathVariable Long applicationId, @RequestBody @Valid SpecificApplicationUpdateRequest request) {
 		applicationCommandPort.updateSpecifically(userId, applicationId, request);
 		return ResponseEntity.ok(GohigherResponse.success(null));
+	}
+
+	@PatchMapping("/{applicationId}/finished")
+	public ResponseEntity<GohigherResponse<CompletedUpdatingResponse>> updateCompleted(@Login Long userId,
+		@PathVariable Long applicationId, @RequestBody @Valid CompletedUpdatingRequest request) {
+		CompletedUpdatingResponse response = applicationCommandPort.updateCompleted(userId, applicationId, request);
+		return ResponseEntity.ok(GohigherResponse.success(response));
 	}
 
 	@DeleteMapping("/{applicationId}")

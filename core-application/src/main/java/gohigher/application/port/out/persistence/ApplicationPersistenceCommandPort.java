@@ -13,4 +13,6 @@ public interface ApplicationPersistenceCommandPort {
 	void delete(long applicationId);
 
 	void updateSpecifically(Application updatedTarget);
+
+	void updateCompleted(Application application);
 }

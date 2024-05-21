@@ -67,7 +67,8 @@ public class SpecificApplicationUpdateRequest {
 			processDomains.add(processes.get(i).toDomain());
 		}
 
-		return new Application(null, companyName, team, location, contact, position, specificPosition, jobDescription,
+		return Application.specify(null, companyName, team, location, contact, position, specificPosition,
+			jobDescription,
 			workType, EmploymentType.from(employmentType), careerRequirement, requiredCapability,
 			preferredQualification, Processes.initialFrom(processDomains), url, processDomains.get(currentProcessIdx));
 	}
