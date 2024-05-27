@@ -45,7 +45,8 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "WHERE a.userId = :userId "
 		+ "AND p.isCurrent = true "
 		+ "AND p.schedule = null "
-		+ "AND a.deleted = false")
+		+ "AND a.deleted = false "
+		+ "AND a.isCompleted = false")
 	Slice<ApplicationJpaEntity> findUnscheduledByUserId(Long userId, Pageable pageable);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "
