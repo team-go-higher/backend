@@ -59,6 +59,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "WHERE a.userId = :userId "
 		+ "AND p.isCurrent = true "
 		+ "AND p.type = :processType "
-		+ "AND a.deleted = false")
+		+ "AND a.deleted = false "
+		+ "AND a.isCompleted = false")
 	List<ApplicationJpaEntity> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType);
 }
