@@ -27,7 +27,8 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "WHERE a.userId = :userId "
 		+ "AND a.deleted = false "
 		+ "AND FUNCTION('YEAR', p.schedule) = :year "
-		+ "AND FUNCTION('MONTH', p.schedule) = :month")
+		+ "AND FUNCTION('MONTH', p.schedule) = :month "
+		+ "AND a.isCompleted = false")
 	List<ApplicationJpaEntity> findByUserIdAndMonth(Long userId, int year, int month);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "
