@@ -36,7 +36,8 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "WHERE a.userId = :userId "
 		+ "AND a.deleted = false "
 		+ "AND p.schedule >= :startOfDate "
-		+ "AND p.schedule < :endOfDate")
+		+ "AND p.schedule < :endOfDate "
+		+ "AND a.isCompleted = false")
 	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, LocalDateTime startOfDate, LocalDateTime endOfDate);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "
