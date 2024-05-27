@@ -44,6 +44,31 @@ public class ApplicationAcceptanceTest extends AcceptanceTest {
 			.body("success", equalTo(true));
 	}
 
+	@DisplayName("지원서 모아보기 기능을 종료 여부 필터링에 해당되는 경우 테스트한다.")
+	@Test
+	void findAllByUserId_application_filter_completed() {
+		// given
+		int page = 1;
+		int size = 10;
+		String sort = "processType";
+		String accessToken = signUp("azpi@email.com", Provider.GOOGLE);
+		assignDesiredPositions(accessToken);
+		SimpleApplicationRequest simpleApplicationRequest = new SimpleApplicationRequest("카카오", "개발자", null,
+			new SimpleApplicationProcessRequest("TO_APPLY", "서류전형", null));
+		post(accessToken, "/v1/applications/simple", simpleApplicationRequest);
+
+		String uri = String.format(
+			"%s?page=%d&size=%d&sort=%s&completed=%s", "/v1/applications", page, size, sort, "false");
+
+		// when
+		ValidatableResponse response = get(accessToken, uri);
+
+		// then
+		response.statusCode(HttpStatus.OK.value())
+			.body("success", equalTo(true))
+			.body("data.content.size()", is(1));
+	}
+
 	@DisplayName("지원서를 작성하는 기능을 테스트한다")
 	@Test
 	void create_application() {

@@ -12,12 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProcessWithApplicationResponse {
 
-    private long applicationId;
-    private String companyName;
-    private String position;
-    private String specificPosition;
-    private long processId;
-    private ProcessType type;
-    private String description;
-    private LocalDateTime schedule;
+	private long applicationId;
+	private String companyName;
+	private String position;
+	private String specificPosition;
+	private long processId;
+	private ProcessType type;
+	private String description;
+	private LocalDateTime schedule;
+	private boolean isCompleted;
 }
