@@ -24,6 +24,10 @@ public enum ProcessType {
 	}
 
 	public static List<ProcessType> from(List<String> values) {
+		if (values == null) {
+			return null;
+		}
+
 		return values.stream()
 			.map(ProcessType::from)
 			.toList();

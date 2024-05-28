@@ -9,19 +9,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MyApplicationResponse {
 
-    private final long applicationId;
-    private final String companyName;
-    private final String position;
-    private final String specificPosition;
-    private final ProcessResponse process;
+	private final long applicationId;
+	private final String companyName;
+	private final String position;
+	private final String specificPosition;
+	private final Boolean isCompleted;
+	private final ProcessResponse process;
 
-    public static MyApplicationResponse of(Application application, Process process) {
-        return new MyApplicationResponse(
-            application.getId(),
-            application.getCompanyName(),
-            application.getPosition(),
-            application.getSpecificPosition(),
-            ProcessResponse.from(process)
-        );
-    }
+	public static MyApplicationResponse of(Application application, Process process) {
+		return new MyApplicationResponse(
+			application.getId(),
+			application.getCompanyName(),
+			application.getPosition(),
+			application.getSpecificPosition(),
+			application.isCompleted(),
+			ProcessResponse.from(process)
+		);
+	}
 }

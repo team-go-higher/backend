@@ -27,7 +27,8 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "WHERE a.userId = :userId "
 		+ "AND a.deleted = false "
 		+ "AND FUNCTION('YEAR', p.schedule) = :year "
-		+ "AND FUNCTION('MONTH', p.schedule) = :month")
+		+ "AND FUNCTION('MONTH', p.schedule) = :month "
+		+ "AND a.isCompleted = false")
 	List<ApplicationJpaEntity> findByUserIdAndMonth(Long userId, int year, int month);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "
@@ -35,7 +36,8 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "WHERE a.userId = :userId "
 		+ "AND a.deleted = false "
 		+ "AND p.schedule >= :startOfDate "
-		+ "AND p.schedule < :endOfDate")
+		+ "AND p.schedule < :endOfDate "
+		+ "AND a.isCompleted = false")
 	List<ApplicationJpaEntity> findByUserIdAndDate(Long userId, LocalDateTime startOfDate, LocalDateTime endOfDate);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "
@@ -43,14 +45,16 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "WHERE a.userId = :userId "
 		+ "AND p.isCurrent = true "
 		+ "AND p.schedule = null "
-		+ "AND a.deleted = false")
+		+ "AND a.deleted = false "
+		+ "AND a.isCompleted = false")
 	Slice<ApplicationJpaEntity> findUnscheduledByUserId(Long userId, Pageable pageable);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "
 		+ "JOIN FETCH a.processes p "
 		+ "WHERE a.userId = :userId "
 		+ "AND p.isCurrent = true "
-		+ "AND a.deleted = false")
+		+ "AND a.deleted = false "
+		+ "AND a.isCompleted = false")
 	List<ApplicationJpaEntity> findOnlyWithCurrentProcessByUserId(Long userId);
 
 	@Query("SELECT a FROM ApplicationJpaEntity a "
@@ -58,6 +62,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationJpaEntit
 		+ "WHERE a.userId = :userId "
 		+ "AND p.isCurrent = true "
 		+ "AND p.type = :processType "
-		+ "AND a.deleted = false")
+		+ "AND a.deleted = false "
+		+ "AND a.isCompleted = false")
 	List<ApplicationJpaEntity> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType);
 }
