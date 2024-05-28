@@ -1,7 +1,7 @@
 package gohigher.application.entity;
 
-import static gohigher.application.entity.QApplicationJpaEntity.*;
-import static gohigher.application.entity.QApplicationProcessJpaEntity.*;
+import static gohigher.application.entity.QApplicationJpaEntity.applicationJpaEntity;
+import static gohigher.application.entity.QApplicationProcessJpaEntity.applicationProcessJpaEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +13,8 @@ import org.springframework.data.domain.SliceImpl;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -99,11 +101,22 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
 	private OrderSpecifier<?> selectOrderSpecifierAboutFindAll(ApplicationSortingType sortingType) {
 		return switch (sortingType) {
 			case CREATED -> applicationProcessJpaEntity.id.desc();
-			case PROCESS_TYPE -> applicationProcessJpaEntity.schedule.asc();
-			case REVERSE_PROCESS_TYPE -> applicationProcessJpaEntity.schedule.desc();
+			case PROCESS_TYPE -> sortByProcessType().asc();
+			case REVERSE_PROCESS_TYPE -> sortByProcessType().desc();
 			case CLOSING -> applicationProcessJpaEntity.id.asc();
 		};
 	}
+
+    private NumberExpression<Integer> sortByProcessType() {
+        int order = 0;
+        return new CaseBuilder()
+            .when(applicationProcessJpaEntity.type.eq(ProcessType.TO_APPLY)).then(order++)
+            .when(applicationProcessJpaEntity.type.eq(ProcessType.DOCUMENT)).then(order++)
+            .when(applicationProcessJpaEntity.type.eq(ProcessType.TEST)).then(order++)
+            .when(applicationProcessJpaEntity.type.eq(ProcessType.INTERVIEW)).then(order++)
+            .when(applicationProcessJpaEntity.type.eq(ProcessType.COMPLETE)).then(order++)
+            .otherwise(order);
+    }
 
 	private List<ApplicationJpaEntity> convertToApplicationJpaEntity(JPAQuery<ProcessWithApplicationResponse> query) {
 		return query.fetch().stream()
