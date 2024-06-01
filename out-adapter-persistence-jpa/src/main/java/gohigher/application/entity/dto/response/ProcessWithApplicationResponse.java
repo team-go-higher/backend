@@ -20,5 +20,5 @@ public class ProcessWithApplicationResponse {
 	private ProcessType type;
 	private String description;
 	private LocalDateTime schedule;
-	private boolean isCompleted;
+	private Boolean isCompleted;
 }

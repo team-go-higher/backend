@@ -113,7 +113,7 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
 					.companyName(processResponse.getCompanyName())
 					.position(processResponse.getPosition())
 					.specificPosition(processResponse.getSpecificPosition())
-					.isCompleted(processResponse.isCompleted())
+					.isCompleted(processResponse.getIsCompleted())
 					.processes(
 						List.of(
 							ApplicationProcessJpaEntity.builder()
