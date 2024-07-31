@@ -1,5 +1,6 @@
 package gohigher.application.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -21,10 +22,10 @@ import gohigher.application.port.in.KanbanApplicationResponse;
 import gohigher.application.port.in.KanbanByProcessApplicationResponse;
 import gohigher.application.port.in.MyApplicationRequest;
 import gohigher.application.port.in.MyApplicationResponse;
-import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.application.port.in.PagingRequest;
 import gohigher.application.port.in.PagingResponse;
 import gohigher.application.port.in.ProcessResponse;
+import gohigher.application.port.in.UnscheduledApplicationResponse;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.search.ApplicationSortingType;
 import gohigher.common.Process;
@@ -41,12 +42,15 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	private final ApplicationPersistenceQueryPort applicationPersistenceQueryPort;
 
 	@Override
-	public PagingResponse<MyApplicationResponse> findAllByUserId(Long userId, PagingRequest pagingRequest, MyApplicationRequest request) {
+	public PagingResponse<MyApplicationResponse> findAllByUserId(Long userId, PagingRequest pagingRequest,
+		MyApplicationRequest request) {
 		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findAllByUserId(
 			userId, pagingRequest.getPage(), pagingRequest.getSize(),
 			ApplicationSortingType.from(request.getSort()),
-			ProcessType.from(request.getProcess()), request.getCompleted(), request.getCompanyName());
-		List<MyApplicationResponse> responses = findApplicationsByUserId(pagingContainer.getContent(), MyApplicationResponse::of);
+			ProcessType.from(request.getProcess()), request.getCompleted(), request.getCompanyName(),
+			LocalDateTime.now());
+		List<MyApplicationResponse> responses = findApplicationsByUserId(pagingContainer.getContent(),
+			MyApplicationResponse::of);
 		return new PagingResponse<>(pagingContainer.hasNext(), responses);
 	}
 
@@ -81,7 +85,8 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	public PagingResponse<UnscheduledApplicationResponse> findUnscheduled(Long userId, PagingRequest request) {
 		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findUnscheduledByUserId(
 			userId, request.getPage(), request.getSize());
-		List<UnscheduledApplicationResponse> responses = findApplicationsByUserId(pagingContainer.getContent(), UnscheduledApplicationResponse::of);
+		List<UnscheduledApplicationResponse> responses = findApplicationsByUserId(pagingContainer.getContent(),
+			UnscheduledApplicationResponse::of);
 		return new PagingResponse<>(pagingContainer.hasNext(), responses);
 	}
 
@@ -99,13 +104,15 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 			.toList();
 	}
 
-	private <T> List<T> findApplicationsByUserId(List<Application> applications, BiFunction<Application, Process, T> responseMapper) {
+	private <T> List<T> findApplicationsByUserId(List<Application> applications,
+		BiFunction<Application, Process, T> responseMapper) {
 		return applications.stream()
 			.flatMap(application -> extractApplicationResponse(application, responseMapper))
 			.toList();
 	}
 
-	private <T> Stream<T> extractApplicationResponse(Application application, BiFunction<Application, Process, T> responseMapper) {
+	private <T> Stream<T> extractApplicationResponse(Application application,
+		BiFunction<Application, Process, T> responseMapper) {
 		return application.getProcesses()
 			.stream()
 			.map(process -> responseMapper.apply(application, process));

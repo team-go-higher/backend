@@ -1,8 +1,9 @@
 package gohigher.application.entity;
 
-import static gohigher.application.entity.QApplicationJpaEntity.applicationJpaEntity;
-import static gohigher.application.entity.QApplicationProcessJpaEntity.applicationProcessJpaEntity;
+import static gohigher.application.entity.QApplicationJpaEntity.*;
+import static gohigher.application.entity.QApplicationProcessJpaEntity.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
 	@Override
 	public Slice<ApplicationJpaEntity> findAllByUserId(Long userId, Pageable pageable,
 		ApplicationSortingType sortingType,
-		List<ProcessType> process, List<Boolean> completed, String companyName) {
+		List<ProcessType> process, List<Boolean> completed, String companyName, LocalDateTime today) {
 
 		JPAQuery<ProcessWithApplicationResponse> query = jpaQueryFactory
 			.select(Projections.bean(
@@ -58,7 +59,7 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
 			)
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize() + 1)
-			.orderBy(selectOrderSpecifierAboutFindAll(sortingType));
+			.orderBy(selectOrderSpecifierAboutFindAll(sortingType, today));
 
 		List<ApplicationJpaEntity> applications = convertToApplicationJpaEntity(query);
 
@@ -98,25 +99,41 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
 		return applicationProcessJpaEntity.type.in(process);
 	}
 
-	private OrderSpecifier<?> selectOrderSpecifierAboutFindAll(ApplicationSortingType sortingType) {
+	private OrderSpecifier<?>[] selectOrderSpecifierAboutFindAll(ApplicationSortingType sortingType,
+		LocalDateTime today) {
 		return switch (sortingType) {
-			case CREATED -> applicationProcessJpaEntity.id.desc();
-			case PROCESS_TYPE -> sortByProcessType().asc();
-			case REVERSE_PROCESS_TYPE -> sortByProcessType().desc();
-			case CLOSING -> applicationProcessJpaEntity.id.asc();
+			case CREATED -> new OrderSpecifier<?>[] {applicationProcessJpaEntity.id.desc()};
+			case PROCESS_TYPE -> new OrderSpecifier<?>[] {sortByProcessType().asc()};
+			case REVERSE_PROCESS_TYPE -> new OrderSpecifier<?>[] {sortByProcessType().desc()};
+			case CLOSING -> sortByEndDate(today);
 		};
 	}
 
-    private NumberExpression<Integer> sortByProcessType() {
-        int order = 0;
-        return new CaseBuilder()
-            .when(applicationProcessJpaEntity.type.eq(ProcessType.TO_APPLY)).then(order++)
-            .when(applicationProcessJpaEntity.type.eq(ProcessType.DOCUMENT)).then(order++)
-            .when(applicationProcessJpaEntity.type.eq(ProcessType.TEST)).then(order++)
-            .when(applicationProcessJpaEntity.type.eq(ProcessType.INTERVIEW)).then(order++)
-            .when(applicationProcessJpaEntity.type.eq(ProcessType.COMPLETE)).then(order++)
-            .otherwise(order);
-    }
+	private NumberExpression<Integer> sortByProcessType() {
+		int order = 0;
+		return new CaseBuilder()
+			.when(applicationProcessJpaEntity.type.eq(ProcessType.TO_APPLY)).then(order++)
+			.when(applicationProcessJpaEntity.type.eq(ProcessType.DOCUMENT)).then(order++)
+			.when(applicationProcessJpaEntity.type.eq(ProcessType.TEST)).then(order++)
+			.when(applicationProcessJpaEntity.type.eq(ProcessType.INTERVIEW)).then(order++)
+			.when(applicationProcessJpaEntity.type.eq(ProcessType.COMPLETE)).then(order++)
+			.otherwise(order);
+	}
+
+	private OrderSpecifier<?>[] sortByEndDate(LocalDateTime today) {
+		// 마감이 지나지 않은 경우 (schedule이 today 이후)
+		NumberExpression<Long> notExpiredCase = new CaseBuilder()
+			.when(applicationProcessJpaEntity.schedule.after(today)).then(0L)
+			.otherwise(1L);
+
+		// 마감이 임박한 순서로 정렬 (notExpiredCase 오름차순, schedule 오름차순)
+		OrderSpecifier<Long> notExpiredOrder = notExpiredCase.asc();
+		OrderSpecifier<LocalDateTime> scheduleOrder = applicationProcessJpaEntity.schedule.asc();
+
+		// 이미 지나간 schedule은 id 내림차순으로
+		OrderSpecifier<Long> expiredOrder = applicationProcessJpaEntity.id.desc();
+		return new OrderSpecifier<?>[] {notExpiredOrder, scheduleOrder, expiredOrder};
+	}
 
 	private List<ApplicationJpaEntity> convertToApplicationJpaEntity(JPAQuery<ProcessWithApplicationResponse> query) {
 		return query.fetch().stream()

@@ -36,6 +36,21 @@ class ApplicationRepositoryCustomImplTest {
 	@Autowired
 	private ApplicationProcessRepository applicationProcessRepository;
 
+	public ApplicationJpaEntity saveApplicationAndProcesses(Long userId, Application application) {
+		ApplicationJpaEntity applicationEntity = applicationRepository.save(
+			convertToApplicationEntity(userId, application));
+
+		for (Process process : application.getProcesses()) {
+			ApplicationProcessJpaEntity applicationProcessJpaEntity = applicationProcessRepository.save(
+				convertToApplicationProcessEntity(applicationEntity, process,
+					application.getCurrentProcess() == process));
+
+			applicationEntity.addProcess(applicationProcessJpaEntity);
+		}
+
+		return applicationEntity;
+	}
+
 	@DisplayName("findAllByUserId 메소드는")
 	@Nested
 	class Describe_findAllByUserId {
@@ -59,7 +74,8 @@ class ApplicationRepositoryCustomImplTest {
 			Application kakoaApplication = KAKAO_APPLICATION.toDomain(TEST.toDomainWithSchedule(tomorrow));
 			kakaoApplicationEntity = saveApplicationAndProcesses(userId, kakoaApplication);
 
-			Application coupangApplication = COUPANG_APPLICATION.toDomain(INTERVIEW.toDomainWithSchedule(today));
+			Application coupangApplication = COUPANG_APPLICATION.toDomain(
+				INTERVIEW.toDomainWithSchedule(today.plusHours(5)));
 			coupangApplicationEntity = saveApplicationAndProcesses(userId, coupangApplication);
 		}
 
@@ -76,7 +92,7 @@ class ApplicationRepositoryCustomImplTest {
 				deletedApplicationJpaEntity.delete();
 
 				Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-					userId, pageRequest, ApplicationSortingType.CREATED, List.of(), List.of(), null);
+					userId, pageRequest, ApplicationSortingType.CREATED, List.of(), List.of(), null, today);
 
 				assertAll(
 					() -> assertThat(applications.getContent()).hasSizeGreaterThan(1),
@@ -96,7 +112,7 @@ class ApplicationRepositoryCustomImplTest {
 				ApplicationSortingType sortingType = ApplicationSortingType.CREATED;
 
 				Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-					userId, pageRequest, sortingType, List.of(), List.of(), null);
+					userId, pageRequest, sortingType, List.of(), List.of(), null, today);
 
 				assertAll(
 					() -> assertThat(applications.getNumberOfElements()).isEqualTo(3),
@@ -113,64 +129,72 @@ class ApplicationRepositoryCustomImplTest {
 		@Nested
 		class Context_with_scheduled {
 
-            @DisplayName("ProcessType 순서로 정렬되어 조회한다.")
-            @Test
-            void it_returns_asc_scheduled() {
-                ApplicationSortingType sortingType = ApplicationSortingType.PROCESS_TYPE;
+			@DisplayName("ProcessType 순서로 정렬되어 조회한다.")
+			@Test
+			void it_returns_asc_scheduled() {
+				ApplicationSortingType sortingType = ApplicationSortingType.PROCESS_TYPE;
 
 				Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-					userId, pageRequest, sortingType, List.of(), List.of(), null);
+					userId, pageRequest, sortingType, List.of(), List.of(), null, today);
 
-                assertAll(
-                    () -> assertThat(applications.getNumberOfElements()).isEqualTo(3),
-                    () -> assertThat(applications.getContent().get(0).getId()).isEqualTo(naverApplicationEntity.getId()),
-                    () -> assertThat(applications.getContent().get(1).getId()).isEqualTo(kakaoApplicationEntity.getId()),
-                    () -> assertThat(applications.getContent().get(2).getId()).isEqualTo(coupangApplicationEntity.getId())
-                );
-            }
-        }
+				assertAll(
+					() -> assertThat(applications.getNumberOfElements()).isEqualTo(3),
+					() -> assertThat(applications.getContent().get(0).getId()).isEqualTo(
+						naverApplicationEntity.getId()),
+					() -> assertThat(applications.getContent().get(1).getId()).isEqualTo(
+						kakaoApplicationEntity.getId()),
+					() -> assertThat(applications.getContent().get(2).getId()).isEqualTo(
+						coupangApplicationEntity.getId())
+				);
+			}
+		}
 
 		@DisplayName("정렬 기준이 '전형역순' 일 경우")
 		@Nested
 		class Context_with_re_scheduled {
 
-            @DisplayName("ProcessType 역순으로 정렬되어 조회한다.")
-            @Test
-            void it_returns_desc_scheduled() {
-                ApplicationSortingType sortingType = ApplicationSortingType.REVERSE_PROCESS_TYPE;
+			@DisplayName("ProcessType 역순으로 정렬되어 조회한다.")
+			@Test
+			void it_returns_desc_scheduled() {
+				ApplicationSortingType sortingType = ApplicationSortingType.REVERSE_PROCESS_TYPE;
 
 				Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-					userId, pageRequest, sortingType, List.of(), List.of(), null);
+					userId, pageRequest, sortingType, List.of(), List.of(), null, today);
 
-                assertAll(
-                    () -> assertThat(applications.getNumberOfElements()).isEqualTo(3),
-                    () -> assertThat(applications.getContent().get(0).getId()).isEqualTo(coupangApplicationEntity.getId()),
-                    () -> assertThat(applications.getContent().get(1).getId()).isEqualTo(kakaoApplicationEntity.getId()),
-                    () -> assertThat(applications.getContent().get(2).getId()).isEqualTo(naverApplicationEntity.getId())
-                );
-            }
-        }
+				assertAll(
+					() -> assertThat(applications.getNumberOfElements()).isEqualTo(3),
+					() -> assertThat(applications.getContent().get(0).getId()).isEqualTo(
+						coupangApplicationEntity.getId()),
+					() -> assertThat(applications.getContent().get(1).getId()).isEqualTo(
+						kakaoApplicationEntity.getId()),
+					() -> assertThat(applications.getContent().get(2).getId()).isEqualTo(naverApplicationEntity.getId())
+				);
+			}
+		}
 
-        @DisplayName("정렬 기준이 '마감임박순' 일 경우")
-        @Nested
-        class Context_with_closing {
+		@DisplayName("정렬 기준이 '마감임박순' 일 경우")
+		@Nested
+		class Context_with_closing {
 
-            @DisplayName("마감일이 가까운 순으로 정렬되어 조회한다.")
-            @Test
-            void it_returns_asc_deadline() {
-                // ApplicationSortingType sortingType = ApplicationSortingType.CLOSING;
-                //
-                // Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-                //     userId, pageRequest, sortingType, null, null, null);
-                //
-                // assertAll(
-                //     () -> assertThat(applications.getNumberOfElements()).isEqualTo(3),
-                //     () -> assertThat(applications.getContent().get(0).getCompanyName()).isEqualTo(kakaoApplicationEntity.getCompanyName()),
-                //     () -> assertThat(applications.getContent().get(1).getCompanyName()).isEqualTo(coupangApplicationEntity.getCompanyName()),
-                //     () -> assertThat(applications.getContent().get(2).getCompanyName()).isEqualTo(naverApplicationEntity.getCompanyName())
-                // );
-            }
-        }
+			@DisplayName("마감일이 가까운 순으로 정렬되어 조회한다.")
+			@Test
+			void it_returns_asc_deadline() {
+				ApplicationSortingType sortingType = ApplicationSortingType.CLOSING;
+
+				Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
+					userId, pageRequest, sortingType, null, null, null, today);
+
+				assertAll(
+					() -> assertThat(applications.getNumberOfElements()).isEqualTo(3),
+					() -> assertThat(applications.getContent().get(0).getCompanyName()).isEqualTo(
+						coupangApplicationEntity.getCompanyName()),
+					() -> assertThat(applications.getContent().get(1).getCompanyName()).isEqualTo(
+						kakaoApplicationEntity.getCompanyName()),
+					() -> assertThat(applications.getContent().get(2).getCompanyName()).isEqualTo(
+						naverApplicationEntity.getCompanyName())
+				);
+			}
+		}
 
 		@DisplayName("전형별로 보기 필터링을 선택하지 않을 경우")
 		@Nested
@@ -182,7 +206,7 @@ class ApplicationRepositoryCustomImplTest {
 				List<ProcessType> processTypes = List.of();
 
 				Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-					userId, pageRequest, ApplicationSortingType.CREATED, processTypes, List.of(), null);
+					userId, pageRequest, ApplicationSortingType.CREATED, processTypes, List.of(), null, today);
 
 				List<Long> ids = applications.getContent().stream()
 					.map(ApplicationJpaEntity::getId)
@@ -207,7 +231,7 @@ class ApplicationRepositoryCustomImplTest {
 				ApplicationJpaEntity applicationJpaEntity = saveApplicationAndProcesses(userId, naverApplication);
 
 				Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-					userId, pageRequest, ApplicationSortingType.CREATED, processTypes, List.of(), null);
+					userId, pageRequest, ApplicationSortingType.CREATED, processTypes, List.of(), null, today);
 
 				List<Long> ids = applications.getContent().stream()
 					.map(ApplicationJpaEntity::getId)
@@ -228,7 +252,7 @@ class ApplicationRepositoryCustomImplTest {
 				ApplicationJpaEntity applicationJpaEntity = saveApplicationAndProcesses(userId, naverApplication);
 
 				Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-					userId, pageRequest, ApplicationSortingType.CREATED, List.of(), completes, null);
+					userId, pageRequest, ApplicationSortingType.CREATED, List.of(), completes, null, today);
 
 				List<Long> ids = applications.getContent().stream()
 					.map(ApplicationJpaEntity::getId)
@@ -249,7 +273,7 @@ class ApplicationRepositoryCustomImplTest {
 				saveApplicationAndProcesses(userId, naverApplication);
 
 				Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-					userId, pageRequest, ApplicationSortingType.CREATED, List.of(), completes, null);
+					userId, pageRequest, ApplicationSortingType.CREATED, List.of(), completes, null, today);
 
 				List<Long> ids = applications.getContent().stream()
 					.map(ApplicationJpaEntity::getId)
@@ -268,7 +292,7 @@ class ApplicationRepositoryCustomImplTest {
 				String companyName = naverApplicationEntity.getCompanyName();
 
 				Slice<ApplicationJpaEntity> applications = applicationRepositoryCustom.findAllByUserId(
-					userId, pageRequest, ApplicationSortingType.CREATED, List.of(), List.of(), companyName);
+					userId, pageRequest, ApplicationSortingType.CREATED, List.of(), List.of(), companyName, today);
 
 				List<Long> ids = applications.getContent().stream()
 					.map(ApplicationJpaEntity::getId)
@@ -276,20 +300,5 @@ class ApplicationRepositoryCustomImplTest {
 				assertThat(ids).contains(naverApplicationEntity.getId());
 			}
 		}
-	}
-
-	public ApplicationJpaEntity saveApplicationAndProcesses(Long userId, Application application) {
-		ApplicationJpaEntity applicationEntity = applicationRepository.save(
-			convertToApplicationEntity(userId, application));
-
-		for (Process process : application.getProcesses()) {
-			ApplicationProcessJpaEntity applicationProcessJpaEntity = applicationProcessRepository.save(
-				convertToApplicationProcessEntity(applicationEntity, process,
-					application.getCurrentProcess() == process));
-
-			applicationEntity.addProcess(applicationProcessJpaEntity);
-		}
-
-		return applicationEntity;
 	}
 }
