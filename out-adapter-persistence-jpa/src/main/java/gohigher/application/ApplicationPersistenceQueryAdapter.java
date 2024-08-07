@@ -26,11 +26,12 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 	private final ApplicationRepository applicationRepository;
 
 	@Override
-	public PagingContainer<Application> findAllByUserId(Long userId, int page, int size, ApplicationSortingType sortingType,
-		List<ProcessType> process, List<Boolean> completed, String companyName) {
+	public PagingContainer<Application> findAllByUserId(Long userId, int page, int size,
+		ApplicationSortingType sortingType,
+		List<ProcessType> process, List<Boolean> completed, String companyName, LocalDateTime today) {
 		Slice<ApplicationJpaEntity> applicationJpaEntities = applicationRepository.findAllByUserId(userId,
 			PageRequest.of(page - DIFFERENCES_PAGES_AND_DB_INDEX, size),
-			sortingType, process, completed, companyName);
+			sortingType, process, completed, companyName, today);
 
 		return convertToPagingContainer(applicationJpaEntities);
 	}
@@ -78,7 +79,8 @@ public class ApplicationPersistenceQueryAdapter implements ApplicationPersistenc
 
 	@Override
 	public List<Application> findOnlyCurrentProcessByUserIdAndProcessType(Long userId, ProcessType processType) {
-		List<ApplicationJpaEntity> applications = applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(userId, processType);
+		List<ApplicationJpaEntity> applications = applicationRepository.findOnlyCurrentProcessByUserIdAndProcessType(
+			userId, processType);
 		return convertToKanbanApplication(applications);
 	}
 

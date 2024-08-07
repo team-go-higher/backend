@@ -1,6 +1,7 @@
 package gohigher.application.port.out.persistence;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +13,7 @@ import gohigher.pagination.PagingContainer;
 public interface ApplicationPersistenceQueryPort {
 
 	PagingContainer<Application> findAllByUserId(Long userId, int page, int size, ApplicationSortingType sortingType,
-		List<ProcessType> process, List<Boolean> completed, String companyName);
+		List<ProcessType> process, List<Boolean> completed, String companyName, LocalDateTime today);
 
 	boolean existsByIdAndUserId(Long id, Long userId);
 
