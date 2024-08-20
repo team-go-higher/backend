@@ -122,9 +122,13 @@ public class ApplicationRepositoryCustomImpl implements ApplicationRepositoryCus
 
 	private OrderSpecifier<?>[] sortByEndDate(LocalDateTime today) {
 		// 마감이 지나지 않은 경우 (schedule이 today 이후)
+		long order = 0L;
 		NumberExpression<Long> notExpiredCase = new CaseBuilder()
-			.when(applicationProcessJpaEntity.schedule.after(today)).then(0L)
-			.otherwise(1L);
+			.when(applicationProcessJpaEntity.schedule.eq(today)).then(order++)
+			.when(applicationProcessJpaEntity.schedule.after(today)).then(order++)
+			.when(applicationProcessJpaEntity.schedule.before(today)).then(order++)
+			.when(applicationProcessJpaEntity.schedule.isNull()).then(order++)
+			.otherwise(order);
 
 		// 마감이 임박한 순서로 정렬 (notExpiredCase 오름차순, schedule 오름차순)
 		OrderSpecifier<Long> notExpiredOrder = notExpiredCase.asc();
