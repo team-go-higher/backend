@@ -8,8 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @NoArgsConstructor
+@Getter
 public class SpecificApplicationProcessRequest {
 
 	@NotBlank(message = "JOB_INFO_005||전형 단계가 입력되지 않았습니다.")
@@ -18,6 +18,15 @@ public class SpecificApplicationProcessRequest {
 	private String description;
 
 	private LocalDateTime schedule;
+	private Boolean isCurrent;
+
+	public SpecificApplicationProcessRequest(String type, String description, LocalDateTime schedule,
+		Boolean isCurrent) {
+		this.type = type;
+		this.description = description;
+		this.schedule = schedule;
+		this.isCurrent = isCurrent;
+	}
 
 	public Process toDomain() {
 		return new Process(ProcessType.from(type), description, schedule);
