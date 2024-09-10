@@ -1,7 +1,6 @@
 package gohigher.application.port.in;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 import gohigher.application.Application;
 import gohigher.common.EmploymentType;
@@ -25,17 +24,14 @@ public class ApplicationResponse {
 	private final String careerRequirement;
 	private final String requiredCapability;
 	private final String preferredQualification;
-	private final List<ProcessResponse> processes;
-	private final int currentProcessOrder;
+	private final List<SpecificProcessResponse> processes;
 	private final String url;
 
 	public static ApplicationResponse from(Application application) {
-		List<ProcessResponse> processResponses = application.getProcesses()
+		List<SpecificProcessResponse> processResponses = application.getProcesses()
 			.stream()
-			.map(ProcessResponse::from)
+			.map(process -> SpecificProcessResponse.of(process, application.getCurrentProcess()))
 			.toList();
-
-		int currentProcessOrder = findCurrentProcessOrder(application);
 
 		return new ApplicationResponse(
 			application.getId(),
@@ -52,16 +48,8 @@ public class ApplicationResponse {
 			application.getRequiredCapability(),
 			application.getPreferredQualification(),
 			processResponses,
-			currentProcessOrder,
 			application.getUrl()
 		);
-	}
-
-	private static int findCurrentProcessOrder(Application application) {
-		return IntStream.range(0, application.getProcesses().size())
-			.filter(i -> application.getProcesses().get(i).equals(application.getCurrentProcess()))
-			.findFirst()
-			.orElse(-1);
 	}
 
 	private static String getEmploymentType(Application application) {
