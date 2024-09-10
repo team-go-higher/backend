@@ -15,7 +15,6 @@ import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SimpleApplicationUpdateRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
-import gohigher.application.port.in.SpecificApplicationUpdateRequest;
 import gohigher.application.port.out.persistence.ApplicationPersistenceCommandPort;
 import gohigher.application.port.out.persistence.ApplicationPersistenceQueryPort;
 import gohigher.application.port.out.persistence.ApplicationProcessPersistenceQueryPort;
@@ -56,7 +55,7 @@ public class ApplicationCommandService implements ApplicationCommandPort {
 	}
 
 	@Override
-	public void updateSpecifically(Long userId, Long applicationId, SpecificApplicationUpdateRequest request) {
+	public void updateSpecifically(Long userId, Long applicationId, SpecificApplicationRequest request) {
 		Application application = applicationPersistenceQueryPort.findByIdAndUserId(applicationId, userId)
 			.orElseThrow(() -> new GoHigherException(ApplicationErrorCode.APPLICATION_NOT_FOUND));
 		Application updatedApplication = application.updateSpecifically(request.toDomain());

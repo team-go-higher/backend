@@ -11,8 +11,8 @@ import org.springframework.http.HttpStatus;
 import gohigher.application.port.in.CompletedUpdatingRequest;
 import gohigher.application.port.in.SimpleApplicationProcessRequest;
 import gohigher.application.port.in.SimpleApplicationRequest;
-import gohigher.application.port.in.SpecificApplicationProcessUpdateRequest;
-import gohigher.application.port.in.SpecificApplicationUpdateRequest;
+import gohigher.application.port.in.SpecificApplicationProcessRequest;
+import gohigher.application.port.in.SpecificApplicationRequest;
 import gohigher.common.ProcessType;
 import gohigher.user.auth.Provider;
 import io.restassured.response.ValidatableResponse;
@@ -114,13 +114,13 @@ public class ApplicationAcceptanceTest extends AcceptanceTest {
 		String accessToken = signUp("azpi@email.com", Provider.GOOGLE);
 		int applicationId = createApplication(accessToken);
 
-		SpecificApplicationUpdateRequest specificApplicationUpdateRequest = new SpecificApplicationUpdateRequest("카카오",
+		SpecificApplicationRequest specificApplicationRequest = new SpecificApplicationRequest("카카오",
 			null, null, null, "디자이너", null, null, null, null, null, null, null,
-			List.of(new SpecificApplicationProcessUpdateRequest("INTERVIEW", "1차 면접", null, true)), null);
+			List.of(new SpecificApplicationProcessRequest("INTERVIEW", "1차 면접", null, true)), null);
 
 		// when
 		ValidatableResponse response = put(accessToken, "/v1/applications/" + applicationId + "/specific",
-			specificApplicationUpdateRequest);
+			specificApplicationRequest);
 
 		// then
 		response.statusCode(HttpStatus.OK.value());

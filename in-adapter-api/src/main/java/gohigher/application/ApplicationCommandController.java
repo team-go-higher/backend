@@ -20,7 +20,6 @@ import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SimpleApplicationUpdateRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
-import gohigher.application.port.in.SpecificApplicationUpdateRequest;
 import gohigher.controller.response.GohigherResponse;
 import gohigher.support.auth.Login;
 import jakarta.validation.Valid;
@@ -64,7 +63,7 @@ public class ApplicationCommandController implements ApplicationCommandControlle
 
 	@PutMapping("/{applicationId}/specific")
 	public ResponseEntity<GohigherResponse<Void>> updateSpecifically(@Login Long userId,
-		@PathVariable Long applicationId, @RequestBody @Valid SpecificApplicationUpdateRequest request) {
+		@PathVariable Long applicationId, @RequestBody @Valid SpecificApplicationRequest request) {
 		applicationCommandPort.updateSpecifically(userId, applicationId, request);
 		return ResponseEntity.ok(GohigherResponse.success(null));
 	}

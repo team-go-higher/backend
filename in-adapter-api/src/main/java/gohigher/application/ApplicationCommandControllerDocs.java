@@ -10,7 +10,6 @@ import gohigher.application.port.in.SimpleApplicationRegisterResponse;
 import gohigher.application.port.in.SimpleApplicationRequest;
 import gohigher.application.port.in.SimpleApplicationUpdateRequest;
 import gohigher.application.port.in.SpecificApplicationRequest;
-import gohigher.application.port.in.SpecificApplicationUpdateRequest;
 import gohigher.controller.response.GohigherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -291,7 +290,7 @@ public interface ApplicationCommandControllerDocs {
 					""")
 				}))})
 	ResponseEntity<GohigherResponse<Void>> updateSpecifically(@Parameter(hidden = true) Long userId,
-		Long applicationId, @RequestBody SpecificApplicationUpdateRequest request);
+		Long applicationId, @RequestBody SpecificApplicationRequest request);
 
 	@Operation(summary = "지원서 완료 여부 변경")
 	@ApiResponses(
