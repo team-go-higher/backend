@@ -4,10 +4,10 @@ spring:
       client:
         registration:
           google:
-            redirect_uri: ENC(tECcRtMQeSYyaKTnlkhdpAYkU+yzAHwZ4CmOjtrbr3Q43qzY8lzQ3+RsB7EO4X+S0x+g2x7dSt9YQPGbQuZ3hQ==)
+            redirect_uri: ENC(zNDyE6OcetPJhZIozxa/fFoCWeoscY+/IZcywLvXIMz+usBUh4B39RJmMDq/IN02BJC7+/jkpC5p1G1FSoF3SA==)
           kakao:
-            redirect-uri: ENC(g6PLrzx8uNa3i/8+MCmukCP7NZ9icQjdhrtWV6FWaTyiogLuiNuoiJ9e1n0Ee8v43rhtiPqW4hp8wih171I7zg==)
+            redirect-uri: ENC(MJwB7oqUdfLKNn7738anGKVJ860QQlP/H8tWOpIl9QjKuubPy7iV3ZfFZfjgcJkjrHs0jCIKnJEJLkkIq4QH0w==)
 
 oauth2:
   success:
-    redirect_uri: 'https://dev.gohigher.site'
+    redirect_uri: 'https://dev.gohigher.run'
