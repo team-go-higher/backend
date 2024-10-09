@@ -16,4 +16,11 @@ class EmploymentTypeTest {
 		// when & then
 		assertThat(employmentType.getValue()).isNull();
 	}
+
+	@DisplayName("null이 들어오는경우 UNDEFINED 반환")
+	@Test
+	void makeEmploymentByNull() {
+		// given & when & then
+		assertThat(EmploymentType.from(null)).isEqualTo(EmploymentType.UNDEFINED);
+	}
 }
