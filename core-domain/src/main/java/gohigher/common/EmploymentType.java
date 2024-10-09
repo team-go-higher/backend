@@ -15,7 +15,7 @@ public enum EmploymentType {
 	;
 
 	public static EmploymentType from(String value) {
-		if (value == null) {
+		if (value.isBlank()) {
 			return UNDEFINED;
 		}
 
