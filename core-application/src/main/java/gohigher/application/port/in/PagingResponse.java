@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PagingResponse<E> {
 
+	private final int pageNumber;
 	private final boolean hasNext;
 	private final List<E> content;
 }

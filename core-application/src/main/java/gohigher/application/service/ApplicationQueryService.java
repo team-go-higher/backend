@@ -44,14 +44,15 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 	@Override
 	public PagingResponse<MyApplicationResponse> findAllByUserId(Long userId, PagingRequest pagingRequest,
 		MyApplicationRequest request) {
+		int pageNumber = pagingRequest.getPage();
 		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findAllByUserId(
-			userId, pagingRequest.getPage(), pagingRequest.getSize(),
+			userId, pageNumber, pagingRequest.getSize(),
 			ApplicationSortingType.from(request.getSort()),
 			ProcessType.from(request.getProcess()), request.getCompleted(), request.getCompanyName(),
 			LocalDateTime.now());
 		List<MyApplicationResponse> responses = findApplicationsByUserId(pagingContainer.getContent(),
 			MyApplicationResponse::of);
-		return new PagingResponse<>(pagingContainer.hasNext(), responses);
+		return new PagingResponse<>(pageNumber, pagingContainer.hasNext(), responses);
 	}
 
 	@Override
@@ -83,11 +84,12 @@ public class ApplicationQueryService implements ApplicationQueryPort {
 
 	@Override
 	public PagingResponse<UnscheduledApplicationResponse> findUnscheduled(Long userId, PagingRequest request) {
+		int pageNumber = request.getPage();
 		PagingContainer<Application> pagingContainer = applicationPersistenceQueryPort.findUnscheduledByUserId(
-			userId, request.getPage(), request.getSize());
+			userId, pageNumber, request.getSize());
 		List<UnscheduledApplicationResponse> responses = findApplicationsByUserId(pagingContainer.getContent(),
 			UnscheduledApplicationResponse::of);
-		return new PagingResponse<>(pagingContainer.hasNext(), responses);
+		return new PagingResponse<>(pageNumber, pagingContainer.hasNext(), responses);
 	}
 
 	@Override
